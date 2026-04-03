@@ -1,0 +1,81 @@
+guida per avvio locale
+per il login utilizza OfBiz, disattivarlo per poter fare il login locale
+modifica file login.component.ts
+import { map } from "rxjs/operators";
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { UserPreference } from "../../shared/user-preference";
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { AuthService } from "app/commons/service/auth.service";
+import { ThemeService } from "app/commons/service/theme.service";
+
+@Component({
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
+  providers: [provideAnimations()],
+})
+export class LoginComponent implements OnInit {
+  returnUrl: string;
+  loading_login: boolean = true;
+
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private themeService: ThemeService,
+    private router: Router,
+  ) {}
+
+  ngOnInit() {
+    this.route.data
+      .pipe(map((data: { theme: UserPreference }) => data.theme))
+      .subscribe((data) => {
+        if (data == undefined) {
+          this.loading_login = false;
+          return;
+        } else {
+          this.loading_login = false;
+          this.themeService.switchStyle(data.userPrefValue);
+        }
+      });
+
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(["/c/dashboard"]);
+    }
+  }
+}
+
+
+modifiche postgres:
+psql -h localhost -U postgres -d gzoom_maps -c "
+UPDATE user_login 
+SET current_password = '{SHA}d033e22ae348aeb5660fc2140aec35850c4da997',
+    enabled = 'Y',
+    has_logged_out = 'N'
+WHERE user_login_id = 'admin';
+"
+
+prova se funziona da terminale con
+curl -s -X POST http://localhost:8080/gzoom/control/main \
+  -d "USERNAME=admin&PASSWORD=admin" | grep -i "error\|password\|logout\|logged" | head -3
+  
+inserisci nuovo utente diverso da admin
+psql -h localhost -U postgres -d gzoom_maps -c "
+INSERT INTO user_login (user_login_id, current_password, is_system, enabled, has_logged_out, require_password_change, party_id)
+VALUES ('developer', '{SHA}d033e22ae348aeb5660fc2140aec35850c4da997', 'N', 'Y', 'N', 'N', 'ADMINPARTY');
+"
+testa
+curl -s -X POST http://localhost:8080/gzoom/control/main \
+  -d "USERNAME=developer&PASSWORD=admin" | grep -i "logout\|error\|password" | head -3
+
+avvio  [controlla se utilizzi java versione 21 globalmente e su intellij idea]
+1. vai nella cartella gzoom-legacy/tools/apache-tomcat-9.0.37/bin
+2. nel temrinale digita
+$./catalina.sh run    per linux
+$./catalina.bash run  per windows
+
+3. avvia da intellij idea prima gzoomrun, poi gzoomreportrun
+4. avvia il frontend con ng serve --o
+
+5. login 	SOLO BACKEND-> admin admin
+6. login frontend -> developer admin
