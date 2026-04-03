@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PrioSvil_ObStrat" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="b1826acb-7e31-452e-a967-7fa0a3a01dd7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+OBS.WORK_EFFORT_ID AS ID_OBS,
+	OBS.WORK_EFFORT_NAME AS NOME_OBIETTIVO_STRATEGICO_DE,
+	OBS.WORK_EFFORT_NAME_LANG AS NOME_OBIETTIVO_STRATEGICO_IT
+FROM WORK_EFFORT OBS
+WHERE OBS.WORK_EFFORT_ID = $P{work_effort_id_ob}]]>
+	</queryString>
+	<field name="ID_OBS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_OBS"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_OBS"/>
+	</field>
+	<field name="NOME_OBIETTIVO_STRATEGICO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_OBIETTIVO_STRATEGICO_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_OBIETTIVO_STRATEGICO_DE"/>
+	</field>
+	<field name="NOME_OBIETTIVO_STRATEGICO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_OBIETTIVO_STRATEGICO_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_OBIETTIVO_STRATEGICO_IT"/>
+	</field>
+	<group name="Gruppo1">
+		<groupExpression><![CDATA[$F{ID_OBS}]]></groupExpression>
+		<groupFooter>
+			<band height="15">
+				<frame>
+					<reportElement x="0" y="0" width="802" height="15" uuid="1be0bbea-6244-410f-a457-65c6e81ac339">
+						<printWhenExpression><![CDATA[true]]></printWhenExpression>
+					</reportElement>
+					<textField textAdjust="StretchHeight" evaluationTime="Report" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="0" y="0" width="200" height="15" forecolor="#767171" uuid="617eee7e-3ae7-42df-b064-3c251aaae21e">
+							<printWhenExpression><![CDATA[true]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement verticalAlignment="Middle">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{ObiettivoStrategico}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" x="200" y="0" width="602" height="15" uuid="9a235fbe-8c85-44df-9fe4-cce01164df79">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<printWhenExpression><![CDATA[true]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{NOME_OBIETTIVO_STRATEGICO_IT}) : 
+($F{NOME_OBIETTIVO_STRATEGICO_DE})]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+</jasperReport>

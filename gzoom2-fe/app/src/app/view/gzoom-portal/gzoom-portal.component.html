@@ -1,0 +1,253 @@
+<app-report-popup />
+<gzoom-confirm-dialog />
+<gzoom-toaster />
+<gzoom-toaster [id]="'status_change'" [timeout]="0" />
+
+<gzoom-portal-header [goals]="goals" [(selectedGoalId)]="selectedGoalId" [goalRoot]="goalRoot()" />
+
+@if (!hasPermission()[PortalPermission.DetailsRead]) {
+  <pre>{{ statusErrorMessages[goalRoot()?.goalStatus.id] | i18n }}</pre>
+
+} @else {
+  @for (section of goalRoot()?.children; track $index) {
+    <hr />
+
+    <!-- Obiettivi -->
+    <header>
+      <h3>
+        <i class="gzoom-icon"
+           [ngClass]="{ 'gzoom-gauge': section.goalType.id === GoalTypeId.MEASUREMENT,
+                        'gzoom-clipboard-check': section.goalType.id === GoalTypeId.BEHAVIOUR }"></i>
+        {{ section.name }}
+      </h3>
+
+      @if (hasPermission()[PortalPermission.TotalResultRead]) {
+        <div class="total">
+          <p>Max punti:
+            <strong>{{
+                ((section.goalType?.weightKpi > 0) && (section.goalType?.totalEnumIdKpi === 'SUM') ? section.goalType.weightKpiControlSum
+                  : ((section.goalType?.weightSons > 0) && (section.goalType?.totalEnumIdSons === 'SUM') ? section.goalType.weightControlSum :
+                    section.objWeight)) | formatNumberIT
+              }}
+            </strong>
+          </p>
+
+          <!--          @if (goalRoot()?.goalStatus.id === GoalStatusId.InsertingEvidence) {-->
+          <p>Punteggio:
+            <strong>
+              @if (extractTotalResult(section)) {
+                {{ extractTotalResult(section) | formatNumberIT }}
+              } @else {
+                Non elaborato
+                <gzoom-tooltip text="Il punteggio verrà elaborato al completamento della fase valutativa."
+                               [textPosition]="'left'" />
+              }
+            </strong>
+          </p>
+          <!--          }-->
+        </div>
+      }
+    </header>
+
+    <!-- Obbiettivi -->
+    @if (section.goalType.id === GoalTypeId.MEASUREMENT) {
+      <p-accordion>
+        @for (goal of section?.children; track $index) {
+          <p-accordionTab>
+            <ng-template pTemplate="header">
+              <div>
+                <h3>
+                  <i class="gzoom-icon gzoom-bullseye"></i>
+                  {{ goal.goalType.description }}
+                </h3>
+                <p>{{ goal.name }}</p>
+              </div>
+            </ng-template>
+
+            <p-table
+              [value]="goal.children"
+              rowGroupMode="rowspan"
+              groupRowsBy="obiettivo"
+              [tableStyle]="{'min-width': '75rem'}"
+            >
+              <ng-template pTemplate="header">
+                <th>Obiettivi specifici</th>
+                <th style="width: 5%">Peso obiettivi</th>
+                @if (hasPermission()[PortalPermission.AttachmentsRead] || hasPermission()[PortalPermission.NotesRead]) {
+                  <th style="width: 5%">Evidenze</th>
+                }
+                <th style="width: 15%">Indicatori</th>
+                <th style="width: 5%">Peso indicatori</th>
+                <th style="width: 5%">Natura indicatore</th>
+                <th style="width: 5%">Target</th>
+                @if (hasPermission()[PortalPermission.TotalResultRead]) {
+                  <th style="width: 5%">Risultati conseguiti</th>
+                }
+                <th style="width: 20%">Criteri di determinazione del punteggio</th>
+                @if (hasPermission()[PortalPermission.TotalResultRead]) {
+                  <th style="width: 5%">Punteggio indicatore</th>
+                }
+              </ng-template>
+
+              <ng-template
+                pTemplate="body"
+                let-untypedItem
+              >
+                @if (asGoal(untypedItem); as subGoal) {
+                  @for (indicator of subGoal.getGoalIndicators(); track $index) {
+                    <ng-container>
+                      <tr>
+                        @if ($index === 0) {
+                          <!-- Obiettivo (solo per la prima riga del gruppo) -->
+                          <td [attr.rowspan]="subGoal.getGoalIndicators().length">
+                            {{ subGoal.name }}
+                          </td>
+
+                          <!-- Peso Obiettivo (solo per la prima riga del gruppo) -->
+                          <td [attr.rowspan]="subGoal.getGoalIndicators().length">
+                            {{ subGoal.objWeight | formatNumberIT }}
+                          </td>
+
+                          <!-- Evidenze -->
+                          @if (hasPermission()[PortalPermission.AttachmentsRead] || hasPermission()[PortalPermission.NotesRead]) {
+                            <td [attr.rowspan]="subGoal.getGoalIndicators().length" class="evidence">
+                              <div>
+                                @if (hasPermission()[PortalPermission.NotesRead]) {
+                                  <gzoom-button outlined="true"
+                                                [ariaLabel]="'Commento'"
+                                                [ngClass]="{'with-badge': subGoal.notes?.length > 0}"
+                                                (onClick)="showCommentModal(subGoal)">
+                                    <i class="gzoom-icon gzoom-comment"></i>
+                                  </gzoom-button>
+                                }
+                                @if (hasPermission()[PortalPermission.AttachmentsRead]) {
+                                  <gzoom-button outlined="true"
+                                                [ariaLabel]="'Allegato'"
+                                                [ngClass]="{'with-badge': subGoal.attachments?.length > 0}"
+                                                (onClick)="showAttachmentModal(subGoal)">
+                                    <i class="gzoom-icon gzoom-file-arrow-up"></i>
+                                  </gzoom-button>
+                                }
+                              </div>
+                            </td>
+                          }
+                        }
+
+                        <!-- Indicatori -->
+                        <td>
+                          <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between;">
+                            <span style="width: 100%;">{{ indicator.accountName }}</span>
+                            @if (isDefined(indicator.dataSource)) {
+                              <gzoom-tooltip text="Fonte del dato: {{indicator.dataSource}}"
+                                             [textPosition]="'right'" />
+                            }
+                          </div>
+                        </td>
+
+                        <!-- Peso Indicatori -->
+                        <td>
+                          {{ indicator.kpiScoreWeight | formatNumberIT }}
+                        </td>
+
+                        <!-- Natura indicatore -->
+                        <td>
+                          {{ indicator.uom.abbreviation }}
+                        </td>
+
+                        <!-- Target -->
+                        <td>
+                          {{ indicator.comments }}
+                        </td>
+
+                        <!-- Risultati conseguiti -->
+                        @if (hasPermission()[PortalPermission.TotalResultRead]) {
+                          <td class="highlighted">
+                            {{
+                              isDefined(extractAchievedResult(indicator)) ? (extractAchievedResult(indicator) | formatNumberIT) :
+                                (indicator.accountCode === 'IND002' ? 'In aggiornamento' : 'Dato non presente')
+                            }}
+                          </td>
+                        }
+
+                        <!-- Criteri -->
+                        <td>
+                          <span [innerHTML]="indicator.description.replaceAll('\n', '<br/>')"></span>
+                        </td>
+
+                        <!-- Punteggio indicatore -->
+                        @if (hasPermission()[PortalPermission.TotalResultRead]) {
+                          <td class="highlighted indicator-score">
+                            @if (isDefined(indicator.scoreCalculated)) {
+                              {{ indicator.scoreCalculated | formatNumberIT: 2 }}
+                            } @else {
+                              -
+                            }
+                          </td>
+                        }
+                      </tr>
+                    </ng-container>
+                  }
+                }
+              </ng-template>
+            </p-table>
+          </p-accordionTab>
+        }
+      </p-accordion>
+    }
+
+    <!-- Comportamenti professionali -->
+    @if (section.goalType.id === GoalTypeId.BEHAVIOUR) {
+      <p-table
+        [value]="section.getGoalIndicators()"
+        dataKey="id"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        class="indicators"
+      >
+        <ng-template pTemplate="header">
+          <th>Criteri</th>
+          <td style="width: 50%"></td>
+          @if (hasPermission()[PortalPermission.TotalResultRead]) {
+            <th style="width: 15%">Risultato conseguito</th>
+          }
+        </ng-template>
+
+        <ng-template pTemplate="body" let-untypedItem>
+          @if (asIndicator(untypedItem); as item) {
+            <tr>
+              <!-- Criteri -->
+              <td [pEditableColumn]="item" pEditableColumnField="obiettivo">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <!-- <input pInputText type="text" [(ngModel)]="item.obiettivo" /> -->
+                    {{ item.accountName }}
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ item.accountName }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td></td>
+
+              <!-- Risultato conseguito -->
+              @if (hasPermission()[PortalPermission.TotalResultRead]) {
+                <td [pEditableColumn]="item" pEditableColumnField="pesoObiettivo">
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <!-- <input pInputText type="number" [(ngModel)]="item.pesoObiettivo" /> -->
+                      {{ extractAchievedResult(item) | formatNumberIT }}
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ extractAchievedResult(item) | formatNumberIT }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+              }
+            </tr>
+          }
+        </ng-template>
+      </p-table>
+    }
+  }
+}
+

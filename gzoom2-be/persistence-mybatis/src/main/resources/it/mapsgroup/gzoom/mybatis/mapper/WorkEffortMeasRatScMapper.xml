@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortMeasRatScMapper">
+
+    <resultMap id="uomRatingScaleResultMap2" type="it.mapsgroup.gzoom.mybatis.dto.UomRatingScale">
+        <result property="uomId" column="uom_id" jdbcType="VARCHAR"/>
+        <result property="uomRatingValue" column="uom_rating_value" jdbcType="DOUBLE"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="icon_content_id" property="iconContentId" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="workEffortMeasureRatScResultMap2" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortMeasRatScExUomRatingScale">
+        <result column="work_effort_measure_id" property="workEffortMeasureId" jdbcType="VARCHAR"/>
+        <result column="uom_id" property="uomId" jdbcType="VARCHAR"/>
+        <result column="uom_rating_value" property="uomRatingValue" jdbcType="DOUBLE"/>
+        <result column="uom_code" property="uomCode" jdbcType="VARCHAR"/>
+        <result column="uom_descr" property="uomDescr" jdbcType="VARCHAR"/>
+        <result column="uom_code_lang" property="uomCodeLang" jdbcType="VARCHAR"/>
+        <result column="uom_descr_lang" property="uomDescrLang" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <association property="uomRatingScale" resultMap="uomRatingScaleResultMap2"/>
+    </resultMap>
+
+    <select id="getRatingScaleWEM" resultMap="workEffortMeasureRatScResultMap2">
+    SELECT wrs.*, urs.*
+    FROM  work_effort_meas_rat_sc wrs
+    INNER JOIN uom_rating_scale urs ON urs.uom_id = wrs.uom_id
+        AND urs.uom_rating_value = wrs.uom_rating_value
+    WHERE wrs.work_effort_measure_id = #{workEffortMeasureId}
+    </select>
+
+    <select id="getWorkEffortMeasRatSc" resultMap="workEffortMeasureRatScResultMap">
+    SELECT *
+    FROM work_effort_meas_rat_sc
+    WHERE work_effort_measure_id = #{workEffortMeasureId}
+    </select>
+
+    <delete id="deleteByMeasureId" >
+    DELETE FROM work_effort_meas_rat_sc
+    WHERE work_effort_measure_id = #{workEffortMeasureId,jdbcType=VARCHAR}
+    </delete>
+
+
+
+</mapper>

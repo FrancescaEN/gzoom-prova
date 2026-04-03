@@ -1,0 +1,314 @@
+image: amazoncorretto:21
+definitions:
+  caches:
+    apache: /opt/apache-ant-1.10.8
+    maven: /opt/apache-maven-3.9.6
+  steps:
+    #
+    # Build
+    #
+    - step: &build-changed-customer-and-publish-tag
+        name: BuildCachCustomerChangedSinceLastTag
+        caches:
+          - apache
+          - maven
+        script:
+          #scarico ant e maven
+          - if [[ -f bitbucket_env.sh ]]; then 
+          -   chmod +x bitbucket_env.sh
+          -   source bitbucket_env.sh
+          - fi        
+          - echo "Starting build for customer changed since last tag, tag = ${version}"
+          # install dependencies
+          - yum update -y && yum install -y wget tar gzip git zip unzip
+          - CURRENT_TAG=${version}
+          - echo "CURRENT_TAG = $CURRENT_TAG"
+          - IS_RC="false"
+          # verifico se sto rilasciando una rc
+          - if [[ "$CURRENT_TAG" =~ -rc[0-9]+$ ]]; then
+          -   echo "Il tag termina con -rc e un numero"
+          -   IS_RC="rc"
+          - else
+          -   if [[ "$CURRENT_TAG" =~ -alpha[0-9]+$ ]]; then
+          -     echo "Il tag termina con -alpha e un numero"
+          -     IS_RC="alpha"
+          -   else
+          -     echo "Il tag NON termina con -rc e un numero"
+          -     IS_RC="false"
+          -   fi
+          - fi
+          # recupero la lista dei tag
+          - git fetch --all --tags               
+          - if [ "$IS_RC" = "rc" ]; then
+          -   echo "Il tag è un RC"
+          -   TAGS=($(git tag --sort=-creatordate | grep rc))
+          - else
+          -   if [ "$IS_RC" = "alpha" ]; then
+          -     echo "Il tag è un ALPHA"
+          -     TAGS=($(git tag --sort=-creatordate | grep alpha))
+          -   else
+          -     echo "Il tag NON è un RC"
+          -     TAGS=($(git tag --sort=-creatordate | grep -v rc | grep -v alpha))
+          -   fi
+          - fi
+          #recupero il tag precedente a quello corrente
+          - for i in "${!TAGS[@]}"; do
+          -   if [[ "${TAGS[$i]}" == "$CURRENT_TAG" ]]; then
+          -     PREV_INDEX=$((i + 1))
+          -     PREVIOUS_TAG="${TAGS[$PREV_INDEX]}"
+          -     echo "Previous tag before $CURRENT_TAG is = $PREVIOUS_TAG"
+          -     break
+          -   fi
+          - done
+          #recupero la lista dei clienti cambiati tra il tag corrente e quello precedente
+          - CUSTOMER_LIST=($(git diff --name-only $PREVIOUS_TAG $CURRENT_TAG | grep project | cut -d'/' -f2 | sort -u))
+          - echo "Customers changed since last tag = ${CUSTOMER_LIST[@]}"      
+          #scarico ant e maven
+          - if [[ ! -d /opt/apache-ant-1.10.8 || ! -f /opt/apache-ant-1.10.8/bin/ant ]]; then 
+          -   wget https://archive.apache.org/dist/ant/binaries/apache-ant-1.10.8-bin.tar.gz
+          -   tar -xzf apache-ant-1.10.8-bin.tar.gz -C /opt
+          - fi
+          - if [ ! -d /opt/apache-maven-3.9.6 || ! -f /opt/apache-maven-3.9.6/bin/mvn ]; then
+          -   echo "Downloading Apache Maven 3.9.6"
+          -   pushd .
+          -   cd /opt 
+          -   wget --timeout=120 https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+          -   tar -xzvf apache-maven-3.9.6-bin.tar.gz
+          -   popd
+          - fi
+          #faccio il checkout del tag corrente
+          - echo "Checking out tag ${CURRENT_TAG}"
+          - git checkout tags/${version}  
+          #recupero l'ultima versione del backend di GZoom2 rc, alpha o ufficiale        
+          - if [ "$IS_RC" = "rc" ]; then
+          -   echo "Il tag è un RC"
+          -   BETAG=($(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@bitbucket.org:mapsgroupID/gzoom2backend.git '*.*.*' | grep -v alpha | grep rc | tail --lines=1 | cut --delimiter='/' --fields=3))
+          - else
+          -   if [ "$IS_RC" = "alpha" ]; then
+          -     echo "Il tag è un ALPHA"
+          -     BETAG=($(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@bitbucket.org:mapsgroupID/gzoom2backend.git '*.*.*' | grep alpha | tail --lines=1 | cut --delimiter='/' --fields=3))
+          -   else
+          -     echo "Il tag NON è un RC né un alpha"
+          -     BETAG=($(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@bitbucket.org:mapsgroupID/gzoom2backend.git '*.*.*' | grep -v alpha | grep -v rc | tail --lines=1 | cut --delimiter='/' --fields=3))
+          -   fi
+          - fi
+          - echo "BETAG = $BETAG"   
+          - if [ ! -d /tmp/tmp_gzoom2backend ]; then
+          -   mkdir /tmp/tmp_gzoom2backend
+          - fi
+          # scarico il backend di GZoom2
+          - git clone git@bitbucket.org:mapsgroupID/gzoom2backend.git --single-branch --branch $BETAG /tmp/tmp_gzoom2backend
+          - pushd .
+          - cd /tmp/tmp_gzoom2backend
+          - /opt/apache-maven-3.9.6/bin/mvn -s settings.xml -P bbpipeline -Dmaven.test.skip=true clean install
+          - if [ $? -ne 0 ] ; then
+          -   echo "Error during maven clean install of GZoom2 BE project"
+          -   exit 1
+          - fi
+          - if [ "$?" -gt "0" ]; then
+          -   echo "Error during checkout of tags ${version}"
+          -   exit 1
+          - fi
+          - popd
+          # ciclo sui clienti cambiati
+          - for nomeCliente in "${CUSTOMER_LIST[@]}"; do
+          -   echo "Processing customer $nomeCliente"
+          -   if [ -z "${nomeCliente}" ]; then
+          -     echo "No customer specified, skipping..."
+          -     continue
+          -   fi
+          -   if [ ! -d "./project/${nomeCliente}/" ]; then
+          -     echo "No customer folder, skipping..."
+          -     continue
+          -   fi
+          -   if curl --head --silent --fail -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/${publish_repo}/gzoom-report-${nomeCliente}-${version}.zip > /dev/null; then
+          -     echo "Artifact gzoom-report-${nomeCliente}-${version}.zip found!"
+          -   else
+          -     echo "Artifact gzoom-report-${nomeCliente}-${version}.zip not found"
+          -     echo "Compiling report for customer $nomeCliente"
+          -     mkdir -p /tmp/${nomeCliente}
+          # copio i report del cliente cambiato
+          -     cp -r ./project/${nomeCliente}/* /tmp/${nomeCliente}
+          -     cp -r ./lib /tmp/${nomeCliente}/lib
+          -     cp -r ./jdbc /tmp/${nomeCliente}/jdbc
+          -     cp build.xml /tmp/${nomeCliente}
+          # compilo i report del cliente cambiato
+          -     pushd .
+          -     cd /tmp/${nomeCliente}
+          -     echo "Compiling reports for customer $nomeCliente"
+          -     /opt/apache-ant-1.10.8/bin/ant -Dgzoom2be.dir=/tmp/tmp_gzoom2backend
+          -     rm -rf ./lib
+          -     rm -rf ./jdbc
+          -     rm build.xml
+          -     popd
+          -   fi
+          - done
+          # compilo i report generici
+          - echo "Compiling generic reports"
+          - /opt/apache-ant-1.10.8/bin/ant -Dgzoom2be.dir=/tmp/tmp_gzoom2backend
+          # verifico se esiste il pacchetto dei report generici
+          - if curl --head --silent --fail -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/${publish_repo}/gzoom-report-${version}.zip > /dev/null; then
+          -   echo "Artifact found!"
+          - else
+          -   echo "Artifact not found"
+          -   echo "Uploading gzoom-report-${version}.zip to Artifactory"
+          -   zip -r gzoom-report-${version}.zip . -x ./project/\* -x ./.git/\* -x ./**/*.jrxml -x ./ant\* -x ./build.xml -x ./.gitignore -x ./bitbucket-pipelines.yml -x ./lib/\* -x ./jdbc/\* -x ./tmp_gzoom2backend/\* -x ./apache-ant-1.10.8-bin.tar.gz -x ./apache-maven-3.9.6-bin.tar.gz
+          -   curl -u${mvn_artifactory_user}:${mvn_artifactory_password} -T gzoom-report-${version}.zip "https://${mvn_artifactory_host}/artifactory/${publish_repo}/"
+          -   rm gzoom-report-${version}.zip
+          - fi
+          # creo il file zip del report per ogli cliente cambiato
+          - for nomeCliente in "${CUSTOMER_LIST[@]}"; do
+          -   if curl --head --silent --fail -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/${publish_repo}/gzoom-report-${nomeCliente}-${version}.zip > /dev/null; then
+          -     echo "Artifact gzoom-report-${nomeCliente}-${version}.zip found!"
+          -   else
+          -     if [ ! -d "./project/${nomeCliente}/" ]; then
+          -       echo "No customer folder, skipping packaging..."
+          -       continue
+          -     fi
+          -     echo "Artifact gzoom-report-${nomeCliente}-${version}.zip not found"
+          -     mkdir -p custom
+          -     rm -rf ./custom/*
+          -     cp -r /tmp/${nomeCliente}/* ./custom
+          -     echo "Creating zip file for customer $nomeCliente"
+          -     zip -r gzoom-report-${nomeCliente}-${version}.zip . -x ./project/\* -x ./.git/\* -x ./**/*.jrxml -x ./ant\* -x ./build.xml -x ./.gitignore -x ./bitbucket-pipelines.yml -x ./lib/\* -x ./jdbc/\* -x ./tmp_gzoom2backend/\* -x ./apache-ant-1.10.8-bin.tar.gz -x ./apache-maven-3.9.6-bin.tar.gz
+          -     echo "Uploading gzoom-report-${nomeCliente}-${version}.zip to Artifactory"
+          -     curl -u${mvn_artifactory_user}:${mvn_artifactory_password} -T gzoom-report-${nomeCliente}-${version}.zip "https://${mvn_artifactory_host}/artifactory/${publish_repo}/"          
+          -     rm gzoom-report-${nomeCliente}-${version}.zip
+          -   fi
+          - done
+pipelines:
+  caches:
+    - apache
+    - maven
+  custom:
+    BuildAndPublishChangedCustomerTag:
+      - variables:    
+        - name: version
+          description: version    
+      - step: 
+          script:
+            - echo "export version=${version}" > bitbucket_env.sh
+          artifacts:
+            - bitbucket_env.sh
+      - step: 
+          <<: *build-changed-customer-and-publish-tag
+    PackManually:
+      - variables:
+        - name: version
+          description: Versione
+        - name: nomeCliente
+          description: Nome Cliente
+        - name: gzoom2BEVersion
+          description: Versione GZoom2 Backend
+      - step:
+          script:
+            - if [ "${nomeCliente}" &&  ! -d ./project/${nomeCliente} ]; then
+            -   echo "Directory ./project/${nomeCliente} doesn't exist."
+            -   exit 2
+            - fi
+            - if [ -z "${version}" ]; then
+            -   echo "The variable version is mandatory"
+            -   exit 1
+            - fi
+            - yum update -y && yum install -y wget tar gzip git zip unzip
+            - if [[ ! -d /opt/apache-ant-1.10.8 || ! -f /opt/apache-ant-1.10.8/bin/ant ]]; then 
+            -   wget https://archive.apache.org/dist/ant/binaries/apache-ant-1.10.8-bin.tar.gz
+            -   tar -xzf apache-ant-1.10.8-bin.tar.gz -C /opt
+            - fi
+            - if [ ! -d /opt/apache-maven-3.9.6 ]; then
+            -   pushd .
+            -   cd /opt 
+            -   wget --timeout=120 https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+            -   tar -xzvf apache-maven-3.9.6-bin.tar.gz
+            -   popd
+            - fi
+            - git checkout tags/${version}
+            - if [ -z "${gzoom2BEVersion}" ]; then
+            -   if [[ $BITBUCKET_BRANCH = "qa" || $BITBUCKET_BRANCH =~ ^hotfix\/.* ]]; then
+            -     gzoom2backend_branch="qa"
+            -   elif [[ $BITBUCKET_BRANCH = "devel" || ! $BITBUCKET_BRANCH =~ ^hotfix\/.* ]]; then
+            -     gzoom2backend_branch="devel"
+            -   else
+            -     gzoom2backend_branch="master"
+            -   fi
+            - else
+            -   gzoom2backend_branch=$gzoom2BEVersion
+            - fi
+            - echo "GZoom2 Backend branch - " $gzoom2backend_branch
+            - git clone git@bitbucket.org:mapsgroupID/gzoom2backend.git --single-branch --branch $gzoom2backend_branch tmp_gzoom2backend
+            - pushd .
+            - cd tmp_gzoom2backend 
+            - /opt/apache-maven-3.9.6/bin/mvn -s settings.xml -P bbpipeline -Dmaven.test.skip=true clean install
+            - if [ $? -ne 0 ] ; then
+            -   echo "Error during maven clean install of GZoom2 BE project"
+            -   exit 1
+            - fi
+            - popd
+            - if [ "$?" -gt "0" ]; then
+            -   echo "Error during checkout of tags ${version}"
+            -   exit 1
+            - fi
+            - if [ "${nomeCliente}" ]; then
+            -   mkdir custom 
+            -   cp -r ./project/${nomeCliente}/* ./custom
+            -   nomeCliente=-${nomeCliente}
+            -   rm -rf ./project
+            -   /opt/apache-ant-1.10.8/bin/ant -Dgzoom2be.dir=./tmp_gzoom2backend -Dgzoom2customer=${nomeCliente}
+            - else
+            -   rm -rf ./project
+            -   /opt/apache-ant-1.10.8/bin/ant -Dgzoom2be.dir=./tmp_gzoom2backend
+            - fi
+            - echo ${version} > version.txt
+            - zip -r gzoom-report${nomeCliente}-${version}.zip . -x ./project/\* -x ./.git/\* -x ./**/*.jrxml -x ./ant\* -x ./build.xml -x ./.gitignore -x ./bitbucket-pipelines.yml -x ./lib/\* -x ./jdbc/\* -x ./tmp_gzoom2backend/\* -x ./apache-ant-1.10.8-bin.tar.gz -x ./apache-maven-3.9.6-bin.tar.gz
+            - curl -u${mvn_artifactory_user}:${mvn_artifactory_password} -T gzoom-report${nomeCliente}-${version}.zip "https://${mvn_artifactory_host}/artifactory/${publish_repo}/"
+  tags:
+    '*':
+      - step: 
+          script:
+            - echo "export version=${BITBUCKET_TAG}" > bitbucket_env.sh
+          artifacts:
+            - bitbucket_env.sh
+      - step: 
+          <<: *build-changed-customer-and-publish-tag
+#      - step:
+#          script:
+#            - version=${BITBUCKET_TAG}
+#            - if [ -z "${version}" ]; then
+#            -   echo "The variable version is mandatory"
+#            -   exit 1
+#            - fi
+#            - yum update -y && yum install -y wget tar gzip git zip unzip
+#            - if [[ ! -d /opt/apache-ant-1.10.8 || ! -f /opt/apache-ant-1.10.8/bin/ant ]]; then 
+#            -   wget https://archive.apache.org/dist/ant/binaries/apache-ant-1.10.8-bin.tar.gz
+#            -   tar -xzf apache-ant-1.10.8-bin.tar.gz -C /opt
+#            - fi
+#            - if [ ! -d /opt/apache-maven-3.9.6 ]; then
+#            -   pushd .
+#            -   cd /opt 
+#            -   wget --timeout=120 https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+#            -   tar -xzvf apache-maven-3.9.6-bin.tar.gz
+#            -   popd
+#            - fi
+#            - echo ${version} > version.txt
+#            - if [[ "$version" =~ rc[1-9]([0-9]*) ]]; then
+#            -   gzoom2backend_branch="qa"
+#            - elif [[ "$version" =~ alpha[0-9]([0-9]*) ]]; then
+#            -   gzoom2backend_branch="devel"
+#            - else
+#            -   gzoom2backend_branch="master"
+#            - fi
+#            - echo "GZoom2 Backend branch - " $gzoom2backend_branch
+#            - git clone git@bitbucket.org:mapsgroupID/gzoom2backend.git --single-branch --branch $gzoom2backend_branch tmp_gzoom2backend
+#            - pushd .
+#            - cd tmp_gzoom2backend 
+#            - /opt/apache-maven-3.9.6/bin/mvn -s settings.xml -P bbpipeline -Dmaven.test.skip=true clean install
+#            - if [ $? -ne 0 ] ; then
+#            -   echo "Error during maven clean install of GZoom2 BE project"
+#            -   exit 1
+#            - fi
+#            - popd
+#            - rm -rf ./project
+#            - /opt/apache-ant-1.10.8/bin/ant -Dgzoom2be.dir=./tmp_gzoom2backend
+#            - zip -r gzoom-report-${version}.zip . -x ./project/\* -x ./.git/\* -x ./**/*.jrxml -x ./ant\* -x ./build.xml -x ./.gitignore -x ./bitbucket-pipelines.yml -x ./lib/\* -x ./jdbc/\* -x ./tmp_gzoom2backend/\* -x ./apache-ant-1.10.8-bin.tar.gz -x ./apache-maven-3.9.6-bin.tar.gz
+#            - curl -u${mvn_artifactory_user}:${mvn_artifactory_password} -T gzoom-report-${version}.zip "https://${mvn_artifactory_host}/artifactory/${publish_repo}/"
+#

@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final utlizzo versione della libreria JasperReports6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sottoreport_Rischio" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PianoTriennalePrevenzioneCorruzioneCustom" uuid="440c9160-c64b-4071-968f-dd3de7161f07">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="180"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="814"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Default" isDefault="true" pdfEncoding="Cp1252" isPdfEmbedded="false">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<style name="Field-label-9-bold-grey" mode="Opaque" forecolor="#808080" fontSize="9" isBold="true"/>
+	<subDataset name="DatasetEmpty" uuid="9621e1e3-5697-4baf-b79f-20b9ee38c9ba">
+		<parameter name="MI_RESP_NOTE_INFO" class="java.lang.String"/>
+		<parameter name="NOTE_INFO" class="java.lang.String"/>
+		<parameter name="OBIETTIVO_NAME" class="java.lang.String"/>
+		<parameter name="INDICATORI" class="java.lang.String"/>
+		<parameter name="TARGET_CODE" class="java.lang.String"/>
+		<parameter name="NOTE_NAME" class="java.lang.String"/>
+		<parameter name="MI_RESP_NOTE_NAME" class="java.lang.String"/>
+		<parameter name="INDICATORE_ETCH" class="java.lang.String"/>
+		<parameter name="UOM_ABBREVIATION" class="java.lang.String"/>
+		<parameter name="UOM_DECIMAL_SCALE" class="java.lang.String"/>
+		<parameter name="M_UOM_DESCR" class="java.lang.String"/>
+		<parameter name="G_ACCOUNT_NAME" class="java.lang.String"/>
+		<parameter name="TARGET_AMOUNT" class="java.lang.Float"/>
+		<parameter name="TARGET_AMOUNT_PIU_UNO" class="java.lang.Float"/>
+		<parameter name="TARGET_AMOUNT_PIU_DUE" class="java.lang.Float"/>
+		<parameter name="G_UOM_TYPE_ID" class="java.lang.String"/>
+		<parameter name="TARGET_CODE_PIU_UNO" class="java.lang.String"/>
+		<parameter name="TARGET_CODE_PIU_DUE" class="java.lang.String"/>
+		<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+		</parameter>
+		<parameter name="FORMAT" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select count(*) from user_login]]>
+		</queryString>
+		<variable name="TARGET" class="java.lang.String">
+			<variableExpression><![CDATA[($P{G_UOM_TYPE_ID}.equals("RATING_SCALE")) ? ($P{TARGET_CODE} == null ? " " : 
+	
+	"<style forecolor='#808080' isBold='true'>"+YEAR($P{monitoringDate} )+"</style>" + ": " + TRIM($P{TARGET_CODE})+ " "
+) :
+$P{TARGET_AMOUNT} != null ? (FIND($P{FORMAT},"%",0) != -1 ? 
+	
+	"<style forecolor='#808080' isBold='true'>"+YEAR($P{monitoringDate} )+"</style>" + ": " +TEXT(($P{TARGET_AMOUNT}/100),$P{FORMAT})+ " ": 
+	
+"<style forecolor='#808080' isBold='true'>"+YEAR($P{monitoringDate} )+"</style>" + ": " + TEXT($P{TARGET_AMOUNT},$P{FORMAT})+ " "  
+
+) : ""]]></variableExpression>
+		</variable>
+		<variable name="TARGET_PIU_UNO" class="java.lang.String">
+			<variableExpression><![CDATA[($P{G_UOM_TYPE_ID}.equals("RATING_SCALE")) ? ($P{TARGET_CODE_PIU_UNO} == null ? " " : 
+	
+	"<style forecolor='#808080' isBold='true'>"+(YEAR($P{monitoringDate})+1)+"</style>" + ": " + TRIM($P{TARGET_CODE_PIU_UNO}) + " "
+) :
+$P{TARGET_AMOUNT_PIU_UNO} != null ? (FIND($P{FORMAT},"%",0) != -1 ? 
+	
+	"<style forecolor='#808080' isBold='true'>"+(YEAR($P{monitoringDate})+1)+"</style>" + ": " +TEXT(($P{TARGET_AMOUNT_PIU_UNO}/100),$P{FORMAT}) + " " : 
+	
+"<style forecolor='#808080' isBold='true'>"+(YEAR($P{monitoringDate})+1)+"</style>" + ": " + TEXT($P{TARGET_AMOUNT_PIU_UNO},$P{FORMAT}) + " "
+) : ""]]></variableExpression>
+		</variable>
+		<variable name="TARGET_PIU_DUE" class="java.lang.String">
+			<variableExpression><![CDATA[($P{G_UOM_TYPE_ID}.equals("RATING_SCALE")) ? ($P{TARGET_CODE_PIU_DUE} == null ? " " : 
+	
+	"<style forecolor='#808080' isBold='true'>"+(YEAR($P{monitoringDate})+2)+"</style>" + ": " + TRIM($P{TARGET_CODE_PIU_DUE}) + " "
+) :
+$P{TARGET_AMOUNT_PIU_DUE} != null ? (FIND($P{FORMAT},"%",0) != -1 ? 
+	
+	"<style forecolor='#808080' isBold='true'>"+(YEAR($P{monitoringDate})+2)+"</style>" + ": " + 	TEXT(($P{TARGET_AMOUNT_PIU_DUE}/100),$P{FORMAT})  + " " : 
+	
+	"<style forecolor='#808080' isBold='true'>"+(YEAR($P{monitoringDate})+2)+"</style>" + ": " + TEXT($P{TARGET_AMOUNT_PIU_DUE},$P{FORMAT}) + " "
+) : ""]]></variableExpression>
+		</variable>
+		<variable name="INDICATORE_DESCR" class="java.lang.String">
+			<variableExpression><![CDATA[($P{M_UOM_DESCR} != null && $P{M_UOM_DESCR} != "" ? $P{M_UOM_DESCR} : $P{G_ACCOUNT_NAME})]]></variableExpression>
+		</variable>
+		<variable name="TARGET_CONCAT" class="java.lang.String">
+			<variableExpression><![CDATA[CONCATENATE($V{TARGET},$V{TARGET_PIU_UNO},$V{TARGET_PIU_DUE})]]></variableExpression>
+			<initialValueExpression><![CDATA[CONCATENATE($V{TARGET},$V{TARGET_PIU_UNO},$V{TARGET_PIU_DUE})]]></initialValueExpression>
+		</variable>
+	</subDataset>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[TODAY()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[TODAY()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="excludeValidity" class="java.lang.String">
+		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposeReleaseDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="YEAR" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="workEffortIdChild" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sottoprocessoId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P1" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[TODAY()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P1sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P2" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[TODAY()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P2sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT 																			
+	RI.ETCH AS "RISCHIO_ETCH", 
+	RIT.ETCH AS "RISCHIO_ETCH_TYPE",
+	RI.WORK_EFFORT_NAME AS "RISCHIO_NAME",
+	RI.WORK_EFFORT_ID AS "RISCHIO_ID",
+	RI.DESCRIPTION AS "RISCHIO_DESCRI",
+	AK.SEQUENCE_NUM	as "RISCHIO_SEQUENCE_NUM",	 																					
+	OB.ETCH AS "OBIETTIVO_ETCH",
+	OBT.ETCH AS "OBIETTIVO_ETCH_TYPE",
+	OB.WORK_EFFORT_NAME AS "OBIETTIVO_NAME",	
+	OB.WORK_EFFORT_ID AS "OBIETTIVO_ID",																									
+	MIT.ETCH AS "TIPO_MISURA_ETCH",
+	WETCMI.ETCH AS "INDICATORE_ETCH",
+	MI.ETCH AS "MISURA_ETCH", 
+	MI.WORK_EFFORT_ID AS "MISURA_ID",
+	MI.WORK_EFFORT_NAME AS "MISURA_NAME",
+	MI.DESCRIPTION AS "MISURA_DESCRI",
+	RM.SEQUENCE_NUM AS "MISURE_SEQUENCE_NUM",																									
+	ND.NOTE_NAME AS "NOTE_NAME", 
+	ND.NOTE_INFO AS "NOTE_INFO",
+	P_RES.PARTY_NAME AS "RESPONSABILE",
+	NDR.NOTE_NAME AS "MI_RESP_NOTE_NAME",
+	NDR.NOTE_INFO AS "MI_RESP_NOTE_INFO",
+	WEPT.DESCRIPTION AS "MISURA_FINALITA",
+	
+	-- INDICATORI
+	WEM.INPUT_ENUM_ID AS "G_INPUT_ENUM_ID",
+	WEM.ACCOUNT_NAME AS "G_ACCOUNT_NAME",
+	WEM.UOM_DESCR AS "M_UOM_DESCR",
+	UOM.ABBREVIATION AS "UOM_ABBREVIATION",
+	UOM.DECIMAL_SCALE AS "UOM_DECIMAL_SCALE",
+	UOM.UOM_TYPE_ID AS "G_UOM_TYPE_ID",
+	INDICRI.AMOUNT AS "TARGET_AMOUNT",
+	O.UOM_CODE AS "TARGET_CODE",
+	INDICRI2.AMOUNT AS "TARGET_AMOUNT_PIU_UNO",
+	O2.UOM_CODE AS "TARGET_CODE_PIU_UNO",
+	INDICRI3.AMOUNT AS "TARGET_AMOUNT_PIU_DUE",
+	O3.UOM_CODE AS "TARGET_CODE_PIU_DUE"		
+																										
+FROM WORK_EFFORT SP 
+INNER JOIN WORK_EFFORT_TYPE SPT ON SPT.WORK_EFFORT_TYPE_ID = SP.WORK_EFFORT_TYPE_ID	
+
+-- 	rischio
+INNER JOIN WORK_EFFORT_ASSOC AK ON AK.WORK_EFFORT_ID_FROM = SP.WORK_EFFORT_ID																											
+	   AND AK.WORK_EFFORT_ASSOC_TYPE_ID = SPT.HIERARCHY_ASSOC_TYPE_ID											
+INNER JOIN WORK_EFFORT RI ON RI.WORK_EFFORT_ID = AK.WORK_EFFORT_ID_TO
+		AND ($P{excludeValidity} = 'Y' OR ($P{excludeValidity} = 'N' AND RI.ESTIMATED_START_DATE <= $P{date3112} AND RI.ESTIMATED_COMPLETION_DATE >= $P{date0101}))	
+INNER JOIN WORK_EFFORT_TYPE RIT ON RIT.WORK_EFFORT_TYPE_ID = RI.WORK_EFFORT_TYPE_ID		
+
+
+-- misure																											
+LEFT OUTER JOIN WORK_EFFORT_ASSOC RM ON RM.WORK_EFFORT_ID_FROM = RI.WORK_EFFORT_ID																											
+	AND RM.WORK_EFFORT_ASSOC_TYPE_ID = SPT.HIERARCHY_ASSOC_TYPE_ID									
+LEFT OUTER JOIN WORK_EFFORT MI ON MI.WORK_EFFORT_ID = RM.WORK_EFFORT_ID_TO
+		AND ($P{excludeValidity} = 'Y' OR ($P{excludeValidity} = 'N' AND MI.ESTIMATED_START_DATE <= $P{date3112} AND MI.ESTIMATED_COMPLETION_DATE >= $P{date0101}))																											
+LEFT OUTER JOIN WORK_EFFORT_TYPE MIT ON MIT.WORK_EFFORT_TYPE_ID = MI.WORK_EFFORT_TYPE_ID
+LEFT OUTER JOIN WORK_EFFORT_PURPOSE_TYPE WEPT ON WEPT.WORK_EFFORT_PURPOSE_TYPE_ID = MI.WORK_EFFORT_PURPOSE_TYPE_ID
+LEFT OUTER JOIN WORK_EFFORT_TYPE_CONTENT WETCMI ON WETCMI.WORK_EFFORT_TYPE_ID = MIT.WORK_EFFORT_TYPE_ID	
+  AND WETCMI.CONTENT_ID LIKE '%WEFLD_IND%' AND WETCMI.WORK_EFFORT_PURPOSE_TYPE_ID = 'CORMIS'
+  AND WE_TYPE_CONTENT_TYPE_ID = 'FOLDER'
+
+-- obiettivo																										
+LEFT OUTER JOIN WORK_EFFORT_ASSOC MO ON MO.WORK_EFFORT_ID_TO = MI.WORK_EFFORT_ID																											
+	AND MO.WORK_EFFORT_ASSOC_TYPE_ID LIKE '%AZI'																							
+LEFT OUTER JOIN WORK_EFFORT OB ON OB.WORK_EFFORT_ID = MO.WORK_EFFORT_ID_FROM
+		AND ($P{excludeValidity} = 'Y' OR ($P{excludeValidity} = 'N' AND OB.ESTIMATED_START_DATE <= $P{date3112} AND OB.ESTIMATED_COMPLETION_DATE >= $P{date0101}))																												
+LEFT OUTER JOIN WORK_EFFORT_TYPE OBT ON OBT.WORK_EFFORT_TYPE_ID = OB.WORK_EFFORT_TYPE_ID	
+																											
+--  RESPONSABILE
+LEFT OUTER JOIN PARTY_RELATIONSHIP PR_RES ON  PR_RES.PARTY_ID_FROM = SP.ORG_UNIT_ID
+     AND PR_RES.ROLE_TYPE_ID_FROM = SP.ORG_UNIT_ROLE_TYPE_ID
+     AND PR_RES.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+AND ($P{excludeValidity} = 'N' OR ($P{excludeValidity} = 'Y' AND PR_RES.THRU_DATE IS NULL))
+AND ($P{excludeValidity} = 'Y' OR ($P{excludeValidity} = 'N' AND(PR_RES.FROM_DATE   <= $P{monitoringDate} AND (PR_RES.THRU_DATE  >= $P{monitoringDate} OR PR_RES.THRU_DATE IS NULL)  )))
+
+LEFT OUTER JOIN PARTY P_RES ON P_RES.PARTY_ID = PR_RES.PARTY_ID_TO
+
+LEFT OUTER JOIN WORK_EFFORT_NOTE MN ON  MN.WORK_EFFORT_ID = MI.WORK_EFFORT_ID
+	AND MN.SEQUENCE_ID = '20'
+LEFT OUTER JOIN NOTE_DATA ND ON ND.NOTE_ID = MN.NOTE_ID
+	AND ( MN.IS_MAIN = 'Y' OR (MN.IS_MAIN <> 'Y' AND ND.NOTE_DATE_TIME = $P{monitoringDate})	)
+
+LEFT OUTER JOIN WORK_EFFORT_NOTE MN2 ON  MN2.WORK_EFFORT_ID = MI.WORK_EFFORT_ID
+	AND MN2.SEQUENCE_ID = '10'
+LEFT OUTER JOIN NOTE_DATA NDR ON NDR.NOTE_ID = MN2.NOTE_ID
+	AND ( MN2.IS_MAIN = 'Y' OR (MN2.IS_MAIN <> 'Y' AND NDR.NOTE_DATE_TIME = $P{monitoringDate})	)
+
+-- INDICATORI LEGATI ALLA MISURA
+
+LEFT OUTER JOIN (
+  SELECT A.WORK_EFFORT_MEASURE_ID, A.GL_ACCOUNT_ID, A.WORK_EFFORT_ID, 
+  B.DEFAULT_UOM_ID, B.INPUT_ENUM_ID,
+  B.ACCOUNT_NAME AS ACCOUNT_NAME,
+  A.UOM_DESCR AS UOM_DESCR 
+  FROM WORK_EFFORT_MEASURE A
+  INNER JOIN GL_ACCOUNT B ON B.GL_ACCOUNT_ID = A.GL_ACCOUNT_ID
+  WHERE B.GL_ACCOUNT_TYPE_ID = 'CORMIS'
+) WEM ON WEM.WORK_EFFORT_ID = MI.WORK_EFFORT_ID
+
+
+LEFT OUTER JOIN UOM UOM ON WEM.DEFAULT_UOM_ID = UOM.UOM_ID
+LEFT OUTER JOIN (																																				
+	SELECT TP.VOUCHER_REF, TP.TRANSACTION_DATE, EP.AMOUNT, EP.CURRENCY_UOM_ID, EP.GL_ACCOUNT_ID																																			
+	FROM ACCTG_TRANS TP																																			
+	INNER JOIN ACCTG_TRANS_ENTRY EP ON EP.ACCTG_TRANS_ID = TP.ACCTG_TRANS_ID																																		
+	WHERE EP.GL_FISCAL_TYPE_ID = 'BUDGET'																												
+	) INDICRI ON INDICRI.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID AND INDICRI.TRANSACTION_DATE = $P{date3112}
+	AND INDICRI.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+	
+LEFT OUTER JOIN (																																				
+	SELECT TP2.VOUCHER_REF, TP2.TRANSACTION_DATE, EP2.AMOUNT, EP2.CURRENCY_UOM_ID, EP2.GL_ACCOUNT_ID																																			
+	FROM ACCTG_TRANS TP2																																			
+	INNER JOIN ACCTG_TRANS_ENTRY EP2 ON EP2.ACCTG_TRANS_ID = TP2.ACCTG_TRANS_ID																																		
+	WHERE EP2.GL_FISCAL_TYPE_ID = 'BUDGET' AND TP2.TRANSACTION_DATE = $P{date3112P1}																											
+	) INDICRI2 ON INDICRI2.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID AND INDICRI2.TRANSACTION_DATE = $P{date3112P1}
+	AND INDICRI2.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID	
+	 
+LEFT OUTER JOIN ( 																																				
+	SELECT TP3.VOUCHER_REF, TP3.TRANSACTION_DATE, EP3.AMOUNT, EP3.CURRENCY_UOM_ID, EP3.GL_ACCOUNT_ID																																			
+	FROM ACCTG_TRANS TP3																																			
+	INNER JOIN ACCTG_TRANS_ENTRY EP3 ON EP3.ACCTG_TRANS_ID = TP3.ACCTG_TRANS_ID																																		
+	WHERE EP3.GL_FISCAL_TYPE_ID = 'BUDGET' AND TP3.TRANSACTION_DATE = $P{date3112P2}																												
+	) INDICRI3 ON INDICRI3.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID AND INDICRI3.TRANSACTION_DATE = $P{date3112P2}
+	AND INDICRI3.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID	
+	   
+LEFT OUTER JOIN WORK_EFFORT_MEAS_RAT_SC O ON WEM.WORK_EFFORT_MEASURE_ID = O.WORK_EFFORT_MEASURE_ID
+    AND O.UOM_ID = INDICRI.CURRENCY_UOM_ID AND O.UOM_RATING_VALUE = INDICRI.AMOUNT
+				
+LEFT OUTER JOIN WORK_EFFORT_MEAS_RAT_SC O2 ON WEM.WORK_EFFORT_MEASURE_ID = O2.WORK_EFFORT_MEASURE_ID
+    AND O2.UOM_ID = INDICRI2.CURRENCY_UOM_ID AND O2.UOM_RATING_VALUE = INDICRI2.AMOUNT
+    
+LEFT OUTER JOIN WORK_EFFORT_MEAS_RAT_SC O3 ON WEM.WORK_EFFORT_MEASURE_ID = O3.WORK_EFFORT_MEASURE_ID
+    AND O3.UOM_ID = INDICRI3.CURRENCY_UOM_ID AND O3.UOM_RATING_VALUE = INDICRI3.AMOUNT    				
+WHERE SP.WORK_EFFORT_ID = $P{sottoprocessoId}
+order by AK.SEQUENCE_NUM,
+	RI.ETCH,
+	RI.WORK_EFFORT_ID,
+	RM.SEQUENCE_NUM,
+	MI.ETCH,
+	MI.WORK_EFFORT_ID]]>
+	</queryString>
+	<field name="MI_RESP_NOTE_NAME" class="java.lang.String"/>
+	<field name="RISCHIO_ETCH" class="java.lang.String"/>
+	<field name="RISCHIO_NAME" class="java.lang.String"/>
+	<field name="RISCHIO_DESCRI" class="java.lang.String"/>
+	<field name="M_UOM_DESCR" class="java.lang.String"/>
+	<field name="G_ACCOUNT_NAME" class="java.lang.String"/>
+	<field name="MISURA_NAME" class="java.lang.String"/>
+	<field name="MISURA_DESCRI" class="java.lang.String"/>
+	<field name="MISURA_ETCH" class="java.lang.String"/>
+	<field name="MISURA_FINALITA" class="java.lang.String"/>
+	<field name="TIPO_MISURA_ETCH" class="java.lang.String"/>
+	<field name="RISCHIO_ID" class="java.lang.String"/>
+	<field name="MISURA_ID" class="java.lang.String"/>
+	<field name="MI_RESP_NOTE_INFO" class="java.lang.String"/>
+	<field name="NOTE_NAME" class="java.lang.String"/>
+	<field name="NOTE_INFO" class="java.lang.String"/>
+	<field name="OBIETTIVO_NAME" class="java.lang.String"/>
+	<field name="UOM_ABBREVIATION" class="java.lang.String"/>
+	<field name="INDICATORE_ETCH" class="java.lang.String"/>
+	<field name="UOM_DECIMAL_SCALE" class="java.lang.Integer"/>
+	<field name="TARGET_AMOUNT" class="java.lang.Float"/>
+	<field name="TARGET_AMOUNT_PIU_UNO" class="java.lang.Float"/>
+	<field name="TARGET_AMOUNT_PIU_DUE" class="java.lang.Float"/>
+	<field name="G_UOM_TYPE_ID" class="java.lang.String"/>
+	<field name="TARGET_CODE" class="java.lang.String"/>
+	<field name="TARGET_CODE_PIU_UNO" class="java.lang.String"/>
+	<field name="TARGET_CODE_PIU_DUE" class="java.lang.String"/>
+	<variable name="ETICHETTA_MISURA" class="java.lang.String">
+		<variableExpression><![CDATA[$F{MISURA_FINALITA} != null && $F{MISURA_FINALITA} != "" ? $F{MISURA_FINALITA}: $F{TIPO_MISURA_ETCH}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{MISURA_FINALITA} != null && $F{MISURA_FINALITA} != "" ? $F{MISURA_FINALITA}: $F{TIPO_MISURA_ETCH}]]></initialValueExpression>
+	</variable>
+	<variable name="FORMAT" class="java.lang.String">
+		<variableExpression><![CDATA[com.mapsengineering.base.birt.util.UtilNumber.getFormatPattern($F{UOM_DECIMAL_SCALE}, $F{UOM_ABBREVIATION})]]></variableExpression>
+		<initialValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilNumber.getFormatPattern($F{UOM_DECIMAL_SCALE}, $F{UOM_ABBREVIATION})]]></initialValueExpression>
+	</variable>
+	<variable name="MISURA_DESCRI" class="java.lang.String">
+		<variableExpression><![CDATA[$F{MISURA_DESCRI} == null || $F{MISURA_DESCRI} == ""
+? ( $F{MISURA_ETCH} != null && $F{MISURA_ETCH}  !="" ? $F{MISURA_ETCH} + " - "  + $F{MISURA_NAME} : $F{MISURA_NAME})
+:  ($F{MISURA_ETCH} != null && $F{MISURA_ETCH}  !="" ? $F{MISURA_ETCH} + " - "  + $F{MISURA_DESCRI} : $F{MISURA_DESCRI})]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{MISURA_DESCRI} == null || $F{MISURA_DESCRI} == ""
+? ( $F{MISURA_ETCH} != null && $F{MISURA_ETCH}  !="" ? $F{MISURA_ETCH} + " - "  + $F{MISURA_NAME} : $F{MISURA_NAME})
+:  ($F{MISURA_ETCH} != null && $F{MISURA_ETCH}  !="" ? $F{MISURA_ETCH} + " - "  + $F{MISURA_DESCRI} : $F{MISURA_DESCRI})]]></initialValueExpression>
+	</variable>
+	<variable name="RISCHIO_Previous" class="java.lang.String" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{RISCHIO_ID}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{RISCHIO_ID}]]></initialValueExpression>
+	</variable>
+	<variable name="MISURA_Previous" class="java.lang.String" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{MISURA_ID}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{MISURA_ID}]]></initialValueExpression>
+	</variable>
+	<variable name="INDICATORI_Previous" class="java.lang.String">
+		<variableExpression><![CDATA[($F{M_UOM_DESCR}!= null && $F{M_UOM_DESCR}!= "" ? $F{M_UOM_DESCR} : $F{G_ACCOUNT_NAME})]]></variableExpression>
+		<initialValueExpression><![CDATA[($F{M_UOM_DESCR}!= null && $F{M_UOM_DESCR}!= "" ? $F{M_UOM_DESCR} : $F{G_ACCOUNT_NAME})]]></initialValueExpression>
+	</variable>
+	<group name="Gruppo_Rischio">
+		<groupExpression><![CDATA[$F{RISCHIO_ID}]]></groupExpression>
+		<groupHeader>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="1">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Gruppo_Misura">
+		<groupExpression><![CDATA[$F{MISURA_ID}]]></groupExpression>
+		<groupHeader>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Gruppo_Indicatori" minHeightToStartNewPage="1" keepTogether="true">
+		<groupExpression><![CDATA[($F{M_UOM_DESCR}!= null && $F{M_UOM_DESCR}!= "" ? $F{M_UOM_DESCR} : $F{G_ACCOUNT_NAME})]]></groupExpression>
+		<groupHeader>
+			<band height="60" splitType="Immediate">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<printWhenExpression><![CDATA[$F{RISCHIO_ID}!=null && 
+	$F{MISURA_ID}!=null && 
+		($F{M_UOM_DESCR}!=null || $F{G_ACCOUNT_NAME} != null) && 
+			($F{MI_RESP_NOTE_INFO}!=null || $F{NOTE_INFO}!=null || $F{OBIETTIVO_NAME}!=null || $F{INDICATORE_ETCH}!=null || $F{UOM_ABBREVIATION}!=null || $F{TARGET_CODE}!=null || $F{TARGET_AMOUNT}!=null || $F{TARGET_CODE_PIU_UNO}!=null || $F{TARGET_AMOUNT_PIU_UNO}!=null || $F{TARGET_CODE_PIU_DUE}!=null || $F{TARGET_AMOUNT_PIU_DUE}!=null)]]></printWhenExpression>
+				<frame borderSplitType="DrawBorders">
+					<reportElement positionType="Float" mode="Transparent" x="0" y="0" width="555" height="60" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#FFFF66" uuid="fc5420b4-31aa-4f50-86a6-2527ed1a25b1">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="ShowOutOfBoundContent" value="true"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement positionType="Float" mode="Transparent" x="0" y="0" width="129" height="30" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#99FFFF" uuid="71a56d75-c1e6-4664-b77a-97be6ae644ff">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+							<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+							<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+							<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+							<printWhenExpression><![CDATA[$V{Gruppo_Rischio_COUNT}==0 && $F{RISCHIO_ID}!=null]]></printWhenExpression>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Bottom">
+							<font size="9" isBold="false"/>
+							<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{RISCHIO_DESCRI}== null || $F{RISCHIO_DESCRI} == "" 
+	?	($F{RISCHIO_ETCH} != null && $F{RISCHIO_ETCH} !="") ? $F{RISCHIO_ETCH} + " - " +  $F{RISCHIO_NAME} : $F{RISCHIO_NAME}
+	: 	($F{RISCHIO_ETCH} != null && $F{RISCHIO_ETCH}  !="") ? $F{RISCHIO_ETCH} + " - " +  $F{RISCHIO_DESCRI} :  $F{RISCHIO_DESCRI}]]></textFieldExpression>
+					</textField>
+					<frame>
+						<reportElement positionType="Float" mode="Transparent" x="130" y="0" width="210" height="30" isRemoveLineWhenBlank="true" backcolor="#FFFF99" uuid="363a1af4-ab2e-4f7e-be39-70870e7768fb">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<printWhenExpression><![CDATA[$V{Gruppo_Misura_COUNT}==0 && $F{MISURA_ID}!=null]]></printWhenExpression>
+						</reportElement>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="0" width="208" height="15" isRemoveLineWhenBlank="true" forecolor="#808080" uuid="07f2776a-3bcf-4904-bfd5-04853799d61c">
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Bottom" markup="none">
+								<font size="9" isBold="true"/>
+								<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{MISURA_FINALITA} != null && $F{MISURA_FINALITA} != "" ? $F{MISURA_FINALITA}: $F{TIPO_MISURA_ETCH}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" mode="Transparent" x="0" y="15" width="208" height="15" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#D5D5D5" uuid="eddb46e9-ad67-4bae-b987-5611036e9285">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Bottom">
+								<font size="9" isBold="false"/>
+								<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{MISURA_DESCRI} == null || $F{MISURA_DESCRI} == ""
+? ( $F{MISURA_ETCH} != null && $F{MISURA_ETCH}  !="" ? $F{MISURA_ETCH} + " - "  + $F{MISURA_NAME} : $F{MISURA_NAME})
+:  ($F{MISURA_ETCH} != null && $F{MISURA_ETCH}  !="" ? $F{MISURA_ETCH} + " - "  + $F{MISURA_DESCRI} : $F{MISURA_DESCRI})]]></textFieldExpression>
+						</textField>
+					</frame>
+					<line>
+						<reportElement stretchType="ContainerHeight" x="129" y="0" width="1" height="60" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#808080" uuid="bf5baa4c-cbbc-46b1-a897-8861a8823df9">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<printWhenExpression><![CDATA[$F{MISURA_ID} !=null && $F{MISURA_ID} != ""]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement positionType="Float" stretchType="ContainerHeight" x="339" y="0" width="1" height="60" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#808080" uuid="15cf1c35-8233-4315-a2d0-d570d49e27c6">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<printWhenExpression><![CDATA[$F{MISURA_ID} != null && $F{MISURA_ID} != ""]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1"/>
+						</graphicElement>
+					</line>
+					<componentElement>
+						<reportElement positionType="Float" mode="Transparent" x="340" y="0" width="214" height="60" isRemoveLineWhenBlank="true" backcolor="#FFCCFF" uuid="449ecfd4-e2b4-44b4-bc0a-15368f0b413f">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+							<datasetRun subDataset="DatasetEmpty" uuid="1e31428e-7a13-4ff3-9520-010f1ab66fb2">
+								<datasetParameter name="MI_RESP_NOTE_INFO">
+									<datasetParameterExpression><![CDATA[$F{MI_RESP_NOTE_INFO}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="NOTE_INFO">
+									<datasetParameterExpression><![CDATA[$F{NOTE_INFO}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="OBIETTIVO_NAME">
+									<datasetParameterExpression><![CDATA[$F{OBIETTIVO_NAME}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="G_ACCOUNT_NAME">
+									<datasetParameterExpression><![CDATA[$F{G_ACCOUNT_NAME}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="INDICATORE_ETCH">
+									<datasetParameterExpression><![CDATA[$F{INDICATORE_ETCH}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="NOTE_NAME">
+									<datasetParameterExpression><![CDATA[$F{NOTE_NAME}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="MI_RESP_NOTE_NAME">
+									<datasetParameterExpression><![CDATA[$F{MI_RESP_NOTE_NAME}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="G_UOM_TYPE_ID">
+									<datasetParameterExpression><![CDATA[$F{G_UOM_TYPE_ID}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="M_UOM_DESCR">
+									<datasetParameterExpression><![CDATA[$F{M_UOM_DESCR}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="TARGET_AMOUNT">
+									<datasetParameterExpression><![CDATA[$F{TARGET_AMOUNT}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="TARGET_AMOUNT_PIU_DUE">
+									<datasetParameterExpression><![CDATA[$F{TARGET_AMOUNT_PIU_DUE}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="TARGET_AMOUNT_PIU_UNO">
+									<datasetParameterExpression><![CDATA[$F{TARGET_AMOUNT_PIU_UNO}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="TARGET_CODE">
+									<datasetParameterExpression><![CDATA[$F{TARGET_CODE}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="TARGET_CODE_PIU_DUE">
+									<datasetParameterExpression><![CDATA[$F{TARGET_CODE_PIU_DUE}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="TARGET_CODE_PIU_UNO">
+									<datasetParameterExpression><![CDATA[$F{TARGET_CODE_PIU_UNO}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="UOM_ABBREVIATION">
+									<datasetParameterExpression><![CDATA[$F{UOM_ABBREVIATION}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="UOM_DECIMAL_SCALE">
+									<datasetParameterExpression><![CDATA[$F{UOM_DECIMAL_SCALE}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="FORMAT">
+									<datasetParameterExpression><![CDATA[$V{FORMAT}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="monitoringDate">
+									<datasetParameterExpression><![CDATA[$P{monitoringDate}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+							<jr:listContents height="60" width="214">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement positionType="Float" x="0" y="0" width="214" height="15" isRemoveLineWhenBlank="true" uuid="a0bdf4dd-9bea-434e-aaee-7af4ac2497ee">
+										<property name="com.jaspersoft.studio.unit.height" value="px"/>
+										<property name="com.jaspersoft.studio.element.name" value="MI_RESP"/>
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+										<printWhenExpression><![CDATA[$P{MI_RESP_NOTE_INFO}!=null && $P{MI_RESP_NOTE_INFO}!="" && TRIM($P{MI_RESP_NOTE_INFO}) !="" && LEN(TRIM($P{MI_RESP_NOTE_INFO})) > 0]]></printWhenExpression>
+									</reportElement>
+									<textElement markup="styled">
+										<font size="9"/>
+										<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+									</textElement>
+									<textFieldExpression><![CDATA["<style forecolor='#808080' isBold='true'>"+net.sf.jasperreports.engine.util.JRStringUtil.xmlEncode($P{MI_RESP_NOTE_NAME})+"</style>" + ": " +net.sf.jasperreports.engine.util.JRStringUtil.xmlEncode($P{MI_RESP_NOTE_INFO})]]></textFieldExpression>
+								</textField>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement positionType="Float" x="0" y="30" width="214" height="15" isRemoveLineWhenBlank="true" uuid="484f51f8-468b-426f-95e6-9d7d322cb738">
+										<property name="com.jaspersoft.studio.unit.height" value="px"/>
+										<property name="com.jaspersoft.studio.element.name" value="OBIETTIVO"/>
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+										<printWhenExpression><![CDATA[($P{OBIETTIVO_NAME}!=null && $P{OBIETTIVO_NAME}!="" && TRIM($P{OBIETTIVO_NAME}) !="" && LEN(TRIM($P{OBIETTIVO_NAME})) > 0)]]></printWhenExpression>
+									</reportElement>
+									<textElement markup="styled">
+										<font size="9"/>
+										<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+									</textElement>
+									<textFieldExpression><![CDATA["<style forecolor='#808080' isBold='true'>"+$R{Obiettivo}+"</style>" + ": " + net.sf.jasperreports.engine.util.JRStringUtil.xmlEncode($P{OBIETTIVO_NAME})]]></textFieldExpression>
+								</textField>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement positionType="Float" x="0" y="15" width="214" height="15" isRemoveLineWhenBlank="true" uuid="6d4e3f54-966f-4d73-85c8-8dd007832949">
+										<property name="com.jaspersoft.studio.unit.height" value="px"/>
+										<property name="com.jaspersoft.studio.unit.x" value="px"/>
+										<property name="com.jaspersoft.studio.unit.y" value="px"/>
+										<property name="com.jaspersoft.studio.element.name" value="NOTE"/>
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+										<printWhenExpression><![CDATA[$P{NOTE_INFO}!=null && $P{NOTE_INFO}!="" && TRIM($P{NOTE_INFO}) !="" && LEN(TRIM($P{NOTE_INFO})) > 0]]></printWhenExpression>
+									</reportElement>
+									<textElement markup="styled">
+										<font size="9"/>
+										<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+									</textElement>
+									<textFieldExpression><![CDATA["<style forecolor='#808080' isBold='true'>"+net.sf.jasperreports.engine.util.JRStringUtil.xmlEncode($P{NOTE_NAME})+"</style>" + ": " + net.sf.jasperreports.engine.util.JRStringUtil.xmlEncode($P{NOTE_INFO})]]></textFieldExpression>
+								</textField>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement positionType="Float" x="0" y="45" width="214" height="15" isRemoveLineWhenBlank="true" uuid="7361887c-ef13-41bd-94d7-52c746f38dda">
+										<property name="com.jaspersoft.studio.unit.height" value="px"/>
+										<property name="com.jaspersoft.studio.element.name" value="INDICATORI"/>
+										<property name="com.jaspersoft.studio.unit.x" value="px"/>
+										<property name="com.jaspersoft.studio.unit.y" value="px"/>
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+										<printWhenExpression><![CDATA[($P{INDICATORE_ETCH}!=null && $P{INDICATORE_ETCH}!="" && TRIM($P{INDICATORE_ETCH}) !="" && LEN(TRIM($P{INDICATORE_ETCH})) > 0)]]></printWhenExpression>
+									</reportElement>
+									<textElement markup="styled">
+										<font size="9"/>
+										<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+									</textElement>
+									<textFieldExpression><![CDATA["<style forecolor='#808080' isBold='true'>"+$P{INDICATORE_ETCH} + ":" + "</style>"+ " " + $V{INDICATORE_DESCR}+ " (" + $P{UOM_ABBREVIATION} +" " + $V{TARGET_CONCAT}+ ")"]]></textFieldExpression>
+								</textField>
+							</jr:listContents>
+						</jr:list>
+					</componentElement>
+					<line>
+						<reportElement stretchType="ContainerHeight" x="0" y="0" width="1" height="60" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#808080" uuid="43fa2d64-8d11-41a3-8938-abecb9eb0f62">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<printWhenExpression><![CDATA[$F{MISURA_ID} !=null && $F{MISURA_ID} != ""]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement stretchType="ContainerHeight" x="554" y="0" width="1" height="60" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#808080" uuid="785c1cf3-5a88-4a52-80c5-5f51fc750aab">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<printWhenExpression><![CDATA[$F{MISURA_ID} !=null && $F{MISURA_ID} != ""]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement positionType="Float" x="130" y="0" width="425" height="1" isRemoveLineWhenBlank="true" forecolor="#808080" uuid="ee2f4a11-94b4-4ea3-a929-593f8493a127">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<printWhenExpression><![CDATA[$F{RISCHIO_ID}.equals($V{RISCHIO_Previous}) && !$F{MISURA_ID}.equals($V{MISURA_Previous}) && 
+	$V{COLUMN_COUNT} != 0]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement positionType="Float" x="0" y="0" width="554" height="1" isRemoveLineWhenBlank="true" forecolor="#808080" uuid="593aa3d7-20a2-431d-af61-ac6173f580f6">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<printWhenExpression><![CDATA[!$F{RISCHIO_ID}.equals($V{RISCHIO_Previous}) && 
+	$V{COLUMN_COUNT} != 0]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement positionType="Float" x="340" y="0" width="214" height="1" isRemoveLineWhenBlank="true" forecolor="#808080" uuid="700ecaa2-d748-4a89-abf5-34e7de1741fe">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<printWhenExpression><![CDATA[$F{MISURA_ID}.equals($V{MISURA_Previous}) && 
+	$F{RISCHIO_ID}.equals($V{RISCHIO_Previous}) && 
+		!((($F{M_UOM_DESCR}!= null && $F{M_UOM_DESCR}!= "" ? $F{M_UOM_DESCR} : $F{G_ACCOUNT_NAME})).equals($V{INDICATORI_Previous})) && 
+			$V{COLUMN_COUNT} != 0]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1"/>
+						</graphicElement>
+					</line>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="0" width="555" height="15" isRemoveLineWhenBlank="true" backcolor="#F5F5F5" uuid="45177b26-0b95-4276-9565-c122da9bcfbe">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#A5A5A5"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#A5A5A5"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#A5A5A5"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#A5A5A5"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement mode="Transparent" x="0" y="0" width="130" height="15" forecolor="#808080" backcolor="#D5D5D5" uuid="82f2980f-994a-49c3-8678-632a0821fa7d">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Rischio}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="130" y="1" width="210" height="15" forecolor="#808080" uuid="499785cf-0ff3-4cd4-b873-1009c5cd9ea5">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Misura}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="340" y="0" width="215" height="15" forecolor="#808080" uuid="5de80d41-fdfa-41b2-a977-5de50eb0a8ff">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Altridati}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="1" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<line>
+				<reportElement positionType="Float" x="0" y="0" width="554" height="1" isRemoveLineWhenBlank="true" forecolor="#808080" uuid="8f3896da-d3e5-4165-a5a6-8413627c0a98">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<line>
+				<reportElement positionType="Float" x="0" y="0" width="554" height="1" isRemoveLineWhenBlank="true" forecolor="#808080" uuid="bd19f582-a125-44e9-937a-2a1474271c1e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>

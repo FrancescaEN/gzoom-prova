@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+
+    <service name="gzVersions" engine="java" use-transaction="true"
+        location="com.mapsengineering.base.svnutil.SvnInfoXmlReader" export="true" invoke="getVersions" auth="false">
+        <description>Read ftl svninfo for version</description>
+        <attribute name="versions" type="String" mode="OUT" optional="true"/>
+    </service>
+
+	<service name="gzStandardImport" engine="java" location="com.mapsengineering.base.standardimport.ImportManager" export="true" invoke="doImportSrv" use-transaction="false" auth="false">
+        <description>invoke standardImport</description>
+        <attribute name="entityListToImport" type="String" mode="IN" optional="true"/>
+        <!-- Poiche servizio non schedulato, prende dal form il defaultOrganizationPartyId -->
+        <attribute name="defaultOrganizationPartyId" mode="IN" type="String" optional="true"/>
+        <attribute name="resultETLList" mode="OUT" type="List" optional="true"/>
+        <attribute name="resultList" mode="OUT" type="List" optional="true"/>
+    </service>
+    
+    <service name="gzStandardImportGroovy" engine="groovy" export="true" auth="false" location="component://gzbox/script/com/mapsengineering/standardImport/gzStandardImportGroovy.groovy" use-transaction="false">
+        <description>invoke standardImport</description>
+        <attribute name="entityListToImport" type="String" mode="IN" optional="true"/>
+    	<!-- Poiche servizio non schedulato, prende dal form il defaultOrganizationPartyId -->
+        <attribute name="defaultOrganizationPartyId" mode="IN" type="String" optional="true"/>
+        <attribute name="jobLogId" mode="OUT" type="String" optional="true"/>
+	    <attribute name="recordElaborated" mode="OUT" type="String" optional="true"/>
+        <attribute name="warningMessages" mode="OUT" type="String" optional="true"/>
+        <attribute name="blockingErrors" mode="OUT" type="String" optional="true"/>
+   </service>
+    
+    <service name="gzChangeSessionLocale" engine="java" use-transaction="true"
+        location="com.mapsengineering.gzbox.services.locale.SessionLocaleService" export="true" invoke="gzChangeSessionLocale" auth="true">
+        <description>Change Session Locale</description>
+        
+        <attribute name="request" type="javax.servlet.http.HttpServletRequest" mode="IN" optional="false"/>
+        <!-- TODO controllare se servono sessionId, userLoginId e request -->
+        <attribute name="sessionId" type="String" mode="IN" optional="true"/>
+        <attribute name="userLoginId" type="String" mode="IN" optional="true"/>
+        <attribute name="newLocale" type="String" mode="IN" optional="true"/>
+    </service>
+</services>

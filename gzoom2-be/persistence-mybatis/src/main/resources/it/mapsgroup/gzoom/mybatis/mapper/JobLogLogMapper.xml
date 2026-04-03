@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.JobLogLogMapper">
+
+    <resultMap id="jobLogLogExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.JobLogLogEx">
+        <id property="jobLogLogId" column="job_log_log_id" jdbcType="VARCHAR"/>
+        <result column="job_log_id" property="jobLogId" jdbcType="VARCHAR"/>
+        <result column="log_type_enum_id" property="logTypeEnumId" jdbcType="VARCHAR"/>
+        <result column="log_code" property="logCode" jdbcType="VARCHAR"/>
+        <result column="log_message" property="logMessage" jdbcType="VARCHAR"/>
+        <result column="value_ref1" property="valueRef1" jdbcType="VARCHAR"/>
+        <result column="value_ref2" property="valueRef2" jdbcType="VARCHAR"/>
+        <result column="value_ref3" property="valueRef3" jdbcType="VARCHAR"/>
+        <result column="log_message_long" property="logMessageLong" jdbcType="VARCHAR"/>
+        <result column="value_pk1" property="valuePk1" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+
+        <result column="DESCRIPTION" property="enumerationType.description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getJobLogLogEx" resultMap="jobLogLogExResultMap" parameterType="java.util.Map">
+         SELECT JLL.*, ET.DESCRIPTION AS DESCRIPTION  FROM JOB_LOG_LOG JLL
+        JOIN ENUMERATION ET ON ET.ENUM_ID = JLL.LOG_TYPE_ENUM_ID
+        WHERE JLL.JOB_LOG_ID = #{jobLogId} AND ET.ENUM_TYPE_ID = 'JOBLOGTYPE'
+    </select>
+
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_Strat_GradoRaggiungimento" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="b1826acb-7e31-452e-a967-7fa0a3a01dd7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="filterCustomTimePeriod_IndicRel" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ? 
+("ANNO_RIFERIMENTO = '" + $P{customTimePeriodFormatted} + "','DD/MM/YYYY')" ) : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted3112" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+WEM.WORK_EFFORT_ID,
+	GAMRS.UOM_CODE AS VALORE_DE,
+	GAMRS.UOM_CODE_LANG AS VALORE_IT
+FROM WORK_EFFORT_MEASURE WEM
+JOIN ACCTG_TRANS ACT ON ACT.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID AND ACT.TRANSACTION_DATE = TO_DATE( '$!P{customTimePeriodFormatted3112}','YYYY-MM-DD')
+JOIN ACCTG_TRANS_ENTRY ATE ON ATE.ACCTG_TRANS_ID = ACT.ACCTG_TRANS_ID AND ATE.GL_ACCOUNT_ID = '10096'
+JOIN GL_ACCOUNT_MEAS_RAT_SC GAMRS ON GAMRS.GL_ACCOUNT_ID = ATE.GL_ACCOUNT_ID AND GAMRS.UOM_RATING_VALUE = ATE.AMOUNT
+WHERE WEM.WORK_EFFORT_ID = $P{work_effort_id_ob} /* WORK_EFFORT_ID PASSATO DA SOPRA */]]>
+	</queryString>
+	<field name="WORK_EFFORT_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="WORK_EFFORT_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="WORK_EFFORT_ID"/>
+	</field>
+	<field name="VALORE_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="VALORE_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="VALORE_DE"/>
+	</field>
+	<field name="VALORE_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="VALORE_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="VALORE_IT"/>
+	</field>
+	<group name="Gruppo1">
+		<groupExpression><![CDATA[$F{WORK_EFFORT_ID}]]></groupExpression>
+		<groupFooter>
+			<band height="15">
+				<frame borderSplitType="DrawBorders">
+					<reportElement mode="Transparent" x="0" y="0" width="802" height="15" backcolor="#FFFFFF" uuid="0f3e1257-60f1-4f09-86ed-0c5c052d53c2">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textField textAdjust="StretchHeight" evaluationTime="Report" isBlankWhenNull="false">
+						<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="200" height="15" forecolor="#767171" uuid="70ba7358-9325-4de3-a4c0-308e0300e977"/>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement verticalAlignment="Middle">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{GradoRaggiungimento}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="false">
+						<reportElement style="TextFieldStyle" mode="Opaque" x="200" y="0" width="602" height="15" uuid="f332460f-f573-4683-87c0-2efce3428074">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement markup="none"/>
+						<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{VALORE_IT}) : 
+($F{VALORE_DE})]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+</jasperReport>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.ReminderMapper">
+	
+
+  <resultMap id="BaseResultMap" type="it.mapsgroup.gzoom.mybatis.dto.Reminder">   
+    <id column="party_id" jdbcType="VARCHAR" property="partyId" />    
+    <result column="contact_mech_id_to" jdbcType="VARCHAR" property="contactMechIdTo" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  
+  <sql id="selectReminder" >
+  SELECT Q.*,
+     RWT.NOTE AS CONTENT,
+     RWT.ETCH AS SUBJECT
+  FROM(       
+        SELECT 
+        	   TY.PARTY_ID AS PARTY_ID,        	   
+        	   CM.CONTACT_MECH_ID AS CONTACT_MECH_ID_TO,
+        	   RTT.WORK_EFFORT_TYPE_ID_ROOT
+		FROM WORK_EFFORT_TYPE_TYPE RTT
+		INNER JOIN WORK_EFFORT_TYPE_STATUS  RTS ON RTS.WORK_EFFORT_TYPE_ROOT_ID = RTT.WORK_EFFORT_TYPE_ID_ROOT
+		INNER JOIN WORK_EFFORT_TYPE  WWT ON WWT.WORK_EFFORT_TYPE_ID = RTT.WORK_EFFORT_TYPE_ID_TO
+		INNER JOIN WORK_EFFORT  FIL_W ON FIL_W.WORK_EFFORT_TYPE_ID = WWT.WORK_EFFORT_TYPE_ID
+		       AND FIL_W.CURRENT_STATUS_ID = RTS.CURRENT_STATUS_ID
+		       AND FIL_W.WORK_EFFORT_REVISION_ID IS NULL
+		INNER JOIN WORK_EFFORT_TYPE_STATUS  WTS ON WTS.WORK_EFFORT_TYPE_ROOT_ID = FIL_W.WORK_EFFORT_TYPE_ID
+		       AND WTS.CURRENT_STATUS_ID = FIL_W.CURRENT_STATUS_ID
+		INNER JOIN PARTY WUO ON WUO.PARTY_ID = FIL_W.ORG_UNIT_ID
+		INNER JOIN PARTY_RELATIONSHIP  GR ON GR.PARTY_ID_TO = FIL_W.ORG_UNIT_ID
+		       AND GR.ROLE_TYPE_ID_TO = FIL_W.ORG_UNIT_ROLE_TYPE_ID
+		       AND GR.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+		       AND GR.FROM_DATE &#60;= FIL_W.ESTIMATED_COMPLETION_DATE
+		       AND (GR.THRU_DATE IS NULL OR GR.THRU_DATE &#62;= FIL_W.ESTIMATED_COMPLETION_DATE)
+		INNER JOIN 
+		     (SELECT PR.PARTY_ID_TO AS PARTY_ID,
+		     		 PR.PARTY_ID_FROM AS ORG_UNIT_ID,
+		             NULL AS WORK_EFFORT_ID, 
+		             NULL AS ROLE_TYPE_ID
+		      FROM PARTY_RELATIONSHIP PR
+		      WHERE PR.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+		        AND PR.THRU_DATE IS NULL
+		      UNION ALL
+		      SELECT PA.PARTY_ID AS PARTY_ID,
+		      		 NULL AS ORG_UNIT_ID,
+		             PA.WORK_EFFORT_ID AS WORK_EFFORT_ID, 
+		             PA.ROLE_TYPE_ID AS ROLE_TYPE_ID
+		      FROM WORK_EFFORT_PARTY_ASSIGNMENT PA) TY 
+		        ON ((WTS.MANAG_WE_STATUS_ENUM_ID = 'ORGMANAGER' AND
+		             TY.ORG_UNIT_ID = FIL_W.ORG_UNIT_ID) OR
+		            (WTS.MANAG_WE_STATUS_ENUM_ID = 'ROLE' AND
+		             TY.WORK_EFFORT_ID = FIL_W.WORK_EFFORT_ID AND
+		             TY.ROLE_TYPE_ID = WTS.MANAGEMENT_ROLE_TYPE_ID)OR
+		            (WTS.MANAG_WE_STATUS_ENUM_ID = 'SUPMANAGER' AND
+		             TY.ORG_UNIT_ID = GR.PARTY_ID_FROM))
+		INNER JOIN PARTY WRE ON WRE.PARTY_ID = TY.PARTY_ID
+		INNER JOIN PARTY_CONTACT_MECH PC ON PC.PARTY_ID = TY.PARTY_ID
+		       AND PC.THRU_DATE IS NULL
+		INNER JOIN CONTACT_MECH CM ON CM.CONTACT_MECH_ID = PC.CONTACT_MECH_ID
+		       AND CM.CONTACT_MECH_TYPE_ID = 'EMAIL_ADDRESS'
+  
+  </sql>
+  
+  <sql id="groupReminder">
+  	GROUP BY
+      TY.PARTY_ID,           
+      CM.CONTACT_MECH_ID,
+      RTT.WORK_EFFORT_TYPE_ID_ROOT ) Q
+            
+	INNER JOIN WORK_EFFORT_TYPE RWT ON RWT.WORK_EFFORT_TYPE_ID = Q.WORK_EFFORT_TYPE_ID_ROOT
+  
+  </sql>
+  
+  <select id="selectReminderPeriod" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<include refid="selectReminder"/>
+  	
+  	<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterInnerJoin"/>
+  	 
+  	INNER JOIN WORK_EFFORT_TYPE_PERIOD WTP ON WTP.WORK_EFFORT_TYPE_ID = FIL_W.WORK_EFFORT_TYPE_ID
+	   AND WTP.STATUS_ENUM_ID IN ('OPEN', 'REOPEN')
+    
+    <include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterLeftJoin"/>
+    
+    WHERE RTT.WORK_EFFORT_TYPE_ID_ROOT = #{workEffortTypeId}
+  		AND WTP.PER_LAV_FROM &#60; #{monitoringDate}   		
+	 	 
+    	AND (FIL_W.DATA_SOLL IS NULL OR WTS.FREQ_SOLL IS NULL OR #{monitoringDate} &#62;  
+    	<if test="_databaseId == 'mysql'">
+	       ADDDATE(FIL_W.DATA_SOLL, INTERVAL WTS.FREQ_SOLL day)
+	    </if>
+	    <if test="_databaseId == 'mssql' or _databaseId == 'h2'">
+	       DATEADD(day, WTS.FREQ_SOLL, FIL_W.DATA_SOLL)
+	    </if>
+	    <if test="_databaseId != 'mysql' and _databaseId != 'mssql' and _databaseId != 'h2'">
+	    	(WTS.FREQ_SOLL + FIL_W.DATA_SOLL)
+	    </if>	    	    
+    	)
+		
+		<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterWhere"/>
+	     
+    <include refid="groupReminder"/>
+  </select>
+  
+  <select id="selectReminderWorkEffortExpiry" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<include refid="selectReminder"/> 
+  	<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterInnerJoin"/>
+  	<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterLeftJoin"/>
+  	
+    WHERE RTT.WORK_EFFORT_TYPE_ID_ROOT = #{workEffortTypeId}
+  		AND FIL_W.SCHEDULED_START_DATE IS NULL	
+	 	
+	 	AND (WTS.FREQ_SOLL IS NULL OR FIL_W.ESTIMATED_COMPLETION_DATE &#60;= 	 	
+	 	<if test="_databaseId == 'mysql'">
+	       ADDDATE(#{monitoringDate}, INTERVAL WTS.START_SOLL day)
+	    </if>
+	    <if test="_databaseId == 'mssql' or _databaseId == 'h2'">
+	       DATEADD(day, WTS.START_SOLL, #{monitoringDate})
+	    </if>
+	    <if test="_databaseId != 'mysql' and _databaseId != 'mssql' and _databaseId != 'h2'">
+	    	(#{monitoringDate} + WTS.START_SOLL)
+	    </if> 
+	 	)
+   
+    	AND (FIL_W.DATA_SOLL IS NULL OR WTS.FREQ_SOLL IS NULL OR #{monitoringDate} &#62;  
+    	<if test="_databaseId == 'mysql'">
+	       ADDDATE(FIL_W.DATA_SOLL, INTERVAL WTS.FREQ_SOLL day)
+	    </if>
+	    <if test="_databaseId == 'mssql' or _databaseId == 'h2'">
+	       DATEADD(day, WTS.FREQ_SOLL, FIL_W.DATA_SOLL)
+	    </if>
+	    <if test="_databaseId != 'mysql' and _databaseId != 'mssql' and _databaseId != 'h2'">
+	    	(WTS.FREQ_SOLL + FIL_W.DATA_SOLL)
+	    </if>	    	    
+    	)
+    	<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterWhere"/>	    
+    <include refid="groupReminder"/>
+  </select>
+  
+</mapper>

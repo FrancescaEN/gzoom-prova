@@ -1,0 +1,39 @@
+@if (multiselect()) {
+  <p-multiSelect [id]="id()"
+                 [options]="options()"
+                 [optionLabel]="optionLabel()"
+                 [optionValue]="optionValue()"
+                 [placeholder]="placeholder() | i18n"
+
+                 [display]="display()"
+                 [virtualScroll]="virtualScroll()"
+                 [virtualScrollItemSize]="virtualScrollItemSize()"
+                 [filter]="filter()"
+                 [showToggleAll]="showToggleAll()"
+                 [showHeader]="showHeader() || showToggleAll() || filter()"
+
+                 [(ngModel)]="selected"
+                 [disabled]="disabled()"
+                 (onChange)="valueChanged($event)"
+                 appendTo="body"
+  />
+} @else {
+  <p-dropdown [id]="id()"
+              [options]="options()"
+              [optionLabel]="optionLabel()"
+              [optionValue]="optionValue()"
+              [placeholder]="placeholder() | i18n"
+
+              [showClear]="showClear()"
+              [virtualScroll]="virtualScroll()"
+              [virtualScrollItemSize]="virtualScrollItemSize()"
+
+              [(ngModel)]="selected"
+              [disabled]="disabled()"
+              [required]="required()"
+              (onChange)="valueChanged($event)"
+              appendTo="body"
+              [panelStyleClass]="'gzoom-dropdown ' + panelStyleClass()"
+              [panelStyle]="panelStyle()"
+  />
+}

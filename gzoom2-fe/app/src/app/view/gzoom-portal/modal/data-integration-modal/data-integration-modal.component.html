@@ -1,0 +1,35 @@
+<gzoom-modal [loadingModal]="loading">
+  <gzoom-modal-header>
+    <div>
+      <gzoom-button (onClick)="closeModal()" link="true">
+        <i class="gzoom-icon gzoom-arrow-left"></i>
+        <span>Torna a Dati di contesto</span>
+      </gzoom-button>
+    </div>
+    <h1>Integrazione dati</h1>
+  </gzoom-modal-header>
+
+  <gzoom-modal-body>
+    <gzoom-form>
+      <div class="input-group" style="flex-grow: 2;">
+        @if (editEnabled) {
+          <label for="note">Contenuto</label>
+          <textarea pInputTextarea [(ngModel)]="text" id="note" name="note" maxlength="{{noteMaxLength}}"
+                    placeholder="Inserisci integrazione dati qui (max 6000 caratteri)"
+                    style="height: 500px;"></textarea>
+          <p class="text-length">{{ text ? text.length : 0 }}/{{ noteMaxLength }} caratteri</p>
+        } @else {
+          <span class="label">Contenuto</span>
+          <span id="note">{{ text }}</span>
+        }
+      </div>
+    </gzoom-form>
+  </gzoom-modal-body>
+
+  <gzoom-modal-footer>
+    <gzoom-button [label]="editEnabled? 'Annulla' : 'Chiudi'" (onClick)="closeModal()" [outlined]=true />
+    @if (editEnabled) {
+      <gzoom-button label="Salva" (onClick)="save()" />
+    }
+  </gzoom-modal-footer>
+</gzoom-modal>

@@ -1,0 +1,16 @@
+<gzoom-selection-indicator
+  [(selectedIndicator)]="selectedIndicator"
+></gzoom-selection-indicator>
+<p-messages key="error-dialog-param"></p-messages>
+<div class="d-flex flex-row-reverse pt-3" style="gap: 5px">
+  <gzoom-button
+    icon="pi pi-save"
+    label="{{ 'Save' | i18n }}"
+    (onClick)="save()"
+  />
+  <gzoom-button-outlined
+    label="{{ 'Reset selection' | i18n }}"
+    [disabled]="!selectedIndicator"
+    (onClick)="resetSelection()"
+  />
+</div>

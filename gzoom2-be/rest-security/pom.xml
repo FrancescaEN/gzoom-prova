@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>it.mapsgroup.gzoom</groupId>
+        <artifactId>gzoom2</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+
+    <artifactId>rest-security</artifactId>
+    <name>GZoom REST Security</name>
+    <description>GZoom REST Model</description>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!-- Internal dependencies -->
+        <dependency>
+            <groupId>it.mapsgroup.gzoom</groupId>
+            <artifactId>rest-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>it.mapsgroup.gzoom</groupId>
+            <artifactId>commons-spring-boot</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>it.mapsgroup.gzoom</groupId>
+            <artifactId>ofbiz-client</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.bitbucket.b_c/jose4j -->
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>0.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${plugin.deploy.version}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

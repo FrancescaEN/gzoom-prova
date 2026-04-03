@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.UserLoginSecurityGroupMapper">
+
+    <select id="getUserLoginSecurityGroups" resultMap="userLoginSecurityGroupResultMap" parameterType="java.util.Map">
+        SELECT *
+        FROM USER_LOGIN_SECURITY_GROUP
+        WHERE user_login_id = #{userLoginId}
+        AND group_id = #{groupId}
+        AND (from_date &lt;= CURRENT_TIMESTAMP AND (thru_date IS NULL OR thru_date &gt;= CURRENT_TIMESTAMP))
+    </select>
+
+    <select id="getDefaultPortalPage" parameterType="java.util.Map">
+       SELECT PORTAL_PAGE.*
+        FROM USER_LOGIN_SECURITY_GROUP
+        JOIN SECURITY_GROUP ON USER_LOGIN_SECURITY_GROUP.group_id = SECURITY_GROUP.group_id
+        JOIN PORTAL_PAGE ON SECURITY_GROUP.default_portal_page_id = PORTAL_PAGE.portal_page_id
+        WHERE (USER_LOGIN_SECURITY_GROUP.thru_date IS NULL OR USER_LOGIN_SECURITY_GROUP.thru_date &gt;= CURRENT_TIMESTAMP)
+        AND USER_LOGIN_SECURITY_GROUP.user_login_id = #{userLoginId}
+        ORDER BY USER_LOGIN_SECURITY_GROUP.from_date ASC
+    </select>
+
+    <select id="getUserLoginSecurityGroupsByUserLoginId" resultMap="userLoginSecurityGroupResultMap" parameterType="java.util.Map">
+        SELECT *
+        FROM USER_LOGIN_SECURITY_GROUP
+        WHERE user_login_id = #{userLoginId}
+        AND (from_date &lt;= CURRENT_TIMESTAMP AND (thru_date IS NULL OR thru_date &gt;= CURRENT_TIMESTAMP))
+    </select>
+
+</mapper>

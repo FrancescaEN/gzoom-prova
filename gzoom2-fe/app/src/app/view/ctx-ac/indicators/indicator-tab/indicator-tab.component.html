@@ -1,0 +1,109 @@
+<!--<app-toolbar-data-table
+  [buttonBack]="true"
+  [buttonSave]="true"
+  [buttonNew]="false"
+  [buttonDelete]="false"
+></app-toolbar-data-table>-->
+<div>
+  <!--<p-dock [model]="items" [position]="'right'">
+      <ng-template pTemplate="item" let-item>
+        <img [src]="item.icon" [alt]="item.label" width="100%" />
+      </ng-template>
+    </p-dock>-->
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+      justify-content: space-between;
+    "
+  >
+    <gzoom-button-outlined
+      icon="pi pi-angle-left"
+      label="{{ labelGlAccountList() | i18n }}"
+      rounded="true"
+      (onClick)="toIndicators()"
+    ></gzoom-button-outlined>
+    <div class="d-flex flex-row">
+      <gzoom-button-outlined
+        label="{{ 'Reset' | i18n }}"
+        icon="pi pi-refresh"
+        rounded="true"
+        style="margin-right: 5px"
+        [show]="showSave"
+        [disabled]="disableSave"
+        (onClick)="buttonService.reset()"
+      />
+      <gzoom-button
+        icon="pi pi-save"
+        label="{{ 'Save' | i18n }}"
+        rounded="true"
+        [show]="showSave"
+        [disabled]="disableSave"
+        (onClick)="buttonService.save()"
+      ></gzoom-button>
+    </div>
+  </div>
+  <p-card>
+    <div class="card-label">
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-between;
+        "
+      >
+        <div style="max-width: 90%">
+          <ng-template ngFor let-item [ngForOf]="this.details" let-i="index">
+            <b style="font-size: 13.5px">{{ item.title | i18n }}:</b>&nbsp;
+            <label style="font-size: 13.5px">{{ item.description }}</label>
+            <ng-container *ngIf="index + 1 != this.details.lenght"
+            ><br
+            /></ng-container>
+          </ng-template>
+          <!-- <b style="font-size: 13.5px">{{ "ID" | i18n }}:</b>&nbsp;
+          <label style="font-size: 13.5px">{{ glAccount.glAccountId }}</label>
+          <br />-->
+        </div>
+        <div style="padding-right: 10px">
+          <p-tag
+            *ngIf="(this.statusItem$ | async) && this.glAccount"
+            severity="{{
+              getStatusItemSeverity(this.glAccount.currentStatusId)
+            }}"
+            value="{{ getStatusItemDescription(glAccount.currentStatusId) }}"
+          ></p-tag>
+        </div>
+      </div>
+    </div>
+  </p-card>
+  <br />
+  <div>
+    <gzoom-tab-menu class="mobile" [itemsn]="menu"></gzoom-tab-menu>
+    <div
+      style="
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: nowrap;
+        gap: 15px;
+        height: fit-content;
+      "
+    >
+      <p-menu
+        class="no-mobile"
+        id="menu-detail"
+        [model]="menu"
+        routerLinkActive="active-link"
+      ></p-menu>
+      <div style="flex-grow: 2">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+  <!-- {{ glAccount$ | async | json }}-->
+</div>
+<!--<p-panelMenu [model]="itemsz" [style]="{ width: '300px' }"></p-panelMenu>-->

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.TimeEntryMapper">
+
+    <resultMap id="workEffortResultMap2" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffort">
+        <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+        <result column="current_status_id" property="currentStatusId" jdbcType="VARCHAR"/>
+        <result column="last_status_update" property="lastStatusUpdate" jdbcType="TIMESTAMP"/>
+        <result column="work_effort_purpose_type_id" property="workEffortPurposeTypeId" jdbcType="VARCHAR"/>
+        <result column="work_effort_parent_id" property="workEffortParentId" jdbcType="VARCHAR"/>
+        <result column="scope_enum_id" property="scopeEnumId" jdbcType="VARCHAR"/>
+        <result column="priority" property="priority" jdbcType="NUMERIC"/>
+        <result column="percent_complete" property="percentComplete" jdbcType="NUMERIC"/>
+        <result column="work_effort_name" property="workEffortName" jdbcType="VARCHAR"/>
+        <result column="work_effort_name_lang" property="workEffortNameLang" jdbcType="VARCHAR"/>
+        <result column="show_as_enum_id" property="showAsEnumId" jdbcType="VARCHAR"/>
+        <result column="send_notification_email" property="sendNotificationEmail" jdbcType="CHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="location_desc" property="locationDesc" jdbcType="VARCHAR"/>
+        <result column="estimated_start_date" property="estimatedStartDate" jdbcType="TIMESTAMP"/>
+        <result column="estimated_completion_date" property="estimatedCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="actual_start_date" property="actualStartDate" jdbcType="TIMESTAMP"/>
+        <result column="actual_completion_date" property="actualCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="estimated_milli_seconds" property="estimatedMilliSeconds" jdbcType="DOUBLE"/>
+        <result column="estimated_setup_millis" property="estimatedSetupMillis" jdbcType="DOUBLE"/>
+        <result column="estimate_calc_method" property="estimateCalcMethod" jdbcType="VARCHAR"/>
+        <result column="actual_milli_seconds" property="actualMilliSeconds" jdbcType="DOUBLE"/>
+        <result column="actual_setup_millis" property="actualSetupMillis" jdbcType="DOUBLE"/>
+        <result column="total_milli_seconds_allowed" property="totalMilliSecondsAllowed" jdbcType="DOUBLE"/>
+        <result column="total_money_allowed" property="totalMoneyAllowed" jdbcType="NUMERIC"/>
+        <result column="money_uom_id" property="moneyUomId" jdbcType="VARCHAR"/>
+        <result column="special_terms" property="specialTerms" jdbcType="VARCHAR"/>
+        <result column="time_transparency" property="timeTransparency" jdbcType="NUMERIC"/>
+        <result column="universal_id" property="universalId" jdbcType="VARCHAR"/>
+        <result column="source_reference_id" property="sourceReferenceId" jdbcType="VARCHAR"/>
+        <result column="fixed_asset_id" property="fixedAssetId" jdbcType="VARCHAR"/>
+        <result column="facility_id" property="facilityId" jdbcType="VARCHAR"/>
+        <result column="info_url" property="infoUrl" jdbcType="VARCHAR"/>
+        <result column="recurrence_info_id" property="recurrenceInfoId" jdbcType="VARCHAR"/>
+        <result column="temp_expr_id" property="tempExprId" jdbcType="VARCHAR"/>
+        <result column="runtime_data_id" property="runtimeDataId" jdbcType="VARCHAR"/>
+        <result column="note_id" property="noteId" jdbcType="VARCHAR"/>
+        <result column="service_loader_name" property="serviceLoaderName" jdbcType="VARCHAR"/>
+        <result column="quantity_to_produce" property="quantityToProduce" jdbcType="DOUBLE"/>
+        <result column="quantity_produced" property="quantityProduced" jdbcType="DOUBLE"/>
+        <result column="quantity_rejected" property="quantityRejected" jdbcType="DOUBLE"/>
+        <result column="reserv_persons" property="reservPersons" jdbcType="DOUBLE"/>
+        <result column="reserv2nd_p_p_perc" property="reserv2ndPPPerc" jdbcType="DOUBLE"/>
+        <result column="reserv_nth_p_p_perc" property="reservNthPPPerc" jdbcType="DOUBLE"/>
+        <result column="accommodation_map_id" property="accommodationMapId" jdbcType="VARCHAR"/>
+        <result column="accommodation_spot_id" property="accommodationSpotId" jdbcType="VARCHAR"/>
+        <result column="revision_number" property="revisionNumber" jdbcType="NUMERIC"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="sequence_num" property="sequenceNum" jdbcType="NUMERIC"/>
+        <result column="organization_id" property="organizationId" jdbcType="VARCHAR"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="product_id" property="productId" jdbcType="VARCHAR"/>
+        <result column="empl_position_type_id" property="emplPositionTypeId" jdbcType="VARCHAR"/>
+        <result column="local_name_content_id" property="localNameContentId" jdbcType="VARCHAR"/>
+        <result column="estimated_total_effort" property="estimatedTotalEffort" jdbcType="DOUBLE"/>
+        <result column="weight_kpi" property="weightKpi" jdbcType="DOUBLE"/>
+        <result column="weight_review" property="weightReview" jdbcType="DOUBLE"/>
+        <result column="weight_sons" property="weightSons" jdbcType="DOUBLE"/>
+        <result column="org_unit_role_type_id" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="org_unit_id" property="orgUnitId" jdbcType="VARCHAR"/>
+        <result column="weight_assoc_work_effort" property="weightAssocWorkEffort" jdbcType="DOUBLE"/>
+        <result column="work_effort_assoc_type_id" property="workEffortAssocTypeId" jdbcType="VARCHAR"/>
+        <result column="last_correct_score_date" property="lastCorrectScoreDate" jdbcType="TIMESTAMP"/>
+        <result column="total_enum_id_kpi" property="totalEnumIdKpi" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_sons" property="totalEnumIdSons" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_assoc" property="totalEnumIdAssoc" jdbcType="VARCHAR"/>
+        <result column="process_id" property="processId" jdbcType="VARCHAR"/>
+        <result column="is_posted" property="isPosted" jdbcType="CHAR"/>
+        <result column="etch" property="etch" jdbcType="VARCHAR"/>
+        <result column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="snap_shot_date" property="snapShotDate" jdbcType="TIMESTAMP"/>
+        <result column="snap_shot_description" property="snapShotDescription" jdbcType="VARCHAR"/>
+        <result column="work_effort_snapshot_id" property="workEffortSnapshotId" jdbcType="VARCHAR"/>
+        <result column="uom_range_score_id" property="uomRangeScoreId" jdbcType="VARCHAR"/>
+        <result column="work_effort_revision_id" property="workEffortRevisionId" jdbcType="VARCHAR"/>
+        <result column="scheduled_start_date" property="scheduledStartDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="rateTypeResultMap2" type="it.mapsgroup.gzoom.mybatis.dto.RateType">
+        <id column="rate_type_id" property="rateTypeId" jdbcType="VARCHAR"/>
+        <result column="rt_description" property="description" jdbcType="VARCHAR"/>
+        <result column="rt_description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <resultMap id="timeEntryExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.TimeEntryEx">
+            <id column="time_entry_id" property="timeEntryId" jdbcType="VARCHAR"/>
+            <result column="party_id" property="partyId" jdbcType="VARCHAR"/>
+            <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+            <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+            <result column="rate_type_id" property="rateTypeId" jdbcType="VARCHAR"/>
+            <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+            <result column="timesheet_id" property="timesheetId" jdbcType="VARCHAR"/>
+            <result column="invoice_id" property="invoiceId" jdbcType="VARCHAR"/>
+            <result column="invoice_item_seq_id" property="invoiceItemSeqId" jdbcType="VARCHAR"/>
+            <result column="hours" property="hours" jdbcType="DOUBLE"/>
+            <result column="comments" property="comments" jdbcType="VARCHAR"/>
+            <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+            <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+            <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+            <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+            <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+            <result column="percentage" property="percentage" jdbcType="DOUBLE"/>
+            <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+            <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+            <result column="job_id" property="jobId" jdbcType="VARCHAR"/>
+            <result column="order_id" property="orderId" jdbcType="VARCHAR"/>
+            <result column="plan_hours" property="planHours" jdbcType="DOUBLE"/>
+
+            <association property="workEffort" resultMap="workEffortResultMap2" />
+            <association property="rateType" resultMap="rateTypeResultMap2" />
+    </resultMap>
+
+    <select id="getTimeEntryEx" resultMap="timeEntryExResultMap" parameterType="java.util.Map">
+        SELECT TE.*, WE.*, RT.description_lang AS rt_description_lang, RT.description AS rt_description, RT.rate_type_id
+        FROM TIME_ENTRY TE
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = TE.WORK_EFFORT_ID
+        INNER JOIN RATE_TYPE RT ON RT.RATE_TYPE_ID = TE.RATE_TYPE_ID
+        WHERE TE.TIMESHEET_ID = #{timesheetId}
+        ORDER BY WE.WORK_EFFORT_NAME ASC
+   </select>
+
+    <select id="getWorkEffort" resultMap="workEffortResultMap2" parameterType="java.util.Map">
+    SELECT WORK_EFFORT.*
+    FROM WORK_EFFORT WORK_EFFORT
+    INNER JOIN TS_TIMESHEET_TASKS TS_TIMESHEET_TASKS
+    ON TS_TIMESHEET_TASKS.WORK_EFFORT_ID = WORK_EFFORT.WORK_EFFORT_ID
+    WHERE TS_TIMESHEET_TASKS.TIMESHEET_ID = #{timesheetId}
+    <if test='secondaryLang == false'>
+        ORDER BY WORK_EFFORT.WORK_EFFORT_NAME
+    </if>
+    <if test='secondaryLang == true'>
+        ORDER BY WORK_EFFORT.WORK_EFFORT_NAME_LANG
+    </if>
+   </select>
+</mapper>

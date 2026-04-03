@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PrioSvil_ObStrat" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="b1826acb-7e31-452e-a967-7fa0a3a01dd7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT
+	DEST.SOURCE_REFERENCE_ID AS CODICE_DESTINATARIO,
+	WEA.COMMENTS_LANG AS COMMENTO_DESTINATARIO_IT,
+	WEA.COMMENTS AS COMMENTO_DESTINATARIO_DE,
+	DEST.WORK_EFFORT_NAME_LANG AS NOME_DESTINATARIO_IT,
+	DEST.WORK_EFFORT_NAME AS NOME_DESTINATARIO_DE
+FROM WORK_EFFORT PRE
+JOIN WORK_EFFORT_ASSOC WEA ON WEA.WORK_EFFORT_ID_TO = PRE.WORK_EFFORT_ID AND WEA.WORK_EFFORT_ASSOC_TYPE_ID = '20R2C'
+JOIN WORK_EFFORT DEST ON DEST.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_FROM AND DEST.WORK_EFFORT_TYPE_ID = '20R24' AND DEST.WORK_EFFORT_REVISION_ID IS NULL
+WHERE PRE.WORK_EFFORT_TYPE_ID = '20C42' AND PRE.WORK_EFFORT_REVISION_ID IS NULL AND PRE.WORK_EFFORT_ID = $P{work_effort_id_ob}
+ORDER BY DEST.SOURCE_REFERENCE_ID]]>
+	</queryString>
+	<field name="CODICE_DESTINATARIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CODICE_DESTINATARIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="CODICE_DESTINATARIO"/>
+	</field>
+	<field name="COMMENTO_DESTINATARIO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="COMMENTO_DESTINATARIO_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="COMMENTO_DESTINATARIO_IT"/>
+	</field>
+	<field name="COMMENTO_DESTINATARIO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="COMMENTO_DESTINATARIO_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="COMMENTO_DESTINATARIO_DE"/>
+	</field>
+	<field name="NOME_DESTINATARIO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_DESTINATARIO_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_DESTINATARIO_IT"/>
+	</field>
+	<field name="NOME_DESTINATARIO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_DESTINATARIO_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_DESTINATARIO_DE"/>
+	</field>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="0" y="0" width="240" height="15" uuid="e493c5f7-24dd-4160-9bab-1c6ab194715e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{NOME_DESTINATARIO_IT}) : 
+($F{NOME_DESTINATARIO_DE})]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="240" y="0" width="362" height="15" uuid="8b86d24d-f2ab-499a-b0ca-512e690c2514">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{COMMENTO_DESTINATARIO_IT}) : 
+($F{COMMENTO_DESTINATARIO_DE})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

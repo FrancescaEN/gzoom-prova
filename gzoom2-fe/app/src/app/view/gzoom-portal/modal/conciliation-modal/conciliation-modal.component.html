@@ -1,0 +1,34 @@
+<gzoom-modal [loadingModal]="loading">
+  <gzoom-modal-header>
+    <h1>Conciliazione</h1>
+  </gzoom-modal-header>
+
+  <gzoom-modal-body>
+    <gzoom-form>
+      <div class="input-group" style="flex-grow: 2;">
+        <span class="label">{{ motivation?.name }}</span>
+        <span id="employeeComment">
+            {{ StringUtils.notEmpty(motivation?.info) ? motivation.info : '-' }}
+        </span>
+      </div>
+
+      <div class="input-group">
+        <span class="label">{{ response?.name }}</span>
+        <span id="evaluatorComment">
+          {{ StringUtils.notEmpty(response?.info) ? response.info : '-' }}
+        </span>
+      </div>
+
+      <div class="input-group">
+        <span class="label">{{ outcome?.accountName ? outcome?.accountName : 'Esito conciliazione' }}</span>
+        <span id="contradictoryOutcome">
+          {{ StringUtils.notEmpty(outcomeValue) ? outcomeValue : '-' }}
+        </span>
+      </div>
+    </gzoom-form>
+  </gzoom-modal-body>
+
+  <gzoom-modal-footer>
+    <gzoom-button [label]="'Chiudi'" (onClick)="closeModal()" [outlined]=true />
+  </gzoom-modal-footer>
+</gzoom-modal>

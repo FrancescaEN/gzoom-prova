@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortTypeContentMapper">
+    <select id="getWorkEffortTypeContents" resultMap="workEffortTypeExt" parameterType="java.util.Map">
+        SELECT
+        <include refid="workEffortTypeContentColumns"/>,
+        WET.*
+        FROM WORK_EFFORT_TYPE_CONTENT WETC
+        INNER JOIN WORK_EFFORT_TYPE WET ON WET.WORK_EFFORT_TYPE_ID = WETC.WORK_EFFORT_TYPE_ID
+        INNER JOIN CONTENT C ON C.CONTENT_ID = WETC.CONTENT_ID
+        WHERE ( WETC.WE_TYPE_CONTENT_TYPE_ID = 'REPORT' OR WETC.WE_TYPE_CONTENT_TYPE_ID = 'JREPORT')
+        AND WETC.IS_VISIBLE = 'Y'
+        <if test="workEffortTypeId != null and workEffortTypeId != ''">
+            AND WETC.WORK_EFFORT_TYPE_ID = #{workEffortTypeId}
+        </if>
+        <if test="workEffortTypeId == null or workEffortTypeId == ''">
+            AND WETC.WORK_EFFORT_TYPE_ID IS NOT NULL
+        </if>
+        AND WETC.CONTENT_ID = #{reportContentId}
+        AND WET.PARENT_TYPE_ID = #{parentTypeId}
+    </select>
+
+    <resultMap id="workEffortTypeExt" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortTypeExt">
+        <result column="work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+        <result column="parent_type_id" property="parentTypeId" jdbcType="VARCHAR"/>
+        <result column="has_table" property="hasTable" jdbcType="CHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="influence_catalog_id" property="influenceCatalogId" jdbcType="VARCHAR"/>
+        <result column="icon_content_id" property="iconContentId" jdbcType="VARCHAR"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="code_prefix" property="codePrefix" jdbcType="VARCHAR"/>
+        <result column="code_counter" property="codeCounter" jdbcType="VARCHAR"/>
+        <result column="is_template" property="isTemplate" jdbcType="CHAR"/>
+        <result column="is_root" property="isRoot" jdbcType="CHAR"/>
+        <result column="local_name_content_id" property="localNameContentId" jdbcType="VARCHAR"/>
+        <result column="is_in_only_one_card" property="isInOnlyOneCard" jdbcType="CHAR"/>
+        <result column="all_roles_assigned" property="allRolesAssigned" jdbcType="CHAR"/>
+        <result column="all_org_assigned" property="allOrgAssigned" jdbcType="CHAR"/>
+        <result column="child_template_id" property="childTemplateId" jdbcType="VARCHAR"/>
+        <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="hierarchy_assoc_type_id" property="hierarchyAssocTypeId" jdbcType="VARCHAR"/>
+        <result column="weight_control_sum" property="weightControlSum" jdbcType="DOUBLE"/>
+        <result column="uom_range_score_id" property="uomRangeScoreId" jdbcType="VARCHAR"/>
+        <result column="we_layout_type_enum_id" property="weLayoutTypeEnumId" jdbcType="VARCHAR"/>
+        <result column="period_type_id" property="periodTypeId" jdbcType="VARCHAR"/>
+        <result column="type_id1" property="typeId1" jdbcType="VARCHAR"/>
+        <result column="type_id2" property="typeId2" jdbcType="VARCHAR"/>
+        <result column="type_id3" property="typeId3" jdbcType="VARCHAR"/>
+        <result column="type_id4" property="typeId4" jdbcType="VARCHAR"/>
+        <result column="rule_type_id1" property="ruleTypeId1" jdbcType="VARCHAR"/>
+        <result column="rule_type_id2" property="ruleTypeId2" jdbcType="VARCHAR"/>
+        <result column="rule_type_id3" property="ruleTypeId3" jdbcType="VARCHAR"/>
+        <result column="rule_type_id4" property="ruleTypeId4" jdbcType="VARCHAR"/>
+        <result column="rule_type_id5" property="ruleTypeId5" jdbcType="VARCHAR"/>
+        <result column="min1" property="min1" jdbcType="NUMERIC"/>
+        <result column="min2" property="min2" jdbcType="NUMERIC"/>
+        <result column="min3" property="min3" jdbcType="NUMERIC"/>
+        <result column="min4" property="min4" jdbcType="NUMERIC"/>
+        <result column="min5" property="min5" jdbcType="NUMERIC"/>
+        <result column="max1" property="max1" jdbcType="NUMERIC"/>
+        <result column="max2" property="max2" jdbcType="NUMERIC"/>
+        <result column="max3" property="max3" jdbcType="NUMERIC"/>
+        <result column="max4" property="max4" jdbcType="NUMERIC"/>
+        <result column="max5" property="max5" jdbcType="NUMERIC"/>
+        <result column="weight_kpi" property="weightKpi" jdbcType="DOUBLE"/>
+        <result column="weight_sons" property="weightSons" jdbcType="DOUBLE"/>
+        <result column="weight_assoc_work_effort" property="weightAssocWorkEffort" jdbcType="DOUBLE"/>
+        <result column="total_enum_id_kpi" property="totalEnumIdKpi" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_sons" property="totalEnumIdSons" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_assoc" property="totalEnumIdAssoc" jdbcType="VARCHAR"/>
+        <result column="work_effort_assoc_type_id" property="workEffortAssocTypeId" jdbcType="VARCHAR"/>
+        <result column="we_purpose_type_id_res" property="wePurposeTypeIdRes" jdbcType="VARCHAR"/>
+        <result column="we_purpose_type_id_ind" property="wePurposeTypeIdInd" jdbcType="VARCHAR"/>
+        <result column="etch" property="etch" jdbcType="VARCHAR"/>
+        <result column="short_label" property="shortLabel" jdbcType="VARCHAR"/>
+        <result column="is_indic_auto" property="isIndicAuto" jdbcType="CHAR"/>
+        <result column="frame_enum_id" property="frameEnumId" jdbcType="VARCHAR"/>
+        <result column="seq_digit" property="seqDigit" jdbcType="NUMERIC"/>
+        <result column="seq_only_id" property="seqOnlyId" jdbcType="CHAR"/>
+        <result column="we_purpose_type_id_we" property="wePurposeTypeIdWe" jdbcType="VARCHAR"/>
+        <result column="has_product" property="hasProduct" jdbcType="CHAR"/>
+        <result column="has_person_filter" property="hasPersonFilter" jdbcType="CHAR"/>
+        <result column="weight_kpi_control_sum" property="weightKpiControlSum" jdbcType="DOUBLE"/>
+        <result column="work_effort_type_hierarchy_id" property="workEffortTypeHierarchyId" jdbcType="VARCHAR"/>
+        <result column="show_scorekpi" property="showScorekpi" jdbcType="CHAR"/>
+        <result column="enable_snapshot" property="enableSnapshot" jdbcType="CHAR"/>
+        <result column="copy" property="copy" jdbcType="CHAR"/>
+        <result column="purpose_etch" property="purposeEtch" jdbcType="VARCHAR"/>
+        <result column="eval_enum_id" property="evalEnumId" jdbcType="VARCHAR"/>
+        <result column="apply_score_range" property="applyScoreRange" jdbcType="CHAR"/>
+        <result column="enable_multi_year_flag" property="enableMultiYearFlag" jdbcType="CHAR"/>
+        <result column="org_unit_role_type_id" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="for_all_users" property="forAllUsers" jdbcType="CHAR"/>
+        <result column="is_role_type_id_auto" property="isRoleTypeIdAuto" jdbcType="CHAR"/>
+        <result column="role_type_id_auto" property="roleTypeIdAuto" jdbcType="VARCHAR"/>
+        <result column="party_rel_type_id_auto" property="partyRelTypeIdAuto" jdbcType="VARCHAR"/>
+        <result column="parent_period_filter" property="parentPeriodFilter" jdbcType="CHAR"/>
+        <result column="period_open_enum_id" property="periodOpenEnumId" jdbcType="VARCHAR"/>
+        <result column="show_hierarchy" property="showHierarchy" jdbcType="CHAR"/>
+        <result column="score_period_enum_id" property="scorePeriodEnumId" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="etch_lang" property="etchLang" jdbcType="VARCHAR"/>
+        <result column="note_lang" property="noteLang" jdbcType="VARCHAR"/>
+        <result column="purpose_etch_lang" property="purposeEtchLang" jdbcType="VARCHAR"/>
+        <result column="is_root_active" property="isRootActive" jdbcType="CHAR"/>
+        <result column="reminder_active" property="reminderActive" jdbcType="CHAR"/>
+        <result column="seq_esp" property="seqEsp" jdbcType="NUMERIC"/>
+        <result column="gp_menu_enum_id" property="gpMenuEnumId" jdbcType="VARCHAR"/>
+        <result column="initially_collapsed" property="initiallyCollapsed" jdbcType="VARCHAR"/>
+        <result column="batch_status_active" property="batchStatusActive" jdbcType="CHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="org_unit_role_type_id2" property="orgUnitRoleTypeId2" jdbcType="VARCHAR"/>
+        <result column="org_unit_role_type_id3" property="orgUnitRoleTypeId3" jdbcType="VARCHAR"/>
+        <association property="workEffortTypeContent" resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortTypeContentMapper.workEffortTypeContent" columnPrefix="WETC_"/>
+    </resultMap>
+    <sql id="workEffortTypeContentColumns">
+        WETC.WORK_EFFORT_TYPE_ID AS WETC_WORK_EFFORT_TYPE_ID,
+        WETC.CONTENT_ID AS WETC_CONTENT_ID,
+        WETC.WE_TYPE_CONTENT_TYPE_ID AS WETC_WE_TYPE_CONTENT_TYPE_ID,
+        WETC.SEQUENCE_NUM AS WETC_SEQUENCE_NUM,
+        WETC.ETCH AS WETC_ETCH,
+        WETC.WORK_EFFORT_PURPOSE_TYPE_ID AS WETC_WORK_EFFORT_PURPOSE_TYPE_ID,
+        WETC.PARAMS AS WETC_PARAMS,
+        WETC.IS_VISIBLE AS WETC_IS_VISIBLE,
+        WETC.USE_FILTER AS WETC_USE_FILTER,
+        WETC.ETCH_LANG AS WETC_ETCH_LANG,
+        WETC.ONLY_ADMIN AS WETC_ONLY_ADMIN,
+        WETC.LAST_MODIFIED_BY_USER_LOGIN AS WETC_LAST_MODIFIED_BY_USER_LOGIN,
+        WETC.CREATED_BY_USER_LOGIN AS WETC_CREATED_BY_USER_LOGIN,
+        WETC.LAST_UPDATED_STAMP AS WETC_LAST_UPDATED_STAMP,
+        WETC.LAST_UPDATED_TX_STAMP AS WETC_LAST_UPDATED_TX_STAMP,
+        WETC.CREATED_STAMP AS WETC_CREATED_STAMP,
+        WETC.CREATED_TX_STAMP AS WETC_CREATED_TX_STAMP,
+        WETC.IS_MANDATORY AS WETC_IS_MANDATORY
+    </sql>
+    <sql id="workEffortTypeColumns">
+        WET.WORK_EFFORT_TYPE_ID AS WET_WORK_EFFORT_TYPE_ID,
+        WET.PARENT_TYPE_ID AS WET_PARENT_TYPE_ID,
+        WET.HAS_TABLE AS WET_HAS_TABLE,
+        WET.DESCRIPTION AS WET_DESCRIPTION,
+        WET.LAST_UPDATED_STAMP AS WET_LAST_UPDATED_STAMP,
+        WET.LAST_UPDATED_TX_STAMP AS WET_LAST_UPDATED_TX_STAMP,
+        WET.CREATED_STAMP AS WET_CREATED_STAMP,
+        WET.CREATED_TX_STAMP AS WET_CREATED_TX_STAMP,
+        WET.INFLUENCE_CATALOG_ID AS WET_INFLUENCE_CATALOG_ID,
+        WET.ICON_CONTENT_ID AS WET_ICON_CONTENT_ID,
+        WET.EFFORT_UOM_ID AS WET_EFFORT_UOM_ID,
+        WET.NOTE AS WET_NOTE,
+        WET.CODE_PREFIX AS WET_CODE_PREFIX,
+        WET.CODE_COUNTER AS WET_CODE_COUNTER,
+        WET.IS_TEMPLATE AS WET_IS_TEMPLATE,
+        WET.IS_ROOT AS WET_IS_ROOT,
+        WET.LOCAL_NAME_CONTENT_ID AS WET_LOCAL_NAME_CONTENT_ID,
+        WET.IS_IN_ONLY_ONE_CARD AS WET_IS_IN_ONLY_ONE_CARD,
+        WET.ALL_ROLES_ASSIGNED AS WET_ALL_ROLES_ASSIGNED,
+        WET.ALL_ORG_ASSIGNED AS WET_ALL_ORG_ASSIGNED,
+        WET.CHILD_TEMPLATE_ID AS WET_CHILD_TEMPLATE_ID,
+        WET.FROM_DATE AS WET_FROM_DATE,
+        WET.THRU_DATE AS WET_THRU_DATE,
+        WET.HIERARCHY_ASSOC_TYPE_ID AS WET_HIERARCHY_ASSOC_TYPE_ID,
+        WET.WEIGHT_CONTROL_SUM AS WET_WEIGHT_CONTROL_SUM,
+        WET.UOM_RANGE_SCORE_ID AS WET_UOM_RANGE_SCORE_ID,
+        WET.WE_LAYOUT_TYPE_ENUM_ID AS WET_WE_LAYOUT_TYPE_ENUM_ID,
+        WET.PERIOD_TYPE_ID AS WET_PERIOD_TYPE_ID,
+        WET.TYPE_ID1 AS WET_TYPE_ID1,
+        WET.TYPE_ID2 AS WET_TYPE_ID2,
+        WET.TYPE_ID3 AS WET_TYPE_ID3,
+        WET.TYPE_ID4 AS WET_TYPE_ID4,
+        WET.RULE_TYPE_ID1 AS WET_RULE_TYPE_ID1,
+        WET.RULE_TYPE_ID2 AS WET_RULE_TYPE_ID2,
+        WET.RULE_TYPE_ID3 AS WET_RULE_TYPE_ID3,
+        WET.RULE_TYPE_ID4 AS WET_RULE_TYPE_ID4,
+        WET.RULE_TYPE_ID5 AS WET_RULE_TYPE_ID5,
+        WET.MIN1 AS WET_MIN1,
+        WET.MIN2 AS WET_MIN2,
+        WET.MIN3 AS WET_MIN3,
+        WET.MIN4 AS WET_MIN4,
+        WET.MIN5 AS WET_MIN5,
+        WET.MAX1 AS WET_MAX1,
+        WET.MAX2 AS WET_MAX2,
+        WET.MAX3 AS WET_MAX3,
+        WET.MAX4 AS WET_MAX4,
+        WET.MAX5 AS WET_MAX5,
+        WET.WEIGHT_KPI AS WET_WEIGHT_KPI,
+        WET.WEIGHT_SONS AS WET_WEIGHT_SONS,
+        WET.WEIGHT_ASSOC_WORK_EFFORT AS WET_WEIGHT_ASSOC_WORK_EFFORT,
+        WET.TOTAL_ENUM_ID_KPI AS WET_TOTAL_ENUM_ID_KPI,
+        WET.TOTAL_ENUM_ID_SONS AS WET_TOTAL_ENUM_ID_SONS,
+        WET.TOTAL_ENUM_ID_ASSOC AS WET_TOTAL_ENUM_ID_ASSOC,
+        WET.WORK_EFFORT_ASSOC_TYPE_ID AS WET_WORK_EFFORT_ASSOC_TYPE_ID,
+        WET.WE_PURPOSE_TYPE_ID_RES AS WET_WE_PURPOSE_TYPE_ID_RES,
+        WET.WE_PURPOSE_TYPE_ID_IND AS WET_WE_PURPOSE_TYPE_ID_IND,
+        WET.ETCH AS WET_ETCH,
+        WET.SHORT_LABEL AS WET_SHORT_LABEL,
+        WET.IS_INDIC_AUTO AS WET_IS_INDIC_AUTO,
+        WET.FRAME_ENUM_ID AS WET_FRAME_ENUM_ID,
+        WET.SEQ_DIGIT AS WET_SEQ_DIGIT,
+        WET.SEQ_ONLY_ID AS WET_SEQ_ONLY_ID,
+        WET.WE_PURPOSE_TYPE_ID_WE AS WET_WE_PURPOSE_TYPE_ID_WE,
+        WET.HAS_PRODUCT AS WET_HAS_PRODUCT,
+        WET.HAS_PERSON_FILTER AS WET_HAS_PERSON_FILTER,
+        WET.WEIGHT_KPI_CONTROL_SUM AS WET_WEIGHT_KPI_CONTROL_SUM,
+        WET.WORK_EFFORT_TYPE_HIERARCHY_ID AS WET_WORK_EFFORT_TYPE_HIERARCHY_ID,
+        WET.SHOW_SCOREKPI AS WET_SHOW_SCOREKPI,
+        WET.ENABLE_SNAPSHOT AS WET_ENABLE_SNAPSHOT,
+        WET.COPY AS WET_COPY,
+        WET.PURPOSE_ETCH AS WET_PURPOSE_ETCH,
+        WET.EVAL_ENUM_ID AS WET_EVAL_ENUM_ID,
+        WET.APPLY_SCORE_RANGE AS WET_APPLY_SCORE_RANGE,
+        WET.ENABLE_MULTI_YEAR_FLAG AS WET_ENABLE_MULTI_YEAR_FLAG,
+        WET.ORG_UNIT_ROLE_TYPE_ID AS WET_ORG_UNIT_ROLE_TYPE_ID,
+        WET.FOR_ALL_USERS AS WET_FOR_ALL_USERS,
+        WET.IS_ROLE_TYPE_ID_AUTO AS WET_IS_ROLE_TYPE_ID_AUTO,
+        WET.ROLE_TYPE_ID_AUTO AS WET_ROLE_TYPE_ID_AUTO,
+        WET.PARTY_REL_TYPE_ID_AUTO AS WET_PARTY_REL_TYPE_ID_AUTO,
+        WET.PARENT_PERIOD_FILTER AS WET_PARENT_PERIOD_FILTER,
+        WET.PERIOD_OPEN_ENUM_ID AS WET_PERIOD_OPEN_ENUM_ID,
+        WET.SHOW_HIERARCHY AS WET_SHOW_HIERARCHY,
+        WET.SCORE_PERIOD_ENUM_ID AS WET_SCORE_PERIOD_ENUM_ID,
+        WET.DESCRIPTION_LANG AS WET_DESCRIPTION_LANG,
+        WET.ETCH_LANG AS WET_ETCH_LANG,
+        WET.NOTE_LANG AS WET_NOTE_LANG,
+        WET.PURPOSE_ETCH_LANG AS WET_PURPOSE_ETCH_LANG,
+        WET.IS_ROOT_ACTIVE AS WET_IS_ROOT_ACTIVE,
+        WET.REMINDER_ACTIVE AS WET_REMINDER_ACTIVE,
+        WET.SEQ_ESP AS WET_SEQ_ESP,
+        WET.GP_MENU_ENUM_ID AS WET_GP_MENU_ENUM_ID,
+        WET.INITIALLY_COLLAPSED AS WET_INITIALLY_COLLAPSED,
+        WET.BATCH_STATUS_ACTIVE AS WET_BATCH_STATUS_ACTIVE,
+        WET.LAST_MODIFIED_BY_USER_LOGIN AS WET_LAST_MODIFIED_BY_USER_LOGIN,
+        WET.CREATED_BY_USER_LOGIN AS WET_CREATED_BY_USER_LOGIN,
+        WET.ORG_UNIT_ROLE_TYPE_ID2 AS WET_ORG_UNIT_ROLE_TYPE_ID2,
+        WET.ORG_UNIT_ROLE_TYPE_ID3 AS WET_ORG_UNIT_ROLE_TYPE_ID3
+
+    </sql>
+</mapper>

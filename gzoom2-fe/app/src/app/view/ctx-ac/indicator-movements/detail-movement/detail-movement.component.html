@@ -1,0 +1,193 @@
+<p-toast />
+<p-messages key="error" />
+<gzoom-button-bar-table
+  backButton
+  backLabel="{{ backLabel() | i18n }}"
+  (back)="back()"
+  [resetButton]="showCRUD()"
+  [disabledReset]="acctgTransEntryForm.pristine"
+  (reset)="reset()"
+  [saveButton]="showCRUD()"
+  [disabledSave]="acctgTransEntryForm.pristine"
+  [loadingSave]="loadingSave()"
+  (save)="save()"
+  rounded
+/>
+<gzoom-card-detail [details]="cardDetail()" />
+<br />
+<form [formGroup]="acctgTransEntryForm">
+  <p-accordion [activeIndex]="activeIndex" multiple>
+    @if (isByOrganizationalUnit() || isBySingleObjective()) {
+      <p-accordionTab [header]="'destinations' | i18n">
+        <gzoom-row-flex>
+          @if (isBySingleObjective()) {
+            <gzoom-label label="workEffortMeasure" required>
+              <p-dropdown
+                [options]="workEffortMeasure$() | async"
+                formControlName="voucherRef"
+                filter
+                [placeholder]="'Select' | i18n"
+                [style]="{ minWidth: '240px', maxWidth: '90%' }"
+                appendTo="body"
+                virtualScroll
+                virtualScrollItemSize="38"
+              >
+                <ng-template let-wem pTemplate="item">
+                  <div class="d-flex align-items-center gap-2">
+                    <gzoom-button-link
+                      icon="pi pi-info-circle"
+                      tooltipLabel="{{ wem.title }}"
+                      tooltipPosition="left"
+                      buttonStyle="padding-bottom: 3px !important; padding-top: 0px !important; width: min-content"
+                    />
+                    <div>
+                      {{ wem.label }}
+                    </div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </gzoom-label>
+          }
+          @if (isByOrganizationalUnit()) {
+            <div formGroupName="acctgTrans">
+              <gzoom-label label="acctgTransPartyId" labelPos="top" required>
+                <p-dropdown
+                  [options]="partyRole$ | async"
+                  [style]="{ minWidth: '240px' }"
+                  formControlName="partyRole"
+                  filter
+                  [placeholder]="'Select' | i18n"
+                />
+              </gzoom-label>
+            </div>
+          }
+        </gzoom-row-flex>
+      </p-accordionTab>
+    }
+    <p-accordionTab [header]="'valueData' | i18n">
+      <gzoom-row-flex>
+        <gzoom-label label="origAmount" twoPoints labelPos="left">
+          <gzoom-uom-amout
+            [uomId]="origCurrentUomId$() | async"
+            [uomTypeId]="(origUom$() | async)?.uomTypeId"
+            [amount]="(acctgTransEntry$() | async)?.origAmount"
+            [decimalScale]="(origUom$() | async)?.decimalScale"
+            [uomRatingScale]="origUomRatingScales$() | async"
+          />
+        </gzoom-label>
+      </gzoom-row-flex>
+      <gzoom-row-flex>
+        <gzoom-label label="uom" labelPos="left" twoPoints>
+          {{ (uom$() | async)?.description }}
+        </gzoom-label>
+      </gzoom-row-flex>
+      <gzoom-row-flex>
+        <gzoom-label label="amount">
+          @switch (this.uom()?.uomTypeId) {
+            @case ("RATING_SCALE") {
+              <gzoom-dropdown
+                [options]="uomRatingScales$() | async"
+                style="width: 240px"
+                controlName="amount"
+                showClear
+                filter
+              />
+            }
+            @case ("DATE_MEASURE") {
+              <gzoom-date style="width: 240px" controlName="selectedDate" />
+            }
+            @default {
+              <gzoom-number
+                controlName="amount"
+                style="width: 240px"
+                [minFractionDigits]="this.uom()?.decimalScale"
+                [maxFractionDigits]="this.uom()?.decimalScale"
+                [min]="this.uom()?.minValue"
+                [max]="this.uom()?.maxValue"
+              />
+            }
+          }
+        </gzoom-label>
+        <gzoom-label label="amountLocked" required>
+          <gzoom-dropdown
+            [options]="dropdownYN"
+            style="width: 240px"
+            controlName="amountLocked"
+          />
+        </gzoom-label>
+        <gzoom-label label="glFiscalType" labelPos="top" required>
+          <gzoom-dropdown
+            [options]="glFiscalType() | async"
+            style="width: 240px"
+            controlName="glFiscalTypeId"
+            filter
+          />
+        </gzoom-label>
+      </gzoom-row-flex>
+      <gzoom-row-flex>
+        <div formGroupName="acctgTrans">
+          <gzoom-label label="isPosted" required>
+            <p-dropdown
+              [options]="dropdownYN"
+              [style]="{ width: '240px' }"
+              formControlName="isPosted"
+              [placeholder]="'Select' | i18n"
+            />
+          </gzoom-label>
+        </div>
+      </gzoom-row-flex>
+      <gzoom-row-flex>
+        <gzoom-label-input-text
+          *ngIf="this.description"
+          label="acctgTransEntryDescription"
+          [width]="'100%'"
+          style="width: 48.8%; min-width: 240px"
+          flag="0"
+          controlName="description"
+        />
+        <gzoom-label-input-text
+          *ngIf="this.descriptionLang && ('BILING' | i18nLangType)"
+          label="acctgTransEntryDescription"
+          [width]="'100%'"
+          style="width: 48.8%; min-width: 240px"
+          flag="1"
+          controlName="descriptionLang"
+        />
+      </gzoom-row-flex>
+      <div formGroupName="acctgTrans">
+        <gzoom-row-flex>
+          <gzoom-label
+            label="acctgTransDescription"
+            labelPos="top"
+            flag="0"
+            [style]="
+              'width: ' + (('BILING' | i18nLangType) ? '48.80' : 100) + '%'
+            "
+          >
+            <textarea
+              style="width: 100%"
+              style="width: 100%; height: 70px; min-width: 240px"
+              pInputTextarea
+              formControlName="description"
+            ></textarea>
+          </gzoom-label>
+
+          <gzoom-label
+            *ngIf="this.acctgTransDescriptionLang && ('BILING' | i18nLangType)"
+            label="acctgTransDescription"
+            labelPos="top"
+            flag="1"
+            [style]="'width: 48.80%'"
+          >
+            <textarea
+              style="width: 100%"
+              style="width: 100%; height: 70px; min-width: 240px"
+              pInputTextarea
+              formControlName="descriptionLang"
+            ></textarea>
+          </gzoom-label>
+        </gzoom-row-flex>
+      </div>
+    </p-accordionTab>
+  </p-accordion>
+</form>

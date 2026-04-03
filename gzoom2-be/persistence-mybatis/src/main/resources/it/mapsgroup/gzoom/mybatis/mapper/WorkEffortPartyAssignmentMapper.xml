@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortPartyAssignmentMapper">
+
+
+
+    <select id="getWorkEffortPartyAssignmentListFilter" resultMap="workEffortPartyAssignmentEx" parameterType="java.util.Map">
+        SELECT  WEPA.*,
+            WEV.WORK_EFFORT_ID AS WEV_WORK_EFFORT_ID, WEV.SOURCE_REFERENCE_ID AS WEV_SOURCE_REFERENCE_ID, WEV.WORK_EFFORT_NAME AS WEV_WORK_EFFORT_NAME, WEV.WORK_EFFORT_NAME_LANG AS WEV_WORK_EFFORT_NAME_LANG,
+            WEV.DESCRIPTION AS WEV_DESCRIPTION, WEV.DESCRIPTION_LANG AS WEV_DESCRIPTION_LANG, WEV.ESTIMATED_START_DATE AS WEV_ESTIMATED_START_DATE, WEV.ESTIMATED_COMPLETION_DATE AS WEV_ESTIMATED_COMPLETION_DATE,
+            WEV.CURRENT_STATUS_ID AS WEV_CURRENT_STATUS_ID, WEV.WORK_EFFORT_TYPE_ID AS WEV_WORK_EFFORT_TYPE_ID, WEV.ORG_UNIT_ID AS WEV_ORG_UNIT_ID, WEV.ORG_UNIT_ROLE_TYPE_ID AS WEV_ORG_UNIT_ROLE_TYPE_ID,
+            WEV.WE_ASSOC_TYPE_ID AS WEV_WE_ASSOC_TYPE_ID, WEV.IS_POSTED AS WEV_IS_POSTED, WEV.WORK_EFFORT_SNAPSHOT_ID AS WEV_WORK_EFFORT_SNAPSHOT_ID, WEV.WORK_EFFORT_REVISION_ID AS WEV_WORK_EFFORT_REVISION_ID,
+            WEV.WORK_EFFORT_REVISION_DESCR AS WEV_WORK_EFFORT_REVISION_DESCR, WEV.SNAP_SHOT_DESCRIPTION AS WEV_SNAP_SHOT_DESCRIPTION, WEV.SNAP_SHOT_DATE AS WEV_SNAP_SHOT_DATE, WEV.WORK_EFFORT_TYPE_PERIOD_ID AS WEV_WORK_EFFORT_TYPE_PERIOD_ID,
+            WEV.UOM_RANGE_SCORE_ID AS WEV_UOM_RANGE_SCORE_ID, WEV.ORGANIZATION_ID AS WEV_ORGANIZATION_ID, WEV.EFFORT_UOM_ID AS WEV_EFFORT_UOM_ID, WEV.PRODUCT_ID AS WEV_PRODUCT_ID, WEV.EMPL_POSITION_TYPE_ID AS WEV_EMPL_POSITION_TYPE_ID,
+            WEV.LOCAL_NAME_CONTENT_ID AS WEV_LOCAL_NAME_CONTENT_ID, WEV.ESTIMATED_TOTAL_EFFORT AS WEV_ESTIMATED_TOTAL_EFFORT, WEV.WEIGHT_KPI AS WEV_WEIGHT_KPI, WEV.WEIGHT_REVIEW AS WEV_WEIGHT_REVIEW, WEV.WEIGHT_SONS AS WEV_WEIGHT_SONS,
+            WEV.WEIGHT_ASSOC_WORK_EFFORT AS WEV_WEIGHT_ASSOC_WORK_EFFORT, WEV.LAST_CORRECT_SCORE_DATE AS WEV_LAST_CORRECT_SCORE_DATE, WEV.TOTAL_ENUM_ID_KPI AS WEV_TOTAL_ENUM_ID_KPI, WEV.TOTAL_ENUM_ID_SONS AS WEV_TOTAL_ENUM_ID_SONS,
+            WEV.TOTAL_ENUM_ID_ASSOC AS WEV_TOTAL_ENUM_ID_ASSOC, WEV.PROCESS_ID AS WEV_PROCESS_ID, WEV.SCHEDULED_START_DATE AS WEV_SCHEDULED_START_DATE, WEV.SCHEDULED_COMPLETION_DATE AS WEV_SCHEDULED_COMPLETION_DATE,
+            WEV.SPECIAL_TERMS AS WEV_SPECIAL_TERMS, WEV.DATA_SOLL AS WEV_DATA_SOLL, WEV.WE_TYPE_UOM_RANGE_SCORE_ID AS WEV_WE_TYPE_UOM_RANGE_SCORE_ID, WEV.WE_TYPE_DESCRIPTION AS WEV_WE_TYPE_DESCRIPTION, WEV.WE_TYPE_DESCRIPTION_LANG AS WEV_WE_TYPE_DESCRIPTION_LANG,
+            WEV.WE_TYPE_ICON_ID AS WEV_WE_TYPE_ICON_ID, WEV.LAYOUT_TYPE_ENUM_ID AS WEV_LAYOUT_TYPE_ENUM_ID, WEV.ETCH AS WEV_ETCH, WEV.PURPOSE_ETCH AS WEV_PURPOSE_ETCH, WEV.CHILD_TEMPLATE_ID AS WEV_CHILD_TEMPLATE_ID,
+            WEV.ENABLE_MULTI_YEAR_FLAG AS WEV_ENABLE_MULTI_YEAR_FLAG, WEV.WE_STATUS_DESCR AS WEV_WE_STATUS_DESCR, WEV.WE_STATUS_DESCR_LANG AS WEV_WE_STATUS_DESCR_LANG, WEV.WE_ACTIVATION AS WEV_WE_ACTIVATION,
+            WEV.WE_STATUS_TYPE_ID AS WEV_WE_STATUS_TYPE_ID, WEV.WE_CONTEXT_ID AS WEV_WE_CONTEXT_ID, WEV.WE_CONTEXT_DESCRIPTION AS WEV_WE_CONTEXT_DESCRIPTION, WEV.WE_IS_TEMPLATE AS WEV_WE_IS_TEMPLATE, WEV.WE_IS_ROOT AS WEV_WE_IS_ROOT,
+            WEV.WE_IS_IN_ONLY_ONE_CARD AS WEV_WE_IS_IN_ONLY_ONE_CARD, WEV.WE_HIERARCHY_TYPE_ID AS WEV_WE_HIERARCHY_TYPE_ID, WEV.WE_INT_ORG_CODE AS WEV_WE_INT_ORG_CODE, WEV.WE_INT_ORG_DESCR AS WEV_WE_INT_ORG_DESCR,
+            WEV.WE_INT_ORG_DESCR_LANG AS WEV_WE_INT_ORG_DESCR_LANG, WEV.WE_ORG_ROLE_DESCR AS WEV_WE_ORG_ROLE_DESCR, WEV.WE_ORG_PARTY_CODE AS WEV_WE_ORG_PARTY_CODE, WEV.WE_ORG_PARTY_DESCR AS WEV_WE_ORG_PARTY_DESCR,
+            WEV.WE_ORG_PARTY_DESCR_LANG AS WEV_WE_ORG_PARTY_DESCR_LANG, WEV.WE_TYPE_PERIOD_ID AS WEV_WE_TYPE_PERIOD_ID, WEV.WE_TYPE_PERIOD_DESC AS WEV_WE_TYPE_PERIOD_DESC, WEV.WE_ETCH AS WEV_WE_ETCH, WEV.WE_PARENT_TYPE_ETCH AS WEV_WE_PARENT_TYPE_ETCH,
+            WEV.WE_PARENT_ETCH AS WEV_WE_PARENT_ETCH, WEV.WE_PARENT_NAME AS WEV_WE_PARENT_NAME, WEV.WE_PARENT_ID AS WEV_WE_PARENT_ID,
+
+            RT.ROLE_TYPE_ID AS RT_ROLE_TYPE_ID, RT.PARENT_TYPE_ID AS RT_PARENT_TYPE_ID, RT.HAS_TABLE AS RT_HAS_TABLE, RT.DESCRIPTION AS RT_DESCRIPTION, RT.LAST_UPDATED_STAMP AS RT_LAST_UPDATED_STAMP, RT.LAST_UPDATED_TX_STAMP AS RT_LAST_UPDATED_TX_STAMP,
+            RT.CREATED_STAMP AS RT_CREATED_STAMP, RT.CREATED_TX_STAMP AS RT_CREATED_TX_STAMP, RT.SHORT_LABEL AS RT_SHORT_LABEL, RT.ICON_CONTENT_ID AS RT_ICON_CONTENT_ID, RT.PREV_PARTY_TYPE_ID AS RT_PREV_PARTY_TYPE_ID,
+            RT.WORK_EFFORT_TYPE_ID AS RT_WORK_EFFORT_TYPE_ID, RT.WORK_EFFORT_ASSOC_TYPE_ID AS RT_WORK_EFFORT_ASSOC_TYPE_ID, RT.WORK_EFFORT_PERIOD_ID AS RT_WORK_EFFORT_PERIOD_ID, RT.DESCRIPTION_LANG AS RT_DESCRIPTION_LANG,
+            RT.SHORT_LABEL_LANG AS RT_SHORT_LABEL_LANG, RT.LAST_MODIFIED_BY_USER_LOGIN AS RT_LAST_MODIFIED_BY_USER_LOGIN, RT.CREATED_BY_USER_LOGIN AS RT_CREATED_BY_USER_LOGIN,
+
+            PRV.PARENT_ROLE_TYPE_ID AS PRV_PARENT_ROLE_TYPE_ID, PRV.PARENT_DESCRIPTION AS PRV_PARENT_DESCRIPTION, PRV.PARENT_SHORT_LABEL AS PRV_PARENT_SHORT_LABEL, PRV.PARENT_ROLE_CODE AS PRV_PARENT_ROLE_CODE,
+            PRV.PARTY_ID AS PRV_PARTY_ID, PRV.ROLE_TYPE_ID AS PRV_ROLE_TYPE_ID, PRV.ROLE_DESCRIPTION AS PRV_ROLE_DESCRIPTION,PRV.ROLE_DESCRIPTION AS PRV_ROLE_DESCRIPTION, PRV.SHORT_LABEL AS PRV_SHORT_LABEL, PRV.PARTY_NAME AS PRV_PARTY_NAME, PRV.EMPL_POSITION_TYPE_ID AS PRV_EMPL_POSITION_TYPE_ID,
+            PRV.STATUS_ID AS PRV_STATUS_ID, PRV.ORGANIZATION_ID AS PRV_ORGANIZATION_ID
+
+        FROM WORK_EFFORT_PARTY_ASSIGNMENT WEPA
+        INNER JOIN ROLE_TYPE RT ON RT.ROLE_TYPE_ID = WEPA.ROLE_TYPE_ID
+        INNER JOIN PARTY_ROLE_VIEW PRV ON PRV.PARTY_ID = WEPA.PARTY_ID
+        INNER JOIN PARTY P ON P.PARTY_ID = WEPA.PARTY_ID
+        INNER JOIN WORK_EFFORT_VIEW WEV ON WEV.WORK_EFFORT_ID = WEPA.WORK_EFFORT_ID
+        WHERE WEV.WORK_EFFORT_SNAPSHOT_ID IS NULL AND WEV.ORGANIZATION_ID = #{userPrefValue,jdbcType=VARCHAR} AND PRV.STATUS_ID = 'PARTY_ENABLED' AND PRV.ROLE_TYPE_ID = RT.ROLE_TYPE_ID
+        <include refid="filterMatch"></include>
+        <if test='filters != null '>
+            AND (
+        </if>
+        <include refid="filter"></include>
+        <if test='filters != null '>
+            )
+        </if>
+        ORDER BY WEPA.WORK_EFFORT_ID ASC
+
+
+   </select>
+
+    <sql id="filter" >
+        <if test='filters != null and filters.length > 0'>
+            <foreach collection='filters' item="item" index="index" open="" close="" separator=" AND ">
+                <choose>
+                    <when test='item.field == "workEffortId" and item.value != null'>
+                         WEPA.WORK_EFFORT_ID = #{item.value }
+                    </when>
+                    <when test='item.field == "roleTypeId" and item.value != null'>
+                         WEPA.ROLE_TYPE_ID = #{item.value }
+                    </when>
+                    <when test='item.field == "partyId" and item.value != null'>
+                         WEPA.PARTY_ID = #{item.value }
+                    </when>
+                    <when test='item.field == "workEffortIdDesc" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                             LOWER(WEV.WORK_EFFORT_NAME) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                             LOWER(WEV.WORK_EFFORT_NAME_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                    </when>
+                    <when test='item.field == "roleTypeIdDesc" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                             LOWER(RT.DESCRIPTION) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                             LOWER(RT.DESCRIPTION_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                    </when>
+                    <when test='item.field == "partyIdDesc" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                             LOWER(P.DESCRIPTION) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                             LOWER(P.DESCRIPTION_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                    </when>
+                </choose>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="filterMatch" >
+        <if test='filterGenericLabel != null and filterGenericLabel.length > 0'>
+            AND (
+            <foreach collection='filterGenericLabel' item="item" index="index" open=" " close=""
+                     separator=" OR ">
+                <choose>
+                    <when test='item.field == "workEffortIdMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WEV.WORK_EFFORT_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WEV.WORK_EFFORT_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "partyIdMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="P.DESCRIPTION_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="P.DESCRIPTION"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "roleTypeIdMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="RT.DESCRIPTION_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="RT.DESCRIPTION"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                </choose>
+            </foreach>
+            )
+        </if>
+    </sql>
+
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.ContentAndAttributesMapper">
+    <select id="getValidMenu" resultMap="contentAndAttributes" parameterType="java.util.Map">
+        SELECT C.*,
+        <include refid="columnNameWithAliasContentAttribute">
+         <property name="alias" value="TIT"/>
+         </include>,
+        <include refid="columnNameWithAliasContentAttribute">
+            <property name="alias" value="LIN"/>
+        </include>,
+        <include refid="columnNameWithAliasContentAttribute">
+            <property name="alias" value="CLA"/>
+        </include>,
+        <include refid="columnNameWithAliasContentAssoc">
+            <property name="alias" value="CA"/>
+        </include>
+        FROM CONTENT C
+        INNER JOIN CONTENT_ASSOC CA
+        ON C.CONTENT_ID = CA.CONTENT_ID_TO
+        INNER JOIN CONTENT_ATTRIBUTE PERM
+        ON PERM.CONTENT_ID = CA.CONTENT_ID_TO AND PERM.ATTR_NAME = 'permission'
+        INNER JOIN CONTENT_ATTRIBUTE TIT
+        ON TIT.CONTENT_ID = CA.CONTENT_ID_TO AND TIT.ATTR_NAME = 'title'
+        INNER JOIN CONTENT_ATTRIBUTE LIN
+        ON LIN.CONTENT_ID = CA.CONTENT_ID_TO AND LIN.ATTR_NAME = 'link'
+        LEFT JOIN CONTENT_ATTRIBUTE CLA
+        ON CLA.CONTENT_ID = CA.CONTENT_ID_TO AND CLA.ATTR_NAME = 'classes'
+        WHERE
+            <foreach item="item" index="index" collection="keys" open="(PERM.ATTR_VALUE = " separator="OR PERM.ATTR_VALUE = " close=")">
+                #{item}
+            </foreach>
+          AND (
+            CA.FROM_DATE &lt;= CURRENT_TIMESTAMP
+            AND (
+              CA.THRU_DATE IS NULL OR CA.THRU_DATE &gt;= CURRENT_TIMESTAMP
+            )
+          )
+          AND CA.CONTENT_ASSOC_TYPE_ID = 'TREE_CHILD'
+          AND NOT EXISTS (
+            SELECT 1
+            FROM USER_LOGIN_SECURITY_GROUP ULSG
+            LEFT JOIN SECURITY_GROUP_CONTENT SGC ON ULSG.GROUP_ID = SGC.GROUP_ID
+            WHERE ULSG.USER_LOGIN_ID = #{userLoginId} AND SGC.CONTENT_ID = CA.CONTENT_ID_TO
+          )
+        ORDER BY CA.SEQUENCE_NUM ASC
+    </select>
+
+    <select id="getFolderMenu" resultMap="contentAndAttributes" parameterType="java.util.Map">
+        SELECT C.*,
+        <include refid="columnNameWithAliasContentAttribute">
+            <property name="alias" value="TIT"/>
+        </include>,
+        <include refid="columnNameWithAliasContentAttribute">
+            <property name="alias" value="CLA"/>
+        </include>,
+        <include refid="columnNameWithAliasContentAssoc">
+            <property name="alias" value="CA"/>
+        </include>
+        FROM CONTENT C
+        INNER JOIN CONTENT_ASSOC CA
+        ON C.CONTENT_ID = CA.CONTENT_ID_TO
+        INNER JOIN CONTENT_ATTRIBUTE TIT
+        ON TIT.CONTENT_ID = CA.CONTENT_ID_TO AND TIT.ATTR_NAME = 'title'
+        LEFT JOIN CONTENT_ATTRIBUTE CLA
+        ON CLA.CONTENT_ID = CA.CONTENT_ID_TO AND CLA.ATTR_NAME = 'classes'
+        WHERE CA.CONTENT_ASSOC_TYPE_ID = 'TREE_CHILD'
+          AND (CA.FROM_DATE &lt;= CURRENT_TIMESTAMP AND (CA.THRU_DATE IS NULL OR CA.THRU_DATE &gt;= CURRENT_TIMESTAMP))
+          AND NOT EXISTS (
+            SELECT 1
+            FROM CONTENT_ATTRIBUTE LIN
+            WHERE LIN.ATTR_NAME = 'link' AND LIN.CONTENT_ID = CA.CONTENT_ID_TO
+          )
+        ORDER BY CA.SEQUENCE_NUM ASC
+    </select>
+
+    <resultMap id="contentAndAttributes" type="it.mapsgroup.gzoom.mybatis.dto.ContentAndAttributes" extends="it.mapsgroup.gzoom.mybatis.mapper.ContentMapper.content">
+        <association property="title" columnPrefix="TIT_" resultMap="it.mapsgroup.gzoom.mybatis.mapper.ContentAttributeMapper.contentAttribute"/>
+        <association property="link" columnPrefix="LIN_" resultMap="it.mapsgroup.gzoom.mybatis.mapper.ContentAttributeMapper.contentAttribute"/>
+        <association property="classes" columnPrefix="CLA_" resultMap="it.mapsgroup.gzoom.mybatis.mapper.ContentAttributeMapper.contentAttribute"/>
+        <association property="parent" columnPrefix="CA_" resultMap="it.mapsgroup.gzoom.mybatis.mapper.ContentAssocMapper.contentAssoc"/>
+    </resultMap>
+    <sql id="columnNameWithAliasContentAttribute">
+        ${alias}.CONTENT_ID AS ${alias}_CONTENT_ID,
+        ${alias}.ATTR_NAME AS ${alias}_ATTR_NAME,
+        ${alias}.ATTR_VALUE AS ${alias}_ATTR_VALUE,
+        ${alias}.LAST_UPDATED_STAMP AS ${alias}_LAST_UPDATED_STAMP,
+        ${alias}.LAST_UPDATED_TX_STAMP AS ${alias}_LAST_UPDATED_TX_STAMP,
+        ${alias}.CREATED_STAMP AS ${alias}_CREATED_STAMP,
+        ${alias}.CREATED_TX_STAMP AS ${alias}_CREATED_TX_STAMP
+    </sql>
+
+    <sql id="columnNameWithAliasContentAssoc">
+       ${alias}.CONTENT_ID AS ${alias}_CONTENT_ID,
+        ${alias}.CONTENT_ID_TO AS ${alias}_CONTENT_ID_TO,
+        ${alias}.CONTENT_ASSOC_TYPE_ID AS ${alias}_CONTENT_ASSOC_TYPE_ID,
+        ${alias}.FROM_DATE AS ${alias}_FROM_DATE,
+        ${alias}.THRU_DATE AS ${alias}_THRU_DATE,
+        ${alias}.CONTENT_ASSOC_PREDICATE_ID AS ${alias}_CONTENT_ASSOC_PREDICATE_ID,
+        ${alias}.DATA_SOURCE_ID AS ${alias}_DATA_SOURCE_ID,
+        ${alias}.SEQUENCE_NUM AS ${alias}_SEQUENCE_NUM,
+        ${alias}.MAP_KEY AS ${alias}_MAP_KEY,
+        ${alias}.UPPER_COORDINATE AS ${alias}_UPPER_COORDINATE,
+        ${alias}.LEFT_COORDINATE AS ${alias}_LEFT_COORDINATE,
+        ${alias}.CREATED_DATE AS ${alias}_CREATED_DATE,
+        ${alias}.CREATED_BY_USER_LOGIN AS ${alias}_CREATED_BY_USER_LOGIN,
+        ${alias}.LAST_MODIFIED_DATE AS ${alias}_LAST_MODIFIED_DATE,
+        ${alias}.LAST_MODIFIED_BY_USER_LOGIN AS ${alias}_LAST_MODIFIED_BY_USER_LOGIN,
+        ${alias}.LAST_UPDATED_STAMP AS ${alias}_LAST_UPDATED_STAMP,
+        ${alias}.LAST_UPDATED_TX_STAMP AS ${alias}_LAST_UPDATED_TX_STAMP,
+        ${alias}.CREATED_STAMP AS ${alias}_CREATED_STAMP,
+        ${alias}.CREATED_TX_STAMP AS ${alias}_CREATED_TX_STAMP
+    </sql>
+</mapper>

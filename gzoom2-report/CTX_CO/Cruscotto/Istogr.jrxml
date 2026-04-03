@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Istogr" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="22c2ae8e-c01d-48c4-90cf-a6c01511a2f1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="milanocciaPROD"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="174"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="821"/>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="YEAR" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select m1.DATA_RIFERIMENTO,
+			m1.ANNO,
+			m1.ETCH_AREA_RISCHIO,
+			m1.AREA_RISCHIO, 
+			SUM(m1.MIS_PREVISTE) as MIS_PREVISTE, 
+			SUM(m1.MIS_ATTUATE) as MIS_ATTUATE, 
+			-- round((SUM(cast (m1.MIS_ATTUATE as decimal(10,2))) / SUM(cast(m1.MIS_PREVISTE as decimal(10,2))) * 100.0) - 100.0 , 0) as MIS_DELTA_PERC,
+			(select count(*) from COR_PRO_DETAIL_VIEW p where p.ANNO = m1.ANNO and p.ARE_ID = m1.ARE_ID) as PRO_PREVISTI,
+			-- round(SUM(cast (m1.MIS_PREVISTE as decimal(10,2))) / cast((select count(*) from COR_PRO_DETAIL_VIEW p where p.ANNO = m1.ANNO and p.ARE_ID = m1.ARE_ID) as decimal(10,2)),0) as MIS_PRO, 	
+			m1.ARE_ID
+from (select m.DATA_RIFERIMENTO,m.ANNO,m.ETCH_AREA_RISCHIO,m.ARE_ID, m.AREA_RISCHIO,1 as MIS_PREVISTE, m.SAL_ATTUATA as MIS_ATTUATE
+			from COR_MIS_DETAIL_VIEW m
+			where exists (SELECT 1 from USER_LOGIN_SECURITY_GROUP ULSG 
+										INNER JOIN SECURITY_GROUP_PERMISSION SP ON SP.GROUP_ID = ULSG.GROUP_ID AND SP.PERMISSION_ID = 'CORPERFMGR_ADMIN'
+										WHERE ULSG.USER_LOGIN_ID =  $P{userLoginId}
+										and m.anno= $P{YEAR} 
+										 $P!{orgUnitIdString} )
+			or exists (SELECT 1 from USER_LOGIN_SECURITY_GROUP ULSG 
+								INNER JOIN SECURITY_GROUP_PERMISSION SP ON SP.GROUP_ID = ULSG.GROUP_ID AND SP.PERMISSION_ID = 'CORPERFORG_ADMIN'
+								INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID 
+								INNER JOIN PARTY_RELATIONSHIP PRO ON PRO.PARTY_ID_TO = UL.PARTY_ID
+								AND (PRO.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+								or (PRO.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE' AND (PRO.CTX_ENABLED IS NULL OR PRO.CTX_ENABLED LIKE 'CTX_CO')))
+								WHERE ULSG.USER_LOGIN_ID =  $P{userLoginId} 
+								and EXTRACT(YEAR FROM PRO.FROM_DATE) <= cast(m.ANNO as decimal(10,0))
+								and (PRO.THRU_DATE is null or EXTRACT(YEAR FROM PRO.FROM_DATE) >= cast(m.ANNO as decimal(10,0)) )
+								AND PRO.PARTY_ID_FROM = m.PRO_RESP)
+			and m.anno= $P{YEAR} 
+			 $P!{orgUnitIdString} ) m1
+ where 1=1
+ AND m1.DATA_RIFERIMENTO= $P{customTimePeriod} 
+ group by m1.DATA_RIFERIMENTO,m1.ANNO,m1.ETCH_AREA_RISCHIO, m1.AREA_RISCHIO, m1.ARE_ID 
+order by m1.DATA_RIFERIMENTO,m1.ANNO,m1.ETCH_AREA_RISCHIO, m1.AREA_RISCHIO, m1.ARE_ID]]>
+	</queryString>
+	<field name="ANNO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ANNO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ANNO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="custom_time_period"/>
+	</field>
+	<field name="ETCH_AREA_RISCHIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ETCH_AREA_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ETCH_AREA_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="AREA_RISCHIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="AREA_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="AREA_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="MIS_PREVISTE" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="MIS_PREVISTE"/>
+		<property name="com.jaspersoft.studio.field.label" value="MIS_PREVISTE"/>
+	</field>
+	<field name="MIS_ATTUATE" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="MIS_ATTUATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="MIS_ATTUATE"/>
+	</field>
+	<field name="PRO_PREVISTI" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="PRO_PREVISTI"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRO_PREVISTI"/>
+	</field>
+	<field name="ARE_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ARE_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="ARE_ID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="DATA_RIFERIMENTO" class="java.util.Date"/>
+	<variable name="SUM_MIS_PREVISTE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{MIS_PREVISTE}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="505">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<bar3DChart>
+				<chart evaluationTime="Report" hyperlinkType="LocalAnchor" bookmarkLevel="1">
+					<reportElement positionType="Float" x="0" y="0" width="802" height="505" isRemoveLineWhenBlank="true" uuid="0463e35d-0feb-4f5b-b8bb-065109908dfb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<chartTitle>
+						<font size="14" isBold="true"/>
+						<titleExpression><![CDATA["Misure specifiche di contrasto ad eventi di maladministration, riportate per area di rischio"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend position="Top">
+						<font size="8"/>
+					</chartLegend>
+					<anchorNameExpression><![CDATA["Misure programmate per Area di rischio"]]></anchorNameExpression>
+					<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+				</chart>
+				<categoryDataset>
+					<dataset resetType="Report"/>
+					<categorySeries>
+						<seriesExpression><![CDATA["N.misure"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{ETCH_AREA_RISCHIO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{MIS_PREVISTE}]]></valueExpression>
+						<labelExpression><![CDATA[$F{ETCH_AREA_RISCHIO}]]></labelExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["N.processi"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{ETCH_AREA_RISCHIO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{PRO_PREVISTI}]]></valueExpression>
+						<labelExpression><![CDATA[$F{ETCH_AREA_RISCHIO}]]></labelExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["N.misure/processo"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{ETCH_AREA_RISCHIO}]]></categoryExpression>
+						<valueExpression><![CDATA[$V{SUM_MIS_PREVISTE} / $F{PRO_PREVISTI}]]></valueExpression>
+						<labelExpression><![CDATA[$F{ETCH_AREA_RISCHIO}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot xOffset="10.0" yOffset="5.0">
+					<plot labelRotation="0.0">
+						<seriesColor seriesOrder="0" color="#A0CBE8"/>
+						<seriesColor seriesOrder="1" color="#F28E2B"/>
+						<seriesColor seriesOrder="2" color="#FFBE7D"/>
+						<seriesColor seriesOrder="3" color="#2A4E6B"/>
+						<seriesColor seriesOrder="4" color="#5F778C"/>
+						<seriesColor seriesOrder="5" color="#848F99"/>
+					</plot>
+					<itemLabel>
+						<font size="8"/>
+					</itemLabel>
+					<categoryAxisFormat labelRotation="0.0">
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisLabelExpression><![CDATA["Numero di misure"]]></valueAxisLabelExpression>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" tickLabelMask="0" verticalTickLabels="false" axisLineColor="#000000">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</columnHeader>
+</jasperReport>

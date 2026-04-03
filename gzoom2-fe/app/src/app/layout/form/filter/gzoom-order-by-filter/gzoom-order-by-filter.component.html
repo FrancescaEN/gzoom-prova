@@ -1,0 +1,19 @@
+<form *ngIf="this.form" [formGroup]="this.form">
+  <gzoom-label [label]="('Sort by' | i18n) + ':'" labelPos="left">
+    <div style="display: flex; flex-direction: row; flex-wrap: nowrap">
+      <gzoom-dropdown
+        [options]="this.orderByColumn"
+        style="width: 240px"
+        [controlName]="controlNameOrderBy"
+        [showClear]="true"
+      ></gzoom-dropdown>
+      <gzoom-button-link
+        [icon]="this.iconOrder"
+        [disabled]="!this.orderBy.value"
+        (onClick)="clickOrder($event)"
+        [tooltipLabel]="'Change sorting' | i18n"
+        tooltipPosition="bottom"
+      />
+    </div>
+  </gzoom-label>
+</form>

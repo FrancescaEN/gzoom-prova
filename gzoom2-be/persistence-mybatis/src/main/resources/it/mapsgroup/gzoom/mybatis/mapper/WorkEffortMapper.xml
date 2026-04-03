@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortMapper">
+
+    <update id="anonymizeWorkEffort">
+        UPDATE
+            WORK_EFFORT
+        SET WORK_EFFORT_NAME = WORK_EFFORT_ID
+        WHERE WORK_EFFORT_ID IN (
+        <if test="_databaseId == 'mysql'">
+            SELECT WORK_EFFORT_ID FROM(
+        </if>
+               SELECT WE.WORK_EFFORT_ID
+               FROM WORK_EFFORT WE
+                        INNER JOIN WORK_EFFORT_TYPE WET ON
+                   WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+                        INNER JOIN WORK_EFFORT_PARTY_ASSIGNMENT WP ON
+                   WP.WORK_EFFORT_ID = WE.WORK_EFFORT_ID
+                       AND WP.ROLE_TYPE_ID = 'WEM_EVAL_IN_CHARGE'
+                        INNER JOIN PARTY PA ON
+                   PA.PARTY_ID = WP.PARTY_ID
+                       AND PA.STATUS_ID = 'PARTY_DISABLED'
+                       AND PA.END_DATE IS NOT NULL
+                       AND PA.END_DATE &lt; #{expirationDate}
+               WHERE WET.PARENT_TYPE_ID IN ('CTX_EP', 'CTX_DI')
+                 AND WET.IS_TEMPLATE = 'N'
+                 AND WET.IS_ROOT = 'Y'
+                 AND WE.WORK_EFFORT_NAME &lt;&gt; WE.WORK_EFFORT_ID
+        <if test="_databaseId == 'mysql'">
+            ) AS subquery
+        </if>
+               )
+    </update>
+
+    <resultMap id="workEffortResultMap" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffort">
+        <id column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+        <result column="current_status_id" property="currentStatusId" jdbcType="VARCHAR"/>
+        <result column="last_status_update" property="lastStatusUpdate" jdbcType="TIMESTAMP"/>
+        <result column="work_effort_purpose_type_id" property="workEffortPurposeTypeId" jdbcType="VARCHAR"/>
+        <result column="work_effort_parent_id" property="workEffortParentId" jdbcType="VARCHAR"/>
+        <result column="scope_enum_id" property="scopeEnumId" jdbcType="VARCHAR"/>
+        <result column="priority" property="priority" jdbcType="NUMERIC"/>
+        <result column="percent_complete" property="percentComplete" jdbcType="NUMERIC"/>
+        <result column="work_effort_name" property="workEffortName" jdbcType="VARCHAR"/>
+        <result column="show_as_enum_id" property="showAsEnumId" jdbcType="VARCHAR"/>
+        <result column="send_notification_email" property="sendNotificationEmail" jdbcType="CHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="location_desc" property="locationDesc" jdbcType="VARCHAR"/>
+        <result column="estimated_start_date" property="estimatedStartDate" jdbcType="TIMESTAMP"/>
+        <result column="estimated_completion_date" property="estimatedCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="actual_start_date" property="actualStartDate" jdbcType="TIMESTAMP"/>
+        <result column="actual_completion_date" property="actualCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="estimated_milli_seconds" property="estimatedMilliSeconds" jdbcType="DOUBLE"/>
+        <result column="estimated_setup_millis" property="estimatedSetupMillis" jdbcType="DOUBLE"/>
+        <result column="estimate_calc_method" property="estimateCalcMethod" jdbcType="VARCHAR"/>
+        <result column="actual_milli_seconds" property="actualMilliSeconds" jdbcType="DOUBLE"/>
+        <result column="actual_setup_millis" property="actualSetupMillis" jdbcType="DOUBLE"/>
+        <result column="total_milli_seconds_allowed" property="totalMilliSecondsAllowed" jdbcType="DOUBLE"/>
+        <result column="total_money_allowed" property="totalMoneyAllowed" jdbcType="NUMERIC"/>
+        <result column="money_uom_id" property="moneyUomId" jdbcType="VARCHAR"/>
+        <result column="special_terms" property="specialTerms" jdbcType="VARCHAR"/>
+        <result column="time_transparency" property="timeTransparency" jdbcType="NUMERIC"/>
+        <result column="universal_id" property="universalId" jdbcType="VARCHAR"/>
+        <result column="source_reference_id" property="sourceReferenceId" jdbcType="VARCHAR"/>
+        <result column="fixed_asset_id" property="fixedAssetId" jdbcType="VARCHAR"/>
+        <result column="facility_id" property="facilityId" jdbcType="VARCHAR"/>
+        <result column="info_url" property="infoUrl" jdbcType="VARCHAR"/>
+        <result column="recurrence_info_id" property="recurrenceInfoId" jdbcType="VARCHAR"/>
+        <result column="temp_expr_id" property="tempExprId" jdbcType="VARCHAR"/>
+        <result column="runtime_data_id" property="runtimeDataId" jdbcType="VARCHAR"/>
+        <result column="note_id" property="noteId" jdbcType="VARCHAR"/>
+        <result column="service_loader_name" property="serviceLoaderName" jdbcType="VARCHAR"/>
+        <result column="quantity_to_produce" property="quantityToProduce" jdbcType="DOUBLE"/>
+        <result column="quantity_produced" property="quantityProduced" jdbcType="DOUBLE"/>
+        <result column="quantity_rejected" property="quantityRejected" jdbcType="DOUBLE"/>
+        <result column="reserv_persons" property="reservPersons" jdbcType="DOUBLE"/>
+        <result column="reserv2nd_p_p_perc" property="reserv2ndPPPerc" jdbcType="DOUBLE"/>
+        <result column="reserv_nth_p_p_perc" property="reservNthPPPerc" jdbcType="DOUBLE"/>
+        <result column="accommodation_map_id" property="accommodationMapId" jdbcType="VARCHAR"/>
+        <result column="accommodation_spot_id" property="accommodationSpotId" jdbcType="VARCHAR"/>
+        <result column="revision_number" property="revisionNumber" jdbcType="NUMERIC"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="sequence_num" property="sequenceNum" jdbcType="NUMERIC"/>
+        <result column="organization_id" property="organizationId" jdbcType="VARCHAR"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="product_id" property="productId" jdbcType="VARCHAR"/>
+        <result column="empl_position_type_id" property="emplPositionTypeId" jdbcType="VARCHAR"/>
+        <result column="local_name_content_id" property="localNameContentId" jdbcType="VARCHAR"/>
+        <result column="estimated_total_effort" property="estimatedTotalEffort" jdbcType="DOUBLE"/>
+        <result column="weight_kpi" property="weightKpi" jdbcType="DOUBLE"/>
+        <result column="weight_review" property="weightReview" jdbcType="DOUBLE"/>
+        <result column="weight_sons" property="weightSons" jdbcType="DOUBLE"/>
+        <result column="org_unit_role_type_id" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="org_unit_id" property="orgUnitId" jdbcType="VARCHAR"/>
+        <result column="weight_assoc_work_effort" property="weightAssocWorkEffort" jdbcType="DOUBLE"/>
+        <result column="work_effort_assoc_type_id" property="workEffortAssocTypeId" jdbcType="VARCHAR"/>
+        <result column="last_correct_score_date" property="lastCorrectScoreDate" jdbcType="TIMESTAMP"/>
+        <result column="total_enum_id_kpi" property="totalEnumIdKpi" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_sons" property="totalEnumIdSons" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_assoc" property="totalEnumIdAssoc" jdbcType="VARCHAR"/>
+        <result column="process_id" property="processId" jdbcType="VARCHAR"/>
+        <result column="is_posted" property="isPosted" jdbcType="CHAR"/>
+        <result column="etch" property="etch" jdbcType="VARCHAR"/>
+        <result column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="snap_shot_date" property="snapShotDate" jdbcType="TIMESTAMP"/>
+        <result column="snap_shot_description" property="snapShotDescription" jdbcType="VARCHAR"/>
+        <result column="work_effort_snapshot_id" property="workEffortSnapshotId" jdbcType="VARCHAR"/>
+        <result column="uom_range_score_id" property="uomRangeScoreId" jdbcType="VARCHAR"/>
+        <result column="work_effort_revision_id" property="workEffortRevisionId" jdbcType="VARCHAR"/>
+        <result column="scheduled_start_date" property="scheduledStartDate" jdbcType="TIMESTAMP"/>
+        <result column="scheduled_completion_date" property="scheduledCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="work_effort_name_lang" property="workEffortNameLang" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="data_soll" property="dataSoll" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getWorkEfforts" resultMap="workEffortResultMap" parameterType="java.util.Map">
+        SELECT WE.* FROM WORK_EFFORT WE
+        INNER JOIN WORK_EFFORT_TYPE WET ON WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+
+        <if test="(filter.isOrgMgr or filter.isSup or filter.isTop) and useFilter">
+        INNER JOIN USER_LOGIN_VALID_PARTY_ROLE ULVPR ON ULVPR.PARTY_ID = WE.ORGANIZATION_ID
+                                                            AND ULVPR.ROLE_TYPE_ID = 'INTERNAL_ORGANIZATIO'
+                                                            AND ULVPR.USER_LOGIN_ID = #{userLoginId}
+        INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULVPR.USER_LOGIN_ID
+        INNER JOIN STATUS_ITEM SI ON SI.STATUS_ID = WE.CURRENT_STATUS_ID
+
+        LEFT JOIN WORK_EFFORT_TYPE_STATUS WETS ON WETS.WORK_EFFORT_TYPE_ROOT_ID = WE.WORK_EFFORT_TYPE_ID
+                                                      AND WE.CURRENT_STATUS_ID = WETS.CURRENT_STATUS_ID
+
+        LEFT JOIN PARTY_RELATIONSHIP PRE ON PRE.ROLE_TYPE_ID_FROM = WE.ORG_UNIT_ROLE_TYPE_ID
+                                                AND PRE.PARTY_ID_FROM = WE.ORG_UNIT_ID
+                                                AND (
+                                                    PRE.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+                                                        OR (
+                                                            PRE.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE'
+                                                                AND (
+                                                                    PRE.CTX_ENABLED IS NULL OR PRE.CTX_ENABLED LIKE concat('%', concat(#{parentTypeId},'%'))
+                                                                    )
+                                                            )
+                                                    )
+                                                AND PRE.FROM_DATE &lt;= WE.ESTIMATED_COMPLETION_DATE
+                                                AND(PRE.THRU_DATE IS NULL OR PRE.THRU_DATE &gt;= WE.ESTIMATED_COMPLETION_DATE)
+                                                AND PRE.PARTY_ID_TO = UL.PARTY_ID
+
+        LEFT JOIN PARTY_RELATIONSHIP PRZ ON PRZ.ROLE_TYPE_ID_TO = WE.ORG_UNIT_ROLE_TYPE_ID
+                                                AND PRZ.PARTY_ID_TO = WE.ORG_UNIT_ID
+                                                AND PRZ.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+                                                AND PRZ.FROM_DATE &lt;= WE.ESTIMATED_COMPLETION_DATE
+                                                AND (PRZ.THRU_DATE IS NULL OR PRZ.THRU_DATE &gt;= WE.ESTIMATED_COMPLETION_DATE)
+
+        LEFT JOIN PARTY_RELATIONSHIP PRY ON PRY.ROLE_TYPE_ID_FROM = PRZ.ROLE_TYPE_ID_FROM
+                                                AND PRY.PARTY_ID_FROM = PRZ.PARTY_ID_FROM
+                                                AND (
+                                                    PRY.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+                                                        OR (
+                                                            PRY.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE'
+                                                                AND (
+                                                                    PRY.CTX_ENABLED IS NULL OR PRY.CTX_ENABLED  LIKE concat('%', concat(#{parentTypeId},'%'))
+                                                                    )
+                                                            )
+                                                    )
+                                                AND PRY.FROM_DATE &lt;= WE.ESTIMATED_COMPLETION_DATE
+                                                AND (PRY.THRU_DATE IS NULL OR PRY.THRU_DATE &gt;= WE.ESTIMATED_COMPLETION_DATE)
+                                                AND PRY.PARTY_ID_TO = UL.PARTY_ID
+
+            LEFT JOIN PARTY_RELATIONSHIP PRZ2 ON PRZ2.ROLE_TYPE_ID_TO = PRZ.ROLE_TYPE_ID_FROM
+                                                     AND PRZ2.PARTY_ID_TO = PRZ.PARTY_ID_FROM
+                                                     AND PRZ2.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+                                                     AND PRZ2.FROM_DATE &lt;= WE.ESTIMATED_COMPLETION_DATE
+                                                     AND (PRZ2.THRU_DATE IS NULL OR PRZ2.THRU_DATE &gt;= WE.ESTIMATED_COMPLETION_DATE)
+
+            LEFT JOIN PARTY_RELATIONSHIP PRY2 ON PRY2.ROLE_TYPE_ID_FROM = PRZ2.ROLE_TYPE_ID_FROM
+                                                     AND PRY2.PARTY_ID_FROM = PRZ2.PARTY_ID_FROM
+                                                     AND (
+                                                         PRY2.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+                                                             OR (
+                                                                 PRY2.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE'
+                                                                     AND (
+                                                                         PRY2.CTX_ENABLED IS NULL OR PRY2.CTX_ENABLED  LIKE concat('%', concat(#{parentTypeId},'%'))
+                                                                         )
+                                                                 )
+                                                         )
+                                                     AND PRY2.FROM_DATE &lt;= WE.ESTIMATED_COMPLETION_DATE
+                                                     AND (PRY2.THRU_DATE IS NULL OR PRY2.THRU_DATE &gt;= WE.ESTIMATED_COMPLETION_DATE)
+                                                     AND PRY2.PARTY_ID_TO = UL.PARTY_ID
+
+        LEFT JOIN WORK_EFFORT_PARTY_ASSIGNMENT WEPA ON WEPA.WORK_EFFORT_ID = WE.WORK_EFFORT_ID
+                                                           AND WEPA.THRU_DATE = WE.ESTIMATED_COMPLETION_DATE
+                                                           AND WEPA.ROLE_TYPE_ID LIKE 'WEM%'
+                                                           AND WEPA.PARTY_ID = UL.PARTY_ID
+
+        INNER JOIN PARTY P ON P.PARTY_ID = WE.ORG_UNIT_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = P.PARTY_ID
+                                                AND PPR.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+        </if>
+
+        WHERE
+        <foreach collection='workEffortTypeIds' item="item" index="index" open="" close="" separator=" OR " >
+            WE.WORK_EFFORT_TYPE_ID LIKE #{item}
+        </foreach>
+            AND WET.PARENT_TYPE_ID LIKE 'CTX%'
+            AND WE.WORK_EFFORT_REVISION_ID IS NULL
+            AND WE.ORGANIZATION_ID = #{userPreferenceOrganizationUnitId}
+        <if test="filter.isOrgMgr and useFilter">
+            AND PRE.PARTY_ID_TO IS NOT NULL
+        </if>
+        <if test="filter.isSup and useFilter">
+            AND PRY.PARTY_ID_TO IS NOT NULL
+        </if>
+        <if test="filter.isRole and useFilter">
+            AND WEPA.PARTY_ID IS NOT NULL
+        </if>
+        <if test="filter.isTop and useFilter">
+            AND PRY2.PARTY_ID_TO IS NOT NULL
+        </if>
+
+        ORDER BY WET.SEQ_ESP ASC, WE.SOURCE_REFERENCE_ID ASC, WE.WORK_EFFORT_NAME ASC, WET.DESCRIPTION ASC
+
+    </select>
+
+    <select id="getWorkEffortParents" resultMap="workEffortResultMap">
+    SELECT *
+    FROM work_effort we
+    WHERE we.work_effort_parent_id = #{workEffortParentId}
+    ORDER BY we.work_effort_name ASC
+    </select>
+
+
+    <select id="getParentsbyWorkEffort" resultMap="workEffortResultMap">
+        SELECT *
+        FROM work_effort we
+        WHERE we.work_effort_parent_id = #{workEffortId}
+    </select>
+
+    <select id="getWorkEffort" resultMap="workEffortResultMap">
+    SELECT *
+    FROM work_effort we
+    WHERE we.work_effort_id = #{workEffortId}
+    </select>
+
+
+    <select id="getWorkEffortsIsRootIsTemplate" resultMap="workEffortResultMap">
+    SELECT we.*
+    FROM work_effort we
+    INNER JOIN work_effort_type wet ON wet.work_effort_type_id = we.work_effort_type_id
+    WHERE we.work_effort_revision_id IS NULL
+      AND wet.is_root = 'Y'
+      AND wet.is_template = 'Y'
+    </select>
+
+    <resultMap id="workEffortExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortEx">
+        <id column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+        <result column="current_status_id" property="currentStatusId" jdbcType="VARCHAR"/>
+        <result column="last_status_update" property="lastStatusUpdate" jdbcType="TIMESTAMP"/>
+        <result column="work_effort_purpose_type_id" property="workEffortPurposeTypeId" jdbcType="VARCHAR"/>
+        <result column="work_effort_parent_id" property="workEffortParentId" jdbcType="VARCHAR"/>
+        <result column="scope_enum_id" property="scopeEnumId" jdbcType="VARCHAR"/>
+        <result column="priority" property="priority" jdbcType="NUMERIC"/>
+        <result column="percent_complete" property="percentComplete" jdbcType="NUMERIC"/>
+        <result column="work_effort_name" property="workEffortName" jdbcType="VARCHAR"/>
+        <result column="show_as_enum_id" property="showAsEnumId" jdbcType="VARCHAR"/>
+        <result column="send_notification_email" property="sendNotificationEmail" jdbcType="CHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="location_desc" property="locationDesc" jdbcType="VARCHAR"/>
+        <result column="estimated_start_date" property="estimatedStartDate" jdbcType="TIMESTAMP"/>
+        <result column="estimated_completion_date" property="estimatedCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="actual_start_date" property="actualStartDate" jdbcType="TIMESTAMP"/>
+        <result column="actual_completion_date" property="actualCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="estimated_milli_seconds" property="estimatedMilliSeconds" jdbcType="DOUBLE"/>
+        <result column="estimated_setup_millis" property="estimatedSetupMillis" jdbcType="DOUBLE"/>
+        <result column="estimate_calc_method" property="estimateCalcMethod" jdbcType="VARCHAR"/>
+        <result column="actual_milli_seconds" property="actualMilliSeconds" jdbcType="DOUBLE"/>
+        <result column="actual_setup_millis" property="actualSetupMillis" jdbcType="DOUBLE"/>
+        <result column="total_milli_seconds_allowed" property="totalMilliSecondsAllowed" jdbcType="DOUBLE"/>
+        <result column="total_money_allowed" property="totalMoneyAllowed" jdbcType="NUMERIC"/>
+        <result column="money_uom_id" property="moneyUomId" jdbcType="VARCHAR"/>
+        <result column="special_terms" property="specialTerms" jdbcType="VARCHAR"/>
+        <result column="time_transparency" property="timeTransparency" jdbcType="NUMERIC"/>
+        <result column="universal_id" property="universalId" jdbcType="VARCHAR"/>
+        <result column="source_reference_id" property="sourceReferenceId" jdbcType="VARCHAR"/>
+        <result column="fixed_asset_id" property="fixedAssetId" jdbcType="VARCHAR"/>
+        <result column="facility_id" property="facilityId" jdbcType="VARCHAR"/>
+        <result column="info_url" property="infoUrl" jdbcType="VARCHAR"/>
+        <result column="recurrence_info_id" property="recurrenceInfoId" jdbcType="VARCHAR"/>
+        <result column="temp_expr_id" property="tempExprId" jdbcType="VARCHAR"/>
+        <result column="runtime_data_id" property="runtimeDataId" jdbcType="VARCHAR"/>
+        <result column="note_id" property="noteId" jdbcType="VARCHAR"/>
+        <result column="service_loader_name" property="serviceLoaderName" jdbcType="VARCHAR"/>
+        <result column="quantity_to_produce" property="quantityToProduce" jdbcType="DOUBLE"/>
+        <result column="quantity_produced" property="quantityProduced" jdbcType="DOUBLE"/>
+        <result column="quantity_rejected" property="quantityRejected" jdbcType="DOUBLE"/>
+        <result column="reserv_persons" property="reservPersons" jdbcType="DOUBLE"/>
+        <result column="reserv2nd_p_p_perc" property="reserv2ndPPPerc" jdbcType="DOUBLE"/>
+        <result column="reserv_nth_p_p_perc" property="reservNthPPPerc" jdbcType="DOUBLE"/>
+        <result column="accommodation_map_id" property="accommodationMapId" jdbcType="VARCHAR"/>
+        <result column="accommodation_spot_id" property="accommodationSpotId" jdbcType="VARCHAR"/>
+        <result column="revision_number" property="revisionNumber" jdbcType="NUMERIC"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="sequence_num" property="sequenceNum" jdbcType="NUMERIC"/>
+        <result column="organization_id" property="organizationId" jdbcType="VARCHAR"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="product_id" property="productId" jdbcType="VARCHAR"/>
+        <result column="empl_position_type_id" property="emplPositionTypeId" jdbcType="VARCHAR"/>
+        <result column="local_name_content_id" property="localNameContentId" jdbcType="VARCHAR"/>
+        <result column="estimated_total_effort" property="estimatedTotalEffort" jdbcType="DOUBLE"/>
+        <result column="weight_kpi" property="weightKpi" jdbcType="DOUBLE"/>
+        <result column="weight_review" property="weightReview" jdbcType="DOUBLE"/>
+        <result column="weight_sons" property="weightSons" jdbcType="DOUBLE"/>
+        <result column="org_unit_role_type_id" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="org_unit_id" property="orgUnitId" jdbcType="VARCHAR"/>
+        <result column="weight_assoc_work_effort" property="weightAssocWorkEffort" jdbcType="DOUBLE"/>
+        <result column="work_effort_assoc_type_id" property="workEffortAssocTypeId" jdbcType="VARCHAR"/>
+        <result column="last_correct_score_date" property="lastCorrectScoreDate" jdbcType="TIMESTAMP"/>
+        <result column="total_enum_id_kpi" property="totalEnumIdKpi" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_sons" property="totalEnumIdSons" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_assoc" property="totalEnumIdAssoc" jdbcType="VARCHAR"/>
+        <result column="process_id" property="processId" jdbcType="VARCHAR"/>
+        <result column="is_posted" property="isPosted" jdbcType="CHAR"/>
+        <result column="etch" property="etch" jdbcType="VARCHAR"/>
+        <result column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="snap_shot_date" property="snapShotDate" jdbcType="TIMESTAMP"/>
+        <result column="snap_shot_description" property="snapShotDescription" jdbcType="VARCHAR"/>
+        <result column="work_effort_snapshot_id" property="workEffortSnapshotId" jdbcType="VARCHAR"/>
+        <result column="uom_range_score_id" property="uomRangeScoreId" jdbcType="VARCHAR"/>
+        <result column="work_effort_revision_id" property="workEffortRevisionId" jdbcType="VARCHAR"/>
+        <result column="scheduled_start_date" property="scheduledStartDate" jdbcType="TIMESTAMP"/>
+        <result column="scheduled_completion_date" property="scheduledCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="work_effort_name_lang" property="workEffortNameLang" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="data_soll" property="dataSoll" jdbcType="TIMESTAMP"/>
+        <result column="org_unit_role_type_id" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="WET_DESC" property="workEffortType.description" jdbcType="VARCHAR"/>
+        <result column="WET_DESC_LANG" property="workEffortType.descriptionLang" jdbcType="VARCHAR"/>
+        <result column="ST_DESC" property="statusType.description" jdbcType="VARCHAR"/>
+        <result column="SI_DESC" property="statusItem.description" jdbcType="VARCHAR"/>
+        <result column="SI_DESC_LANG" property="statusItem.descriptionLang" jdbcType="VARCHAR"/>
+        <result column="PP_PRC" property="partyParentRole.parentRoleCode" jdbcType="VARCHAR"/>
+        <result column="P_PARTY_NAME" property="party.partyName" jdbcType="VARCHAR"/>
+        <result column="P_PARTY_NAME_LANG" property="party.partyNameLang" jdbcType="VARCHAR"/>
+        <result column = "TOTALE" property = "totalRow"/>
+    </resultMap>
+
+    <select id="getWorkEffortExList" resultMap="workEffortExResultMap">
+        select we.*,
+        wet.description AS WET_DESC,
+        wet.description_lang  AS WET_DESC_LANG,
+        st.description AS ST_DESC,
+        si.description AS SI_DESC,
+        si.description_lang AS SI_DESC_LANG,
+        pp.parent_role_code AS PP_PRC,
+        p.party_name AS P_PARTY_NAME,
+        p.party_name_lang AS P_PARTY_NAME_LANG
+        from work_effort we
+        join work_effort_type wet on wet.work_effort_type_id = we.work_effort_type_id
+        join status_item si on si.status_id = we.current_status_id
+        join status_type st on st.status_type_id = si.status_type_id
+        join party p on p.party_id = we.org_unit_id
+        join role_type rt on rt.role_type_id = we.org_unit_role_type_id
+        inner join party_parent_role pp on pp.party_id = p.party_id
+        where pp.role_type_id = 'ORGANIZATION_UNIT'
+        and pp.organization_id = #{userPreferenceOrganizationUnitId}
+    </select>
+
+    <select id="getWorkEffortByOrgId" resultMap="workEffort">
+        select we.work_effort_name, we.work_effort_name_lang, we.work_effort_id
+        from work_effort we
+        where we.organization_id = #{userPreferenceOrganizationUnitId} and we.work_effort_revision_id is null
+    </select>
+
+    <select id="getWorkEffortEx" resultMap="workEffortExResultMap">
+    SELECT we.*,
+    wet.description AS WET_DESC,
+    wet.description_lang  AS WET_DESC_LANG,
+    st.description AS ST_DESC,
+    si.description AS SI_DESC,
+    si.description_lang AS SI_DESC_LANG,
+    pp.parent_role_code AS PP_PRC,
+    p.party_name AS P_PARTY_NAME,
+    p.party_name_lang AS P_PARTY_NAME_LANG
+    from work_effort we
+    join work_effort_type wet on wet.work_effort_type_id = we.work_effort_type_id
+    join status_item si on si.status_id = we.current_status_id
+    join status_type st on st.status_type_id = si.status_type_id
+    join party p on p.party_id = we.organization_id
+    join role_type rt on rt.role_type_id = we.org_unit_role_type_id
+    inner join party_parent_role pp on pp.party_id = p.party_id
+    WHERE we.work_effort_id = #{workEffortId}
+    </select>
+
+    <select id="getWorkEffortExListPagination" resultMap="workEffortExResultMap">
+    select we.*,
+    wet.description AS WET_DESC,
+    wet.description_lang  AS WET_DESC_LANG,
+    st.description AS ST_DESC,
+    si.description AS SI_DESC,
+    si.description_lang AS SI_DESC_LANG,
+    pp.parent_role_code AS PP_PRC,
+    p.party_name AS P_PARTY_NAME,
+    p.party_name_lang AS P_PARTY_NAME_LANG,
+    <if test='_databaseId == "mysql"'>
+        CONTA.TOTALE
+    </if>
+    <if test='_databaseId != "mysql"'>
+        COUNT(*) over()  AS "TOTALE"
+    </if>
+    from work_effort we
+    join work_effort_type wet on wet.work_effort_type_id = we.work_effort_type_id
+    join status_item si on si.status_id = we.current_status_id
+    join status_type st on st.status_type_id = si.status_type_id
+    join party p on p.party_id = we.org_unit_id
+    join role_type rt on rt.role_type_id = we.org_unit_role_type_id
+    inner join party_parent_role pp on pp.party_id = p.party_id
+    <if test='_databaseId == "mysql"'>
+        join (
+        select COUNT(*) AS "TOTALE"
+        from work_effort we
+        join work_effort_type wet on wet.work_effort_type_id = we.work_effort_type_id
+        join status_item si on si.status_id = we.current_status_id
+        join status_type st on st.status_type_id = si.status_type_id
+        join party p on p.party_id = we.org_unit_id
+        join role_type rt on rt.role_type_id = we.org_unit_role_type_id
+        inner join party_parent_role pp on pp.party_id = p.party_id
+        where pp.role_type_id = 'ORGANIZATION_UNIT'
+        and pp.organization_id = #{ORGANIZATIONID}
+        <include refid="filterMatch"></include>
+        <if test='filters != null and filters.length > 0'>
+            AND (
+        </if>
+        <include refid="filter"></include>
+        <if test='filters != null and filters.length > 0'>
+            )
+        </if>
+        ) CONTA
+    </if>
+    where pp.role_type_id = 'ORGANIZATION_UNIT'
+    and pp.organization_id = #{ORGANIZATIONID}
+
+    <include refid="filterMatch"></include>
+    <if test='filters != null and filters.length > 0'>
+        AND (
+    </if>
+    <include refid="filter"></include>
+    <if test='filters != null and filters.length > 0'>
+        )
+    </if>
+
+    <if test='SORTFIELD != null'>
+        <choose>
+
+            <when test='SORTFIELD == "scheda"' >
+                <if test='SORTORDER == 1'>
+                    ORDER BY WE.WORK_EFFORT_ID ASC
+                </if>
+                <if test='SORTORDER == -1'>
+                    ORDER BY WE.WORK_EFFORT_ID DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "sourceReferenceId"' >
+                <if test='SORTORDER == 1'>
+                    ORDER BY WE.SOURCE_REFERENCE_ID ASC
+                </if>
+                <if test='SORTORDER == -1'>
+                    ORDER BY WE.SOURCE_REFERENCE_ID DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "workEffortDesc"' >
+                <if test='SORTORDER == 1'>
+                    ORDER BY WE.WORK_EFFORT_NAME ASC
+                </if>
+                <if test='SORTORDER == -1'>
+                    ORDER BY WE.WORK_EFFORT_NAME DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "workEffortDescLang"' >
+                <if test='SORTORDER == 1'>
+                    ORDER BY WE.WORK_EFFORT_NAME_LANG ASC
+                </if>
+                <if test='SORTORDER == -1'>
+                    ORDER BY WE.WORK_EFFORT_NAME_LANG DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "workEffortDescLang"' >
+                <if test='SORTORDER == 1'>
+                    ORDER BY WE.WORK_EFFORT_NAME_LANG ASC
+                </if>
+                <if test='SORTORDER == -1'>
+                    ORDER BY WE.WORK_EFFORT_NAME_LANG DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "workEffortTypeIdDesc"' >
+                <if test='SORTORDER == 1'>
+                    ORDER BY WE.WORK_EFFORT_NAME_LANG ASC
+                </if>
+                <if test='SORTORDER == -1'>
+                    ORDER BY WE.WORK_EFFORT_NAME_LANG DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "workEffortTypeIdDesc"' >
+                <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                    ORDER BY WET.DESCRIPTION_LANG ASC
+                </if>
+                <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                    ORDER BY WET.DESCRIPTION_LANG ASC
+                </if>
+                <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                    ORDER BY WET.DESCRIPTION ASC
+                </if>
+                <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                    ORDER BY WET.DESCRIPTION DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "currentStatusDesc"' >
+                <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                    ORDER BY SI.DESCRIPTION_LANG ASC
+                </if>
+                <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                    ORDER BY SI.DESCRIPTION_LANG ASC
+                </if>
+                <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                    ORDER BY SI.DESCRIPTION ASC
+                </if>
+                <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                    ORDER BY SI.DESCRIPTION DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "estimatedStartDate"' >
+                <if test='SORTORDER == 1'>
+                    ORDER BY WE.ESTIMATED_START_DATE ASC
+                </if>
+                <if test='SORTORDER == -1'>
+                    ORDER BY WE.ESTIMATED_START_DATE DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "estimatedCompletionDate"' >
+                <if test='SORTORDER == 1'>
+                    ORDER BY WE.ESTIMATED_COMPLETION_DATE ASC
+                </if>
+                <if test='SORTORDER == -1'>
+                    ORDER BY WE.ESTIMATED_COMPLETION_DATE DESC
+                </if>
+            </when>
+
+            <when test='SORTFIELD == "orgDesc"' >
+                <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                    ORDER BY P.PARTY_NAME_LANG ASC
+                </if>
+                <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                    ORDER BY P.PARTY_NAME_LANG ASC
+                </if>
+                <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                    ORDER BY P.PARTY_NAME ASC
+                </if>
+                <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                    ORDER BY P.PARTY_NAME DESC
+                </if>
+            </when>
+
+
+        </choose>
+    </if>
+    <if test='SORTFIELD == null'>
+        ORDER BY WE.WORK_EFFORT_ID ASC
+    </if>
+    <if test='_databaseId == "mysql"'>
+        LIMIT #{LIMIT}
+        OFFSET #{OFFSET}
+    </if>
+    <if  test='_databaseId != "mysql"'>
+        OFFSET #{OFFSET} ROWS FETCH NEXT #{LIMIT} ROWS ONLY
+    </if>
+
+    </select>
+
+    <sql id="filter">
+        <if test='filters != null and filters.length > 0'>
+            <foreach collection='filters' item="item" index="index" open="" close="" separator=" AND ">
+                <choose>
+                    <when test='item.field == "workEffortId" and item.value != null' >
+                        LOWER(WE.WORK_EFFORT_ID) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "sourceReferenceId" and item.value != null' >
+                        LOWER(WE.SOURCE_REFERENCE_ID) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "workEffortTypeIdDesc" and item.value != null' >
+                        LOWER(WET.WORK_EFFORT_TYPE_ID) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "currentStatusDesc" and item.value != null' >
+                        LOWER(SI.STATUS_ID) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "workEffortName" and item.value != null' >
+                        LOWER(concat( WE.etch, concat(' - ', WE.work_effort_name))) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "workEffortNameLang" and item.value != null' >
+                        LOWER(concat( WE.etch, concat(' - ', WE.work_effort_name_lang))) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "estimatedStartDate" and item.dateValue != null' >
+                        WE.ESTIMATED_START_DATE   = #{item.dateValue}
+                    </when>
+                    <when test='item.field == "estimatedCompletionDate" and item.dateValue != null' >
+                        WE.ESTIMATED_COMPLETION_DATE   = #{item.dateValue}
+                    </when>
+                    <when test='item.field == "orgDesc" and item.value != null' >
+                        <if test='SECONDARYLANGUAGE == true'>
+                            LOWER(P.PARTY_NAME_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            LOWER(P.PARTY_NAME) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                    </when>
+                    <when test='item.field == "orgDesc" and item.objValue != null' >
+                        <foreach collection='item.objValue' item="e" index="index2" open="" close="" separator=" AND ">
+                            <choose>
+                            <when test='e.field == "roleTypeId"' >
+                                RT.ROLE_TYPE_ID = #{e.value}
+                            </when>
+                            <when test='e.field == "partyId"' >
+                                P.PARTY_ID = #{e.value}
+                            </when>
+                            </choose>
+                        </foreach>
+                    </when>
+                </choose>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="filterMatch" >
+        <if test='filterGenericLabel != null and filterGenericLabel.length > 0'>
+            AND (
+            <foreach collection='filterGenericLabel' item="item" index="index" open=" " close=""
+                     separator=" OR ">
+                <choose>
+                    <when test='item.field == "workEffortNameMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WE.WORK_EFFORT_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WE.WORK_EFFORT_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "currentStatusDescMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="SI.DESCRIPTION_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="SI.DESCRIPTION"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "orgDescMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="P.PARTY_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="P.PARTY_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                </choose>
+            </foreach>
+            )
+        </if>
+    </sql>
+
+</mapper>

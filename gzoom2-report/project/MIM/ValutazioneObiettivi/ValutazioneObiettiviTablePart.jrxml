@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TablePart" pageWidth="842" pageHeight="1191" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" isSummaryNewPage="true" isFloatColumnFooter="true" resourceBundle="ValutazioneObiettivi" uuid="5c559f3e-b23b-4cd4-a579-7ed7c0d2b615">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgres_gzoom_mim"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="810"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="730"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="257"/>
+	<style name="Default" isDefault="true" fontSize="10" pdfEncoding="Cp1252" isPdfEmbedded="false">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId} != null && $P{orgUnitId} != ""  && ($P{workEffortId} == null || $P{workEffortId} == "")? "AND fil_w.org_unit_id='"+ $P{orgUnitId} +"'": ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String"/>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("9",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3009}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{workEffortId} != null && $P{workEffortId} != "" ? "AND work_effort_id_sk='"+ $P{workEffortId} +"'": ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposeReleaseDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="LogoHeaderPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_HEADER",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from VW_IND_DS
+where 1=1
+ $P!{workEffortIdString} 
+order by cognome_nome_ds]]>
+	</queryString>
+	<field name="anno_scolastico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="anno_scolastico"/>
+		<property name="com.jaspersoft.studio.field.label" value="anno_scolastico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="cod_ds" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cod_ds"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_ds"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="cognome_nome_ds" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cognome_nome_ds"/>
+		<property name="com.jaspersoft.studio.field.label" value="cognome_nome_ds"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="cod_du" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cod_du"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_du"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="cognome_nome_du" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cognome_nome_du"/>
+		<property name="com.jaspersoft.studio.field.label" value="cognome_nome_du"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="titolo_scheda" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="titolo_scheda"/>
+		<property name="com.jaspersoft.studio.field.label" value="titolo_scheda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="modello_scheda" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="modello_scheda"/>
+		<property name="com.jaspersoft.studio.field.label" value="modello_scheda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="stato_scheda" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="stato_scheda"/>
+		<property name="com.jaspersoft.studio.field.label" value="stato_scheda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="storico_stati" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="storico_stati"/>
+		<property name="com.jaspersoft.studio.field.label" value="storico_stati"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="cod_istituto_scolastico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cod_istituto_scolastico"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_istituto_scolastico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="des_istituto_scolastico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="des_istituto_scolastico"/>
+		<property name="com.jaspersoft.studio.field.label" value="des_istituto_scolastico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="cod_area_territoriale" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cod_area_territoriale"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_area_territoriale"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="des_area_territoriale" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="des_area_territoriale"/>
+		<property name="com.jaspersoft.studio.field.label" value="des_area_territoriale"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="cod_ufficio_regionale" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cod_ufficio_regionale"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_ufficio_regionale"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="des_ufficio_regionale" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="des_ufficio_regionale"/>
+		<property name="com.jaspersoft.studio.field.label" value="des_ufficio_regionale"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="opport_popol_scol" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="opport_popol_scol"/>
+		<property name="com.jaspersoft.studio.field.label" value="opport_popol_scol"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="vincoli_popol_scol" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vincoli_popol_scol"/>
+		<property name="com.jaspersoft.studio.field.label" value="vincoli_popol_scol"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="opport_terr_cap_soc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="opport_terr_cap_soc"/>
+		<property name="com.jaspersoft.studio.field.label" value="opport_terr_cap_soc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="vincoli_terr_cap_soc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vincoli_terr_cap_soc"/>
+		<property name="com.jaspersoft.studio.field.label" value="vincoli_terr_cap_soc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="opport_ris_econ" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="opport_ris_econ"/>
+		<property name="com.jaspersoft.studio.field.label" value="opport_ris_econ"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="vincoli_ris_econ" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vincoli_ris_econ"/>
+		<property name="com.jaspersoft.studio.field.label" value="vincoli_ris_econ"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="opport_ris_prof" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="opport_ris_prof"/>
+		<property name="com.jaspersoft.studio.field.label" value="opport_ris_prof"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="vincoli_ris_prof" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vincoli_ris_prof"/>
+		<property name="com.jaspersoft.studio.field.label" value="vincoli_ris_prof"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="punteggio_scheda" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="punteggio_scheda"/>
+		<property name="com.jaspersoft.studio.field.label" value="punteggio_scheda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="punteggio_max_obiettivi" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="punteggio_max_obiettivi"/>
+		<property name="com.jaspersoft.studio.field.label" value="punteggio_max_obiettivi"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="punteggio_obiettivi" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="punteggio_obiettivi"/>
+		<property name="com.jaspersoft.studio.field.label" value="punteggio_obiettivi"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="punteggio_max_comportamenti" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="punteggio_max_comportamenti"/>
+		<property name="com.jaspersoft.studio.field.label" value="punteggio_max_comportamenti"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="punteggio_comportamenti" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="punteggio_comportamenti"/>
+		<property name="com.jaspersoft.studio.field.label" value="punteggio_comportamenti"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="party_id_ds" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="party_id_ds"/>
+		<property name="com.jaspersoft.studio.field.label" value="party_id_ds"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="party_id_du" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="party_id_du"/>
+		<property name="com.jaspersoft.studio.field.label" value="party_id_du"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="work_effort_type_id_sk" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_type_id_sk"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_type_id_sk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="work_effort_id_sk" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_id_sk"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_id_sk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="data_soll" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="data_soll"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_soll"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="last_status_update" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="last_status_update"/>
+		<property name="com.jaspersoft.studio.field.label" value="last_status_update"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="estimated_start_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="estimated_start_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="estimated_start_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="estimated_completion_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="estimated_completion_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="estimated_completion_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="party_id_is" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="party_id_is"/>
+		<property name="com.jaspersoft.studio.field.label" value="party_id_is"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="party_id_atp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="party_id_atp"/>
+		<property name="com.jaspersoft.studio.field.label" value="party_id_atp"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="party_id_usr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="party_id_usr"/>
+		<property name="com.jaspersoft.studio.field.label" value="party_id_usr"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="from_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="thru_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="thru_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="thru_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="manag_we_status_enum_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="manag_we_status_enum_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="manag_we_status_enum_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="management_role_type_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="management_role_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="management_role_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="current_status_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="current_status_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="current_status_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="act_st_enum_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="act_st_enum_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="act_st_enum_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="sequence_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sequence_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="sequence_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="per_lav_from" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="per_lav_from"/>
+		<property name="com.jaspersoft.studio.field.label" value="per_lav_from"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="per_lav_thru" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="per_lav_thru"/>
+		<property name="com.jaspersoft.studio.field.label" value="per_lav_thru"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<pageHeader>
+		<band height="78">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="1" y="12" width="179" height="15" uuid="ba1d794d-9325-44dd-a3f6-927392128478">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{Company}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="387" y="0" width="29" height="27" uuid="9c3bbddc-97dc-4d0a-bb84-2506764c2c52">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{LogoHeaderPath}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="1" y="38" width="802" height="20" isRemoveLineWhenBlank="true" forecolor="#153D63" uuid="73550166-83ac-43ab-a920-0299df9f0841"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sistema nazionale di valutazione dei risultati dei dirigenti scolastici"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="1" y="58" width="802" height="20" isRemoveLineWhenBlank="true" forecolor="#153D63" uuid="ea7acf9d-c1b2-443f-b4f1-aa8cb9035657"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Assegnazioni degli obiettivi"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="124" splitType="Immediate">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="10" width="150" height="20" forecolor="#153D63" uuid="b09f5b13-7951-45f1-8a3b-484fd834d8ce"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Anno scolastico:"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="150" y="10" width="430" height="20" forecolor="#153D63" uuid="faafe1e9-c6ab-4b7e-a7aa-805509ed5a1b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anno_scolastico}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="30" width="150" height="20" forecolor="#153D63" uuid="6005f73a-f3f8-468f-81f9-b3ac0567bb2d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dirigente scolastico:"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="150" y="30" width="430" height="20" forecolor="#153D63" uuid="7ef638d2-b330-4df0-94aa-cbfb8fa71461"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cognome_nome_ds}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="50" width="150" height="20" forecolor="#153D63" uuid="f7f2c126-4a65-407a-bc05-881072afba85"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Istruzione scolastica:"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="150" y="50" width="430" height="20" forecolor="#153D63" uuid="d95a521d-44d8-4c6a-afd0-9993b84846bb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{des_istituto_scolastico}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="70" width="150" height="20" forecolor="#153D63" uuid="da5506a9-fbbf-4d2a-a23b-b5e008c9a3a0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["USR:"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="150" y="70" width="430" height="20" forecolor="#153D63" uuid="c627c135-0caa-4d04-8f23-3aad8c330c39"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{des_ufficio_regionale}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement positionType="Float" x="580" y="10" width="222" height="20" uuid="0f5be417-e4dc-4aa3-bfa7-c0bfd48b0313"/>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="0" width="150" height="20" forecolor="#153D63" uuid="3b3aa0d5-c974-4cb3-99b0-7b42877b8cfb"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Punteggio complessivo:"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.###;(#,##0.###-)">
+					<reportElement positionType="Float" mode="Transparent" x="150" y="0" width="72" height="20" forecolor="#153D63" uuid="d179e705-888e-4f7d-80b5-c80a66e4b0c0"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{punteggio_scheda}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+		<band height="25">
+			<subreport>
+				<reportElement x="0" y="5" width="802" height="20" uuid="cc01fe87-cb15-4da4-904a-c63e90a8b264">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="cf">
+					<subreportParameterExpression><![CDATA[$F{cod_ds}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["ObiettiviGenerici.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="7" width="128" height="15" uuid="00772855-e55b-4fcf-be76-f945ae6469bd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{exposeReleaseDate}.equals( "Y" )]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Stampato il " + DATEFORMAT(TODAY( ), "dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="390" y="6" width="21" height="16" uuid="0e1242ae-e61c-44a9-81de-a5831d98b53c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{IconNavPath}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement mode="Transparent" x="702" y="7" width="50" height="15" backcolor="#FFFFFF" uuid="83ff446e-d76a-4e3c-9bbf-d020222bf5b1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{exposePaginator}.equals( "Y")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Transparent" x="752" y="7" width="50" height="15" backcolor="#FFFFFF" uuid="79ff3bb5-5ced-444e-bc30-ea222d3b047b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{exposePaginator}.equals( "Y")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" di " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

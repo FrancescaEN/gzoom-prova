@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TablePart" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryNewPage="true" isFloatColumnFooter="true" resourceBundle="NoteObStrat" uuid="5c559f3e-b23b-4cd4-a579-7ed7c0d2b615">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="810"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="730"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="257"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgres_regione_campania"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Default" isDefault="true" pdfEncoding="Cp1252" isPdfEmbedded="false">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId}  != null && $P{orgUnitId}  != ""   && LEN($P{orgUnitId}) != 0 ?"and (FIL_W.org_unit_id = '"+ $P{orgUnitId} + "' or rad.org_unit_id = '"+ $P{orgUnitId} + "')": ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="excludeValidity" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposeReleaseDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.lang.String"/>
+	<parameter name="YEAR" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select 
+	FIL_W.etch as etch1,
+	FIL_W.work_effort_name as name1,
+	FIL_W.work_effort_id as id1,
+	a2.etch as etch2,
+	a2.work_effort_name as name2,
+	a2.work_effort_id as id2
+from
+	work_effort rad
+inner join work_effort_type rat on
+	rat.work_effort_type_id = rad.work_effort_type_id
+inner join work_effort_type_content radtc on
+	radtc.work_effort_type_id = $P{workEffortTypeId} 
+	and radtc.content_id =  $P{reportContentId} 
+inner join status_item st1 on
+	st1.status_id = rad.current_status_id
+	-- struttura 1 livello
+inner join work_effort_assoc z1 on
+	z1.work_effort_id_from = rad.work_effort_id
+	and z1.work_effort_assoc_type_id = rat.hierarchy_assoc_type_id
+	and (  $P{excludeValidity}  = 'Y'
+		or (  $P{excludeValidity} = 'N'
+			and ( z1.from_date <= TO_DATE( $P{customTimePeriod} ,
+			'YYYY/MM/DD')
+				and (z1.thru_date >= TO_DATE($P{customTimePeriod} ,
+				'YYYY/MM/DD')
+					or z1.thru_date is null ))))
+inner join work_effort FIL_W on
+	FIL_W.work_effort_id = z1.work_effort_id_to
+inner join work_effort_assoc_type d1 on
+	d1.work_effort_assoc_type_id = z1.work_effort_assoc_type_id
+inner join work_effort_type b1 on
+	b1.work_effort_type_id = FIL_W.work_effort_type_id
+inner join status_item st2 on
+	st2.status_id = FIL_W.current_status_id
+	-- strutture 2 livello
+left join work_effort_assoc z2 on
+	z2.work_effort_id_from = FIL_W.work_effort_id
+	and z2.work_effort_assoc_type_id = '18ORGSPLC'
+	and (  $P{excludeValidity}  = 'Y'
+		or ( $P{excludeValidity}  = 'N'
+			and ( z2.from_date <= TO_DATE( $P{customTimePeriod},
+			'YYYY/MM/DD')
+				and (z2.thru_date >= TO_DATE( $P{customTimePeriod},
+				'YYYY/MM/DD')
+					or z2.thru_date is null ))))
+left join work_effort a2 on
+	a2.work_effort_id = z2.work_effort_id_to
+	and a2.current_status_id not in (
+	select
+		status_id
+	from
+		status_item
+	where
+		act_st_enum_id = 'ACTSTATUS_REPLACED')
+left join work_effort_assoc_type d2 on
+	d2.work_effort_assoc_type_id = z2.work_effort_assoc_type_id
+left join work_effort_type b2 on
+	b2.work_effort_type_id = a2.work_effort_type_id
+ $P!{filterInnerJoinString} 
+ $P!{filterLeftJoinString} 
+where
+	0 = 0
+	and rad.work_effort_type_id = '18ORG0AMM'
+	and rad.work_effort_snapshot_id is null
+	and st1.act_st_enum_id <> 'ACTSTATUS_REPLACED'
+	and st2.act_st_enum_id <> 'ACTSTATUS_REPLACED'
+ $P!{orgUnitIdString} 
+ $P!{filterWhereString}
+ order by  z1.sequence_num,FIL_W.source_reference_id,FIL_W.work_effort_id,z2.sequence_num,a2.source_reference_id,a2.work_effort_id]]>
+	</queryString>
+	<field name="etch1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="etch1"/>
+		<property name="com.jaspersoft.studio.field.label" value="etch1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="name1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name1"/>
+		<property name="com.jaspersoft.studio.field.label" value="name1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="id1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id1"/>
+		<property name="com.jaspersoft.studio.field.label" value="id1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="etch2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="etch2"/>
+		<property name="com.jaspersoft.studio.field.label" value="etch2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="name2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name2"/>
+		<property name="com.jaspersoft.studio.field.label" value="name2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="id2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id2"/>
+		<property name="com.jaspersoft.studio.field.label" value="id2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<group name="Gruppo1">
+		<groupExpression><![CDATA[$F{id1}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="520" height="15" isRemoveLineWhenBlank="true" uuid="53852f4c-ef7a-4dda-8e6d-328d9b363d1f">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="10" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{etch1} != null && $F{etch1} != "" ? $F{etch1} + " - " +$F{name1}: $F{name1}]]></textFieldExpression>
+					<anchorNameExpression><![CDATA[$F{id1}]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA[$F{etch1} != null && $F{etch1} != "" ? $F{etch1} + " - " +$F{name1}: $F{name1}]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" evaluationTime="Report" isBlankWhenNull="true" hyperlinkType="LocalPage">
+					<reportElement positionType="Float" stretchType="ContainerHeight" isPrintRepeatedValues="false" x="520" y="0" width="35" height="15" isRemoveLineWhenBlank="true" uuid="eeb25e2c-a214-4406-ac40-8a70fcd04f2a">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<bottomPen lineWidth="0.1"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<anchorNameExpression><![CDATA[$F{id1}]]></anchorNameExpression>
+					<hyperlinkAnchorExpression><![CDATA[$F{id1}]]></hyperlinkAnchorExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Gruppo2">
+		<groupExpression><![CDATA[$F{id2}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+					<reportElement positionType="Float" mode="Opaque" x="20" y="0" width="500" height="15" isRemoveLineWhenBlank="true" uuid="b5cc9716-ddb1-42c5-95c8-2da18a69d2aa">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="10" isBold="false" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{etch2} != null && $F{etch2} != "" ? $F{etch2} + " - " +$F{name2}: $F{name2}]]></textFieldExpression>
+					<anchorNameExpression><![CDATA[$F{id2}]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA[$F{etch2} != null && $F{etch2} != "" ? $F{etch2} + " - " +$F{name2}: $F{name2}]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" evaluationTime="Report" isBlankWhenNull="true" hyperlinkType="LocalPage">
+					<reportElement positionType="Float" stretchType="ContainerHeight" isPrintRepeatedValues="false" x="520" y="0" width="35" height="15" isRemoveLineWhenBlank="true" uuid="e2327da6-8ad0-469e-8af1-c49a1166c3ce">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<bottomPen lineWidth="0.1"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<anchorNameExpression><![CDATA[$F{id2}]]></anchorNameExpression>
+					<hyperlinkAnchorExpression><![CDATA[$F{id2}]]></hyperlinkAnchorExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<pageHeader>
+		<band height="45">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="555" height="30" isRemoveLineWhenBlank="true" backcolor="#D5D5D5" uuid="e78be599-22fc-4390-a8c3-0b3b168e76d1">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#808080"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#808080"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#808080"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#808080"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#808080"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{reportContentId}.equals("REPORT_OBISTRATOP") ? $R{report_title1} :
+       $P{reportContentId}.equals("REPORT_OBISTRATOP2") ? $R{report_title2} :
+       $R{report_title3})+"  "+ $P{YEAR}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="30" width="555" height="15" backcolor="#D5D5D5" uuid="53299850-0bc3-4584-afb9-71bf3454e3f8">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#808080"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#808080"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#808080"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#808080"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#808080"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["INDICE"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

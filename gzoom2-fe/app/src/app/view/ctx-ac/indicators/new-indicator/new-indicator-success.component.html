@@ -1,0 +1,33 @@
+<div class="d-flex flex-column align-items-center">
+  <div class="w-100 d-flex flex-row flex-row-reverse">
+    <gzoom-button-link
+      icon="pi pi-times"
+      (onClick)="dialogClose('reload')"
+    ></gzoom-button-link>
+  </div>
+  <div>
+    <h6>{{ labelGlAccountCreated() | i18n }}</h6>
+  </div>
+  <p align="center">
+    {{ this.labelGlAccountCreatedDesc().split("{0}")[0] }}
+    <b>{{ this.glAccount().accountCode }}</b>
+    {{ this.labelGlAccountCreatedDesc().split("{0}")[1] }}
+  </p>
+  <div
+    class="d-flex flex-row-reverse justify-content-center w-100"
+    style="gap: 10px"
+  >
+    <gzoom-button-outlined
+      icon="pi pi-pencil"
+      rounded="true"
+      [label]="'Go to the Tab' | i18n"
+      (onClick)="dialogClose('toTab')"
+    ></gzoom-button-outlined>
+    <gzoom-button
+      icon="pi pi-plus"
+      [label]="labelNewGlAccount() | i18n"
+      rounded="true"
+      (onClick)="dialogClose('new')"
+    ></gzoom-button>
+  </div>
+</div>

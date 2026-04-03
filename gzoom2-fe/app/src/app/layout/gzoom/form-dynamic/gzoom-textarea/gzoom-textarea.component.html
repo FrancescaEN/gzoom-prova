@@ -1,0 +1,51 @@
+<div [formGroup]="form" [class]="field.fieldClass">
+  <div style="display: flex; flex-direction: column; width: 100%;">
+    <div style="display: flex; flex-direction: row; width: 100%;"> <!-- todo move styles to CSS! -->
+      <!-- todo gzoom label ? -->
+      <label
+        [style]="{
+                'display': 'inline-flex',
+                'align-items': 'center',
+                'gap': '4px',
+                'margin': 'var(--gzoom-input-group-label-margin)',
+                'font-weight':'var(--gzoom-input-group-label-font-weight)',
+                'font-size':'var(--gzoom-input-group-label-font-size)',
+                'line-height':'var(--gzoom-input-group-label-line-height)',
+                'color':'var(--gzoom-input-group-label-color)',
+                'width':'var(--gzoom-dynamic-input-textarea-label-width)',}">
+        {{field.label | i18n}}
+        @if (field.validators.length > 0) {
+          <span style="font-weight: bold;">(*)</span>
+        }
+      </label>
+      @if (field.showTooltip) {
+        <gzoom-button label="i"
+                      rounded
+                      [disabled]="false"
+                      [style]="{'margin': 'var(--gzoom-input-group-info-margin)',
+                                  'height':'var(--gzoom-input-group-info-height)',
+                                  'width':'var(--gzoom-input-group-info-width)',
+                                  'background': 'var(--gzoom-input-group-info-background)',
+                                  'border-width': 'var(--gzoom-input-group-info-border-width)',
+                                  'padding': 'var(--gzoom-input-group-info-padding)',
+                                  'font-size':'var(--gzoom-input-group-info-font-size)'}"
+                      class="tooltip_leftspace"
+        />
+      }
+    </div>
+
+    <div style="display: flex; flex-direction: row;">
+      <input type="text"
+             pInputTextarea
+             [formControlName]="field.name"
+             [style]="isStyleObject(field.style) ? field.style : { height: '109px', width: '417px' }"
+      />
+    </div>
+
+    @if (form.get(field.name).errors?.required && form.get(field.name).dirty) {
+      <div class="error-message" [style]="field.errorMessageStyle" >
+        {{ field.errorMessage }}
+      </div>
+    }
+  </div>
+</div>

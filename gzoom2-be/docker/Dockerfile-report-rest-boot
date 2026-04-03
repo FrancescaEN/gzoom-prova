@@ -1,0 +1,74 @@
+#     ______________________
+#    / Build artifact Stage \
+#  _/________________________\_______________________________________
+# /                                                                  \
+FROM  amazoncorretto:21 AS builder
+
+#
+# 
+#
+COPY report-rest-boot.jar /report-rest-boot.jar
+# --------------------------------------------------------------------
+RUN mkdir -p ./birt_lib/lib
+COPY ./doc/rilasci/gzoom-bin-report/birt_lib/lib.zip ./birt_lib
+RUN yum install -y unzip && unzip ./birt_lib/lib.zip -d ./birt_lib/lib/
+
+#
+# Create slim jre
+#
+RUN yum install -y binutils
+RUN jlink --strip-java-debug-attributes \
+          --strip-debug \
+          --no-header-files \
+          --no-man-pages \
+          --compress=2 \
+          --add-modules $(jdeps --recursive --ignore-missing-deps --print-module-deps /report-rest-boot.jar),java.xml,jdk.unsupported,java.sql,java.desktop,java.naming,java.management,java.security.jgss,java.instrument,jdk.dynalink,java.rmi,jdk.crypto.ec,jdk.crypto.cryptoki,jdk.localedata \
+          --output customjre
+# --------------------------------------------------------------------
+
+#     ___________________
+#    / Build Image Stage \
+#  _/_____________________\__________________________________________
+# /                                                                  \
+FROM debian:12-slim
+
+RUN groupadd -r gzoom && useradd -r -g gzoom gzoom
+RUN mkdir -p /etc/gzoom-report/reports /var/log/gzoom-report /usr/lib/birt-lib && chown -R gzoom:gzoom /etc/gzoom-report && chown -R gzoom:gzoom /var/log/gzoom-report
+RUN apt-get update
+RUN apt-get install -y fontconfig
+RUN apt-get install -y ttf-dejavu-*
+RUN apt-get install -y fonts-dejavu
+
+# -------------------------------------------------------------------
+# PATCH: GENERAZIONE LOCALE ITALIANA (fondamentale per BIRT + ICU)
+# -------------------------------------------------------------------
+RUN apt-get update && apt-get install -y locales && \
+    locale-gen C.UTF-8
+
+ENV LANG=C.UTF-8
+ENV LANGUAGE=C.UTF-8
+ENV LC_ALL=C.UTF-8
+# -------------------------------------------------------------------
+
+COPY --from=builder /report-rest-boot.jar /usr/bin/report-rest-boot.jar
+COPY --from=builder /customjre /customjre
+COPY --from=builder ./birt_lib/lib/ /usr/lib/birt-lib/
+
+USER gzoom
+
+CMD ["/bin/sh", "-c", "\
+     /customjre/bin/java \
+     -Dgzoom.conf.dir=/etc/gzoom-report \
+     -Dloader.path=/usr/lib/birt-lib \
+     -Dnet.sf.jasperreports.properties=/etc/gzoom-report/gzoom-report.properties \
+     -Duser.language=${USER_LANGUAGE} \
+     -Duser.country=${USER_COUNTRY} \
+     -jar \
+     /usr/bin/report-rest-boot.jar \
+     --spring.config.additional-location=/etc/gzoom-report/gzoom-report.properties \
+     --logging.config=/etc/gzoom-report/logback.xml \
+     --logging.file=/var/log/gzoom-report/gzoom-report.log \
+     " ]
+
+# \                                                                  /
+#  ------------------------------------------------------------------

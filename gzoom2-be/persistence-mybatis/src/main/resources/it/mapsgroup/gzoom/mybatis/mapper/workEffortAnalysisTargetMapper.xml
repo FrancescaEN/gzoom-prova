@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortAnalysisTargetsMapper">
+
+
+    <resultMap id="BaseResultMap" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortAnalysisTarget">
+        <id column="work_effort_id" jdbcType="VARCHAR" property="workEffortId"/>
+        <result column="etch" jdbcType="VARCHAR" property="workEffortEtch"/>
+        <result column="work_effort_name" jdbcType="VARCHAR" property="workEffortName"/>
+        <result column="work_effort_name_lang" jdbcType="VARCHAR" property="workEffortNameLang"/>
+
+        <result column="parent_role_code" jdbcType="VARCHAR" property="parentRoleCode"/>
+        <result column="party_name" jdbcType="VARCHAR" property="partyName"/>
+        <result column="party_name_lang" jdbcType="VARCHAR" property="partyNameLang"/>
+
+        <result column="sc_amount" jdbcType="DECIMAL" property="scAmount"/>
+        <result column="rvc_icon_content_id" jdbcType="VARCHAR" property="rvcIconContentId"/>
+        <result column="drc_object_info" jdbcType="VARCHAR" property="drcObjectInfo"/>
+
+        <result column="st_amount" jdbcType="DECIMAL" property="stAmount"/>
+        <result column="rvt_icon_content_id" jdbcType="VARCHAR" property="rvtIconContentId"/>
+        <result column="drt_object_info" jdbcType="VARCHAR" property="drtObjectInfo"/>
+
+        <result column="sc2_amount" jdbcType="DECIMAL" property="sc2Amount"/>
+        <result column="rvc2_icon_content_id" jdbcType="VARCHAR" property="rvc2IconContentId"/>
+        <result column="drc2_object_info" jdbcType="VARCHAR" property="drc2ObjectInfo"/>
+
+        <result column="st2_amount" jdbcType="DECIMAL" property="st2Amount"/>
+        <result column="rvt2_icon_content_id" jdbcType="VARCHAR" property="rvt2IconContentId"/>
+        <result column="drt2_object_info" jdbcType="VARCHAR" property="drt2ObjectInfo"/>
+    </resultMap>
+
+    <sql id="aliasAmountContentObject">
+
+        SC.AMOUNT AS SC_AMOUNT, RVC.ICON_CONTENT_ID AS RVC_ICON_CONTENT_ID, DRC.OBJECT_INFO AS DRC_OBJECT_INFO,
+        ST.AMOUNT AS ST_AMOUNT, RVT.ICON_CONTENT_ID AS RVT_ICON_CONTENT_ID, DRT.OBJECT_INFO AS DRT_OBJECT_INFO,
+        SC2.AMOUNT AS SC2_AMOUNT, RVC2.ICON_CONTENT_ID AS RVC2_ICON_CONTENT_ID, DRC2.OBJECT_INFO AS DRC2_OBJECT_INFO,
+        ST2.AMOUNT AS ST2_AMOUNT, RVT2.ICON_CONTENT_ID AS RVT2_ICON_CONTENT_ID, DRT2.OBJECT_INFO AS DRT2_OBJECT_INFO
+    </sql>
+
+
+    <sql id="workEffortMeasuresExtAcctgTransAndEntry">
+        SELECT WEM.WORK_EFFORT_ID, AT.TRANSACTION_DATE, AE.AMOUNT, AE.GL_FISCAL_TYPE_ID
+        FROM WORK_EFFORT_MEASURE WEM
+                 INNER JOIN ACCTG_TRANS AT
+        ON AT.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID
+            INNER JOIN ACCTG_TRANS_ENTRY AE ON AE.ACCTG_TRANS_ID = AT.ACCTG_TRANS_ID
+        WHERE AE.GL_ACCOUNT_ID = 'SCORE'
+
+    </sql>
+    <select id="getWorkEffortAnalysisTargetHeaderOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT WE.WORK_EFFORT_ID, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG,
+        PPR.PARENT_ROLE_CODE, UO.PARTY_NAME, UO.PARTY_NAME_LANG,
+        <include refid="aliasAmountContentObject"/>
+        FROM WORK_EFFORT WE
+        INNER JOIN PARTY UO ON UO.PARTY_ID = WE.ORG_UNIT_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = UO.PARTY_ID AND PPR.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+        INNER JOIN WORK_EFFORT_TYPE WET ON WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+        INNER JOIN WORK_EFFORT_ANALYSIS WA ON WA.WORK_EFFORT_ANALYSIS_ID = WA.WORK_EFFORT_ANALYSIS_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) SC ON SC.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND SC.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_CON_ID IS NOT NULL AND SC.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_CON_ID
+        LEFT JOIN UOM_RANGE_VALUES RVC ON SC.AMOUNT IS NOT null
+        AND RVC.UOM_RANGE_ID = #{rangeDefault}
+        AND RVC.FROM_VALUE &lt;= SC.AMOUNT AND RVC.THRU_VALUE &gt;= SC.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRC ON RVC.ICON_CONTENT_ID IS NOT NULL AND DRC.DATA_RESOURCE_ID = RVC.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) ST ON ST.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND ST.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_TAR_ID IS NOT NULL AND ST.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_TAR_ID
+        LEFT JOIN UOM_RANGE_VALUES RVT ON ST.AMOUNT IS NOT null
+        AND RVT.UOM_RANGE_ID = #{rangeDefault}
+        AND RVT.FROM_VALUE &lt;= ST.AMOUNT AND RVT.THRU_VALUE &gt;= ST.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRT ON RVT.ICON_CONTENT_ID IS NOT NULL AND DRT.DATA_RESOURCE_ID = RVT.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) SC2 ON SC2.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND SC2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_CONS_IND_ID IS NOT NULL AND SC2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_CONS_IND_ID
+        LEFT JOIN UOM_RANGE_VALUES RVC2 ON SC2.AMOUNT IS NOT null
+        AND RVC2.UOM_RANGE_ID = #{rangeDefault}
+        AND RVC2.FROM_VALUE &lt;= SC2.AMOUNT AND RVC2.THRU_VALUE &gt;= SC2.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRC2 ON RVC2.ICON_CONTENT_ID IS NOT NULL AND DRC2.DATA_RESOURCE_ID =
+        RVC2.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) ST2
+        ON ST2.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND ST2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_TAR_IND_ID IS NOT NULL AND ST2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_TAR_IND_ID
+        LEFT JOIN UOM_RANGE_VALUES RVT2 ON ST2.AMOUNT IS NOT null
+        AND RVT2.UOM_RANGE_ID = #{rangeDefault}
+        AND RVT2.FROM_VALUE &lt;= ST2.AMOUNT AND RVT2.THRU_VALUE &gt;= ST2.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRT2 ON RVT2.ICON_CONTENT_ID IS NOT NULL AND DRT2.DATA_RESOURCE_ID =
+        RVT2.ICON_CONTENT_ID
+        WHERE WA.WORK_EFFORT_ANALYSIS_ID = #{analysisId}-- INPUT.WORK_EFFORT_ANALYSIS_ID
+        AND WE.WORK_EFFORT_ID = #{workEffortId} -- INPUT.WORK_EFFORT_ID
+
+
+    </select>
+
+    <select id="getWorkEffortAnalysisTargetList" resultMap="BaseResultMap" parameterType="java.util.Map">
+
+        select WE.WORK_EFFORT_ID, WE.ETCH, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG,
+        PPR.PARENT_ROLE_CODE, UO.PARTY_NAME, UO.PARTY_NAME_LANG,
+        <include refid="aliasAmountContentObject"/>
+        FROM WORK_EFFORT_ANALYSIS WA
+        INNER JOIN WORK_EFFORT_TYPE_TYPE WTT ON WTT.WORK_EFFORT_TYPE_ID_ROOT = WA.WORK_EFFORT_TYPE_ID AND
+        WTT.SEQUENCE_NUM = 1
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_TYPE_ID = WTT.WORK_EFFORT_TYPE_ID_FROM AND
+        WE.WORK_EFFORT_REVISION_ID IS NULL
+        INNER JOIN PARTY UO ON UO.PARTY_ID = WE.ORG_UNIT_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = UO.PARTY_ID AND PPR.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+        INNER JOIN WORK_EFFORT_TYPE WET ON WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+        INNER JOIN WORK_EFFORT RA ON RA.WORK_EFFORT_ID = WE.WORK_EFFORT_PARENT_ID
+        INNER JOIN WORK_EFFORT_TYPE RAT ON RAT.WORK_EFFORT_TYPE_ID = RA.WORK_EFFORT_TYPE_ID
+        INNER JOIN CUSTOM_TIME_PERIOD TP ON TP.PERIOD_TYPE_ID = RAT.PERIOD_TYPE_ID
+        AND TP.FROM_DATE &lt;= WA.REFERENCE_DATE AND TP.THRU_DATE &gt;= WA.REFERENCE_DATE
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) SC ON SC.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND SC.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_CON_ID IS NOT NULL AND SC.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_CON_ID
+        LEFT JOIN UOM_RANGE_VALUES RVC ON SC.AMOUNT IS NOT null
+        AND RVC.UOM_RANGE_ID = #{rangeDefault}
+        AND RVC.FROM_VALUE &lt;= SC.AMOUNT AND RVC.THRU_VALUE &gt;= SC.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRC ON RVC.ICON_CONTENT_ID IS NOT NULL AND DRC.DATA_RESOURCE_ID = RVC.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) ST ON ST.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND ST.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_TAR_ID IS NOT NULL AND ST.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_TAR_ID
+        LEFT JOIN UOM_RANGE_VALUES RVT ON ST.AMOUNT IS NOT null
+        AND RVT.UOM_RANGE_ID = #{rangeDefault}
+        AND RVT.FROM_VALUE &lt;= ST.AMOUNT AND RVT.THRU_VALUE &gt;= ST.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRT ON RVT.ICON_CONTENT_ID IS NOT NULL AND DRT.DATA_RESOURCE_ID = RVT.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) SC2 ON SC2.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND SC2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_CONS_IND_ID IS NOT NULL AND SC2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_CONS_IND_ID
+        LEFT JOIN UOM_RANGE_VALUES RVC2 ON SC2.AMOUNT IS NOT null
+        AND RVC2.UOM_RANGE_ID = #{rangeDefault}
+        AND RVC2.FROM_VALUE &lt;= SC2.AMOUNT AND RVC2.THRU_VALUE &gt;= SC2.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRC2 ON RVC2.ICON_CONTENT_ID IS NOT NULL AND DRC2.DATA_RESOURCE_ID =
+        RVC2.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) ST2 ON ST2.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND ST2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_TAR_IND_ID IS NOT NULL AND ST2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_TAR_IND_ID
+        LEFT JOIN UOM_RANGE_VALUES RVT2 ON ST2.AMOUNT IS NOT null
+        AND RVT2.UOM_RANGE_ID = #{rangeDefault}
+        AND RVT2.FROM_VALUE &lt;= ST2.AMOUNT AND RVT2.THRU_VALUE &gt;= ST2.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRT2 ON RVT2.ICON_CONTENT_ID IS NOT NULL AND DRT2.DATA_RESOURCE_ID =
+        RVT2.ICON_CONTENT_ID
+        INNER JOIN USER_LOGIN_SECURITY_GROUP ULSG ON ULSG.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+        INNER JOIN SECURITY_GROUP_PERMISSION SP ON SP.GROUP_ID = ULSG.GROUP_ID
+        INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+        LEFT JOIN PARTY_RELATIONSHIP PRO ON PRO.PARTY_ID_TO = UL.PARTY_ID
+        AND PRO.PARTY_ID_FROM = WE.ORG_UNIT_ID
+        AND PRO.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+        AND (PRO.THRU_DATE IS NULL OR PRO.THRU_DATE >= WA.REFERENCE_DATE)
+        WHERE WA.WORK_EFFORT_ANALYSIS_ID = #{analysisId} -- INPUT.WORK_EFFORT_ANALYSIS_ID
+          AND WE.ORGANIZATION_ID = #{organizationId}
+        <if test="dateControl == 'DATE'">
+            AND WE.ESTIMATED_START_DATE &lt;= WA.REFERENCE_DATE AND WE.ESTIMATED_COMPLETION_DATE &gt;= WA.REFERENCE_DATE
+        </if>
+        <if test="dateControl == 'PERIOD'">
+            AND WE.ESTIMATED_START_DATE &lt;= TP.THRU_DATE AND WE.ESTIMATED_COMPLETION_DATE &gt;= TP.FROM_DATE
+        </if>
+        AND ULSG.USER_LOGIN_ID = #{userLoginId} -- utente di login
+        AND (SP.PERMISSION_ID = #{permissionMGR_ADMIN} -- XXXPERFMGR_ADMIN XXX dipende dalla voce di menu
+        OR (SP.PERMISSION_ID = #{permissionORG_ADMIN} -- XXXPERFORG_ADMIN XXX dipende dalla voce di menu
+        AND PARTY_ID_TO IS NOT NULL))
+        ORDER BY
+        <if test="showOrgUnit != 'Y'.toString() and showOrgUnit != 'A'.toString()">
+            WE.ETCH, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG, WE.SEQUENCE_NUM, WE.SOURCE_REFERENCE_ID
+        </if>
+        <if test="showOrgUnit == 'Y'.toString()">
+            PPR.PARENT_ROLE_CODE, UO.PARTY_NAME, UO.PARTY_NAME_LANG
+        </if>
+        <if test="showOrgUnit == 'A'.toString()">
+            WE.ETCH, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG, WE.SEQUENCE_NUM, WE.SOURCE_REFERENCE_ID,
+            PPR.PARENT_ROLE_CODE, UO.PARTY_NAME, UO.PARTY_NAME_LANG
+        </if>
+    </select>
+
+    <resultMap id="ResultHeaderMore" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortAnalysisTarget">
+        <id column="work_effort_analysis_id" jdbcType="VARCHAR" property="workEffortAnalysisId"/>
+
+        <result column="sc_amount" jdbcType="DECIMAL" property="scAmount"/>
+        <result column="st_amount" jdbcType="DECIMAL" property="stAmount"/>
+        <result column="sc2_amount" jdbcType="DECIMAL" property="sc2Amount"/>
+        <result column="st2_amount" jdbcType="DECIMAL" property="st2Amount"/>
+    </resultMap>
+
+
+    <select id="getWorkEffortAnalysisTargetHeaderMore" resultMap="ResultHeaderMore" parameterType="java.util.Map">
+        SELECT WA.WORK_EFFORT_ANALYSIS_ID,
+        <if test="_databaseId == 'postgres'">
+            ROUND(CAST((SUM(SC.AMOUNT)/COUNT(WE.WORK_EFFORT_ID)) AS numeric ),2) AS SC_AMOUNT,
+            ROUND(CAST((SUM(ST.AMOUNT)/COUNT(WE.WORK_EFFORT_ID)) AS numeric ),2) AS ST_AMOUNT,
+            ROUND(CAST((SUM(SC2.AMOUNT)/COUNT(WE.WORK_EFFORT_ID)) AS numeric),2) AS SC2_AMOUNT,
+            ROUND(CAST((SUM(ST2.AMOUNT)/COUNT(WE.WORK_EFFORT_ID)) AS numeric ),2) AS ST2_AMOUNT
+        </if>
+        <if test="_databaseId != 'postgres'">
+            ROUND((SUM(SC.AMOUNT)/COUNT(WE.WORK_EFFORT_ID)) ,2) AS SC_AMOUNT,
+            ROUND((SUM(ST.AMOUNT)/COUNT(WE.WORK_EFFORT_ID)) ,2) AS ST_AMOUNT,
+            ROUND((SUM(SC2.AMOUNT)/COUNT(WE.WORK_EFFORT_ID)) ,2) AS SC2_AMOUNT,
+            ROUND((SUM(ST2.AMOUNT)/COUNT(WE.WORK_EFFORT_ID)) ,2) AS ST2_AMOUNT
+        </if>
+        FROM WORK_EFFORT_ANALYSIS WA
+        INNER JOIN WORK_EFFORT_TYPE_TYPE WTT ON WTT.WORK_EFFORT_TYPE_ID_ROOT = WA.WORK_EFFORT_TYPE_ID AND
+        WTT.SEQUENCE_NUM = 1
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_TYPE_ID = WTT.WORK_EFFORT_TYPE_ID_FROM AND
+        WE.WORK_EFFORT_REVISION_ID IS NULL
+        INNER JOIN WORK_EFFORT_TYPE WT ON WT.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+        INNER JOIN WORK_EFFORT RA ON RA.WORK_EFFORT_ID = WE.WORK_EFFORT_PARENT_ID
+        INNER JOIN WORK_EFFORT_TYPE RAT ON RAT.WORK_EFFORT_TYPE_ID = RA.WORK_EFFORT_TYPE_ID
+        INNER JOIN CUSTOM_TIME_PERIOD TP ON TP.PERIOD_TYPE_ID = RAT.PERIOD_TYPE_ID
+        AND TP.FROM_DATE &lt;= WA.REFERENCE_DATE AND TP.THRU_DATE &gt;= WA.REFERENCE_DATE
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) SC ON SC.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND SC.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_CON_ID IS NOT NULL AND SC.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_CON_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) ST ON ST.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND ST.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_TAR_ID IS NOT NULL AND ST.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_TAR_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) SC2 ON SC2.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND SC2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_CONS_IND_ID IS NOT NULL AND SC2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_CONS_IND_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) ST2 ON ST2.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND ST2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_TAR_IND_ID IS NOT NULL AND ST2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_TAR_IND_ID
+        INNER JOIN USER_LOGIN UL ON UL.PARTY_ID = UL.PARTY_ID
+        INNER JOIN USER_LOGIN_SECURITY_GROUP ULSG ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+        INNER JOIN SECURITY_GROUP_PERMISSION SP ON SP.GROUP_ID = ULSG.GROUP_ID
+        LEFT JOIN PARTY_RELATIONSHIP PRO ON PRO.PARTY_ID_FROM = WE.ORG_UNIT_ID
+        AND PRO.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+        AND (PRO.THRU_DATE IS NULL OR PRO.THRU_DATE >= WA.REFERENCE_DATE)
+        AND SP.PERMISSION_ID = #{permissionORG_ADMIN} -- XXXPERFORG_ADMIN XXX dipende dalla voce di menu ‘ORGPERFORG_ADMIN’
+        AND PRO.PARTY_ID_TO = UL.PARTY_ID
+        WHERE WA.WORK_EFFORT_ANALYSIS_ID = #{analysisId} -- INPUT.WORK_EFFORT_ANALYSIS_ID 'POL-2020RIS'/'ATS.2021'
+          AND WE.ORGANIZATION_ID = #{organizationId}
+        AND (WA.EXCLUDE_VALIDITY = 'Y'
+        OR (WA.EXCLUDE_VALIDITY = 'N'
+        AND WE.ESTIMATED_START_DATE &lt;= WA.REFERENCE_DATE AND WE.ESTIMATED_COMPLETION_DATE &gt;= WA.REFERENCE_DATE)
+        OR (WA.EXCLUDE_VALIDITY = 'A'
+        AND WE.ESTIMATED_START_DATE &lt;= TP.THRU_DATE AND WE.ESTIMATED_COMPLETION_DATE &gt;= TP.FROM_DATE))
+        AND ULSG.USER_LOGIN_ID = #{userLoginId} -- utente di login 'admin'/'concetta.panarello'
+        AND (SP.PERMISSION_ID = #{permissionMGR_ADMIN} -- XXXPERFMGR_ADMIN XXX dipende dalla voce di menu‘ORGPERFMGR_ADMIN’
+        OR (SP.PERMISSION_ID = #{permissionORG_ADMIN} -- XXXPERFORG_ADMIN XXX dipende dalla voce di menu‘ORGPERFORG_ADMIN’
+        AND PRO.PARTY_ID_TO IS NOT NULL AND PRO.PARTY_ID_TO = UL.PARTY_ID))
+        GROUP BY WA.WORK_EFFORT_ANALYSIS_ID
+
+
+    </select>
+
+
+    <resultMap id="ResultListWE" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortAnalysisTarget">
+        <id column="work_effort_id" jdbcType="VARCHAR" property="workEffortId"/>
+
+        <result column="etch" jdbcType="VARCHAR" property="workEffortEtch"/>
+
+        <result column="work_effort_name" jdbcType="VARCHAR" property="workEffortName"/>
+        <result column="work_effort_name_lang" jdbcType="VARCHAR" property="workEffortNameLang"/>
+
+        <result column="parent_role_code" jdbcType="VARCHAR" property="parentRoleCode"/>
+        <result column="party_name" jdbcType="VARCHAR" property="partyName"/>
+        <result column="party_name_lang" jdbcType="VARCHAR" property="partyNameLang"/>
+
+        <result column="sc_amount" jdbcType="DECIMAL" property="scAmount"/>
+        <result column="rvc_icon_content_id" jdbcType="VARCHAR" property="rvcIconContentId"/>
+        <result column="drc_object_info" jdbcType="VARCHAR" property="drcObjectInfo"/>
+
+        <result column="st_amount" jdbcType="DECIMAL" property="stAmount"/>
+        <result column="rvt_icon_content_id" jdbcType="VARCHAR" property="rvtIconContentId"/>
+        <result column="drt_object_info" jdbcType="VARCHAR" property="drtObjectInfo"/>
+
+        <result column="sc2_amount" jdbcType="DECIMAL" property="sc2Amount"/>
+        <result column="rvc2_icon_content_id" jdbcType="VARCHAR" property="rvc2IconContentId"/>
+        <result column="drc2_object_info" jdbcType="VARCHAR" property="drc2ObjectInfo"/>
+
+        <result column="st2_amount" jdbcType="DECIMAL" property="st2Amount"/>
+        <result column="rvt2_icon_content_id" jdbcType="VARCHAR" property="rvt2IconContentId"/>
+        <result column="drt2_object_info" jdbcType="VARCHAR" property="drt2ObjectInfo"/>
+    </resultMap>
+
+    <select id="getWorkEffortAnalysisTargetListWithWE" resultMap="ResultListWE" parameterType="java.util.Map">
+        SELECT WE.WORK_EFFORT_ID, WE.ETCH, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG,
+        PPR.PARENT_ROLE_CODE, UO.PARTY_NAME, UO.PARTY_NAME_LANG,
+        <include refid="aliasAmountContentObject"/>
+        FROM WORK_EFFORT WF
+        INNER JOIN WORK_EFFORT_TYPE WFT ON WFT.WORK_EFFORT_TYPE_ID = WF.WORK_EFFORT_TYPE_ID
+        INNER JOIN WORK_EFFORT_ANALYSIS WA ON WA.WORK_EFFORT_ANALYSIS_ID = WA.WORK_EFFORT_ANALYSIS_ID
+        INNER JOIN WORK_EFFORT RA ON RA.WORK_EFFORT_ID = WF.WORK_EFFORT_PARENT_ID
+        INNER JOIN WORK_EFFORT_TYPE RAT ON RAT.WORK_EFFORT_TYPE_ID = RA.WORK_EFFORT_TYPE_ID
+        INNER JOIN CUSTOM_TIME_PERIOD TP ON TP.PERIOD_TYPE_ID = RAT.PERIOD_TYPE_ID
+        AND TP.FROM_DATE &lt;= WA.REFERENCE_DATE AND TP.THRU_DATE &gt;= WA.REFERENCE_DATE
+        INNER JOIN WORK_EFFORT_TYPE_TYPE WTT ON WTT.WORK_EFFORT_TYPE_ID_ROOT = WA.WORK_EFFORT_TYPE_ID
+        AND WTT.WORK_EFFORT_TYPE_ID_FROM = WF.WORK_EFFORT_TYPE_ID
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_TYPE_ID = WTT.WORK_EFFORT_TYPE_ID_TO AND WE.WORK_EFFORT_REVISION_ID IS NULL
+        INNER JOIN PARTY UO ON UO.PARTY_ID = WE.ORG_UNIT_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = UO.PARTY_ID AND PPR.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+        INNER JOIN WORK_EFFORT_ASSOC WS ON WS.WORK_EFFORT_ID_FROM = WF.WORK_EFFORT_ID
+        AND WS.WORK_EFFORT_ID_TO = WE.WORK_EFFORT_ID AND WS.WORK_EFFORT_ASSOC_TYPE_ID &lt;&gt; 'ROOT' AND WE.WORK_EFFORT_REVISION_ID IS NULL
+        INNER JOIN WORK_EFFORT_TYPE WET ON WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) SC ON SC.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND SC.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_CON_ID IS NOT NULL AND SC.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_CON_ID
+        LEFT JOIN UOM_RANGE_VALUES RVC ON SC.AMOUNT IS NOT null
+        AND RVC.UOM_RANGE_ID = #{rangeDefault}
+        AND RVC.FROM_VALUE &lt;= SC.AMOUNT AND RVC.THRU_VALUE &gt;= SC.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRC ON RVC.ICON_CONTENT_ID IS NOT NULL AND DRC.DATA_RESOURCE_ID = RVC.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) ST ON ST.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND ST.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_TAR_ID IS NOT NULL AND ST.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_TAR_ID
+        LEFT JOIN UOM_RANGE_VALUES RVT ON ST.AMOUNT IS NOT null
+        AND RVT.UOM_RANGE_ID = #{rangeDefault}
+        AND RVT.FROM_VALUE &lt;= ST.AMOUNT AND RVT.THRU_VALUE &gt;= ST.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRT ON RVT.ICON_CONTENT_ID IS NOT NULL AND DRT.DATA_RESOURCE_ID = RVT.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) SC2 ON SC2.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND SC2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_CONS_IND_ID IS NOT NULL AND SC2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_CONS_IND_ID
+        LEFT JOIN UOM_RANGE_VALUES RVC2 ON SC2.AMOUNT IS NOT null
+        AND RVC2.UOM_RANGE_ID = #{rangeDefault}
+        AND RVC2.FROM_VALUE &lt;= SC2.AMOUNT AND RVC2.THRU_VALUE &gt;= SC2.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRC2 ON RVC2.ICON_CONTENT_ID IS NOT NULL AND DRC2.DATA_RESOURCE_ID =
+        RVC2.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntry"/>
+        ) ST2 ON ST2.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND ST2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_TAR_IND_ID IS NOT NULL AND ST2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_TAR_IND_ID
+        LEFT JOIN UOM_RANGE_VALUES RVT2 ON ST2.AMOUNT IS NOT null
+        AND RVT2.UOM_RANGE_ID = #{rangeDefault}
+        AND RVT2.FROM_VALUE &lt;= ST2.AMOUNT AND RVT2.THRU_VALUE &gt;= ST2.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRT2 ON RVT2.ICON_CONTENT_ID IS NOT NULL AND DRT2.DATA_RESOURCE_ID =
+        RVT2.ICON_CONTENT_ID
+        WHERE WA.WORK_EFFORT_ANALYSIS_ID = #{analysisId} -- INPUT.WORK_EFFORT_ANALYSIS_ID
+        AND WF.WORK_EFFORT_ID = #{workEffortId} -- INPUT.WORK_EFFORT_ID
+        <if test="dateControl == 'DATE'">
+            AND WS.FROM_DATE &lt;= WA.REFERENCE_DATE AND WS.THRU_DATE &gt;= WA.REFERENCE_DATE -- SE PARAMS.dateControl='DATE'
+        </if>
+        <if test="dateControl == 'PERIOD'">
+            AND WS.FROM_DATE &lt;= TP.THRU_DATE AND WS.THRU_DATE &gt;= TP.FROM_DATE -- SE PARAMS.dateControl='PERIOD'
+        </if>
+        ORDER BY
+        <if test="showOrgUnit != 'Y'.toString() and showOrgUnit != 'A'.toString()">
+            WE.ETCH, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG, WE.SEQUENCE_NUM, WE.SOURCE_REFERENCE_ID
+        </if>
+        <if test="showOrgUnit == 'Y'.toString()">
+            PPR.PARENT_ROLE_CODE, UO.PARTY_NAME, UO.PARTY_NAME_LANG
+        </if>
+        <if test="showOrgUnit == 'A'.toString()">
+            WE.ETCH, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG, WE.SEQUENCE_NUM, WE.SOURCE_REFERENCE_ID,
+            PPR.PARENT_ROLE_CODE, UO.PARTY_NAME, UO.PARTY_NAME_LANG
+        </if>
+    </select>
+
+    <resultMap id="detailScore" type="it.mapsgroup.gzoom.mybatis.dto.DetailKPI">
+        <id column="work_effort_id" jdbcType="VARCHAR" property="workEffortId"/>
+        <result column="work_effort_name" jdbcType="VARCHAR" property="workEffortName"/>
+        <result column="work_effort_name_lang" jdbcType="VARCHAR" property="workEffortNameLang"/>
+        <result column="account_code" jdbcType="VARCHAR" property="accountCode"/>
+        <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
+        <result column="account_name_lang" jdbcType="VARCHAR" property="accountNameLang"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="description_lang" jdbcType="VARCHAR" property="descriptionLang"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="abbreviation_lang" jdbcType="VARCHAR" property="abbreviationLang"/>
+        <result column="decimal_scale" jdbcType="DECIMAL" property="decimalScale"/>
+        <result column="uom_type_id" jdbcType="VARCHAR" property="uomTypeId"/>
+        <result column="sc_amount" jdbcType="DECIMAL" property="scAmount"/>
+        <result column="st_amount" jdbcType="DECIMAL" property="stAmount"/>
+        <result column="sc2_amount" jdbcType="DECIMAL" property="sc2Amount"/>
+        <result column="st2_amount" jdbcType="DECIMAL" property="st2Amount"/>
+        <result column="gl_account_id" jdbcType="VARCHAR" property="glAccountId"/>
+
+        <result column="sc_icon_amount" jdbcType="DECIMAL" property="scIconAmount"/>
+        <result column="rvc_icon_content_id" jdbcType="VARCHAR" property="rvcIconContentId"/>
+        <result column="drc_object_info" jdbcType="VARCHAR" property="drcObjectInfo"/>
+
+        <result column="st_icon_amount" jdbcType="DECIMAL" property="stIconAmount"/>
+        <result column="rvt_icon_content_id" jdbcType="VARCHAR" property="rvtIconContentId"/>
+        <result column="drt_object_info" jdbcType="VARCHAR" property="drtObjectInfo"/>
+
+        <result column="sc2_icon_amount" jdbcType="DECIMAL" property="sc2IconAmount"/>
+        <result column="rvc2_icon_content_id" jdbcType="VARCHAR" property="rvc2IconContentId"/>
+        <result column="drc2_object_info" jdbcType="VARCHAR" property="drc2ObjectInfo"/>
+
+        <result column="st2_icon_amount" jdbcType="DECIMAL" property="st2IconAmount"/>
+        <result column="rvt2_icon_content_id" jdbcType="VARCHAR" property="rvt2IconContentId"/>
+        <result column="drt2object_info" jdbcType="VARCHAR" property="drt2ObjectInfo"/>
+
+        <result column="input_enum_id" jdbcType="VARCHAR" property="inputEnumId"/>
+        <result column="detect_org_unit_id_flag" jdbcType="VARCHAR" property="detectOrgUnitIdFlag"/>
+        <result column="work_effort_measure_id" jdbcType="VARCHAR" property="workEffortMeasuresId"/>
+        <result column="org_unit_role_type_id" jdbcType="VARCHAR" property="orgUnitRoleTypeId"/>
+        <result column="org_unit_id" jdbcType="VARCHAR" property="orgUnitId"/>
+
+    </resultMap>
+
+    <sql id="workEffortMeasuresExtAcctgTransAndEntryScoreKPI">
+        SELECT WEM.WORK_EFFORT_MEASURE_ID, AT.TRANSACTION_DATE, AE.AMOUNT, AE.GL_FISCAL_TYPE_ID
+        FROM WORK_EFFORT_MEASURE WEM
+        INNER JOIN ACCTG_TRANS AT ON AT.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID
+        INNER JOIN ACCTG_TRANS_ENTRY AE ON AE.ACCTG_TRANS_ID = AT.ACCTG_TRANS_ID
+        WHERE AE.GL_ACCOUNT_ID = 'SCOREKPI'
+    </sql>
+
+    <sql id="detailKPILeftJoin">
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntryScoreKPI"/>
+        ) SC ON SC.WORK_EFFORT_MEASURE_ID = WEM.WORK_EFFORT_MEASURE_ID AND SC.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_CON_ID IS NOT NULL AND SC.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_CON_ID
+        LEFT JOIN UOM_RANGE_VALUES RVC ON SC.AMOUNT IS NOT null
+        AND RVC.UOM_RANGE_ID = #{rangeDefault}
+        AND RVC.FROM_VALUE &lt;= SC.AMOUNT AND RVC.THRU_VALUE &gt;= SC.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRC ON RVC.ICON_CONTENT_ID IS NOT NULL AND DRC.DATA_RESOURCE_ID = RVC.ICON_CONTENT_ID
+
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntryScoreKPI"/>
+        ) ST ON ST.WORK_EFFORT_MEASURE_ID = WEM.WORK_EFFORT_MEASURE_ID AND ST.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_SCORE_TAR_ID IS NOT NULL AND ST.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_TAR_ID
+        LEFT JOIN UOM_RANGE_VALUES RVT ON ST.AMOUNT IS NOT null
+        AND RVT.UOM_RANGE_ID = #{rangeDefault}
+        AND RVT.FROM_VALUE &lt;= ST.AMOUNT AND RVT.THRU_VALUE &gt;= ST.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRT ON RVT.ICON_CONTENT_ID IS NOT NULL AND DRT.DATA_RESOURCE_ID = RVT.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntryScoreKPI"/>
+        ) SC2 ON SC2.WORK_EFFORT_MEASURE_ID = WEM.WORK_EFFORT_MEASURE_ID AND SC2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_CONS_IND_ID IS NOT NULL AND SC2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_CONS_IND_ID
+        LEFT JOIN UOM_RANGE_VALUES RVC2 ON SC2.AMOUNT IS NOT null
+        AND RVC2.UOM_RANGE_ID = #{rangeDefault}
+        AND RVC2.FROM_VALUE &lt;= SC2.AMOUNT AND RVC2.THRU_VALUE &gt;= SC2.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRC2 ON RVC2.ICON_CONTENT_ID IS NOT NULL AND DRC2.DATA_RESOURCE_ID = RVC2.ICON_CONTENT_ID
+        LEFT JOIN (
+        <include refid="workEffortMeasuresExtAcctgTransAndEntryScoreKPI"/>
+        ) ST2 ON ST2.WORK_EFFORT_MEASURE_ID = WEM.WORK_EFFORT_MEASURE_ID AND ST2.TRANSACTION_DATE = WA.REFERENCE_DATE
+        AND WA.TYPE_BALANCE_TAR_IND_ID IS NOT NULL AND ST2.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_TAR_IND_ID
+        LEFT JOIN UOM_RANGE_VALUES RVT2 ON ST2.AMOUNT IS NOT null
+        AND RVT2.UOM_RANGE_ID = #{rangeDefault}
+        AND RVT2.FROM_VALUE &lt;= ST2.AMOUNT AND RVT2.THRU_VALUE &gt;= ST2.AMOUNT
+        LEFT JOIN DATA_RESOURCE DRT2 ON RVT2.ICON_CONTENT_ID IS NOT NULL AND DRT2.DATA_RESOURCE_ID = RVT2.ICON_CONTENT_ID
+
+    </sql>
+
+    <sql id="existsPurposeKPI"> -- SE PARAMS purposeKPIList valorizzato
+        AND EXISTS (SELECT 1
+        FROM WORK_EFFORT_PURPOSE_ACCOUNT PA
+        WHERE PA.GL_ACCOUNT_ID = AC.GL_ACCOUNT_ID
+        AND PA.WORK_EFFORT_PURPOSE_TYPE_ID IN
+        <foreach item="item" index="index" collection="purposeKPIList" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+    )
+    </sql>
+
+
+    <select id="getDetailKPIScore" resultMap="detailScore" parameterType="java.util.Map">
+        SELECT WE.WORK_EFFORT_ID, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG, AC.ACCOUNT_CODE,
+               CASE WHEN WEM.UOM_DESCR IS NOT NULL THEN WEM.UOM_DESCR ELSE AC.ACCOUNT_NAME END AS ACCOUNT_NAME,
+               CASE WHEN WEM.UOM_DESCR_LANG IS NOT NULL THEN WEM.UOM_DESCR_LANG ELSE AC.ACCOUNT_NAME_LANG END AS ACCOUNT_NAME_LANG,
+               ACT.DESCRIPTION, ACT.DESCRIPTION_LANG,  UDM.ABBREVIATION, UDM.ABBREVIATION_LANG, UDM.DECIMAL_SCALE, UDM.UOM_TYPE_ID,
+               MAX(CASE WHEN WA.TYPE_BALANCE_SCORE_CON_ID IS NOT NULL AND ATE.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_CON_ID THEN ATE.AMOUNT ELSE NULL END) AS SC_AMOUNT,
+               MAX(CASE WHEN WA.TYPE_BALANCE_SCORE_TAR_ID IS NOT NULL AND ATE.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_TAR_ID THEN ATE.AMOUNT ELSE NULL END) AS ST_AMOUNT,
+               MAX(CASE WHEN WA.TYPE_BALANCE_CONS_IND_ID  IS NOT NULL AND ATE.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_CONS_IND_ID  THEN ATE.AMOUNT ELSE NULL END) AS SC2_AMOUNT,
+               MAX(CASE WHEN WA.TYPE_BALANCE_TAR_IND_ID   IS NOT NULL AND ATE.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_TAR_IND_ID   THEN ATE.AMOUNT ELSE NULL END) AS ST2_AMOUNT,
+               SC.AMOUNT AS SC_ICON_AMOUNT, RVC.ICON_CONTENT_ID AS RVC_ICON_CONTENT_ID, DRC.OBJECT_INFO AS DRC_OBJECT_INFO,
+               ST.AMOUNT AS ST_ICON_AMOUNT, RVT.ICON_CONTENT_ID AS RVT_ICON_CONTENT_ID, DRT.OBJECT_INFO AS DRT_OBJECT_INFO,
+               SC2.AMOUNT AS SC2_ICON_AMOUNT, RVC2.ICON_CONTENT_ID AS RVC2_ICON_CONTENT_ID, DRC2.OBJECT_INFO AS DRC2_OBJECT_INFO,
+               ST2.AMOUNT AS ST2_ICON_AMOUNT, RVT2.ICON_CONTENT_ID AS RVT2_ICON_CONTENT_ID, DRT2.OBJECT_INFO AS DRT2_OBJECT_INFO,
+               AC.INPUT_ENUM_ID, AC.DETECT_ORG_UNIT_ID_FLAG, WEM.WORK_EFFORT_MEASURE_ID, WE.ORG_UNIT_ROLE_TYPE_ID, WE.ORG_UNIT_ID,
+               AC.GL_ACCOUNT_ID
+        FROM WORK_EFFORT_ANALYSIS WA
+                 INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WE.WORK_EFFORT_ID
+                 INNER JOIN WORK_EFFORT_TYPE WET ON WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+                 INNER JOIN CUSTOM_TIME_PERIOD TP ON TP.PERIOD_TYPE_ID  = WET.PERIOD_TYPE_ID
+            AND TP.FROM_DATE &lt;= WA.REFERENCE_DATE AND TP.THRU_DATE &gt;= WA.REFERENCE_DATE
+                 INNER JOIN WORK_EFFORT_MEASURE WEM ON WEM.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND WEM.GL_ACCOUNT_ID &lt;&gt; 'SCORE'
+                 INNER JOIN GL_ACCOUNT AC ON AC.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+                 INNER JOIN UOM UDM ON UDM.UOM_ID = AC.DEFAULT_UOM_ID
+                 INNER JOIN GL_ACCOUNT_TYPE ACT ON ACT.GL_ACCOUNT_TYPE_ID = AC.GL_ACCOUNT_TYPE_ID
+                 LEFT JOIN (
+            SELECT WEM.WORK_EFFORT_MEASURE_ID, AT.TRANSACTION_DATE,
+        <if test="_databaseId != 'postgres' and _databaseId != 'sqlserver'">
+            CASE WHEN UDM.UOM_TYPE_ID = 'RATING_SCALE' THEN WMR.UOM_DESCR  ELSE AE.AMOUNT END
+        </if>
+        <if test="_databaseId == 'postgres'">
+            CASE WHEN UDM.UOM_TYPE_ID = 'RATING_SCALE' THEN WMR.UOM_DESCR  ELSE AE.AMOUNT::text END
+        </if>
+        <if test="_databaseId == 'sqlserver'">
+            CASE WHEN UDM.UOM_TYPE_ID = 'RATING_SCALE' THEN WMR.UOM_DESCR  ELSE CAST(AE.AMOUNT AS varchar) END
+        </if>
+        AS AMOUNT, AE.GL_FISCAL_TYPE_ID
+            FROM WORK_EFFORT_MEASURE WEM
+                     INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WEM.WORK_EFFORT_ID
+                     INNER JOIN ACCTG_TRANS_ENTRY AE ON AE.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+                     INNER JOIN ACCTG_TRANS AT ON AE.ACCTG_TRANS_ID = AT.ACCTG_TRANS_ID
+                INNER JOIN GL_ACCOUNT AC ON AC.GL_ACCOUNT_ID = AE.GL_ACCOUNT_ID
+                INNER JOIN UOM UDM ON UDM.UOM_ID = AC.DEFAULT_UOM_ID
+                LEFT JOIN WORK_EFFORT_MEAS_RAT_SC WMR ON WMR.WORK_EFFORT_MEASURE_ID = WEM.WORK_EFFORT_MEASURE_ID AND WMR.UOM_RATING_VALUE = AE.AMOUNT
+            WHERE (AC.INPUT_ENUM_ID = 'ACCINP_UO'
+               OR (AC.INPUT_ENUM_ID = 'ACCINP_OBJ' AND AE.VOUCHER_REF IS NOT NULL AND AE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID))
+              AND (AC.DETECT_ORG_UNIT_ID_FLAG = 'N' OR AC.DETECT_ORG_UNIT_ID_FLAG IS NULL
+               OR (AT.ROLE_TYPE_ID IS NOT NULL AND AT.PARTY_ID IS NOT NULL
+              AND AT.ROLE_TYPE_ID = WE.ORG_UNIT_ROLE_TYPE_ID AND AT.PARTY_ID = WE.ORG_UNIT_ID))
+        ) ATE ON ATE.WORK_EFFORT_MEASURE_ID = WEM.WORK_EFFORT_MEASURE_ID AND ATE.TRANSACTION_DATE = WA.REFERENCE_DATE
+
+        <include refid="detailKPILeftJoin"/>
+
+        WHERE WA.WORK_EFFORT_ANALYSIS_ID = #{analysisId}
+          AND WE.WORK_EFFORT_ID = #{workEffortId}
+        <if test="dateControl == 'DATE'">
+            AND WEM.FROM_DATE &lt;= WA.REFERENCE_DATE AND WEM.THRU_DATE &gt;= WA.REFERENCE_DATE -- SE PARAMS.dateControl='DATE'
+        </if>
+        <if test="dateControl == 'PERIOD'">
+            AND WEM.FROM_DATE &lt;= TP.THRU_DATE AND WEM.THRU_DATE &gt;= TP.FROM_DATE -- SE PARAMS.dateControl='PERIOD'
+        </if>
+        <if test="purposeKPIList.length > 0">
+            <include refid="existsPurposeKPI"/>
+        </if>
+        GROUP BY WE.WORK_EFFORT_ID, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG,
+                 WEM.UOM_DESCR, AC.ACCOUNT_NAME, WEM.UOM_DESCR_LANG, AC.ACCOUNT_NAME_LANG,
+                 ACT.DESCRIPTION, ACT.DESCRIPTION_LANG,  UDM.ABBREVIATION, UDM.ABBREVIATION_LANG,
+                 SC.AMOUNT, RVC.ICON_CONTENT_ID, DRC.OBJECT_INFO, AC.ACCOUNT_CODE, ST.AMOUNT, RVT.ICON_CONTENT_ID, DRT.OBJECT_INFO,
+                  SC2.AMOUNT, RVC2.ICON_CONTENT_ID, DRC2.OBJECT_INFO, ST2.AMOUNT, RVT2.ICON_CONTENT_ID, DRT2.OBJECT_INFO, UDM.DECIMAL_SCALE,
+        AC.INPUT_ENUM_ID, AC.DETECT_ORG_UNIT_ID_FLAG, WEM.WORK_EFFORT_MEASURE_ID, WE.ORG_UNIT_ROLE_TYPE_ID, WE.ORG_UNIT_ID, AC.GL_ACCOUNT_ID, UDM.UOM_TYPE_ID
+        ORDER BY AC.ACCOUNT_CODE
+
+    </select>
+
+    <resultMap id="detailPeriod" type="it.mapsgroup.gzoom.mybatis.dto.DetailKPI">
+        <id column="work_effort_id" jdbcType="VARCHAR" property="workEffortId"/>
+        <result column="work_effort_name" jdbcType="VARCHAR" property="workEffortName"/>
+        <result column="work_effort_name_lang" jdbcType="VARCHAR" property="workEffortNameLang"/>
+        <result column="account_code" jdbcType="VARCHAR" property="accountCode"/>
+        <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
+        <result column="account_name_lang" jdbcType="VARCHAR" property="accountNameLang"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="description_lang" jdbcType="VARCHAR" property="descriptionLang"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="abbreviation_lang" jdbcType="VARCHAR" property="abbreviationLang"/>
+        <result column="gl_fiscal_type_id" jdbcType="VARCHAR" property="glFiscalTypeId"/>
+        <result column="desc_fiscal_type_id" jdbcType="VARCHAR" property="descFTId"/>
+        <result column="decimal_scale" jdbcType="DECIMAL" property="decimalScale"/>
+        <result column="uom_type_id" jdbcType="VARCHAR" property="uomTypeId"/>
+        <result column="gl_account_id" jdbcType="VARCHAR" property="glAccountId"/>
+
+        <result column="m4_amount" jdbcType="DECIMAL" property="m4Amount"/>
+        <result column="m3_amount" jdbcType="DECIMAL" property="m3Amount"/>
+        <result column="m2_amount" jdbcType="DECIMAL" property="m2Amount"/>
+        <result column="m1_amount" jdbcType="DECIMAL" property="m1Amount"/>
+        <result column="is_amount" jdbcType="DECIMAL" property="isAmount"/>
+        <result column="p1_amount" jdbcType="DECIMAL" property="p1Amount"/>
+        <result column="p2_amount" jdbcType="DECIMAL" property="p2Amount"/>
+        <result column="p3_amount" jdbcType="DECIMAL" property="p3Amount"/>
+        <result column="p4_amount" jdbcType="DECIMAL" property="p4Amount"/>
+        <result column="sc_icon_amount" jdbcType="DECIMAL" property="scIconAmount"/>
+        <result column="rvc_icon_content_id" jdbcType="VARCHAR" property="rvcIconContentId"/>
+        <result column="drc_object_info" jdbcType="VARCHAR" property="drcObjectInfo"/>
+
+        <result column="st_icon_amount" jdbcType="DECIMAL" property="stIconAmount"/>
+        <result column="rvt_icon_content_id" jdbcType="VARCHAR" property="rvtIconContentId"/>
+        <result column="drt_object_info" jdbcType="VARCHAR" property="drtObjectInfo"/>
+
+        <result column="sc2_icon_amount" jdbcType="DECIMAL" property="sc2IconAmount"/>
+        <result column="rvc2_icon_content_id" jdbcType="VARCHAR" property="rvc2IconContentId"/>
+        <result column="drc2_object_info" jdbcType="VARCHAR" property="drc2ObjectInfo"/>
+
+        <result column="st2_icon_amount" jdbcType="DECIMAL" property="st2IconAmount"/>
+        <result column="rvt2_icon_content_id" jdbcType="VARCHAR" property="rvt2IconContentId"/>
+        <result column="drt2object_info" jdbcType="VARCHAR" property="drt2ObjectInfo"/>
+
+        <result column="input_enum_id" jdbcType="VARCHAR" property="inputEnumId"/>
+        <result column="detect_org_unit_id_flag" jdbcType="VARCHAR" property="detectOrgUnitIdFlag"/>
+        <result column="work_effort_measure_id" jdbcType="VARCHAR" property="workEffortMeasureId"/>
+        <result column="org_unit_role_type_id" jdbcType="VARCHAR" property="orgUnitRoleTypeId"/>
+        <result column="org_unit_id" jdbcType="VARCHAR" property="orgUnitId"/>
+
+    </resultMap>
+
+    <select id="getDetailKPIPeriod" resultMap="detailPeriod" parameterType="java.util.Map">
+        SELECT WE.WORK_EFFORT_ID, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG, AC.ACCOUNT_CODE,
+        CASE WHEN WEM.UOM_DESCR IS NOT NULL THEN WEM.UOM_DESCR ELSE AC.ACCOUNT_NAME END AS ACCOUNT_NAME,
+        CASE WHEN WEM.UOM_DESCR_LANG IS NOT NULL THEN WEM.UOM_DESCR_LANG ELSE AC.ACCOUNT_NAME_LANG END AS ACCOUNT_NAME_LANG,
+        ACT.DESCRIPTION, ACT.DESCRIPTION_LANG,  UDM.ABBREVIATION, UDM.ABBREVIATION_LANG, TFT.GL_FISCAL_TYPE_ID, FT.DESCRIPTION AS DESC_FISCAL_TYPE_ID,
+        UDM.DECIMAL_SCALE, UDM.UOM_TYPE_ID,
+        MAX(CASE WHEN WA.YEAR_M4_PREV IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_M4_PREV THEN ATE.AMOUNT ELSE NULL END) AS M4_AMOUNT,
+        MAX(CASE WHEN WA.YEAR_M3_PREV IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_M3_PREV THEN ATE.AMOUNT ELSE NULL END) AS M3_AMOUNT,
+        MAX(CASE WHEN WA.YEAR_M2_PREV IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_M2_PREV THEN ATE.AMOUNT ELSE NULL END) AS M2_AMOUNT,
+        MAX(CASE WHEN WA.YEAR_M1_PREV IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_M1_PREV THEN ATE.AMOUNT ELSE NULL END) AS M1_AMOUNT,
+        MAX(CASE WHEN WA.YEAR_PREV    IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_PREV    THEN ATE.AMOUNT ELSE NULL END) AS IS_AMOUNT,
+        MAX(CASE WHEN WA.YEAR_P1_PREV IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_P1_PREV THEN ATE.AMOUNT ELSE NULL END) AS P1_AMOUNT,
+        MAX(CASE WHEN WA.YEAR_P2_PREV IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_P2_PREV THEN ATE.AMOUNT ELSE NULL END) AS P2_AMOUNT,
+        MAX(CASE WHEN WA.YEAR_P3_PREV IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_P3_PREV THEN ATE.AMOUNT ELSE NULL END) AS P3_AMOUNT,
+        MAX(CASE WHEN WA.YEAR_P4_PREV IS NOT NULL AND ATE.TRANSACTION_DATE = WA.YEAR_P4_PREV THEN ATE.AMOUNT ELSE NULL END) AS P4_AMOUNT,
+        SC.AMOUNT AS SC_ICON_AMOUNT, RVC.ICON_CONTENT_ID AS RVC_ICON_CONTENT_ID, DRC.OBJECT_INFO AS DRC_OBJECT_INFO,
+        ST.AMOUNT AS ST_ICON_AMOUNT, RVT.ICON_CONTENT_ID AS RVT_ICON_CONTENT_ID, DRT.OBJECT_INFO AS DRT_OBJECT_INFO,
+        SC2.AMOUNT AS SC2_ICON_AMOUNT, RVC2.ICON_CONTENT_ID AS RVC2_ICON_CONTENT_ID, DRC2.OBJECT_INFO AS DRC2_OBJECT_INFO,
+        ST2.AMOUNT AS ST2_ICON_AMOUNT, RVT2.ICON_CONTENT_ID AS RVT2_ICON_CONTENT_ID, DRT2.OBJECT_INFO AS DRT2_OBJECT_INFO,
+        AC.INPUT_ENUM_ID, AC.DETECT_ORG_UNIT_ID_FLAG, WEM.WORK_EFFORT_MEASURE_ID, WE.ORG_UNIT_ROLE_TYPE_ID, WE.ORG_UNIT_ID,
+        AC.GL_ACCOUNT_ID
+        FROM WORK_EFFORT_ANALYSIS WA
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WE.WORK_EFFORT_ID
+        INNER JOIN WORK_EFFORT_TYPE WET ON WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+        INNER JOIN CUSTOM_TIME_PERIOD TP ON TP.PERIOD_TYPE_ID  = WET.PERIOD_TYPE_ID
+        AND TP.FROM_DATE &lt;= WA.REFERENCE_DATE AND TP.THRU_DATE &gt;= WA.REFERENCE_DATE
+        INNER JOIN WORK_EFFORT_MEASURE WEM ON WEM.WORK_EFFORT_ID = WE.WORK_EFFORT_ID AND WEM.GL_ACCOUNT_ID &lt;&gt; 'SCORE'
+        INNER JOIN GL_ACCOUNT AC ON AC.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+        INNER JOIN UOM UDM ON UDM.UOM_ID = AC.DEFAULT_UOM_ID
+        INNER JOIN GL_ACCOUNT_TYPE ACT ON ACT.GL_ACCOUNT_TYPE_ID = AC.GL_ACCOUNT_TYPE_ID
+        INNER JOIN GL_ACCOUNT_TYPE_GL_FISCAL_TYPE TFT ON TFT.GL_ACCOUNT_TYPE_ID = ACT.GL_ACCOUNT_TYPE_ID
+            AND ((WA.TYPE_BALANCE_SCORE_CON_ID IS NOT NULL AND TFT.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_CON_ID)
+            OR  (WA.TYPE_BALANCE_SCORE_TAR_ID IS NOT NULL AND TFT.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_SCORE_TAR_ID)
+            OR  (WA.TYPE_BALANCE_CONS_IND_ID IS NOT NULL AND TFT.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_CONS_IND_ID)
+            OR  (WA.TYPE_BALANCE_TAR_IND_ID IS NOT NULL AND TFT.GL_FISCAL_TYPE_ID = WA.TYPE_BALANCE_TAR_IND_ID))
+        INNER JOIN GL_FISCAL_TYPE FT ON FT.GL_FISCAL_TYPE_ID = TFT.GL_FISCAL_TYPE_ID
+        LEFT JOIN (SELECT WEM.WORK_EFFORT_MEASURE_ID, AT.TRANSACTION_DATE,
+        <if test="_databaseId != 'postgres' and _databaseId != 'sqlserver'">
+            CASE WHEN UDM.UOM_TYPE_ID = 'RATING_SCALE' THEN WMR.UOM_DESCR  ELSE AE.AMOUNT END
+        </if>
+        <if test="_databaseId == 'postgres'">
+            CASE WHEN UDM.UOM_TYPE_ID = 'RATING_SCALE' THEN WMR.UOM_DESCR  ELSE AE.AMOUNT::text END
+        </if>
+        <if test="_databaseId == 'sqlserver'">
+            CASE WHEN UDM.UOM_TYPE_ID = 'RATING_SCALE' THEN WMR.UOM_DESCR  ELSE CAST(AE.AMOUNT AS varchar) END
+        </if>
+         AS AMOUNT, AE.GL_FISCAL_TYPE_ID
+        FROM WORK_EFFORT_MEASURE WEM
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WEM.WORK_EFFORT_ID
+        INNER JOIN ACCTG_TRANS_ENTRY AE ON AE.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+        INNER JOIN ACCTG_TRANS AT ON AE.ACCTG_TRANS_ID = AT.ACCTG_TRANS_ID
+        INNER JOIN GL_ACCOUNT AC ON AC.GL_ACCOUNT_ID = AE.GL_ACCOUNT_ID
+        INNER JOIN UOM UDM ON UDM.UOM_ID = AC.DEFAULT_UOM_ID
+        LEFT JOIN WORK_EFFORT_MEAS_RAT_SC WMR ON WMR.WORK_EFFORT_MEASURE_ID = WEM.WORK_EFFORT_MEASURE_ID AND WMR.UOM_RATING_VALUE = AE.AMOUNT
+        WHERE (AC.INPUT_ENUM_ID = 'ACCINP_UO'
+        OR (AC.INPUT_ENUM_ID = 'ACCINP_OBJ' AND AE.VOUCHER_REF IS NOT NULL AND AE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID))
+        AND (AC.DETECT_ORG_UNIT_ID_FLAG = 'N' OR AC.DETECT_ORG_UNIT_ID_FLAG IS NULL
+        OR (AT.ROLE_TYPE_ID IS NOT NULL AND AT.PARTY_ID IS NOT NULL
+        AND AT.ROLE_TYPE_ID = WE.ORG_UNIT_ROLE_TYPE_ID AND AT.PARTY_ID = WE.ORG_UNIT_ID))
+        ) ATE ON ATE.WORK_EFFORT_MEASURE_ID = WEM.WORK_EFFORT_MEASURE_ID AND ATE.GL_FISCAL_TYPE_ID = TFT.GL_FISCAL_TYPE_ID
+        <include refid="detailKPILeftJoin"/>
+        WHERE WA.WORK_EFFORT_ANALYSIS_ID = #{analysisId} -- INPUT.WORK_EFFORT_ANALYSIS_ID
+        AND WE.WORK_EFFORT_ID = #{workEffortId} -- '21629' modello si/no 'E12019' non modello, kpi e no
+        <if test="dateControl == 'DATE'">
+            AND WEM.FROM_DATE &lt;= WA.REFERENCE_DATE AND WEM.THRU_DATE &gt;= WA.REFERENCE_DATE -- SE PARAMS.dateControl='DATE'
+        </if>
+        <if test="dateControl == 'PERIOD'">
+            AND WEM.FROM_DATE &lt;= TP.THRU_DATE AND WEM.THRU_DATE &gt;= TP.FROM_DATE -- SE PARAMS.dateControl='PERIOD'
+        </if>
+        <if test="purposeKPIList.length > 0">
+            <include refid="existsPurposeKPI"/>
+        </if>
+        GROUP BY WE.WORK_EFFORT_ID, WE.WORK_EFFORT_NAME, WE.WORK_EFFORT_NAME_LANG, AC.ACCOUNT_CODE,
+        WEM.UOM_DESCR, AC.ACCOUNT_NAME, WEM.UOM_DESCR_LANG, AC.ACCOUNT_NAME_LANG,
+        ACT.DESCRIPTION, ACT.DESCRIPTION_LANG,  UDM.ABBREVIATION, UDM.ABBREVIATION_LANG, ATE.GL_FISCAL_TYPE_ID,
+        SC.AMOUNT, RVC.ICON_CONTENT_ID, DRC.OBJECT_INFO, ST.AMOUNT, RVT.ICON_CONTENT_ID, DRT.OBJECT_INFO,
+        SC2.AMOUNT, RVC2.ICON_CONTENT_ID, DRC2.OBJECT_INFO, ST2.AMOUNT, RVT2.ICON_CONTENT_ID, DRT2.OBJECT_INFO
+        , TFT.GL_FISCAL_TYPE_ID,FT.DESCRIPTION, UDM.DECIMAL_SCALE, AC.INPUT_ENUM_ID, AC.DETECT_ORG_UNIT_ID_FLAG,
+        WEM.WORK_EFFORT_MEASURE_ID, WE.ORG_UNIT_ROLE_TYPE_ID, WE.ORG_UNIT_ID, AC.GL_ACCOUNT_ID, UDM.UOM_TYPE_ID
+        ORDER BY AC.ACCOUNT_CODE
+
+
+    </select>
+
+
+</mapper>

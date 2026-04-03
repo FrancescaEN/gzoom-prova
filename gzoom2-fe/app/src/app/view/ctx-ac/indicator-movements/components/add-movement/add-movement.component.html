@@ -1,0 +1,159 @@
+<form *ngIf="form" [formGroup]="form" (onSubmit)="onSubmit()">
+  <gzoom-label [label]="labelGlAccount()" twoPoints labelPos="left" required>
+    @if (glAccount() | loading | async; as glAccount) {
+      <gzoom-dropdown
+        [options]="glAccount?.value"
+        [loading]="glAccount?.loading"
+        style="max-width: 90%; min-width: 400px"
+        controlName="glAccountId"
+        filter
+      />
+    }
+  </gzoom-label>
+  <br />
+  <gzoom-label label="customTimePeriod" twoPoints labelPos="left" required>
+    @if (customTimePeriod() | loading | async; as customTimePeriod) {
+      <gzoom-dropdown
+        [options]="customTimePeriod?.value"
+        [loading]="customTimePeriod?.loading"
+        style="width: 240px"
+        controlName="customTimePeriodId"
+        filter
+      />
+    }
+  </gzoom-label>
+  <br />
+  @if (isBySingleObjective()) {
+    <gzoom-label label="workEffortMeasure" twoPoints labelPos="left" required>
+      <div style="max-width: 90%">
+        @if (workEffortMeasure$ | loading | async; as workEffortMeasure) {
+          <p-dropdown
+            #panelWidth
+            id="panelWidth"
+            [options]="workEffortMeasure?.value"
+            [loading]="workEffortMeasure?.loading"
+            formControlName="voucherRef"
+            filter
+            autoWidth="false"
+            [placeholder]="'Select' | i18n"
+            appendTo="body"
+            [style]="{ minWidth: '400px' }"
+            virtualScroll
+            virtualScrollItemSize="38"
+          >
+            <ng-template let-wem pTemplate="item">
+              <div class="d-flex align-items-center gap-2">
+                <gzoom-button-link
+                  icon="pi pi-info-circle"
+                  tooltipLabel="{{ wem.title }}"
+                  tooltipPosition="left"
+                  buttonStyle="padding-bottom: 3px !important; padding-top: 0px !important; width: min-content"
+                />
+                <div>{{ wem.label }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        }
+      </div>
+    </gzoom-label>
+    <br />
+  }
+  @if (isByOrganizationalUnit()) {
+    <gzoom-label label="PartyRelationshipUO" twoPoints labelPos="left" required>
+      <p-dropdown
+        [options]="partyRoleEx()"
+        formControlName="partyRole"
+        appendTo="body"
+        placeholder="{{ 'Select' | i18n }}"
+        showClear="false"
+        filter
+      />
+    </gzoom-label>
+    <br />
+  }
+  <gzoom-label label="uom" twoPoints labelPos="left">
+    @if (this.glAccountSelected()) {
+      {{ uom()?.description }}
+    } @else {
+      <i>{{ labelSelectGlAccountForUom() | i18n }}</i>
+    }
+  </gzoom-label>
+  <br />
+
+  <gzoom-row-flex>
+    <gzoom-label label="amount" labelPos="top" required>
+      @switch (uomType()?.uomTypeId) {
+        @case ("RATING_SCALE") {
+          <p-dropdown
+            [options]="uomRatingScale() | async"
+            formControlName="amount"
+            appendTo="body"
+            placeholder="{{ 'Select' | i18n }}"
+            filter
+            required
+          />
+        }
+        @case ("DATE_MEASURE") {
+          <p-calendar
+            showIcon
+            appendTo="body"
+            formControlName="selectedDate"
+            required
+          />
+        }
+        @default {
+          <p-inputNumber
+            formControlName="amount"
+            mode="decimal"
+            [minFractionDigits]="uom()?.decimalScale"
+            [maxFractionDigits]="uom()?.decimalScale"
+            [min]="uom()?.minValue"
+            [max]="uom()?.maxValue"
+            required
+          />
+        }
+      }
+    </gzoom-label>
+    @if (isByGlFiscalType()) {
+      <gzoom-label label="glFiscalType" labelPos="top" required>
+        @if (glFiscalType | loading | async; as glFiscalType) {
+          <gzoom-dropdown
+            [options]="glFiscalType?.value"
+            [loading]="glFiscalType?.loading"
+            style="width: 240px"
+            controlName="glFiscalTypeId"
+            filter
+          />
+        }
+      </gzoom-label>
+    }
+
+  </gzoom-row-flex>
+  <br />
+  @if (showLabelValueExists) {
+    <gzoom-message-warn message="{{ labelValueExists() | i18n }}" />
+  }
+  <p-messages [key]="keyMsg" />
+  <br />
+  <div class="w-100 d-flex flex-row justify-content-between align-items-center">
+    <div class="d-flex flex-row align-items-center gap-2">
+      <p-checkbox
+        [(ngModel)]="clone"
+        [binary]="true"
+        inputId="binary"
+        [ngModelOptions]="{ standalone: true }"
+      />
+      {{ "createAnotherMovement" | i18n }}
+    </div>
+    <div class="d-flex flex-row-reverse">
+      <gzoom-button
+        icon="pi pi-save"
+        label="{{ 'Save' | i18n }}"
+        (onClick)="create()"
+        [disabled]="!this.form.valid"
+        [loading]="loadingSave()"
+        rounded
+      />
+    </div>
+  </div>
+</form>

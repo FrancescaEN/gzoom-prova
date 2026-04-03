@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SezioneControlloGestione" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="22c2ae8e-c01d-48c4-90cf-a6c01511a2f1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gzoom_comunelecco"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="85"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="910"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="549"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="441"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="areaId" class="java.lang.String"/>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3006" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3006sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="YEAR" class="java.lang.Integer"/>
+	<parameter name="idProcesso" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select
+    indic.description as "Dimensione",
+    indic.classe as "Tipologia indicatore",
+    indic.account_name as "Titolo dato di attività / di contesto",
+    indic.source as "Fonte dei dati",
+    indic.description2 as "Periodicità di rilevazione",
+    indic.g_uom_abbreviation as "UdM",
+    indic.actual_3 as "Effettivo -3",
+    indic.actual_2 as "Effettivo -2",
+    indic.actual_1 as "Effettivo -1",
+    (coalesce(indic.actual_3, 0) + coalesce(indic.actual_2, 0) + coalesce(indic.actual_1, 0)) / 
+    nullif(3 - (case when indic.actual_3 is null then 1 else 0 end + 
+                case when indic.actual_2 is null then 1 else 0 end + 
+                case when indic.actual_1 is null then 1 else 0 end), 0) 
+    as "Media triennio prec.",
+    indic.budget as "Previsto",
+    indic.actual as "Effettivo",
+    (indic.actual - indic.budget) as "Differenza  Effett.-Prev.",
+    indic.actual / nullif(
+        (coalesce(indic.actual_3, 0) + coalesce(indic.actual_2, 0) + coalesce(indic.actual_1, 0)) / 
+        nullif(3 - (case when indic.actual_3 is null then 1 else 0 end + 
+                    case when indic.actual_2 is null then 1 else 0 end + 
+                    case when indic.actual_1 is null then 1 else 0 end), 0), 
+        0
+    ) as "Trend eff./media tr. p.",
+    (indic.actual / nullif(indic.budget, 0)) * 100 as "% Effettivo/Previsto"
+from work_effort we
+/* VALORI INDICATORI */
+left join (
+    select 
+        wetav.m_work_effort_id as work_effort_id,
+        wetav.tm_gl_account_id as gl_account_id,
+        grt.description,
+        wetav.g_account_name as account_name,
+        wetav.g_account_code,
+        wetav.g_uom_abbreviation,
+        gac.description as "classe",
+        ga.source,
+        max(case when wetav.tm_gl_fiscal_type_id='ACTUAL' and wetav.tt_transaction_date=TO_DATE(  $P{date3112sql} , 'YYYY-MM-DD') - INTERVAL '3 year' then wetav.tm_amount else null end) as actual_3,
+        max(case when wetav.tm_gl_fiscal_type_id='ACTUAL' and wetav.tt_transaction_date=TO_DATE(  $P{date3112sql} , 'YYYY-MM-DD') - INTERVAL '2 year' then wetav.tm_amount else null end) as actual_2,
+        max(case when wetav.tm_gl_fiscal_type_id='ACTUAL' and wetav.tt_transaction_date=TO_DATE(  $P{date3112sql} , 'YYYY-MM-DD') - INTERVAL '1 year' then wetav.tm_amount else null end) as actual_1,
+        max(case when wetav.tm_gl_fiscal_type_id='BUDGET' and wetav.tt_transaction_date=TO_DATE(  $P{date3112sql} , 'YYYY-MM-DD') then wetav.tm_amount else null end) as budget,
+        max(case when wetav.tm_gl_fiscal_type_id='ACTUAL' and wetav.tt_transaction_date=TO_DATE(  $P{date3112sql} , 'YYYY-MM-DD') then wetav.tm_amount else null end) as actual,
+        scorekpi.scorekpi_s1,
+        scorekpi.comments_s1,
+        scorekpi.scorekpi_s2,
+        scorekpi.comments_s2,
+        scorekpi.description as "description2",
+        score.score_s1,
+        score.score_s2,
+        score.sequence_id,
+        score.note_date_time,
+        score.note_info
+    from work_effort_trans_all_view wetav
+    join work_effort_purpose_account wepa on wepa.gl_account_id = wetav.m_gl_account_id and wepa.work_effort_purpose_type_id ='COGERSU'
+    join gl_resource_type grt on grt.gl_resource_type_id = g_gl_resource_type_id
+    left join gl_account ga on ga.gl_account_id=wetav.m_gl_account_id
+    left join gl_account_class gac on gac.gl_account_class_id=ga.gl_account_class_id
+    /* SCOREKPI */
+    left join (
+        select 
+            wem.work_effort_measure_id,
+            pt.description,
+            max(case when ate.gl_fiscal_type_id = 'ACTUAL' and act.transaction_date = TO_DATE(  $P{date3006sql} , 'YYYY-MM-DD') then ate.amount else null end) as scorekpi_s1,
+            max(case when ate.gl_fiscal_type_id = 'ACTUAL' and act.transaction_date = TO_DATE(  $P{date3112sql} , 'YYYY-MM-DD') then ate.amount else null end) as scorekpi_s2,
+            max(case when ate.gl_fiscal_type_id = 'ACTUAL' and act.transaction_date = TO_DATE(  $P{date3006sql} , 'YYYY-MM-DD') then urv.comments else null end) as comments_s1,
+            max(case when ate.gl_fiscal_type_id = 'ACTUAL' and act.transaction_date = TO_DATE(  $P{date3112sql} , 'YYYY-MM-DD') then urv.comments else null end) as comments_s2
+        from work_effort_measure wem
+        join acctg_trans act on act.voucher_ref = wem.work_effort_measure_id 
+        join period_type pt on pt.period_type_id=wem.period_type_id
+        join acctg_trans_entry ate on ate.acctg_trans_id = act.acctg_trans_id and ate.gl_account_id = 'SCOREKPI'
+        left join uom_range ur on ur.uom_id = ate.currency_uom_id
+        left join uom_range_values urv on urv.uom_range_id = ur.uom_range_id 
+            and ate.amount <= urv.thru_value and ate.amount >= urv.from_value 
+        group by
+            wem.work_effort_measure_id,pt.description
+    ) scorekpi on scorekpi.work_effort_measure_id = wetav.m_work_effort_measure_id
+    /* PUNTEGGIO SCHEDA */
+    left join (
+        select 
+            wem.work_effort_id,
+            max(case when ate.gl_fiscal_type_id = 'ACTUAL' and act.transaction_date = TO_DATE(  $P{date3006sql} , 'YYYY-MM-DD') then ate.amount else null end) as score_s1,
+            max(case when ate.gl_fiscal_type_id = 'ACTUAL' and act.transaction_date = TO_DATE(  $P{date3112sql} , 'YYYY-MM-DD') then ate.amount else null end) as score_s2,
+            wen.sequence_id,
+            nd.note_date_time,
+            nd.note_info
+        from work_effort_measure wem
+        join acctg_trans act on act.voucher_ref = wem.work_effort_measure_id
+        join acctg_trans_entry ate on ate.acctg_trans_id = act.acctg_trans_id and ate.gl_account_id = 'SCORE'
+        left join work_effort_note wen on wen.work_effort_id = wem.work_effort_id 
+        left join note_data nd on nd.note_id = wen.note_id
+        group by
+            wem.work_effort_id, wen.sequence_id, nd.note_date_time, nd.note_info
+    ) score on score.work_effort_id = wetav.m_work_effort_id 
+    where wetav.w_work_effort_type_id='24M08'
+    group by
+        wetav.m_work_effort_id,
+        wetav.tm_gl_account_id,
+        wetav.g_account_name,
+        wetav.g_account_code,
+        grt.description,
+        wetav.g_uom_abbreviation,
+        gac.description,
+        scorekpi.scorekpi_s1,
+        scorekpi.comments_s1,
+        scorekpi.scorekpi_s2,
+        scorekpi.comments_s2,
+        scorekpi.description,
+        score.score_s1,
+        score.score_s2,
+        score.sequence_id,
+        score.note_date_time,
+        score.note_info,
+        ga.source
+) indic on indic.work_effort_id = we.work_effort_id
+where we.work_effort_type_id = '24M08'
+and we.work_effort_id= $P{idProcesso} 
+group by 
+    we.source_reference_id,
+    we.work_effort_name,
+    indic.score_s1,
+    indic.score_s2,
+    indic.description,
+    indic.account_name,
+    indic.g_uom_abbreviation,
+    indic.actual_3,
+    indic.actual_2,
+    indic.actual_1,
+    indic.budget,
+    indic.actual,
+    indic.scorekpi_s1,
+    indic.comments_s1,
+    indic.scorekpi_s2,
+    indic.comments_s2,
+    indic.classe,
+    indic.source,
+	indic.description2,
+    indic.g_account_code
+    order by indic.description desc, indic.g_account_code asc]]>
+	</queryString>
+	<field name="Dimensione" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Dimensione"/>
+		<property name="com.jaspersoft.studio.field.label" value="Dimensione"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="gl_resource_type"/>
+	</field>
+	<field name="Tipologia indicatore" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Tipologia indicatore"/>
+		<property name="com.jaspersoft.studio.field.label" value="Tipologia indicatore"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="gl_account_class"/>
+	</field>
+	<field name="Titolo dato di attività / di contesto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Titolo dato di attività / di contesto"/>
+		<property name="com.jaspersoft.studio.field.label" value="Titolo dato di attività / di contesto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_trans_all_view"/>
+	</field>
+	<field name="UdM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="UdM"/>
+		<property name="com.jaspersoft.studio.field.label" value="UdM"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_trans_all_view"/>
+	</field>
+	<field name="Effettivo -3" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Effettivo -3"/>
+		<property name="com.jaspersoft.studio.field.label" value="Effettivo -3"/>
+	</field>
+	<field name="Effettivo -2" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Effettivo -2"/>
+		<property name="com.jaspersoft.studio.field.label" value="Effettivo -2"/>
+	</field>
+	<field name="Effettivo -1" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Effettivo -1"/>
+		<property name="com.jaspersoft.studio.field.label" value="Effettivo -1"/>
+	</field>
+	<field name="Media triennio prec." class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Media triennio prec."/>
+		<property name="com.jaspersoft.studio.field.label" value="Media triennio prec."/>
+	</field>
+	<field name="Previsto" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Previsto"/>
+		<property name="com.jaspersoft.studio.field.label" value="Previsto"/>
+	</field>
+	<field name="Effettivo" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Effettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="Effettivo"/>
+	</field>
+	<field name="Differenza  Effett.-Prev." class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Differenza  Effett.-Prev."/>
+		<property name="com.jaspersoft.studio.field.label" value="Differenza  Effett.-Prev."/>
+	</field>
+	<field name="Trend eff./media tr. p." class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Trend eff./media tr. p."/>
+		<property name="com.jaspersoft.studio.field.label" value="Trend eff./media tr. p."/>
+	</field>
+	<field name="% Effettivo/Previsto" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="% Effettivo/Previsto"/>
+		<property name="com.jaspersoft.studio.field.label" value="% Effettivo/Previsto"/>
+	</field>
+	<field name="Fonte dei dati" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Fonte dei dati"/>
+		<property name="com.jaspersoft.studio.field.name" value="Fonte dei dati"/>
+	</field>
+	<field name="Periodicità di rilevazione" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="Periodicità di rilevazione"/>
+		<property name="com.jaspersoft.studio.field.name" value="Periodicità di rilevazione"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="15">
+			<textField textAdjust="StretchHeight">
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="15" backcolor="#A6A6A6" uuid="a526e410-ba69-4f18-8506-955991d07192">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dati controllo di gestione"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="65" height="15" backcolor="#DBDBDB" uuid="3ed122e4-988e-4682-87ef-f497a267ffbf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Dimensione"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="270" y="0" width="40" height="15" backcolor="#DBDBDB" uuid="07ff64f4-3fc0-4e1f-b61f-968ec5ccbdb8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{YEAR}-3]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="65" y="0" width="65" height="15" backcolor="#DBDBDB" uuid="33e015d1-78dd-40aa-8d52-c7ced6872e23">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Tipologia indicatore"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="230" y="0" width="40" height="15" backcolor="#DBDBDB" uuid="a6514a2d-a1d1-45ce-9494-1f4b781af23b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Unità di misura"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="310" y="0" width="40" height="15" backcolor="#DBDBDB" uuid="bbe6bed7-e931-4608-be37-5ca170f35772">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{YEAR}-2]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="350" y="0" width="40" height="15" backcolor="#DBDBDB" uuid="e03c0d67-2565-4f8f-9ab1-0fdb8136f86b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{YEAR}-1]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="432" y="0" width="48" height="15" backcolor="#DBDBDB" uuid="0ca94494-91f3-40dc-a205-afbaff70c7cd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Previsto "+$P{YEAR}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="130" y="0" width="100" height="15" backcolor="#DBDBDB" uuid="ad42549e-c348-4fe5-a02b-78ebeeb99bb7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Titolo dato di attività / di contesto"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="390" y="0" width="42" height="15" backcolor="#DBDBDB" uuid="5b8f3ba6-cbac-4b84-9f13-8ddc2965f293">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Media triennio prec."]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="480" y="0" width="46" height="15" backcolor="#DBDBDB" uuid="11565a2c-0e74-4228-90f0-c626ff744537">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Effettivo "+$P{YEAR}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="526" y="0" width="44" height="15" backcolor="#DBDBDB" uuid="2ce09905-890b-4f84-8e65-d756a1c97229">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Differenza  Effett.-Prev."]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="618" y="0" width="44" height="15" backcolor="#DBDBDB" uuid="867f4b25-29ae-4bd0-a641-d89b5ea2f190">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["% Effettivo/Previsto"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="570" y="0" width="48" height="15" backcolor="#DBDBDB" uuid="6b0054c1-0b8e-42c5-9258-e26e4ca64e36">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Trend eff./media tr. p."]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="662" y="0" width="70" height="15" backcolor="#DBDBDB" uuid="30c29851-7690-4bac-9523-f76ca90893bd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Fonte dei dati"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="732" y="0" width="70" height="15" backcolor="#DBDBDB" uuid="086b3fff-ce1e-4c8e-a593-76d3000ab002">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Periodicità rilevazione"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="65" height="15" isPrintWhenDetailOverflows="true" uuid="3fbdee54-b7f9-425e-a594-2ef57d92b1b8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Dimensione}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="65" y="0" width="65" height="15" isPrintWhenDetailOverflows="true" uuid="c048615c-cf6c-4447-ae9e-2362d445fede">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Tipologia indicatore}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="230" y="0" width="40" height="15" isPrintWhenDetailOverflows="true" uuid="9dd86020-3ac0-441d-99d3-111e372d2381">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{UdM}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="270" y="0" width="40" height="15" isPrintWhenDetailOverflows="true" uuid="1e57e3e2-7e0e-4a78-a2f8-25454ef0b444">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Effettivo -3}!=null?String.format("%.2f", $F{Effettivo -3}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="310" y="0" width="40" height="15" isPrintWhenDetailOverflows="true" uuid="da4c1707-8260-4a9c-902b-cadca092edbf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Effettivo -2}!=null?String.format("%.2f", $F{Effettivo -2}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="350" y="0" width="40" height="15" isPrintWhenDetailOverflows="true" uuid="1899118b-af66-44b5-917e-f6bac326093c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Effettivo -1}!=null?String.format("%.2f", $F{Effettivo -1}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="432" y="0" width="48" height="15" isPrintWhenDetailOverflows="true" uuid="ce8c70b8-62ef-4b3d-bb3a-f723887761d7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Previsto}!=null?String.format("%.2f", $F{Previsto}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="130" y="0" width="100" height="15" isPrintWhenDetailOverflows="true" uuid="403c8df8-1878-41f1-9fac-236bc4dfb7b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Titolo dato di attività / di contesto}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="390" y="0" width="42" height="15" isPrintWhenDetailOverflows="true" uuid="f01182cd-26f1-4c5f-9001-3ca45fd5e72d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Media triennio prec.}!=null?String.format("%.2f", $F{Media triennio prec.}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="480" y="0" width="46" height="15" isPrintWhenDetailOverflows="true" uuid="e39cc706-e628-4170-808a-d1fe8647012b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Effettivo}!=null?String.format("%.2f", $F{Effettivo}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="526" y="0" width="44" height="15" isPrintWhenDetailOverflows="true" uuid="874ebc4a-2a8a-4797-9746-75fcd427f9b5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Differenza  Effett.-Prev.}!=null?String.format("%.2f", $F{Differenza  Effett.-Prev.}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="618" y="0" width="44" height="15" isPrintWhenDetailOverflows="true" uuid="faf8cbe9-d975-450f-9ac3-0c66fe2dfb70">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{% Effettivo/Previsto}!=null?String.format("%.2f", $F{% Effettivo/Previsto}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="570" y="0" width="48" height="15" isPrintWhenDetailOverflows="true" uuid="f3750f17-0003-4cdb-9b51-628266f12468">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Trend eff./media tr. p.}!=null?String.format("%.2f", $F{Trend eff./media tr. p.}):""]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="662" y="0" width="70" height="15" isPrintWhenDetailOverflows="true" uuid="9023ae0d-b538-4ac3-a7f8-e2e970724adc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Fonte dei dati}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="732" y="0" width="70" height="15" isPrintWhenDetailOverflows="true" uuid="f8285626-f6f3-4eb3-a754-aacbfe4aae62">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Periodicità di rilevazione}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

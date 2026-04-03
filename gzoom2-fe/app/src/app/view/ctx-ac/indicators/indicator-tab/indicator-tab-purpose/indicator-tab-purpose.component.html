@@ -1,0 +1,191 @@
+<p-toast></p-toast>
+<gzoom-message
+  severity="info"
+  icon="pi pi-info-circle"
+  message="{{
+    'The Purpose allows the indicator to be used in specific Card Types and Contexts.'
+      | i18n
+  }}"
+/>
+<p-messages key="error"></p-messages>
+<div class="d-flex flex-row flex-wrap justify-content-between">
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    <gzoom-button
+      icon="pi pi-plus"
+      [label]="'Add purpose' | i18n"
+      (onClick)="newPurpose()"
+      [disabled]="!disableSave"
+    ></gzoom-button>
+    <gzoom-button-outlined
+      icon="pi pi-trash"
+      [label]="'Delete purposes selected' | i18n"
+      (onClick)="delete()"
+      [disabled]="!(this.selectedPurpose.length > 0)"
+    ></gzoom-button-outlined>
+  </div>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    <gzoom-button-outlined
+      icon="pi pi-refresh"
+      [label]="'Reset' | i18n"
+      [disabled]="disableSave"
+      (onClick)="reset()"
+    ></gzoom-button-outlined>
+
+    <gzoom-button
+      icon="pi pi-save"
+      [disabled]="disableSave"
+      [label]="'Save' | i18n"
+      (onClick)="save()"
+    ></gzoom-button>
+  </div>
+</div>
+
+<p-table
+  #dt
+  [value]="purpose"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [tableStyle]="{ 'min-width': '20rem' }"
+  id="table-card"
+  [(selection)]="selectedPurpose"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  scrollHeight="50vh"
+  [scrollable]="scrollable | async"
+  [loading]="loading"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        class="table-head-th"
+        style="width: 1rem; padding-right: 5px !important"
+      >
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+
+      <th class="table-head-th padding-medium-row-th">
+        <div class="d-flex align-items-center">
+          {{ "purpose" | i18n }}*
+          <p-sortIcon pSortableColumn="description" field="description" />
+          <p-columnFilter
+            type="text"
+            field="description"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-medium-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Used in" | i18n }}
+
+          <p-columnFilter
+            type="text"
+            field="usedIn"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-medium-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Comment" | i18n }}
+
+          <p-sortIcon pSortableColumn="comment" field="comment" />
+          <p-columnFilter
+            type="text"
+            field="comment"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-purpose
+    let-columns="columns"
+    let-editing="editing"
+  >
+    <tr>
+      <td>
+        <p-tableCheckbox [value]="purpose"></p-tableCheckbox>
+      </td>
+
+      <td style="padding-left: 0px !important">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "purpose" | i18n }}*</b></span
+        >{{ purpose.description }}
+      </td>
+      <td style="padding-left: 0px !important">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Used in" | i18n }}</b></span
+        >
+        <ul>
+          <li *ngFor="let item of purpose.usedIn">{{ item }}</li>
+        </ul>
+      </td>
+      <td
+        style="padding-left: 0px !important"
+        [pEditableColumn]="purpose.comment"
+        pEditableColumnField="comment"
+      >
+        <span class="p-column-title" style="padding-right: 10px">
+          <b> {{ "Comment" | i18n }}</b></span
+        >
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <textarea
+              maxlength="255"
+              rows="5"
+              cols="30"
+              pInputTextarea
+              [(ngModel)]="purpose.comment"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="changeValue(purpose.id)"
+            ></textarea>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ purpose.comment }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"></ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-confirmDialog></p-confirmDialog>

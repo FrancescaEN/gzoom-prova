@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Prest_Personale_Impiegato" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="a6dd33a8-1f56-4efb-8eb9-abed98686d35">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3112sql" class="java.lang.String"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="customTimePeriodP1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodP2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM3" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-3)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted0101" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodFormatted3112" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodNatura0101" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriodFormatted0101} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriodFormatted0101}.substring(6, 10) ))  + "-"+  $P{customTimePeriodFormatted0101}.substring(3, 5) + "-" + $P{customTimePeriodFormatted0101}.substring(0, 2) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodNatura3112" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriodFormatted3112} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriodFormatted3112}.substring(6, 10) ))  + "-"+  $P{customTimePeriodFormatted3112}.substring(3, 5) + "-" + $P{customTimePeriodFormatted3112}.substring(0, 2) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+	DETT.WORK_EFFORT_NAME,
+	DETT.WORK_EFFORT_NAME_LANG,
+	DETT.ETCH,
+	INDIC.LISTA_ITA,
+	INDIC.LISTA_DE
+/* PRESTAZIONE */
+FROM WORK_EFFORT PRE
+/* COLLEGAMENTO CON DETTAGLIO PRESTAZIONE */
+JOIN WORK_EFFORT_ASSOC WEA ON WEA.WORK_EFFORT_ID_FROM = PRE.WORK_EFFORT_ID AND WEA.WORK_EFFORT_ASSOC_TYPE_ID = '20D8C'
+	AND WEA.FROM_DATE <= TO_DATE($P{customTimePeriodNatura3112}, 'YYYY-MM-DD') AND WEA.THRU_DATE >= TO_DATE($P{customTimePeriodNatura0101}, 'YYYY-MM-DD') /* 3112 E 0101 ANNO */
+JOIN WORK_EFFORT DETT ON DETT.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_TO AND DETT.WORK_EFFORT_TYPE_ID = '20D84'
+/* INDICATORI COLLEGATI AL DETTAGLIO PRESTAZIONE */
+/* 
+LEFT JOIN (
+	SELECT
+		WEM.WORK_EFFORT_ID,
+		LISTAGG(CONCAT(GL.ACCOUNT_CODE, CONCAT(' - ', CONCAT(GL.ACCOUNT_NAME_LANG, ',
+')))) WITHIN GROUP (ORDER BY GL.ACCOUNT_CODE) AS LISTA_ITA,
+		LISTAGG(CONCAT(GL.ACCOUNT_CODE, CONCAT(' - ', CONCAT(GL.ACCOUNT_NAME, ',
+')))) WITHIN GROUP (ORDER BY GL.ACCOUNT_CODE) AS LISTA_DE
+	FROM WORK_EFFORT_MEASURE WEM
+	JOIN GL_ACCOUNT GL ON GL.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+	GROUP BY WEM.WORK_EFFORT_ID
+) INDIC ON INDIC.WORK_EFFORT_ID = DETT.WORK_EFFORT_ID
+* */
+LEFT JOIN (
+  SELECT
+    WEM.WORK_EFFORT_ID,
+    RTRIM(
+      XMLCAST(
+        XMLAGG(
+          XMLELEMENT(e, GL.ACCOUNT_CODE || ' - ' || GL.ACCOUNT_NAME_LANG || CHR(10))
+          ORDER BY GL.ACCOUNT_CODE
+        ) AS CLOB
+      ),
+      CHR(10)
+    ) AS LISTA_ITA,
+    RTRIM(
+      XMLCAST(
+        XMLAGG(
+          XMLELEMENT(e, GL.ACCOUNT_CODE || ' - ' || GL.ACCOUNT_NAME || CHR(10))
+          ORDER BY GL.ACCOUNT_CODE
+        ) AS CLOB
+      ),
+      CHR(10)
+    ) AS LISTA_DE
+  FROM WORK_EFFORT_MEASURE WEM
+  JOIN GL_ACCOUNT GL ON GL.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+  GROUP BY WEM.WORK_EFFORT_ID
+) INDIC
+ON INDIC.WORK_EFFORT_ID = DETT.WORK_EFFORT_ID
+WHERE PRE.WORK_EFFORT_ID = $P{work_effort_id_ob} ]]>
+	</queryString>
+	<field name="WORK_EFFORT_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="WORK_EFFORT_NAME"/>
+		<property name="com.jaspersoft.studio.field.name" value="WORK_EFFORT_NAME"/>
+	</field>
+	<field name="WORK_EFFORT_NAME_LANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="WORK_EFFORT_NAME_LANG"/>
+		<property name="com.jaspersoft.studio.field.name" value="WORK_EFFORT_NAME_LANG"/>
+	</field>
+	<field name="ETCH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ETCH"/>
+		<property name="com.jaspersoft.studio.field.name" value="ETCH"/>
+	</field>
+	<field name="LISTA_ITA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LISTA_ITA"/>
+		<property name="com.jaspersoft.studio.field.name" value="LISTA_ITA"/>
+	</field>
+	<field name="LISTA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LISTA_DE"/>
+		<property name="com.jaspersoft.studio.field.name" value="LISTA_DE"/>
+	</field>
+	<group name="Group1" keepTogether="true">
+		<groupExpression><![CDATA[$F{ETCH}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="802" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="91fee5dd-285f-4af8-a54a-acba596f55d1">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{RisorseFinanziarie}]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement positionType="Float" x="0" y="15" width="802" height="15" isRemoveLineWhenBlank="true" uuid="1f047c8e-9e41-43a5-ba03-92a5e12e6183"/>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="349" y="0" width="453" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="3ef0351c-088e-4763-afd4-db28d743dc62">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Left">
+							<paragraph lineSpacing="1_1_2" lineSpacingSize="1.3"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ?  
+($F{LISTA_ITA}) : 
+($F{LISTA_DE})]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="0" y="0" width="349" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="aba25e18-f582-497f-9650-91ea6c4d167f">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Justified"/>
+						<textFieldExpression><![CDATA[$F{ETCH}+" - "+($P{langLocale}.equals("_LANG") ?  
+($F{WORK_EFFORT_NAME_LANG}) : 
+($F{WORK_EFFORT_NAME}))]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+</jasperReport>

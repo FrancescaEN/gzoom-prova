@@ -1,0 +1,67 @@
+<app-overlay-screen></app-overlay-screen>
+
+<p-toast></p-toast>
+
+<!-- Messages Error -->
+<p-messages [(value)]="messagesError" [enableService]="false"></p-messages>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table
+      [gridArray]="gridArray"
+      (deleteEvent)="deleteRowSelected()"
+      [buttonDelete]="true"
+      [buttonBack]="false"
+      [buttonNew]="true"
+      [dataTable]="dataTable"
+    ></app-toolbar-data-table
+  ></ng-template>
+
+  <ng-template pTemplate="body">
+    <!-- <div *ngIf="loading" class="d-flex justify-content-center">
+      <p-progressSpinner [style]="{ width: '50px', height: '50px' }" styleClass="custom-spinner" strokeWidth="8"
+        fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+    </div> -->
+    <app-table-editing-cell-pagination
+      [headArray]="headArray"
+      [gridArray]="gridArray"
+      [selectedOn]="isAdmin"
+      (shareDescriptorTable)="shareDescriptorTable($event)"
+      [scrollHeight]="'70vh'"
+      [typeDropdownInputArray]="typeDropdownInputArray"
+      (shareSelectionItem)="shareSelectionItem($event)"
+      (clickButtonDetailsEvent)="goToTimeEntry($event)"
+      (loadDataEvent)="setGridArray($event)"
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+      [headDisplay]="'flex'"
+      (shareInfoPagination)="shareInfoPagination($event)"
+    ></app-table-editing-cell-pagination>
+  </ng-template>
+</p-card>
+
+<!-- ###################CONFIRM DELETE #################### -->
+
+<p-confirmDialog #cd [style]="{ width: '450px' }">
+  <ng-template pTemplate="header" icon="pi pi-times-circle">
+    <h3>{{ "Attention" | i18n }}</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times-circle"
+      label="No"
+      (click)="cd.reject()"
+      aria-label="select no"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      label="Yes"
+      (click)="cd.accept()"
+      aria-label="select yes"
+    ></button>
+  </ng-template>
+</p-confirmDialog>

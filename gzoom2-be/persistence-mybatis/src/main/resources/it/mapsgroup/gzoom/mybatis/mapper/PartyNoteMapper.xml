@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.PartyNoteMapper">
+    <select id="getPartyNote" resultMap="partyNoteEx" parameterType="java.util.Map">
+        select PN.*,
+        <include refid="noteDataColumns"/>
+        from PARTY_NOTE PN
+        inner join NOTE_DATA ND
+        on ND.NOTE_ID = PN.NOTE_ID
+        where PN.PARTY_ID = #{partyId} and ND.NOTE_NAME = #{noteName}
+    </select>
+
+    <sql id="noteDataColumns">
+        ND.NOTE_ID AS ND_NOTE_ID,
+        ND.NOTE_NAME AS ND_NOTE_NAME,
+        ND.NOTE_INFO AS ND_NOTE_INFO,
+        ND.NOTE_DATE_TIME AS ND_NOTE_DATE_TIME,
+        ND.LAST_UPDATED_STAMP AS ND_LAST_UPDATED_STAMP,
+        ND.LAST_UPDATED_TX_STAMP AS ND_LAST_UPDATED_TX_STAMP,
+        ND.CREATED_STAMP AS ND_CREATED_STAMP,
+        ND.CREATED_TX_STAMP AS ND_CREATED_TX_STAMP,
+        ND.NOTE_PARTY AS ND_NOTE_PARTY,
+        ND.MORE_INFO_PORTLET_ID AS ND_MORE_INFO_PORTLET_ID,
+        ND.MORE_INFO_ITEM_ID AS ND_MORE_INFO_ITEM_ID,
+        ND.IS_PUBLIC AS ND_IS_PUBLIC,
+        ND.NOTE_NAME_LANG AS ND_NOTE_NAME_LANG,
+        ND.NOTE_INFO_LANG AS ND_NOTE_INFO_LANG,
+        ND.LAST_MODIFIED_BY_USER_LOGIN AS ND_LAST_MODIFIED_BY_USER_LOGIN,
+        ND.CREATED_BY_USER_LOGIN AS ND_CREATED_BY_USER_LOGIN
+    </sql>
+
+
+    <resultMap id="partyNoteEx" type="it.mapsgroup.gzoom.mybatis.dto.PartyNoteEx">
+        <id property="partyId" column="party_id" jdbcType="VARCHAR"/>
+        <id property="noteId" column="note_id" jdbcType="VARCHAR"/>
+
+        <result property="lastUpdatedStamp" column="last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastModifiedByUserLogin" column="last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="created_by_user_login" jdbcType="VARCHAR"/>
+        <association property="noteData" resultMap="noteDataResultMap" columnPrefix="ND_"/>
+    </resultMap>
+    <resultMap id="noteDataResultMap" type="it.mapsgroup.gzoom.mybatis.dto.NoteData">
+
+        <id property="noteId" column="note_id" jdbcType="VARCHAR"/>
+
+        <result property="noteName" column="note_name" jdbcType="VARCHAR"/>
+        <result property="noteInfo" column="note_info" jdbcType="VARCHAR"/>
+        <result property="noteDateTime" column="note_date_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedStamp" column="last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="noteParty" column="note_party" jdbcType="VARCHAR"/>
+        <result property="moreInfoPortletId" column="more_info_portlet_id" jdbcType="VARCHAR"/>
+        <result property="moreInfoItemId" column="more_info_item_id" jdbcType="VARCHAR"/>
+        <result property="isPublic" column="is_public" jdbcType="CHAR"/>
+        <result property="noteNameLang" column="note_name_lang" jdbcType="VARCHAR"/>
+        <result property="noteInfoLang" column="note_info_lang" jdbcType="VARCHAR"/>
+        <result property="lastModifiedByUserLogin" column="last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="created_by_user_login" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+
+</mapper>

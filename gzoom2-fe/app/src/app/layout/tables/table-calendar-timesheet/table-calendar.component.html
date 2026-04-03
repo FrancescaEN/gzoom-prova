@@ -1,0 +1,647 @@
+<p-table
+  #dt
+  [value]="gridArray"
+  responsiveLayout="scroll"
+  [rowHover]="true"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [sortOrder]="1"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [selectionMode]="selectionMode"
+  scrollDirection="horizontal"
+  (onRowSelect)="onRowSelect($event)"
+  (onRowUnselect)="onRowUnselect($event)"
+  [selection]="selectedItem"
+  [selectionMode]="selectionMode"
+  [selectAll]="selectAll"
+  (selectionChange)="onSelectionChange($event)"
+  (selectAllChange)="onSelectAllChange($event)"
+  dataKey="variableGridArray.id"
+  editMode="row"
+  [filterDelay]="0"
+  ariaLabel="Table"
+  role="table"
+  [scrollable]="true"
+  [scrollHeight]="scrollHeight"
+>
+  <ng-template pTemplate="header">
+    <tr class="header-title">
+      <!--Checkbox for select all records-->
+      <th
+        *ngIf="selectedOn"
+        class="d-flex justify-content-center"
+        style="width: 3vw"
+        pFrozenColumn
+        alignFrozen="left"
+      >
+        <p-tableHeaderCheckbox
+          class="checkBoxTableCellHeader"
+        ></p-tableHeaderCheckbox>
+      </th>
+
+      <th
+        *ngFor="let head of headWorkEffortArray"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'left',
+          flex: '0 0 ' + head.width,
+          width: head.width,
+          'background-color': head.colorHeader,
+          'justify-content': 'left',
+          'padding-left': '1.5rem'
+        }"
+        role="columnheader"
+        pFrozenColumn
+        alignFrozen="left"
+        class="min-w"
+        [frozen]="head.fieldName"
+      >
+        <div class="header-title-container">
+          <p style="margin-top: 1em">{{ head.head }}</p>
+          <p *ngIf="!!head.subHead">{{ head.subHead }}</p>
+        </div>
+      </th>
+
+      <th
+        *ngFor="let head of headRateTypeArray"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'left',
+          flex: '0 0 ' + head.width,
+          width: head.width,
+          'background-color': head.colorHeader,
+          'justify-content': 'left',
+          'padding-left': '1.5rem'
+        }"
+        role="columnheader"
+        pFrozenColumn
+        alignFrozen="left"
+        class="min-w"
+        [frozen]="head.fieldName"
+      >
+        <div class="header-title-container">
+          <p style="margin-top: 1em">{{ head.head }}</p>
+          <p *ngIf="!!head.subHead">{{ head.subHead }}</p>
+        </div>
+      </th>
+
+      <th
+        *ngFor="let head of totalHoursRowArray"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'center',
+          flex: '0 0 ' + head.width,
+          width: head.width,
+          'background-color': head.colorHeader,
+          'justify-content': 'center'
+        }"
+        style="border-right: 1px white solid"
+        role="columnheader"
+        class="min-w"
+        pFrozenColumn
+        alignFrozen="left"
+        [frozen]="head.fieldName"
+      >
+        <div class="header-title-container">
+          <p style="margin-top: 1em">{{ head.head }}</p>
+          <p *ngIf="!!head.subHead">{{ head.subHead }}</p>
+        </div>
+      </th>
+
+      <th
+        *ngFor="let head of numberArray"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'center',
+          flex: '0 0 ' + head.width,
+          width: head.width,
+          'background-color': head.colorHeader,
+          'justify-content': 'center'
+        }"
+        role="columnheader"
+        class="min-w"
+      >
+        <div class="header-title-container">
+          <p style="margin-top: 1em">{{ head.head }}</p>
+          <p *ngIf="!!head.subHead">{{ head.subHead }}</p>
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+
+  <!--Body of the table-->
+  <ng-template
+    pTemplate="body"
+    let-item
+    let-riRow="rowIndex"
+    let-editing="editing"
+  >
+    <tr
+      class="body-row"
+      [pRowToggler]="item"
+      style="min-height: 4rem; height: 4em"
+      [pEditableRow]="item"
+    >
+      <!--Checkbox to select a single record-->
+      <td
+        *ngIf="selectedOn"
+        class="checkBoxTableCell"
+        pFrozenColumn
+        alignFrozen="left"
+      >
+        <p-tableCheckbox
+          [value]="item"
+          attr.aria-label="{{ 'Checkbox' | i18n }}"
+          role="checkbox"
+        ></p-tableCheckbox>
+      </td>
+
+      <!--The cell type changes based on what is set in the headWorkEffortArray-->
+      <td
+        *ngFor="let head of headWorkEffortArray"
+        (dblclick)="dblclickRow(item)"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'center',
+          flex: '0 0 ' + head.width,
+          width: head.width,
+          'justify-content': head.content,
+          'text-align': head.content
+        }"
+        style="
+          text-overflow: ellipsis;
+          overflow: hidden;
+          padding-left: 1.5em;
+          height: 4rem;
+        "
+        role="cell"
+        class="min-w"
+        style="text-overflow: ellipsis; overflow: hidden"
+        [pEditableColumn]="head.fieldName"
+        pEditableColumnField="{{ head.fieldName }}"
+        pFrozenColumn
+        alignFrozen="left"
+        [frozen]="head.fieldName"
+      >
+        <div *ngIf="head.actionInput == actionInput.null">
+          <!--Output cell for text value-->
+          <div
+            *ngIf="head.actionOutput == actionOutput.outputLabelData"
+            style="margin-left: 0.5em; margin-right: 0.5em"
+            attr.aria-label="{{ 'Record of column' | i18n }}"
+          >
+            <label title="{{ item[head.fieldName] }}">
+              {{ item[head.fieldName] }}
+            </label>
+          </div>
+        </div>
+
+        <div
+          *ngIf="head.actionInput != actionInput.null"
+          style="width: 100%; max-height: 3.5rem"
+        >
+          <p-cellEditor>
+            <!--Input-->
+            <ng-template pTemplate="input">
+              <!--Dropdown input column-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.dropdownData && head.dropdown
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em; height: 90%"
+              >
+                <p-dropdown
+                  *ngIf="item.variableGridArray.dropdownData"
+                  appendTo="body"
+                  [filter]="true"
+                  [style]="{ minWidth: '100%', maxWidth: '100%' }"
+                  optionLabel="label"
+                  optionValue="id"
+                  [options]="head.dropdown.item"
+                  [(ngModel)]="item[head.dropdown.key]"
+                  placeholder="{{ 'Select' | i18n }}"
+                  [required]="head.required"
+                  [showClear]="head.dropdown.clear"
+                  (ngModelChange)="onTimeChange(head.fieldName, item)"
+                  [pTooltip]="item[head.fieldName]"
+                  (onChange)="dropdownChanges(head.fieldName, riRow)"
+                  (onShow)="reloadDropdown(head.fieldName)"
+                  attr.aria-label="{{ 'Select this record' | i18n }}"
+                ></p-dropdown>
+                <div
+                  *ngIf="!item.variableGridArray.dropdownData"
+                  class="truncate-text"
+                  attr.aria-label="{{ 'Record of column' | i18n }}"
+                  title="{{ item[head.fieldName] }}"
+                >
+                  {{ item[head.fieldName] }}
+                </div>
+              </div>
+            </ng-template>
+
+            <!--Output-->
+            <ng-template pTemplate="output">
+              <!--Output cell for text value-->
+              <div
+                *ngIf="head.actionOutput == actionOutput.outputLabelData"
+                style="
+                  margin-left: 0.5em;
+                  margin-right: 0.5em;
+                  max-height: 3.5rem;
+                "
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                <label
+                  title="{{ item[head.fieldName] }}"
+                  style="max-height: 3.5rem"
+                  [pTooltip]="item[head.fieldName]"
+                >
+                  {{ item[head.fieldName] }}
+                </label>
+              </div>
+            </ng-template>
+          </p-cellEditor>
+        </div>
+      </td>
+
+      <!--The cell type changes based on what is set in the headRateTypeArray-->
+      <td
+        *ngFor="let head of headRateTypeArray; index as index"
+        (dblclick)="dblclickRow(item)"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'center',
+          flex: '0 0 ' + head.width,
+          width: head.width,
+          'justify-content': head.content,
+          'text-align': head.content
+        }"
+        role="cell"
+        style="text-overflow: ellipsis; overflow: hidden"
+        [pEditableColumn]="head.fieldName"
+        pEditableColumnField="{{ head.fieldName }}"
+        pFrozenColumn
+        alignFrozen="left"
+        [frozen]="head.fieldName"
+      >
+        <div *ngIf="head.actionInput == actionInput.null">
+          <!--Output cell for text value-->
+          <div
+            *ngIf="head.actionOutput == actionOutput.outputLabelData"
+            style="margin-left: 0.5em; margin-right: 0.5em"
+            attr.aria-label="{{ 'Record of column' | i18n }}"
+          >
+            <label title="{{ item[head.fieldName] }}">
+              {{ item[head.fieldName] }}
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="head.actionInput != actionInput.null" style="width: 100%">
+          <p-cellEditor>
+            <!--Input-->
+            <ng-template pTemplate="input">
+              <!--Dropdown input column-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.dropdownData && head.dropdown
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+              >
+                <p-dropdown
+                  *ngIf="gridArray[index].rateTypeId && item.variableGridArray.dropdownData"
+                  appendTo="body"
+                  [filter]="true"
+                  [style]="{ minWidth: '100%', maxWidth: '100%' }"
+                  optionLabel="label"
+                  optionValue="id"
+                  [options]="head.dropdown.item"
+                  [(ngModel)]="item[head.dropdown.key]"
+                  placeholder="{{ 'Select' | i18n }}"
+                  [required]="head.required"
+                  [showClear]="head.dropdown.clear"
+                  (ngModelChange)="onTimeChange(head.fieldName, item)"
+                  (onChange)="dropdownChanges(head.fieldName, riRow)"
+                  (onShow)="reloadDropdown(head.fieldName)"
+                  attr.aria-label="{{ 'Select this record' | i18n }}"
+                ></p-dropdown>
+
+                <div
+                  *ngIf="!item.variableGridArray.dropdownData"
+                  style="margin-right: 0.5em"
+                  attr.aria-label="{{ 'Record of column' | i18n }}"
+                >
+                  {{ item[head.fieldName] }}
+                </div>
+              </div>
+            </ng-template>
+
+            <!--Output-->
+            <ng-template pTemplate="output">
+              <!--Output cell for text value-->
+              <div
+                *ngIf="head.actionOutput == actionOutput.outputLabelData"
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                <label title="{{ item[head.fieldName] }}">
+                  {{ item[head.fieldName] }}
+                </label>
+              </div>
+            </ng-template>
+          </p-cellEditor>
+        </div>
+      </td>
+
+      <!--The cell type changes based on what is set in the totalHoursRowArray-->
+      <td
+        *ngFor="let head of totalHoursRowArray"
+        (dblclick)="dblclickRow(head.head, item)"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'center',
+          flex: '0 0 ' + head.width,
+          width: head.width,
+          'justify-content': head.content,
+          'text-align': head.content
+        }"
+        role="cell"
+        class="min-w"
+        style="text-overflow: ellipsis; overflow: hidden"
+        [pEditableColumn]="head.fieldName"
+        pEditableColumnField="{{ head.fieldName }}"
+        pFrozenColumn
+        alignFrozen="left"
+        [frozen]="head.fieldName"
+      >
+        <div *ngIf="head.actionInput == actionInput.null">
+          <!--Output cell for numeric value-->
+          <div
+            *ngIf="head.actionOutput == actionOutput.outputLabelNumber"
+            style="margin-left: 0.5em; margin-right: 0.5em; text-align: center"
+            attr.aria-label="{{ 'Record of column' | i18n }}"
+          >
+            {{ item[head.fieldName] | formatNumberIT }}
+          </div>
+        </div>
+      </td>
+
+      <!--The cell type changes based on what is set in the numberArray-->
+      <td
+        *ngFor="let head of numberArray"
+        (dblclick)="dblclickRow(head.head, item)"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'center',
+          flex: '0 0 ' + head.width,
+          width: head.width,
+          'justify-content': head.content,
+          'text-align': head.content
+        }"
+        role="cell"
+        style="text-overflow: ellipsis"
+        [pEditableColumn]="head.fieldName"
+        class="min-w"
+        pEditableColumnField="{{ head.fieldName }}"
+      >
+        <div *ngIf="head.actionInput == actionInput.null">
+          <!--Output cell for numeric value-->
+          <div
+            *ngIf="
+              head.actionOutput == actionOutput.outputLabelNumber &&
+              item.timeEntriesCell[head.fieldName - 1] != null &&
+              item.timeEntriesCell[head.fieldName - 1].hours != undefined
+            "
+            style="margin-left: 0.5em; margin-right: 0.5em; text-align: center"
+            attr.aria-label="{{ 'Record of column' | i18n }}"
+          >
+            {{
+              item.timeEntriesCell[head.fieldName - 1].labelHours
+                | formatNumberIT
+            }}
+          </div>
+        </div>
+
+        <div *ngIf="head.actionInput != actionInput.null" >
+          <p-cellEditor>
+            <!--Input-->
+            <ng-template pTemplate="input">
+              <!--Dropdown input column-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.dropdownData && head.dropdown
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+              >
+                <p-dropdown
+                  *ngIf="item.variableGridArray.dropdownData"
+                  appendTo="body"
+                  [filter]="true"
+                  [style]="{ minWidth: '100%', maxWidth: '100%' }"
+                  optionLabel="label"
+                  optionValue="id"
+                  [options]="head.dropdown.item"
+                  [(ngModel)]="item[head.dropdown.key]"
+                  placeholder="{{ 'Select' | i18n }}"
+                  [required]="head.required"
+                  [showClear]="head.dropdown.clear"
+                  (ngModelChange)="onTimeChange(head.fieldName, item)"
+                  (onChange)="dropdownChanges(head.fieldName, riRow)"
+                  (onShow)="reloadDropdown(head.fieldName)"
+                  attr.aria-label="{{ 'Select this record' | i18n }}"
+                ></p-dropdown>
+                <div
+                  *ngIf="!item.variableGridArray.dropdownData"
+                  style="margin-right: 0.5em"
+                  attr.aria-label="{{ 'Record of column' | i18n }}"
+                >
+                  {{ item[head.fieldName] }}
+                </div>
+              </div>
+
+              <!--Label number input-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.inputLabelNumber &&
+                  item.variableGridArray.inputLabelNumber
+                "
+                style="
+                  margin-left: 0.5em;
+                  margin-right: 0.5em;
+                  text-align: center;
+                  width: 100%;
+                  display: table-row;
+                "
+              >
+                <p-inputNumber
+                  pInputNumber
+                  [(ngModel)]="item.timeEntriesCell[head.fieldName - 1].hours"
+                  [ngStyle]="{ width: '100%' }"
+                  (onBlur)="onTimeChange(head.fieldName, item)"
+                  mode="decimal"
+                  size="2"
+                  [minFractionDigits]="1"
+                  [maxFractionDigits]="1"
+                  [required]="head.required"
+                  attr.aria-label="{{ 'Input data here' | i18n }}"
+                ></p-inputNumber>
+              </div>
+
+              <!--To show an uneditable value when the row goes into editing mode-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.outputData &&
+                  item.variableGridArray.outputData
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                {{ item[head.fieldName] }}
+              </div>
+            </ng-template>
+
+            <!--Output-->
+            <ng-template pTemplate="output">
+              <!--Output cell for text value-->
+              <div
+                *ngIf="head.actionOutput == actionOutput.outputLabelData"
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                <label title="{{ item[head.fieldName] }}">
+                  {{ item[head.fieldName] }}
+                </label>
+              </div>
+
+              <!--Output cell for numeric value underline-->
+              <div
+                *ngIf="
+                  head.actionOutput == actionOutput.outputLabelNumber &&
+                  item.timeEntriesCell[head.fieldName - 1] != null &&
+                  item.timeEntriesCell[head.fieldName - 1].hours != undefined &&
+                  item.timeEntriesCell[head.fieldName - 1].underline &&
+                  item.timeEntriesCell[head.fieldName - 1].labelHours != null
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+                class="underline"
+              >
+                {{
+                  item.timeEntriesCell[head.fieldName - 1].labelHours
+                    | formatNumberIT
+                }}
+              </div>
+
+              <!--Output cell for numeric value not underline-->
+              <div
+                *ngIf="
+                  head.actionOutput == actionOutput.outputLabelNumber &&
+                  item.timeEntriesCell[head.fieldName - 1] != null &&
+                  item.timeEntriesCell[head.fieldName - 1].hours != undefined &&
+                  !item.timeEntriesCell[head.fieldName - 1].underline &&
+                  item.timeEntriesCell[head.fieldName - 1].labelHours != null
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                {{
+                  item.timeEntriesCell[head.fieldName - 1].labelHours
+                    | formatNumberIT
+                }}
+              </div>
+            </ng-template>
+          </p-cellEditor>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <tr
+      class="footer-row"
+      [pRowToggler]="item"
+      style="min-height: 4rem; height: 4em"
+      [pEditableRow]="item"
+    >
+      <!--The cell type changes based on what is set in the footerArray-->
+      <td
+        *ngFor="let foot of footerArray"
+        (dblclick)="dblclickRow(item)"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'center',
+          width: foot.width,
+          'justify-content': foot.content,
+          'text-align': foot.content
+        }"
+        role="cell"
+        style="
+          text-overflow: ellipsis;
+          overflow: hidden;
+          border-right: 1px white solid;
+        "
+        [pEditableColumn]="foot.fieldName"
+        class="min-w"
+        pEditableColumnField="{{ foot.fieldName }}"
+        alignFrozen="left"
+        pFrozenColumn
+      >
+        <div *ngIf="foot.actionInput == actionInput.null">
+          <!--Output cell for text value-->
+          <div
+            *ngIf="foot.actionOutput == actionOutput.outputLabelData"
+            style="margin-left: 0.5em; margin-right: 0.5em"
+            attr.aria-label="{{ 'Record of column' | i18n }}"
+          >
+            <label title="{{ foot.head }}">
+              {{ foot.head }}
+            </label>
+          </div>
+        </div>
+      </td>
+
+      <td
+        *ngFor="let foot of numberArray"
+        (dblclick)="dblclickRow(item)"
+        [ngStyle]="{
+          display: 'flex',
+          'align-items': 'center',
+          flex: '0 0 ' + foot.width,
+          width: foot.width,
+          'justify-content': foot.content,
+          'text-align': foot.content
+        }"
+        role="cell"
+        style="text-overflow: ellipsis; overflow: hidden"
+        class="min-w"
+        [pEditableColumn]="foot.fieldName"
+        pEditableColumnField="{{ foot.fieldName }}"
+      >
+        <div
+          *ngIf="
+            foot.actionOutput == actionOutput.outputLabelNumber &&
+            foot.fieldName != null &&
+            foot.labelHours != null
+          "
+          style="margin-left: 0.5em; margin-right: 0.5em; text-align: center"
+          attr.aria-label="{{ 'Record of column' | i18n }}"
+        >
+          {{ foot.labelHours | formatNumberIT }}
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <!--Message that appears when the table is empty-->
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell" style="justify-content: center">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

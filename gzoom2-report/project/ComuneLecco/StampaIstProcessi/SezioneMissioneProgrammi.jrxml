@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SezioneMissioneProgrammi" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="22c2ae8e-c01d-48c4-90cf-a6c01511a2f1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gzoom_comunelecco"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="337"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="657"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="areaId" class="java.lang.String"/>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="YEAR" class="java.lang.String"/>
+	<parameter name="idProcesso" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select
+CONCAT (PROGMIS.WE_FROM_etch,' ',progmis.we_from_name) as "Missione",
+concat (procprog.we_from_etch,' ',procprog.we_from_name) as "Programma",
+wenv.note_info as "Descrizione Programma"
+from work_effort mcp
+join work_effort_assoc_view macpro on macpro.we_from_id=mcp.work_effort_id and macpro.we_ass_type_id ='24MPORG' and macpro.we_to_type_id='24M08' and macpro.wa_from_date<= $P{date3112}  and macpro.wa_thru_date>= $P{date0101} 
+left join work_effort_assoc_view procprog on procprog.we_to_id = macpro.we_to_id and procprog.we_from_type_id='15B2PRO' and procprog.wa_from_date<= $P{date3112}  and procprog.wa_thru_date>= $P{date0101} 
+left join work_effort_assoc_view progmis on progmis.we_to_id=procprog.we_from_id and progmis.we_from_type_id='15B1MIS' and progmis.wa_from_date<= $P{date3112}  and progmis.wa_thru_date>= $P{date0101} 
+left join work_effort_note_view wenv on wenv.work_effort_id=procprog.we_from_id and wenv.sequence_id='1' and wenv.is_main='Y'
+where mcp.work_effort_type_id='24MP07'
+and macpro.we_to_id= $P{idProcesso}]]>
+	</queryString>
+	<field name="Missione" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Missione"/>
+		<property name="com.jaspersoft.studio.field.label" value="Missione"/>
+	</field>
+	<field name="Programma" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Programma"/>
+		<property name="com.jaspersoft.studio.field.label" value="Programma"/>
+	</field>
+	<field name="Descrizione Programma" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Descrizione Programma"/>
+		<property name="com.jaspersoft.studio.field.label" value="Descrizione Programma"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_note_view"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="15">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="15" backcolor="#A6A6A6" uuid="68d03b0a-21cb-414e-84f1-3756e7aeb4a7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Missioni e programmi di riferimento"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="15">
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" mode="Opaque" x="320" y="0" width="482" height="15" backcolor="#DBDBDB" uuid="6302fd5d-f286-4dec-ab7d-218d25b9a9ee">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Descrizione Programma"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" mode="Opaque" x="180" y="0" width="140" height="15" backcolor="#DBDBDB" uuid="03e1a6b5-cb2a-4153-a711-95f70ac22e9f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Programma"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="180" height="15" backcolor="#DBDBDB" uuid="abe38282-92a8-4aba-a493-27349f856265">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Missione"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="180" height="15" isPrintWhenDetailOverflows="true" uuid="e6cd1751-cad6-430d-9efb-a81572cf2957">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{Missione}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="320" y="0" width="482" height="15" isPrintWhenDetailOverflows="true" uuid="f2f30b87-5bf0-4013-9dcc-7b81c6eb3cc8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Descrizione Programma}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="180" y="0" width="140" height="15" isPrintWhenDetailOverflows="true" uuid="ee95dbe1-0ade-458b-90d2-3b078c243e08">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{Programma}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

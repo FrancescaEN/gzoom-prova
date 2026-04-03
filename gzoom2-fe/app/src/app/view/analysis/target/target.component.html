@@ -1,0 +1,331 @@
+<app-overlay-screen></app-overlay-screen>
+
+<div class="containerRow" *ngIf="header == true">
+  <div>
+    <app-button-slide-menu
+      *ngIf="itemsButtonSlideMenu.length > 0"
+      [items]="itemsButtonSlideMenu"
+      [disabled]="disButtSliMenu"
+    >
+    </app-button-slide-menu>
+  </div>
+  <div id="title_header" class="item" attr.aria-label="{{ analysisDesc }}">
+    <h3>
+      <em>{{ analysisDesc }}</em>
+    </h3>
+  </div>
+  <div>
+    <div
+      id="gauge"
+      class="containerRow"
+      *ngIf="mainScore == 'GAUGEFLEX'"
+      style="width: 100%"
+    >
+      <div
+        class="containerRow"
+        style="gap: 7px"
+        *ngIf="scoreEtch1 && gaugeConfig1.gaugeValue != null"
+        aria-valuemax="{{ gaugeConfig1.gaugeMax }}"
+        aria-valuemin="{{ gaugeConfig1.gaugeMin }}"
+        aria-valuenow="{{ gaugeConfig1.gaugeValue }}"
+      >
+        <div>
+          <h6>
+            <i>{{ scoreEtch1 }}</i>
+          </h6>
+        </div>
+        <div>
+          <app-demo-gauge [gaugeConfig]="gaugeConfig1"></app-demo-gauge>
+          <!--<app-gauge [gaugeConfig]="gaugeConfig1"></app-gauge>-->
+        </div>
+      </div>
+    </div>
+    <div
+      id="gauge"
+      class="containerRow"
+      *ngIf="mainScore == 'GAUGE'"
+      style="width: 100%"
+    >
+      <div
+        class="containerColumn"
+        *ngIf="!!scoreEtch1 && gaugeConfig1.gaugeValue != null"
+        aria-valuemax="{{ gaugeConfig1.gaugeMax }}"
+        aria-valuemin="{{ gaugeConfig1.gaugeMin }}"
+        aria-valuenow="{{ gaugeConfig1.gaugeValue }}"
+      >
+        <div>
+          <h6>
+            <i>{{ scoreEtch1 }}</i>
+          </h6>
+        </div>
+        <div>
+          <app-demo-gauge [gaugeConfig]="gaugeConfig1"></app-demo-gauge>
+          <!--<app-gauge [gaugeConfig]="gaugeConfig1"></app-gauge>-->
+        </div>
+      </div>
+
+      <div
+        class="containerColumn"
+        *ngIf="!!scoreEtch2 && gaugeConfig2.gaugeValue != null"
+        aria-valuemax="{{ gaugeConfig2.gaugeMax }}"
+        aria-valuemin="{{ gaugeConfig2.gaugeMin }}"
+        aria-valuenow="{{ gaugeConfig2.gaugeValue }}"
+      >
+        <div>
+          <h6>
+            <i>{{ scoreEtch2 }}</i>
+          </h6>
+        </div>
+        <div>
+          <app-demo-gauge [gaugeConfig]="gaugeConfig2"></app-demo-gauge>
+          <!--<app-gauge [gaugeConfig]="gaugeConfig2"></app-gauge>-->
+        </div>
+      </div>
+
+      <div
+        class="containerColumn"
+        *ngIf="!!scoreEtch3 && gaugeConfig3.gaugeValue != null"
+        aria-valuemax="{{ gaugeConfig3.gaugeMax }}"
+        aria-valuemin="{{ gaugeConfig3.gaugeMin }}"
+        aria-valuenow="{{ gaugeConfig3.gaugeValue }}"
+      >
+        <div>
+          <h6>
+            <i>{{ scoreEtch3 }}</i>
+          </h6>
+        </div>
+        <div>
+          <app-demo-gauge [gaugeConfig]="gaugeConfig3"></app-demo-gauge>
+          <!--<app-gauge [gaugeConfig]="gaugeConfig3"></app-gauge>-->
+        </div>
+      </div>
+
+      <div
+        class="containerColumn"
+        *ngIf="!!scoreEtch4 && gaugeConfig4.gaugeValue != null"
+        aria-valuemax="{{ gaugeConfig4.gaugeMax }}"
+        aria-valuemin="{{ gaugeConfig4.gaugeMin }}"
+        aria-valuenow="{{ gaugeConfig4.gaugeValue }}"
+      >
+        <div>
+          <h6>
+            <i>{{ scoreEtch4 }}</i>
+          </h6>
+        </div>
+        <div>
+          <app-gauge [gaugeConfig]="gaugeConfig4"></app-gauge>
+        </div>
+      </div>
+    </div>
+    <div class="containerRow" *ngIf="mainScore == 'EMOTICON'">
+      <div class="containerRow" *ngIf="!!scoreEtch1">
+        <app-emoticon-card
+          [emoticonCard]="emoticonCardConf1"
+        ></app-emoticon-card>
+      </div>
+      <div class="containerRow" *ngIf="!!scoreEtch2">
+        <app-emoticon-card
+          [emoticonCard]="emoticonCardConf2"
+        ></app-emoticon-card>
+      </div>
+      <div class="containerRow" *ngIf="!!scoreEtch3">
+        <app-emoticon-card
+          [emoticonCard]="emoticonCardConf3"
+        ></app-emoticon-card>
+      </div>
+      <div class="containerRow" *ngIf="!!scoreEtch4">
+        <app-emoticon-card
+          [emoticonCard]="emoticonCardConf4"
+        ></app-emoticon-card>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="nameDetail == null && nameKPI == null">
+  <p-breadcrumb
+    [model]="items"
+    [home]="home"
+    (onItemClick)="onItemClick($event)"
+  ></p-breadcrumb>
+</div>
+<div>
+  <p-tabView *ngIf="!!nameDetail || !!nameKPI">
+    <p-tabPanel header="{{ nameDetail }}" *ngIf="!!nameDetail">
+      <p-breadcrumb
+        [model]="items"
+        [home]="home"
+        (onItemClick)="onItemClick($event)"
+      ></p-breadcrumb>
+      <br />
+
+      <div
+        *ngIf="
+          detailScore == 'GAUGE_LIST' ||
+          detailScore == 'EMOTICON_LIST' ||
+          detailScore == 'EMOTONLY_LIST' ||
+          detailScore == 'GAUGEFLEX_LIST'
+        "
+        id="table"
+        class="cardTable"
+      >
+        <app-spinner [loading]="loadingWorkEffort"> </app-spinner>
+        <app-table
+          *ngIf="!loadingWorkEffort && gridArray.length > 0"
+          [isAction]="true"
+          [headArray]="headArray"
+          [gridArray]="gridArray"
+          [formShape]="form"
+          (dblclickRowEvent)="routingDetail($event)"
+        ></app-table>
+        <h5 *ngIf="!loadingWorkEffort && gridArray.length == 0">
+          {{ "There is no data to display" | i18n }}
+        </h5>
+      </div>
+
+      <div class="containerRadar" *ngIf="detailScore == 'CHART'">
+        <div id="half" class="cardTable">
+          <app-spinner [loading]="loadingWorkEffort"> </app-spinner>
+          <app-table
+            *ngIf="!loadingWorkEffort && gridArray.length > 0"
+            [isAction]="true"
+            [headArray]="headArray"
+            [gridArray]="gridArray"
+            [formShape]="form"
+            (dblclickRowEvent)="routingDetail($event)"
+          ></app-table>
+
+          <h5 *ngIf="!loadingWorkEffort && gridArray.length == 0">
+            {{ "There is no data to display" | i18n }}
+          </h5>
+        </div>
+        <div id="radar" style="min-height: 5px">
+          <p-card>
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+              "
+            >
+              <div class="container-chart-choices">
+                <div style="width: 100%">
+                  <p-dropdown
+                    [autoWidth]="false"
+                    [style]="{ width: '100%' }"
+                    [options]="chartItems"
+                    optionLabel="name"
+                    (onChange)="setChartType()"
+                    [(ngModel)]="selectedChart"
+                  >
+                  </p-dropdown>
+                </div>
+                <div style="width: 100%">
+                  <app-radio-button
+                    [items]="radioButtonChart.items"
+                    [selecItem]="radioButtonChart.selectedItem"
+                    (itemChanges)="radButSelectItem($event)"
+                  >
+                  </app-radio-button>
+                </div>
+              </div>
+              <br />
+
+              <div
+                *ngIf="chartConfig"
+                [ngStyle]="{
+                  width:
+                    chartConfig.type != 'bar' && chartConfig.type != 'line'
+                      ? '50vh'
+                      : '100%',
+                  height: '50vh'
+                }"
+              >
+                <app-chart
+                  [chartConfig]="chartConfig"
+                  *ngIf="detailScore == 'CHART'"
+                ></app-chart>
+              </div>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="{{ nameKPI }}" *ngIf="!!nameKPI">
+      <p-breadcrumb
+        [model]="items"
+        [home]="home"
+        (onItemClick)="onItemClick($event)"
+      ></p-breadcrumb>
+      <br />
+      <app-spinner [loading]="loadingKPI"> </app-spinner>
+      <div class="cardTable" *ngIf="gridArrayKPI.length != 0 && !loadingKPI">
+        <app-table
+          [isAction]="true"
+          [headArray]="headArrayKPI"
+          [gridArray]="gridArrayKPI"
+          [formShape]="formKPI"
+          [itemsButtonSlideMenu]="buttonSlideMenuKPI"
+          (clickLinkEvent)="setItemButtonSlideMenuKPI($event)"
+        ></app-table>
+      </div>
+      <div *ngIf="gridArrayKPI.length == 0 && !loadingKPI">
+        <h5>{{ noKPI }}</h5>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+
+<!--Show Pdo Score-->
+<app-dialog-chart
+  [showDialog]="showPdoScore"
+  showDialogTitle="{{ 'Historical score trend' | i18n }}"
+  [chartItemsDialog]="chartItemsDialog"
+  [loadingDialog]="loadingPdoScore"
+  [chartConfigDialog]="chartConfigPdoScore"
+  [selectedChartItemDialog]="selectedChartItemPdoScore"
+></app-dialog-chart>
+
+<!--Show Detail Score-->
+<app-dialog-chart
+  [showDialog]="showKPIscore"
+  showDialogTitle="{{ 'Trend score detail' | i18n }}"
+  [chartItemsDialog]="chartItemsDialog"
+  [loadingDialog]="loadingKPIscore"
+  [chartConfigDialog]="chartConfigKPIscore"
+  [selectedChartItemDialog]="selectedChartItemKPIscore"
+></app-dialog-chart>
+
+<!--Show Detail Pdo Score-->
+<app-dialog-chart
+  [showDialog]="showDetailPdoScore"
+  showDialogTitle="{{ 'Historical detail score' | i18n }}"
+  [chartItemsDialog]="chartItemsDialog"
+  [loadingDialog]="loadingDetailPdoScore"
+  [chartConfigDialog]="chartConfigDetailPdoScore"
+  [selectedChartItemDialog]="selectedChartItemDetailPdoScore"
+></app-dialog-chart>
+
+<!--Show Pdo Account-->
+<ng-container *ngFor="let item of showPdoAccount; index as i">
+  <app-dialog-chart
+    [showDialog]="item"
+    showDialogTitle="{{ 'Historical indicator trend' | i18n }}"
+    [chartItemsDialog]="chartItemsDialog"
+    [loadingDialog]="loadingPdoAccount[i]"
+    [chartConfigDialog]="chartConfigPdoAccount[i]"
+    [selectedChartItemDialog]="selectedItemPdoAccount[i]"
+  ></app-dialog-chart>
+</ng-container>
+
+<!--Show Pdo Score KPI-->
+<ng-container *ngFor="let item of showPdoScorekpi; index as i">
+  <app-dialog-chart
+    [showDialog]="item"
+    showDialogTitle="{{ 'Historical score trend' | i18n }}"
+    [chartItemsDialog]="chartItemsDialog"
+    [loadingDialog]="loadingPdoScorekpi[i]"
+    [chartConfigDialog]="chartConfigPdoScorekpi[i]"
+    [selectedChartItemDialog]="selectedChartItemPdoScorekpi[i]"
+  ></app-dialog-chart>
+</ng-container>

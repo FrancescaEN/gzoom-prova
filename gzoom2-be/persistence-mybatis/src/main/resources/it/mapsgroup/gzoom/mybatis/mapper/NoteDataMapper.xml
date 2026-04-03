@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.NoteDataMapper">
+
+
+    <select id="getNoteDataParamsTimesheet" resultMap="noteData" parameterType="java.util.Map">
+        SELECT ND.*
+        FROM TIMESHEET TM
+        INNER JOIN WORK_EFFORT_NOTE WEN ON WEN.WORK_EFFORT_ID = TM.WORK_EFFORT_ID AND WEN.SEQUENCE_ID = 10
+        INNER JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+        WHERE TM.TIMESHEET_ID = #{userLoginId}
+   </select>
+
+    <select id="getNoteDataByPrefValue" resultMap="noteData" parameterType="java.util.Map">
+        select nd.* from party_note pn
+                             join note_data nd ON pn.note_id = nd.note_id
+        where pn.party_id = #{prefValue} and nd.note_name = 'APPLICATION_TITLE'
+    </select>
+
+</mapper>

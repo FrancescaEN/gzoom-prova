@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_AmmProv_Natura_Indicatori" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceAmministrazioneProvinciale" uuid="a6dd33a8-1f56-4efb-8eb9-abed98686d35">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String"/>
+	<parameter name="customTimePeriod" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="date3112" class="java.lang.String"/>
+	<parameter name="date3112sql" class="java.lang.String"/>
+	<parameter name="date0101" class="java.lang.String"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="customTimePeriodP1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodP2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM3" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-3)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted0101" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodFormatted3112" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodNatura0101" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriodFormatted0101} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriodFormatted0101}.substring(6, 10) ))  + "-"+  $P{customTimePeriodFormatted0101}.substring(3, 5) + "-" + $P{customTimePeriodFormatted0101}.substring(0, 2) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodNatura3112" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriodFormatted3112} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriodFormatted3112}.substring(6, 10) ))  + "-"+  $P{customTimePeriodFormatted3112}.substring(3, 5) + "-" + $P{customTimePeriodFormatted3112}.substring(0, 2) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	WEM.SEQUENCE_ID AS ETICHETTA_INDICATORE,
+	GL.ACCOUNT_NAME_LANG AS NOME_INDICATORE_IT,
+	GL.ACCOUNT_NAME AS NOME_INDICATORE_DE,
+	GL.GL_ACCOUNT_ID AS ID_INDICATORE,
+	U.ABBREVIATION_LANG AS UDM_IT,
+	U.ABBREVIATION AS UDM_DE,
+	GRT.DESCRIPTION_LANG AS NATURA_IT,
+	GRT.DESCRIPTION AS NATURA_DE,
+	U.UOM_TYPE_ID AS TIPO_INDICATORE,
+	GL.SOURCE_LANG AS STANDARD_QUALITA_IT,
+	GL.SOURCE AS STANDARD_QUALITA_DE,
+	TARGET_IT,
+	TARGET_DE,
+	TARGET_NUMERO,
+	TARGET_IT_P1,
+	TARGET_DE_P1,
+	TARGET_NUMERO_P1,
+	TARGET_IT_P2,
+	TARGET_DE_P2,
+	TARGET_NUMERO_P2,
+	CONSUNTIVO_IT_M2,
+	CONSUNTIVO_DE_M2,
+	CONSUNTIVO_NUMERO_M2,
+	CONSUNTIVO_IT_M1,
+	CONSUNTIVO_DE_M1,
+	CONSUNTIVO_NUMERO_M1,
+	CONSUNTIVO_IT,
+	CONSUNTIVO_DE,
+	CONSUNTIVO_NUMERO
+/* OBIETTIVO STRATEGICO */
+FROM WORK_EFFORT OBS
+/* INDICATORI */
+JOIN WORK_EFFORT_MEASURE WEM ON WEM.WORK_EFFORT_ID = OBS.WORK_EFFORT_ID AND wem.FROM_DATE<=TO_DATE($P{customTimePeriodNatura3112},'YYYY-MM-DD') AND wem.THRU_DATE >=TO_DATE($P{customTimePeriodNatura0101},'YYYY-MM-DD')
+JOIN GL_ACCOUNT GL ON GL.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+JOIN UOM U ON U.UOM_ID = GL.DEFAULT_UOM_ID
+LEFT JOIN GL_RESOURCE_TYPE GRT ON GRT.GL_RESOURCE_TYPE_ID = GL.GL_RESOURCE_TYPE_ID
+JOIN WORK_EFFORT_PURPOSE_ACCOUNT WEPA ON WEPA.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID AND WEPA.WORK_EFFORT_PURPOSE_TYPE_ID IN ('PRFPREFTE', 'PRFKPI')
+LEFT JOIN (
+	SELECT
+		ATE.GL_ACCOUNT_ID,
+		ATE.VOUCHER_REF,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriod},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN GAMRS.UOM_DESCR_LANG ELSE NULL END) AS TARGET_IT,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriod},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN GAMRS.UOM_DESCR ELSE NULL END) AS TARGET_DE,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriod},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN ATE.AMOUNT ELSE NULL END) AS TARGET_NUMERO,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodP1},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN GAMRS.UOM_DESCR_LANG ELSE NULL END) AS TARGET_IT_P1,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodP1},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN GAMRS.UOM_DESCR ELSE NULL END) AS TARGET_DE_P1,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodP1},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN ATE.AMOUNT ELSE NULL END) AS TARGET_NUMERO_P1,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodP2},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN GAMRS.UOM_DESCR_LANG ELSE NULL END) AS TARGET_IT_P2,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodP2},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN GAMRS.UOM_DESCR ELSE NULL END) AS TARGET_DE_P2,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodP2},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'BUDGET' THEN ATE.AMOUNT ELSE NULL END) AS TARGET_NUMERO_P2,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodM2},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN GAMRS.UOM_DESCR_LANG ELSE NULL END) AS CONSUNTIVO_IT_M2,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodM2},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN GAMRS.UOM_DESCR ELSE NULL END) AS CONSUNTIVO_DE_M2,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodM2},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN ATE.AMOUNT ELSE NULL END) AS CONSUNTIVO_NUMERO_M2,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodM1},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN GAMRS.UOM_DESCR_LANG ELSE NULL END) AS CONSUNTIVO_IT_M1,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodM1},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN GAMRS.UOM_DESCR ELSE NULL END) AS CONSUNTIVO_DE_M1,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriodM1},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN ATE.AMOUNT ELSE NULL END) AS CONSUNTIVO_NUMERO_M1,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriod},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN GAMRS.UOM_DESCR_LANG ELSE NULL END) AS CONSUNTIVO_IT,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriod},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN GAMRS.UOM_DESCR ELSE NULL END) AS CONSUNTIVO_DE,
+		MAX(CASE WHEN ACT.TRANSACTION_DATE = TO_DATE($P{customTimePeriod},'YYYY-MM-DD') AND ATE.GL_FISCAL_TYPE_ID = 'ACTUAL' THEN ATE.AMOUNT ELSE NULL END) AS CONSUNTIVO_NUMERO
+	FROM ACCTG_TRANS_ENTRY ATE
+	JOIN ACCTG_TRANS ACT ON ACT.ACCTG_TRANS_ID = ATE.ACCTG_TRANS_ID
+	LEFT JOIN GL_ACCOUNT_MEAS_RAT_SC GAMRS ON GAMRS.GL_ACCOUNT_ID = ATE.GL_ACCOUNT_ID
+		AND GAMRS.UOM_RATING_VALUE = ATE.AMOUNT
+	GROUP BY
+		ATE.GL_ACCOUNT_ID,
+		ATE.VOUCHER_REF
+) INDIC ON INDIC.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID AND GL.INPUT_ENUM_ID = 'ACCINP_UO'
+	OR (GL.INPUT_ENUM_ID = 'ACCINP_OBJ' AND INDIC.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID)
+where OBS.WORK_EFFORT_ID = $P{work_effort_id_ob}
+order by WEM.SEQUENCE_ID]]>
+	</queryString>
+	<field name="ETICHETTA_INDICATORE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ETICHETTA_INDICATORE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ETICHETTA_INDICATORE"/>
+	</field>
+	<field name="NOME_INDICATORE_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_INDICATORE_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_INDICATORE_IT"/>
+	</field>
+	<field name="NOME_INDICATORE_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_INDICATORE_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_INDICATORE_DE"/>
+	</field>
+	<field name="ID_INDICATORE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_INDICATORE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_INDICATORE"/>
+	</field>
+	<field name="UDM_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="UDM_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="UDM_IT"/>
+	</field>
+	<field name="UDM_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="UDM_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="UDM_DE"/>
+	</field>
+	<field name="NATURA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NATURA_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NATURA_IT"/>
+	</field>
+	<field name="NATURA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NATURA_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NATURA_DE"/>
+	</field>
+	<field name="TIPO_INDICATORE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TIPO_INDICATORE"/>
+		<property name="com.jaspersoft.studio.field.label" value="TIPO_INDICATORE"/>
+	</field>
+	<field name="STANDARD_QUALITA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="STANDARD_QUALITA_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="STANDARD_QUALITA_IT"/>
+	</field>
+	<field name="STANDARD_QUALITA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="STANDARD_QUALITA_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="STANDARD_QUALITA_DE"/>
+	</field>
+	<field name="TARGET_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_IT"/>
+	</field>
+	<field name="TARGET_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_DE"/>
+	</field>
+	<field name="TARGET_NUMERO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_NUMERO"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_NUMERO"/>
+	</field>
+	<field name="TARGET_IT_P1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_IT_P1"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_IT_P1"/>
+	</field>
+	<field name="TARGET_DE_P1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_DE_P1"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_DE_P1"/>
+	</field>
+	<field name="TARGET_NUMERO_P1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_NUMERO_P1"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_NUMERO_P1"/>
+	</field>
+	<field name="TARGET_IT_P2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_IT_P2"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_IT_P2"/>
+	</field>
+	<field name="TARGET_DE_P2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_DE_P2"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_DE_P2"/>
+	</field>
+	<field name="TARGET_NUMERO_P2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_NUMERO_P2"/>
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_NUMERO_P2"/>
+	</field>
+	<field name="CONSUNTIVO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_IT"/>
+	</field>
+	<field name="CONSUNTIVO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_DE"/>
+	</field>
+	<field name="CONSUNTIVO_NUMERO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_NUMERO"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_NUMERO"/>
+	</field>
+	<field name="CONSUNTIVO_IT_M2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_IT_M2"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_IT_M2"/>
+	</field>
+	<field name="CONSUNTIVO_DE_M2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_DE_M2"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_DE_M2"/>
+	</field>
+	<field name="CONSUNTIVO_NUMERO_M2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_NUMERO_M2"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_NUMERO_M2"/>
+	</field>
+	<field name="CONSUNTIVO_IT_M1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_IT_M1"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_IT_M1"/>
+	</field>
+	<field name="CONSUNTIVO_DE_M1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_DE_M1"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_DE_M1"/>
+	</field>
+	<field name="CONSUNTIVO_NUMERO_M1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_NUMERO_M1"/>
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_NUMERO_M1"/>
+	</field>
+	<group name="Group1" keepTogether="true">
+		<groupExpression><![CDATA[$F{ID_INDICATORE}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="349" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="9387817e-32a0-4757-a140-6c08b4c8df00">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Indicatore}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="349" y="0" width="42" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="c89bef7a-1c82-4649-a901-2dd04c75dcfd">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Unita}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="391" y="0" width="64" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="78a169f9-418b-410d-8f2a-ed36a87df359">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Cons} + " " + (INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ))-2)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="455" y="0" width="64" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="4845ec0c-38b4-498a-a7c4-e3ecfb92a1b3">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Cons} + " " + (INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )-1)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="519" y="0" width="64" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="97a9ae0a-e43f-4757-8b75-ac08f296075f">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Cons} + " " + (INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) ))]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="583" y="0" width="64" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="fee66460-eb23-45a8-9ac3-4337c94571df">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Targ} + " " + INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ))]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="647" y="0" width="64" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="c2deba4f-41c8-49bc-93ef-7ccddbff4c1a">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Targ} + " " + (INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )+1)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="711" y="0" width="64" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="fdf59b0b-0de9-4865-9a9b-e12fde400946">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Targ} + " " + (INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )+2)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" isPrintRepeatedValues="false" mode="Opaque" x="775" y="0" width="27" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="c7897d01-a4fb-4b06-8e7d-6c5cce1c02b3">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Govern}]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement positionType="Float" x="0" y="15" width="802" height="15" isRemoveLineWhenBlank="true" uuid="719c92e0-dcf2-468a-b818-7e01ebfe201b"/>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="455" y="0" width="64" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="eb6db50e-fc70-43de-b0c5-68cf033e1703">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$F{TIPO_INDICATORE}.equals("RATING_SCALE")?($P{langLocale}.equals("_LANG") ? ($F{CONSUNTIVO_IT_M1}) : ($F{CONSUNTIVO_DE_M1})):new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_NUMERO_M1}.doubleValue())]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="391" y="0" width="64" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="a1983eb1-90a7-4c4c-ab3a-807946d29d54">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$F{TIPO_INDICATORE}.equals("RATING_SCALE")?($P{langLocale}.equals("_LANG") ? ($F{CONSUNTIVO_IT_M2}) : ($F{CONSUNTIVO_DE_M2})):new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_NUMERO_M2}.doubleValue())]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="647" y="0" width="64" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="83de42d1-c889-4db1-8a29-b2a0a7e6ae81">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$F{TIPO_INDICATORE}.equals("RATING_SCALE")?($P{langLocale}.equals("_LANG") ? ($F{TARGET_IT_P1}) : ($F{TARGET_DE_P1})):new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_NUMERO_P1}.doubleValue())]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="519" y="0" width="64" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="9610e92e-ead5-4e89-9b50-2c05cb32a6dc">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$F{TIPO_INDICATORE}.equals("RATING_SCALE")?($P{langLocale}.equals("_LANG") ? ($F{CONSUNTIVO_IT}) : ($F{CONSUNTIVO_DE})):new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_NUMERO}.doubleValue())]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="711" y="0" width="64" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="82e65cd9-1422-47d5-b839-d6b8e2aa1a34">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$F{TIPO_INDICATORE}.equals("RATING_SCALE")?($P{langLocale}.equals("_LANG") ? ($F{TARGET_IT_P2}) : ($F{TARGET_DE_P2})):new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_NUMERO_P2}.doubleValue())]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="583" y="0" width="64" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="abb235a2-bc86-4d94-9123-5b48e4a4a213">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$F{TIPO_INDICATORE}.equals("RATING_SCALE")?($P{langLocale}.equals("_LANG") ? ($F{TARGET_IT}) : ($F{TARGET_DE})):new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_NUMERO}.doubleValue())]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="349" y="0" width="42" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="3c04d8e0-e989-48a4-a165-df3eaf695eff">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Center"/>
+						<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{UDM_IT}) : 
+($F{UDM_DE})]]></textFieldExpression>
+					</textField>
+					<frame>
+						<reportElement positionType="Float" stretchType="ElementGroupHeight" x="775" y="0" width="27" height="15" isPrintWhenDetailOverflows="true" uuid="5a553f42-3487-4055-bd01-4e53b885789f">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Icon">
+							<reportElement positionType="Float" mode="Transparent" x="0" y="0" width="27" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="206a0c33-2303-4a82-94b8-07534eacc4e4">
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<box topPadding="3" bottomPadding="2"/>
+							<imageExpression><![CDATA[($F{NATURA_IT}.equals( "Governabilità diretta" )) ?  ("/img/pallino_nero.png") :
+	($F{NATURA_IT}.equals( "Governabilità parziale" )) ? ("/img/mezzo_pallino_nero.png") : 
+		($F{NATURA_IT}.equals( "Non governabile" )) ? ("/img/pallino_vuoto.png" ) : " "]]></imageExpression>
+						</image>
+					</frame>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="0" y="0" width="19" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="fcf853b4-e953-4e65-9a1e-9f102f198dc8">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textFieldExpression><![CDATA[$F{ETICHETTA_INDICATORE}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="19" y="0" width="330" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="db83928b-807c-4315-a977-97449c18d04c">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement textAlignment="Justified"/>
+						<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ?  
+($F{NOME_INDICATORE_IT} + ( $F{STANDARD_QUALITA_IT} != null && $F{STANDARD_QUALITA_IT}.equals("S") ? " *" : "")) : 
+($F{NOME_INDICATORE_DE} + ( $F{STANDARD_QUALITA_IT} != null && $F{STANDARD_QUALITA_IT}.equals("S") ? " *" : ""))]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+</jasperReport>

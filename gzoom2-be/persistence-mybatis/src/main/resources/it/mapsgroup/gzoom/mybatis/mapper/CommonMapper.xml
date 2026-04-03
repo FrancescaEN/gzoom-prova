@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper">
+    <sql id="forEachIn">
+        <!--Property ${columnName, inList}-->
+        ${columnName} IN
+        <foreach item="item" index="index" collection="${inList}" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </sql>
+
+    <sql id="filterByDate">
+        <!--Property ${alias}-->
+        (${alias}.FROM_DATE &lt;= CURRENT_TIMESTAMP AND (${alias}.THRU_DATE IS NULL OR ${alias}.THRU_DATE &gt;=
+        CURRENT_TIMESTAMP))
+    </sql>
+
+    <sql id="searchConditions">
+        <!--Property ${columnName, text}-->
+        <if test="${matchMode}=='contains'">
+            LOWER(${columnName}) LIKE LOWER(concat('%', concat(${text}, '%')))
+        </if>
+        <if test="${matchMode}=='notContains'">
+            LOWER(${columnName}) NOT LIKE LOWER(concat('%', concat(${text}, '%')))
+        </if>
+        <if test="${matchMode}=='startsWith'">
+            LOWER(${columnName}) LIKE LOWER(concat(${text}, '%'))
+        </if>
+        <if test="${matchMode}=='endsWith'">
+            LOWER(${columnName}) LIKE LOWER(concat('%', ${text}))
+        </if>
+        <if test="${matchMode}=='equals'">
+            ${columnName} = ${text}
+        </if>
+        <if test="${matchMode}=='notEquals'">
+            ${columnName} != ${text}
+        </if>
+    </sql>
+
+
+    <sql id="paginationLimitOffset" databaseId="mysql">
+        <!--Property ${LIMIT, OFFSET}-->
+        LIMIT ${LIMIT}
+        OFFSET ${OFFSET}
+    </sql>
+
+    <sql id="paginationLimitOffset">
+        <!--Property ${LIMIT, OFFSET}-->
+        OFFSET ${OFFSET} ROWS FETCH NEXT ${LIMIT} ROWS ONLY
+    </sql>
+
+    <sql id="sortOrderAscOrDesc">
+        <!--Property ${sortOrder}-->
+        <if test="${sortOrder} == 1">DESC</if>
+        <!-- ASC is default -->
+    </sql>
+
+    <sql id="orderByTableLazyLoad">
+        <!--Property ${columnName, sortOrder}-->
+            ${columnName}
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.sortOrderAscOrDesc">
+                <property name="sortOrder" value="${sortOrder}"/>
+            </include>
+    </sql>
+
+    <sql id="orderByTableLazyLoadWithNameLang">
+        <!--Property ${columnName, tableLazyLoad}-->
+        <if test="${tableLazyLoad}.isSecondaryLang == false">
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoad">
+                <property name="columnName" value="${columnName}"/>
+                <property name="sortOrder" value="${tableLazyLoad}.sortOrder"/>
+            </include>
+        </if>
+        <if test="${tableLazyLoad}.isSecondaryLang == true">
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoad">
+                <property name="columnName" value="${columnName}_lang"/>
+                <property name="sortOrder" value="${tableLazyLoad}.sortOrder"/>
+            </include>
+        </if>
+    </sql>
+
+    <sql id="orderByTableLazyLoadWithCodeAndNameLang">
+        <!--Property ${tableLazyLoad, columnCode, columnName}-->
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoad">
+            <property name="columnName" value="${columnCode}"/>
+            <property name="sortOrder" value="${tableLazyLoad}.sortOrder"/>
+        </include>
+        ,
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithNameLang">
+            <property name="tableLazyLoad" value="${tableLazyLoad}"/>
+            <property name="columnName" value="${columnName}"/>
+        </include>
+    </sql>
+
+    <sql id="orderByTableLazyLoadWithCodeLangAndName">
+        <!--Property ${tableLazyLoad, columnCode, columnName}-->
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithNameLang">
+            <property name="columnName" value="${columnCode}"/>
+            <property name="sortOrder" value="${tableLazyLoad}.sortOrder"/>
+        </include>
+        ,
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoad">
+            <property name="sortOrder" value="${tableLazyLoad}.sortOrder"/>
+            <property name="columnName" value="${columnName}"/>
+        </include>
+    </sql>
+
+    <sql id="orderByTableLazyLoadWithCodeLangAndNameLang">
+        <!--Property ${tableLazyLoad, columnCode, columnName}-->
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithNameLang">
+            <property name="columnName" value="${columnCode}"/>
+            <property name="sortOrder" value="${tableLazyLoad}.sortOrder"/>
+        </include>
+        ,
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithNameLang">
+            <property name="columnName" value="${columnName}"/>
+            <property name="sortOrder" value="${tableLazyLoad}.sortOrder"/>
+        </include>
+    </sql>
+</mapper>

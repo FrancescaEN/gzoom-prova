@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.PartyRoleMapper">
+
+    <resultMap id="partyRoleExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.PartyRoleEx">
+        <id property="partyId" column="party_id" jdbcType="VARCHAR"/>
+        <id property="roleTypeId" column="role_type_id" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="parent_role_type_id" property="parentRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+
+        <result column="ROLE_TYPE_ROLE_TYPE_ID" property="roleType.roleTypeId" jdbcType="VARCHAR"/>
+        <result column="ROLE_TYPE_DESCRIPTION" property="roleType.description" jdbcType="VARCHAR"/>
+        <result column="ROLE_TYPE_DESCRIPTION_LANG" property="roleType.descriptionLang" jdbcType="VARCHAR"/>
+        <result column="PARTY_NAME" property="party.partyName" jdbcType="VARCHAR"/>
+        <result column="PARTY_NAME_LANG" property="party.partyNameLang" jdbcType="VARCHAR"/>
+        <result column="PARENT_ROLE_CODE" property="partyParentRole.parentRoleCode" jdbcType="VARCHAR"/>
+        <result column="PARENT_ROLE_TYPE_ID" property="partyParentRole.roleTypeId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getPartyRoleOrgUnit" resultMap="partyRoleExResultMap" parameterType="java.util.Map">
+        SELECT PR.*,
+        P.PARTY_NAME AS PARTY_NAME,
+        P.PARTY_NAME_LANG AS PARTY_NAME_LANG,
+        PPR.PARENT_ROLE_CODE AS PARENT_ROLE_CODE,
+        PPR.ROLE_TYPE_ID AS PARENT_ROLE_TYPE_ID
+        FROM PARTY_ROLE PR
+        INNER JOIN PARTY P ON P.PARTY_ID = PR.PARTY_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = P.PARTY_ID
+        WHERE PPR.ROLE_TYPE_ID = 'ORGANIZATION_UNIT' AND PPR.ORGANIZATION_ID = #{userPreferenceOrganizationUnitId} AND PR.ROLE_TYPE_ID != 'INTERNAL_ORGANIZATIO'
+
+    </select>
+
+    <select id="getPartyRoleExOrgUnit" resultMap="partyRoleExResultMap" parameterType="java.util.Map">
+
+            SELECT PR.*,
+            RT.ROLE_TYPE_ID AS ROLE_TYPE_ROLE_TYPE_ID,
+            RT.DESCRIPTION AS ROLE_TYPE_DESCRIPTION,
+            RT.DESCRIPTION_LANG AS ROLE_TYPE_DESCRIPTION_LANG,
+            P.PARTY_NAME AS PARTY_NAME,
+            P.PARTY_NAME_LANG AS PARTY_NAME_LANG,
+            PPR.PARENT_ROLE_CODE AS PARENT_ROLE_CODE
+            FROM PARTY_ROLE PR
+            INNER JOIN ROLE_TYPE RT ON RT.ROLE_TYPE_ID = PR.ROLE_TYPE_ID
+            INNER JOIN PARTY P ON P.PARTY_ID = PR.PARTY_ID
+            INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = P.PARTY_ID
+            WHERE PPR.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+            AND PPR.ORGANIZATION_ID = #{userPreferenceOrganizationUnitId}
+
+            <if test="accountTypeEnumId != null and accountTypeEnumId== 'ACCOUNT' ">
+                AND EXISTS (
+                SELECT 1
+                FROM USER_LOGIN_SECURITY_GROUP ULSG
+                INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+                INNER JOIN PARTY_RELATIONSHIP REL ON REL.PARTY_ID_TO = UL.PARTY_ID
+                AND REL.PARTY_ID_FROM = P.PARTY_ID
+                AND REL.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+                AND REL.THRU_DATE IS NULL
+                WHERE ULSG.USER_LOGIN_ID = #{userLoginId}
+                )
+            </if>
+    </select>
+
+    <select id="getPartyRole" resultMap="partyRoleEx">
+        select
+            pr.*,
+            rt.role_type_id as rt_role_type_id,
+            rt.description as rt_description,
+            rt.description_lang as rt_description_lang,
+            p.party_id as p_party_id,
+            p.party_name as p_party_name,
+            p.party_name_lang as p_party_name_lang,
+            ppr.party_id as ppr_party_id,
+            ppr.role_type_id as ppr_role_type_id,
+            ppr.parent_role_code as ppr_parent_role_code
+        from party_role pr
+                 join role_type rt on rt.role_type_id = pr.role_type_id and (rt.parent_type_id = 'ORGANIZATION_UNIT' or rt.parent_type_id like 'GOAL%')
+                 join party p on p.party_id = pr.party_id
+                 join party_parent_role ppr on ppr.party_id = p.party_id
+        where
+            1=1
+        <if test="roleTypeId">
+            AND
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.forEachIn">
+                <property name="columnName" value="rt.role_type_id"/>
+                <property name="inList" value="roleTypeId"/>
+            </include>
+        </if>
+        <if test="search and matchMode">
+            AND (
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                <property name="columnName" value="ppr.parent_role_code"/>
+                <property name="text" value="#{search}"/>
+                <property name="matchMode" value="matchModeSearch"/>
+            </include>
+
+            <if test="isSecondaryLang == true">
+                OR
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                    <property name="columnName" value="p.party_name_lang"/>
+                    <property name="text" value="#{search}"/>
+                    <property name="matchMode" value="matchModeSearch"/>
+                </include>
+            </if>
+            <if test="isSecondaryLang == false">
+                OR
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                    <property name="columnName" value="p.party_name"/>
+                    <property name="text" value="#{search}"/>
+                    <property name="matchMode" value="matchModeSearch"/>
+                </include>
+            </if>
+            )
+        </if>
+    </select>
+
+    <resultMap id="partyRoleEx" type="it.mapsgroup.gzoom.mybatis.dto.PartyRole">
+        <id column="party_id" property="partyId" />
+        <id column="role_type_id" property="roleTypeId" />
+        <association property="party" columnPrefix="p_">
+            <id column="party_id" property="partyId"/>
+            <result column="party_name" property="partyName"/>
+            <result column="party_name_lang" property="partyNameLang" />
+
+        </association>
+        <association property="party.partyParentRole" columnPrefix="ppr_" >
+            <id column="party_id" property="partyId" />
+            <id column="role_type_id" property="roleTypeId" />
+            <result column="parent_role_code" property="parentRoleCode" />
+        </association>
+        <association property="roleType" columnPrefix="rt_">
+            <id column="role_type_id" property="roleTypeId" />
+            <result column="description" property="description"/>
+            <result column="description_lang" property="descriptionLang" />
+        </association>
+
+    </resultMap>
+
+</mapper>

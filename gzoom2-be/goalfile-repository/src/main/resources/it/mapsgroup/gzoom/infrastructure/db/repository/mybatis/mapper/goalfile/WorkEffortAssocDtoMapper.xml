@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.mapper.goalfile.WorkEffortAssocDtoMapper">
+    <resultMap id="workEffortTreeDto" type="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortAssocDto">
+        <id column="work_effort_id_from" property="workEffortFrom.workEffortId"/>
+        <id column="work_effort_id" property="workEffortTo.workEffortId"/>
+        <id column="work_effort_assoc_type_id" property="workEffortAssocTypeId" jdbcType="VARCHAR"/>
+        <id column="work_effort_assoc_from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <id column="work_effort_assoc_thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="sequence_num" property="sequenceNum" jdbcType="NUMERIC"/>
+        <association property="workEffortFrom" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortDto">
+            <result column="work_effort_id_from" property="workEffortId" jdbcType="VARCHAR"/>
+        </association>
+        <association property="workEffortTo" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortDto">
+            <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+            <result column="work_effort_name" property="workEffortName" jdbcType="VARCHAR"/>
+            <result column="work_effort_name_lang" property="workEffortNameLang" jdbcType="VARCHAR"/>
+            <result column="obj_weight" property="objWeight" jdbcType="NUMERIC"/>
+            <result column="source_reference_id" property="sourceReferenceId" jdbcType="VARCHAR"/>
+            <result column="etch" property="etch" jdbcType="VARCHAR"/>
+            <result column="description" property="description" jdbcType="VARCHAR"/>
+            <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+            <result column="estimated_start_date" property="estimatedStartDate" jdbcType="TIMESTAMP"/>
+            <result column="estimated_completion_date" property="estimatedCompletionDate" jdbcType="TIMESTAMP"/>
+            <result column="organization_id" property="organizationId" jdbcType="VARCHAR"/>
+            <result column="ref_date" property="refDate" jdbcType="TIMESTAMP"/>
+            <association property="workEffortType" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortTypeDto">
+                <result column="work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+                <result column="type_description" property="description" jdbcType="VARCHAR"/>
+                <result column="type_description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+                <result column="weight_kpi" property="weightKpi" jdbcType="NUMERIC"/>
+                <result column="weight_sons" property="weightSons" jdbcType="NUMERIC"/>
+                <result column="weight_assoc_work_effort" property="weightAssocWorkEffort" jdbcType="NUMERIC"/>
+                <result column="weight_control_sum" property="weightControlSum" jdbcType="NUMERIC"/>
+                <result column="weight_kpi_control_sum" property="weightKpiControlSum" jdbcType="NUMERIC"/>
+                <result column="total_enum_id_kpi" property="totalEnumIdKpi" jdbcType="VARCHAR"/>
+                <result column="total_enum_id_sons" property="totalEnumIdSons" jdbcType="VARCHAR"/>
+                <result column="total_enum_id_assoc" property="totalEnumIdAssoc" jdbcType="VARCHAR"/>
+                <association property="icon" javaType="it.mapsgroup.gzoom.infrastructure.content.dto.DataResourceDto">
+                    <result column="icon_path" property="objectInfo" jdbcType="VARCHAR"/>
+                </association>
+            </association>
+            <association property="statusItem" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.StatusItemDto">
+                <result column="work_effort_current_status_id" property="statusId" jdbcType="VARCHAR" />
+                <result column="work_effort_current_status_description" property="description" jdbcType="VARCHAR"/>
+                <result column="work_effort_current_status_description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+                <result column="work_effort_current_status_description_sequence_id" property="sequenceId" jdbcType="VARCHAR"/>
+            </association>
+            <collection property="workEffortMeasures" ofType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortMeasureDto">
+                <id column="work_effort_measure_id" property="workEffortMeasureId" jdbcType="VARCHAR"/>
+                <result column="uom_descr" property="uomDescr" jdbcType="VARCHAR"/>
+                <result column="uom_descr_lang" property="uomDescrLang" jdbcType="VARCHAR"/>
+                <result column="comments" property="comments" jdbcType="VARCHAR"/>
+                <result column="comments_lang" property="commentsLang" jdbcType="VARCHAR"/>
+                <result column="comments2" property="comments2" jdbcType="VARCHAR"/>
+                <result column="kpi_score_weight" property="kpiScoreWeight" jdbcType="NUMERIC"/>
+                <result column="kpi_other_weight" property="kpiOtherWeight" jdbcType="NUMERIC"/>
+                <association property="account" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.GlAccountDto">
+                    <result column="account_name" property="accountName" jdbcType="VARCHAR"/>
+                    <result column="account_name_lang" property="accountNameLang" jdbcType="VARCHAR"/>
+                    <result column="account_code" property="accountCode" jdbcType="VARCHAR"/>
+                    <result column="account_source" property="source" jdbcType="VARCHAR"/>
+                    <result column="account_source_lang" property="sourceLang" jdbcType="VARCHAR"/>
+                </association>
+                <association property="uom" javaType="it.mapsgroup.gzoom.infrastructure.uom.dto.UomDto">
+                    <result column="abbreviation" property="abbreviation" jdbcType="VARCHAR"/>
+                    <result column="abbreviation_lang" property="abbreviationLang" jdbcType="VARCHAR"/>
+                </association>
+                <association property="workEffortMeasRatSc" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortMeasRatScDto">
+                    <result column="uom_rating_value" property="uomRatingValue" jdbcType="VARCHAR"/>
+<!--                    <result column="value_code" property="valueCode" jdbcType="VARCHAR"/>-->
+<!--                    <result column="value_code_lang" property="valueCodeLang" jdbcType="VARCHAR"/>-->
+<!--                    <result column="value_desc" property="valueDesc" jdbcType="VARCHAR"/>-->
+<!--                    <result column="value_desc_lang" property="valueDescLang" jdbcType="VARCHAR"/>-->
+                </association>
+                <collection property="acctgTransEntry" ofType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.AcctgTransEntryDto">
+                    <result column="amount" property="amount" jdbcType="VARCHAR"/>
+                    <result column="orig_amount" property="origAmount" jdbcType="VARCHAR"/>
+                    <result column="amount_locked" property="amountLocked" jdbcType="VARCHAR"/>
+                    <result column="value_uom_id" property="currencyUomId" jdbcType="VARCHAR"/>
+                    <result column="reference" property="reference" jdbcType="VARCHAR"/>
+                    <result column="reference_lang" property="referenceLang" jdbcType="VARCHAR"/>
+                    <result column="acctg_trans_entry_seq_id" property="acctgTransEntrySeqId" jdbcType="VARCHAR"/>
+                    <result column="is_scorekpi" property="scorekpi" jdbcType="BOOLEAN" typeHandler="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+                    <association property="workEffortMeasRatScDto" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortMeasRatScDto">
+                        <result column="value_code" property="uomCode" jdbcType="VARCHAR"/>
+                        <result column="value_code_lang" property="uomCodeLang" jdbcType="VARCHAR"/>
+                        <result column="value_desc" property="uomDescr" jdbcType="VARCHAR"/>
+                        <result column="value_desc_lang" property="uomDescrLang" jdbcType="VARCHAR"/>
+                    </association>
+                </collection>
+            </collection>
+            <collection property="workEffortNotes" ofType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortNoteDto">
+                <id column="note_id" property="noteId" jdbcType="VARCHAR"/>
+                <result column="note_info" property="noteInfo" jdbcType="VARCHAR"/>
+                <result column="note_info_lang" property="noteInfoLang" jdbcType="VARCHAR"/>
+                <result column="note_name" property="noteName" jdbcType="VARCHAR"/>
+            </collection>
+        </association>
+    </resultMap>
+
+    <select id="selectWorkEffortRootTreeWithDetails" databaseId="postgres" resultMap="workEffortTreeDto">
+        WITH RECURSIVE work_effort_hierarchy AS (
+        SELECT
+            we.work_effort_id,
+            we.work_effort_name,
+            we.work_effort_name_lang,
+            we.current_status_id as work_effort_current_status_id,
+            wesi.description as work_effort_current_status_description,
+            wesi.description_lang as work_effort_current_status_description_lang,
+            wesi.sequence_id as work_effort_current_status_description_sequence_id,
+            we.source_reference_id,
+            we.etch,
+            we.estimated_start_date,
+            we.estimated_completion_date,
+            wet.work_effort_type_id,
+            wet.description as type_description, wet.description_lang as type_description_lang,
+            wet.hierarchy_assoc_type_id AS work_effort_assoc_type_id,
+            wet.weight_kpi,
+            wet.weight_sons,
+            wet.weight_assoc_work_effort,
+            wet.weight_control_sum,
+            wet.weight_kpi_control_sum,
+            wet.total_enum_id_kpi,
+            wet.total_enum_id_sons,
+            wet.total_enum_id_assoc,
+            (null::timestamptz) as work_effort_assoc_from_date,
+            (null::timestamptz) as work_effort_assoc_thru_date,
+            0::numeric as sequence_num,
+            (null::varchar) as work_effort_id_from,
+            0 AS tree_level,
+            d.object_info as icon_path,
+            wem.uom_descr,
+            wem.uom_descr_lang,
+            wem.comments ,
+            wem.comments_lang ,
+            wem.comments2 ,
+            wem.comments2_lang ,
+            wem.kpi_score_weight ,
+            wem.kpi_other_weight ,
+            wem.work_effort_measure_id,
+            gl.account_name,
+            gl.account_name_lang,
+            gl.account_code,
+            gl.source as account_source,
+            gl.source_lang as account_source_lang,
+            um.abbreviation,
+            um.abbreviation_lang,
+            ct.from_date as ct_from_date,
+            ct.thru_date as ct_thru_date,
+            (null::double precision) as obj_weight,
+            (null::varchar) as note_info,
+            (null::varchar) as note_info_lang,
+            (null::varchar) as note_id,
+            (null::varchar) as note_name,
+            at.gl_fiscal_type_id,
+            ate.amount,
+            ate.orig_amount,
+            ate.amount_locked,
+            ate.currency_uom_id as value_uom_id,
+            ate.description as reference,
+            ate.description_lang as reference_lang,
+            ate.acctg_trans_entry_seq_id,
+            mrs.uom_rating_value,
+            mrs.uom_code as value_code,
+            mrs.uom_code_lang as value_code_lang,
+            mrs.uom_descr as value_desc,
+            mrs.uom_descr_lang as value_desc_lang,
+            CASE WHEN ATE.GL_ACCOUNT_ID = 'SCOREKPI'
+                THEN 'Y'
+                ELSE 'N' END AS IS_SCOREKPI
+        FROM
+            work_effort we
+            INNER JOIN work_effort_type wet
+               ON wet.work_effort_type_id = we.work_effort_type_id
+            left outer join work_effort_type_period wetp
+                on wetp.work_effort_type_period_id = we.work_effort_type_period_id
+            left outer join custom_time_period ct
+                on ct.custom_time_period_id = wetp.custom_time_period_id
+            INNER JOIN status_item wesi
+                ON wesi.STATUS_ID = we.current_status_id
+            LEFT OUTER JOIN content c
+                ON c.content_id = wet.icon_content_id
+            LEFT OUTER JOIN data_resource d
+                ON d.data_resource_id = c.data_resource_id
+            LEFT OUTER join WORK_EFFORT_MEASURE wem
+                on wem.work_effort_id = we.work_effort_id
+            LEFT OUTER join gl_account gl
+                on gl.gl_account_id = wem.gl_account_id
+            left join gl_account_type_gl_fiscal_type atft
+                on atft.gl_account_type_id = gl.gl_account_type_id
+                and atft.gl_fiscal_type_id = 'ACTUAL'
+            left join acctg_trans_entry ate
+                on (ate.gl_account_id = wem.gl_account_id or ate.gl_account_id = 'SCOREKPI')
+                and ate.voucher_ref = wem.work_effort_measure_id
+                and atft.gl_fiscal_type_id = ate.gl_fiscal_type_id
+            left join acctg_trans at
+                on at.acctg_trans_id = ate.acctg_trans_id
+            left join gl_fiscal_type gft
+                on gft.gl_fiscal_type_id = ate.gl_fiscal_type_id
+            left outer join work_effort_meas_rat_sc mrs
+                on mrs.work_effort_measure_id = wem.work_effort_measure_id
+                and mrs.uom_id = ate.currency_uom_id
+                and mrs.uom_rating_value = ate.amount
+            LEFT OUTER join uom um
+                on um.uom_id = gl.default_uom_id
+            inner join work_effort_party_assignment wepa
+                on wepa.work_effort_id = we.work_effort_id
+                and wepa.role_type_id = 'WEM_EVAL_IN_CHARGE'
+            inner join user_login ul
+                on ul.party_id = wepa.party_id
+        WHERE
+            ul.user_login_id = #{userLoginId, mode=IN, jdbcType=VARCHAR}
+            and we.work_effort_id = #{workEffortId, jdbcType=VARCHAR}
+
+        UNION ALL
+
+        SELECT
+            wea.work_effort_id_to as work_effort_id,
+            wec.work_effort_name,
+            wec.work_effort_name_lang,
+            wec.current_status_id as work_effort_current_status_id,
+            wesi.description as work_effort_current_status_description,
+            wesi.description_lang as work_effort_current_status_description_lang,
+            wesi.sequence_id as work_effort_current_status_description_sequence_id,
+            wec.source_reference_id,
+            wec.etch,
+            wec.estimated_start_date,
+            wec.estimated_completion_date,
+            wet.work_effort_type_id,
+            wet.description as type_description, wet.description_lang as type_description_lang,
+            wea.work_effort_assoc_type_id,
+            wet.weight_kpi,
+            wet.weight_sons,
+            wet.weight_assoc_work_effort,
+            wet.weight_control_sum,
+            wet.weight_kpi_control_sum,
+            wet.total_enum_id_kpi,
+            wet.total_enum_id_sons,
+            wet.total_enum_id_assoc,
+            wea.from_date as work_effort_assoc_from_date,
+            wea.thru_date as work_effort_assoc_thru_date,
+            wea.sequence_num,
+            wea.work_effort_id_from,
+            weh.tree_level + 1 AS tree_level,
+            d.object_info as icon_path,
+            wem.uom_descr,
+            wem.uom_descr_lang,
+            wem.comments ,
+            wem.comments_lang ,
+            wem.comments2 ,
+            wem.comments2_lang ,
+            wem.kpi_score_weight ,
+            wem.kpi_other_weight ,
+            wem.work_effort_measure_id,
+            gl.account_name,
+            gl.account_name_lang,
+            gl.account_code,
+            gl.source as account_source,
+            gl.source_lang as account_source_lang,
+            um.abbreviation,
+            um.abbreviation_lang,
+            weh.ct_from_date,
+            weh.ct_thru_date,
+            wea.assoc_weight as obj_weight,
+            nd.note_info,
+            nd.note_info_lang,
+            nd.note_id,
+            nd.note_name,
+            at.gl_fiscal_type_id,
+            ate.amount,
+            ate.orig_amount,
+            ate.amount_locked,
+            ate.currency_uom_id as value_uom_id,
+            ate.description as reference,
+            ate.description_lang as reference_lang,
+            ate.acctg_trans_entry_seq_id,
+            mrs.uom_rating_value,
+            mrs.uom_code as value_code,
+            mrs.uom_code_lang as value_code_lang,
+            mrs.uom_descr as value_desc,
+            mrs.uom_descr_lang as value_desc_lang,
+            CASE WHEN ATE.GL_ACCOUNT_ID = 'SCOREKPI'
+                THEN 'Y'
+                ELSE 'N' END AS IS_SCOREKPI
+        FROM
+            work_effort_hierarchy weh
+            INNER JOIN work_effort_assoc wea
+                ON weh.work_effort_id = wea.work_effort_id_from
+                and wea.work_effort_assoc_type_id = weh.work_effort_assoc_type_id
+            INNER JOIN work_effort wec
+                ON wec.work_effort_id = wea.work_effort_id_to
+            INNER JOIN work_effort_type wet
+                ON wet.work_effort_type_id = wec.work_effort_type_id
+            left outer join (
+                select wen.work_effort_id, nd.note_info, nd.note_info_lang, nd.note_id, nd.note_name
+                from note_data nd
+                inner join work_effort_note wen on wen.note_id = nd.note_id
+                where nd.note_name = 'Obiettivo specifico'
+            ) nd on nd.work_effort_id = wec.work_effort_id
+            INNER JOIN status_item wesi
+                ON wesi.STATUS_ID = wec.current_status_id
+            LEFT OUTER JOIN content c
+                ON c.content_id = wet.icon_content_id
+            LEFT OUTER JOIN data_resource d
+                ON d.data_resource_id = c.data_resource_id
+            LEFT OUTER join WORK_EFFORT_MEASURE wem
+                on wem.work_effort_id = wea.work_effort_id_to
+                and (weh.ct_thru_date is null or (wea.from_date <![CDATA[<=]]> weh.ct_thru_date and wea.thru_date <![CDATA[>=]]> weh.ct_thru_date))
+            LEFT OUTER join gl_account gl
+                on gl.gl_account_id = wem.gl_account_id
+            left join gl_account_type_gl_fiscal_type atft
+                on atft.gl_account_type_id = gl.gl_account_type_id
+                and atft.gl_fiscal_type_id = 'ACTUAL'
+            left join acctg_trans_entry ate
+                on (ate.gl_account_id = wem.gl_account_id or ate.gl_account_id = 'SCOREKPI')
+                and ate.voucher_ref = wem.work_effort_measure_id
+                and atft.gl_fiscal_type_id = ate.gl_fiscal_type_id
+            left join acctg_trans at
+                on at.acctg_trans_id = ate.acctg_trans_id
+            left join gl_fiscal_type gft
+                on gft.gl_fiscal_type_id = ate.gl_fiscal_type_id
+                and gft.gl_fiscal_type_id = 'ACTUAL'
+            left outer join work_effort_meas_rat_sc mrs
+                on mrs.work_effort_measure_id = wem.work_effort_measure_id
+                and mrs.uom_id = ate.currency_uom_id
+                and mrs.uom_rating_value = ate.amount
+            LEFT OUTER join uom um
+                on um.uom_id = gl.default_uom_id
+        WHERE
+            wec.work_effort_revision_id is null
+        )
+        SELECT
+            work_effort_id, work_effort_id_from, work_effort_name, work_effort_name_lang,
+            work_effort_current_status_id,
+            work_effort_current_status_description,
+            work_effort_current_status_description_lang,
+            work_effort_current_status_description_sequence_id,
+            note_info, note_info_lang, note_id, note_name, obj_weight, work_effort_type_id,
+            estimated_start_date, estimated_completion_date, type_description, type_description_lang,
+            tree_level, work_effort_assoc_type_id,
+            work_effort_assoc_from_date, work_effort_assoc_thru_date,
+            sequence_num, icon_path,uom_descr,uom_descr_lang,comments,
+            comments_lang,comments2,comments2_lang,kpi_score_weight,kpi_other_weight,
+            account_name, account_name_lang, account_code, account_source, account_source_lang,
+            abbreviation, abbreviation_lang, work_effort_measure_id,
+            amount, orig_amount, amount_locked, value_uom_id, uom_rating_value, value_code, value_code_lang, value_desc,
+            value_desc_lang, reference, reference_lang, gl_fiscal_type_id, is_scorekpi, weight_kpi,
+            weight_sons, weight_assoc_work_effort, total_enum_id_kpi, total_enum_id_sons, total_enum_id_assoc,
+            weight_control_sum, weight_kpi_control_sum
+        FROM work_effort_hierarchy
+        ORDER BY tree_level, sequence_num, work_effort_id
+    </select>
+</mapper>

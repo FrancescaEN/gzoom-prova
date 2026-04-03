@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.UserLoginMapper">
+
+    <update id="anonymizeUserLogin">
+        UPDATE
+            USER_LOGIN
+        SET PARTY_ID = NULL
+        WHERE PARTY_ID IN (
+            SELECT PARTY_ID FROM PARTY
+            WHERE PARTY_TYPE_ID = 'PERSON'
+                AND STATUS_ID = 'PARTY_DISABLED'
+                AND END_DATE IS NOT NULL
+                AND END_DATE &lt; #{expirationDate}
+                AND PARTY_NAME &lt;&gt; PARTY_ID )
+    </update>
+
+    <select id="getUserLogin" resultMap="userLogin" parameterType="java.util.Map">
+        SELECT
+                UL.*,
+                <include refid="columnNameWithAliasParty"><property name="alias" value="P"/></include>,
+                <include refid="columnNameWithAliasPerson"><property name="alias" value="PRS"/></include>
+        FROM
+            USER_LOGIN UL
+        INNER JOIN PARTY P
+        ON
+            UL.PARTY_ID = P.PARTY_ID
+        INNER JOIN PERSON PRS
+        ON
+            P.PARTY_ID = PRS.PARTY_ID
+        WHERE
+            LOWER(UL.USER_LOGIN_ID) = LOWER(#{username})
+    </select>
+
+    <resultMap id="userLogin" type="it.mapsgroup.gzoom.mybatis.dto.UserLogin">
+        <id property="userLoginId" column="user_login_id" jdbcType="VARCHAR" />
+        <result property="currentPassword" column="current_password" jdbcType="VARCHAR" />
+        <result property="passwordHint" column="password_hint" jdbcType="VARCHAR" />
+        <result property="isSystem" column="is_system" jdbcType="CHAR" />
+        <result property="enabled" column="enabled" jdbcType="CHAR" />
+        <result property="hasLoggedOut" column="has_logged_out" jdbcType="CHAR" />
+        <result property="requirePasswordChange" column="require_password_change" jdbcType="CHAR" />
+        <result property="lastCurrencyUom" column="last_currency_uom" jdbcType="VARCHAR" />
+        <result property="lastLocale" column="last_locale" jdbcType="VARCHAR" />
+        <result property="lastTimeZone" column="last_time_zone" jdbcType="VARCHAR" />
+        <result property="disabledDateTime" column="disabled_date_time" jdbcType="TIMESTAMP" />
+        <result property="successiveFailedLogins" column="successive_failed_logins" jdbcType="NUMERIC" />
+        <result property="externalAuthId" column="external_auth_id" jdbcType="VARCHAR" />
+        <result property="userLdapDn" column="user_ldap_dn" jdbcType="VARCHAR" />
+        <result property="lastUpdatedStamp" column="last_updated_stamp" jdbcType="TIMESTAMP" />
+        <result property="lastUpdatedTxStamp" column="last_updated_tx_stamp" jdbcType="TIMESTAMP" />
+        <result property="createdStamp" column="created_stamp" jdbcType="TIMESTAMP" />
+        <result property="createdTxStamp" column="created_tx_stamp" jdbcType="TIMESTAMP" />
+        <result property="partyId" column="party_id" jdbcType="VARCHAR" />
+        <result property="externalSystem" column="external_system" jdbcType="VARCHAR" />
+        <result property="description" column="description" jdbcType="VARCHAR" />
+
+        <association property="party" resultMap="it.mapsgroup.gzoom.mybatis.mapper.PartyMapper.party" columnPrefix="p_"/>
+        <association property="person" resultMap="it.mapsgroup.gzoom.mybatis.mapper.PersonMapper.person" columnPrefix="prs_"/>
+    </resultMap>
+    <sql id="columnNameWithAliasPerson">
+        ${alias}.party_id AS prs_party_id,
+        ${alias}.salutation AS prs_salutation,
+        ${alias}.first_name AS prs_first_name,
+        ${alias}.middle_name AS prs_middle_name,
+        ${alias}.last_name AS prs_last_name,
+        ${alias}.personal_title AS prs_personal_title,
+        ${alias}.suffix AS prs_suffix,
+        ${alias}.nickname AS prs_nickname,
+        ${alias}.first_name_local AS prs_first_name_local,
+        ${alias}.middle_name_local AS prs_middle_name_local,
+        ${alias}.last_name_local AS prs_last_name_local,
+        ${alias}.other_local AS prs_other_local,
+        ${alias}.member_id AS prs_member_id,
+        ${alias}.gender AS prs_gender,
+        ${alias}.birth_date AS prs_birth_date,
+        ${alias}.deceased_date AS prs_deceased_date,
+        ${alias}.height AS prs_height,
+        ${alias}.weight AS prs_weight,
+        ${alias}.mothers_maiden_name AS prs_mothers_maiden_name,
+        ${alias}.marital_status AS prs_marital_status,
+        ${alias}.social_security_number AS prs_social_security_number,
+        ${alias}.passport_number AS prs_passport_number,
+        ${alias}.passport_expire_date AS prs_passport_expire_date,
+        ${alias}.total_years_work_experience AS prs_total_years_work_experience,
+        ${alias}.comments AS prs_comments,
+        ${alias}.employment_status_enum_id AS prs_employment_status_enum_id,
+        ${alias}.residence_status_enum_id AS prs_residence_status_enum_id,
+        ${alias}.occupation AS prs_occupation,
+        ${alias}.years_with_employer AS prs_years_with_employer,
+        ${alias}.months_with_employer AS prs_months_with_employer,
+        ${alias}.existing_customer AS prs_existing_customer,
+        ${alias}.card_id AS prs_card_id,
+        ${alias}.last_updated_stamp AS prs_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS prs_last_updated_tx_stamp,
+        ${alias}.created_stamp AS prs_created_stamp,
+        ${alias}.created_tx_stamp AS prs_created_tx_stamp,
+        ${alias}.birth_place AS prs_birth_place,
+        ${alias}.birth_country AS prs_birth_country,
+        ${alias}.number_of_child AS prs_number_of_child,
+        ${alias}.empl_position_type_id AS prs_empl_position_type_id,
+        ${alias}.empl_position_type_date AS prs_empl_position_type_date,
+        ${alias}.employment_amount AS prs_employment_amount,
+        ${alias}.last_modified_by_user_login AS prs_last_modified_by_user_login,
+        ${alias}.created_by_user_login AS prs_created_by_user_login,
+        ${alias}.person_position AS prs_person_position
+    </sql>
+    <sql id="columnNameWithAliasParty">
+        <!-- Party -->
+        ${alias}.party_id AS p_party_id,
+        ${alias}.party_type_id AS p_party_type_id,
+        ${alias}.external_id AS p_external_id,
+        ${alias}.preferred_currency_uom_id AS p_preferred_currency_uom_id,
+        ${alias}.description AS p_description,
+        ${alias}.status_id AS p_status_id,
+        ${alias}.created_date AS p_created_date,
+        ${alias}.created_by_user_login AS p_created_by_user_login,
+        ${alias}.last_modified_date AS p_last_modified_date,
+        ${alias}.last_modified_by_user_login AS p_last_modified_by_user_login,
+        ${alias}.data_source_id AS p_data_source_id,
+        ${alias}.is_unread AS p_is_unread,
+        ${alias}.last_updated_stamp AS p_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS p_last_updated_tx_stamp,
+        ${alias}.created_stamp AS p_created_stamp,
+        ${alias}.created_tx_stamp AS p_created_tx_stamp,
+        ${alias}.fiscal_code AS p_fiscal_code,
+        ${alias}.vat_code AS p_vat_code,
+        ${alias}.party_name AS p_party_name,
+        ${alias}.description_lang AS p_description_lang,
+        ${alias}.end_date AS p_end_date,
+        ${alias}.party_name_lang AS p_party_name_lang
+    </sql>
+</mapper>

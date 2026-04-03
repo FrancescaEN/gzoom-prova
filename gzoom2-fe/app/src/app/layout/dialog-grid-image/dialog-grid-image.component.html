@@ -1,0 +1,24 @@
+<app-dialog
+  [visible]="visible"
+  [icon]="'pi pi-paperclip'"
+  [header]="header"
+  [draggable]="false"
+  (clickOnShow)="selectFileOpen($event)"
+>
+  <div
+    *ngIf="!selectFile && selectFile !== null"
+    style="
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <app-spinner [loading]="!selectFile" />
+  </div>
+  <app-grid-image
+    *ngIf="selectFile || selectFile === null"
+    [images]="selectFile"
+    (selectedImage)="selectedImageFun($event, item)"
+  ></app-grid-image>
+</app-dialog>

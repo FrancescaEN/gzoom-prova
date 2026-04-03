@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_Strat_PrevPerf" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="b1826acb-7e31-452e-a967-7fa0a3a01dd7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="filterCustomTimePeriod_Note" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ? 
+("AND TO_DATE(DATA_RIFERIMENTO_NOTA,'DD/MM/YYYY') = TO_DATE('" + $P{customTimePeriodFormatted0101} + "','DD/MM/YYYY')" ) : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted0101" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+	NOTE.NOTE_INFO_LANG AS CONTENUTO_NOTA_IT,
+	NOTE.NOTE_INFO AS CONTENUTO_NOTA_DE
+FROM WORK_EFFORT OBO
+/* NOTE */
+LEFT JOIN (
+	SELECT
+		WEN.WORK_EFFORT_ID,
+		ND.NOTE_DATE_TIME AS DATA_NOTA,
+		ND.NOTE_INFO_LANG AS NOTE_INFO_LANG,
+		ND.NOTE_INFO AS NOTE_INFO
+	FROM WORK_EFFORT_NOTE WEN
+	LEFT JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+	WHERE WEN.SEQUENCE_ID = 110
+) NOTE ON NOTE.WORK_EFFORT_ID = OBO.WORK_EFFORT_ID
+WHERE OBO.WORK_EFFORT_TYPE_ID = '20P46' AND OBO.WORK_EFFORT_REVISION_ID IS NULL AND OBO.WORK_EFFORT_ID = $P{work_effort_id_ob}
+	--AND (NOTE.NOTE_INFO_LANG IS NOT NULL OR NOTE.NOTE_INFO IS NOT NULL)
+	AND NOTE.DATA_NOTA = TO_DATE($P{customTimePeriodFormatted0101},'DD/MM/YYYY')]]>
+	</queryString>
+	<field name="CONTENUTO_NOTA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_TEMA_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_TEMA_IT"/>
+	</field>
+	<field name="CONTENUTO_NOTA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_TEMA_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_TEMA_DE"/>
+	</field>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame borderSplitType="DrawBorders">
+				<reportElement mode="Transparent" x="0" y="0" width="802" height="15" backcolor="#FFFFFF" uuid="dabc37d4-61dc-4b99-a72c-37c5e04ca86c"/>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textField textAdjust="StretchHeight" evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="200" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="da3e38b2-ad03-4621-8422-0f47236647cc"/>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Descrizione}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement key="" style="TextFieldStyle" x="200" y="0" width="602" height="15" uuid="66ae196b-cd8e-406f-af56-2abc59af206f">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Nota"/>
+						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{CONTENUTO_NOTA_IT}) : 
+($F{CONTENUTO_NOTA_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

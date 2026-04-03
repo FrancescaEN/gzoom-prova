@@ -1,0 +1,1012 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final utlizzo versione della libreria JasperReports6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TablePart" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" isSummaryNewPage="true" isFloatColumnFooter="true" resourceBundle="PianoTriennalePrevenzioneCorruzioneCustom" uuid="5c559f3e-b23b-4cd4-a579-7ed7c0d2b615">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="810"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="730"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="257"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gzoom_comune_lecco"/>
+	<style name="Default" isDefault="true" pdfEncoding="Cp1252" isPdfEmbedded="false">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<subDataset name="MaxScaleDS" uuid="b4c923e5-84c9-4653-bc2a-28513aad5385">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gzoom_comune_lecco"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="226"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="769"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="valutRischio" class="java.lang.Double"/>
+		<queryString>
+			<![CDATA[select 
+  max(thru_value) as "MAX_VALUE"
+from uom_range_values where uom_range_id = 'CORRIS']]>
+		</queryString>
+		<field name="MAX_VALUE" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="MAX_VALUE"/>
+			<property name="com.jaspersoft.studio.field.label" value="MAX_VALUE"/>
+		</field>
+	</subDataset>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId}  != null && $P{orgUnitId}  != ""   && LEN($P{orgUnitId}) != 0 ? " AND FIL_W.ORG_UNIT_ID ='" + $P{orgUnitId}  + "'": ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("9",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3009}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="excludeValidity" class="java.lang.String">
+		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposeReleaseDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="YEAR" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[YEAR($P{monitoringDate})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortIdChild" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{monitoringDate}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{workEffortId}  != null && $P{workEffortId}  != "" && $P{workEffortIdChild}  != null && $P{workEffortIdChild}  != "" ? 
+" AND (RA.WORK_EFFORT_ID = '" +$P{workEffortId} +  "' AND (ARSUP.WORK_EFFORT_ID = '" + $P{workEffortIdChild}  + "' OR AR.WORK_EFFORT_ID = '" + $P{workEffortIdChild} + 
+ "' OR FIL_W.WORK_EFFORT_ID = '" +  $P{workEffortIdChild} + "')) " :
+ $P{workEffortId}  != null && $P{workEffortId} != "" ?  " AND ( RA.WORK_EFFORT_ID = '" +$P{workEffortId} + "' ) " :
+ $P{workEffortIdChild}  != null && $P{workEffortIdChild} != "" ? " AND ( AR.WORK_EFFORT_ID = '" + $P{workEffortIdChild} + "' OR ARSUP.WORK_EFFORT_ID = '" + $P{workEffortIdChild} + "' OR AR.WORK_EFFORT_ID = '" + $P{workEffortIdChild} + "' OR FIL_W.WORK_EFFORT_ID = '" + $P{workEffortIdChild} + "') " : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sottoprocessoId" class="java.lang.String"/>
+	<parameter name="date3112P1" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),(YEAR($P{monitoringDate})+1), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P1sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112P1}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P2" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),(YEAR($P{monitoringDate})+2), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P2sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112P2}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="isAdmin" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="organizationId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="organizationIdString" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{organizationId}  != null && $P{organizationId}  != ""   && LEN($P{organizationId}) != 0 ? "' AND  RA.ORGANIZATION_ID = '" + $P{orgUnitId}  + "'": ""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select 
+	RADTC.ETCH as "RAD_TITOLO",
+	RA.WORK_EFFORT_ID as "RA_WORK_EFFORT_ID",
+	WET.ETCH as "AREA_TYPE",
+	AR.WORK_EFFORT_ID as "ID_AREA",
+	CONCAT(AR.ETCH,' - ',AR.WORK_EFFORT_NAME) as "AREA_RISCHIO",
+	WET2.ETCH as "PROCESSO_TYPE",
+	FIL_W.WORK_EFFORT_ID as "ID_PROCESSO",
+	CONCAT(FIL_W.ETCH,' - ',FIL_W.WORK_EFFORT_NAME) as "PROCESSO",
+	CONCAT(PPR.PARENT_ROLE_CODE,' - ',P.PARTY_NAME) as "STRUTTURA",
+	P2.PARTY_NAME as "RESP_STRUTTURA",
+	VALUT.AMOUNT as "VALUTAZIONE_RISCHIO",
+	VALUT.COMMENTS as "FASCIA_VALUTAZIONE",
+	VALUT.OBJECT_INFO as "EMOTE",
+	NOTEPRO.MOTIVAZIONE_NAME as "MOTIVAZIONE_VAL_RISC_NAME",
+	NOTEPRO.MODALITA_NAME as "MODALITA_VERIFICA_NAME",
+	NOTEPRO.EVENTI_NAME as "EVENTI_SENTINELLA_NAME",	
+	NOTEPRO.MOTIVAZIONE as "MOTIVAZIONE_VALUTAZIONE_RISCHIO",
+	NOTEPRO.MODALITA as "MODALITA_VERIFICA",
+	NOTEPRO.EVENTI as "EVENTI_SENTINELLA",
+	RESPRO.NOTE_NAME as "ETCH_RESP_PROCESSO",
+	RESPRO.NOTE_INFO as "RESP_PROCESSO"
+from
+	WORK_EFFORT RA
+inner join WORK_EFFORT_TYPE RAT on
+	RAT.WORK_EFFORT_TYPE_ID = RA.WORK_EFFORT_TYPE_ID
+inner join WORK_EFFORT_TYPE_CONTENT RADTC on
+	RADTC.WORK_EFFORT_TYPE_ID = RAT.WORK_EFFORT_TYPE_ID
+	and RADTC.CONTENT_ID = $P{reportContentId}
+join WORK_EFFORT_ASSOC WEA on
+	WEA.WORK_EFFORT_ID_FROM = RA.WORK_EFFORT_ID
+	and WEA.WORK_EFFORT_ASSOC_TYPE_ID = '15APPPC'
+join WORK_EFFORT ARSUP on
+	ARSUP.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_TO
+	and ARSUP.WORK_EFFORT_TYPE_ID = '15AP1ARE'
+	and ARSUP.WORK_EFFORT_REVISION_ID is null
+	and ARSUP.ESTIMATED_START_DATE <= $P{date3112}
+	and ($P{excludeValidity} = 'Y'
+		or ($P{excludeValidity} = 'N'
+			and ARSUP.ESTIMATED_START_DATE <= $P{date3112}
+			and (ARSUP.ESTIMATED_COMPLETION_DATE is null
+				or ARSUP.ESTIMATED_COMPLETION_DATE >= $P{date0101})))
+join WORK_EFFORT_TYPE WET on
+	WET.WORK_EFFORT_TYPE_ID = ARSUP.WORK_EFFORT_TYPE_ID
+join WORK_EFFORT_ASSOC WEA2 on
+	WEA2.WORK_EFFORT_ID_FROM = ARSUP.WORK_EFFORT_ID
+	and WEA2.WORK_EFFORT_ASSOC_TYPE_ID = '15APPPC'
+join WORK_EFFORT AR on
+	AR.WORK_EFFORT_ID = WEA2.WORK_EFFORT_ID_TO
+	and AR.WORK_EFFORT_TYPE_ID = '15AP2SAR'
+	and AR.WORK_EFFORT_REVISION_ID is null
+	and ($P{excludeValidity} = 'Y'
+		or ($P{excludeValidity} = 'N'
+			and AR.ESTIMATED_START_DATE <= $P{date3112}
+			and (AR.ESTIMATED_COMPLETION_DATE is null
+				or AR.ESTIMATED_COMPLETION_DATE >= $P{date0101})))
+join WORK_EFFORT_ASSOC WEA3 on
+	WEA3.WORK_EFFORT_ID_FROM = AR.WORK_EFFORT_ID
+	and WEA3.WORK_EFFORT_ASSOC_TYPE_ID = '15APSARC'
+join WORK_EFFORT FIL_W on
+	FIL_W.WORK_EFFORT_ID = WEA3.WORK_EFFORT_ID_TO
+	and FIL_W.WORK_EFFORT_TYPE_ID = '15AP3PRO'
+	and FIL_W.WORK_EFFORT_REVISION_ID is null
+	and ($P{excludeValidity} = 'Y'
+		or ($P{excludeValidity} = 'N'
+			and FIL_W.ESTIMATED_START_DATE <= $P{date3112}
+			and (FIL_W.ESTIMATED_COMPLETION_DATE is null
+				or FIL_W.ESTIMATED_COMPLETION_DATE >= $P{date0101})))	
+
+/* RESPONSABILE DI PROCESSO */
+left join (
+	select 
+		ND.NOTE_NAME,
+		ND.NOTE_INFO,
+		WEN.WORK_EFFORT_ID
+	from
+		WORK_EFFORT_NOTE WEN
+	join NOTE_DATA ND on
+		ND.NOTE_ID = WEN.NOTE_ID
+	where
+		WEN.SEQUENCE_ID = 10
+) RESPRO on
+	RESPRO.WORK_EFFORT_ID = FIL_W.WORK_EFFORT_ID
+join WORK_EFFORT_TYPE WET2 on
+	WET2.WORK_EFFORT_TYPE_ID = FIL_W.WORK_EFFORT_TYPE_ID
+left join (
+	select 
+		WEM.WORK_EFFORT_ID, 
+		ATE.AMOUNT, 
+		URV.COMMENTS,
+		DR.OBJECT_INFO
+	from
+		WORK_EFFORT_MEASURE WEM
+	left join ACCTG_TRANS ACT on
+		ACT.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID
+		and ACT.TRANSACTION_DATE >= $P{date0101}
+		and ACT.TRANSACTION_DATE <= $P{date3112}
+	left join ACCTG_TRANS_ENTRY ATE on
+		ATE.ACCTG_TRANS_ID = ACT.ACCTG_TRANS_ID
+	left join UOM_RANGE_VALUES URV on
+		URV.UOM_RANGE_ID = 'CORRISS'
+		and URV.FROM_VALUE <= ATE.AMOUNT
+		and URV.THRU_VALUE >= ATE.AMOUNT
+	left join content C on
+		C.CONTENT_ID = URV.ICON_CONTENT_ID
+	left join DATA_RESOURCE DR on
+		DR.DATA_RESOURCE_ID = C.DATA_RESOURCE_ID
+	where
+		WEM.GL_ACCOUNT_ID = '10502'
+) VALUT on
+	VALUT.WORK_EFFORT_ID = FIL_W.WORK_EFFORT_ID
+left join (
+	select 
+		WEN.WORK_EFFORT_ID,
+		MAX(case when WEN.SEQUENCE_ID = 102 then ND.NOTE_NAME else null end) as MOTIVAZIONE_NAME,
+		MAX(case when WEN.SEQUENCE_ID = 200 then ND.NOTE_NAME else null end) as MODALITA_NAME,
+		MAX(case when WEN.SEQUENCE_ID = 201 then ND.NOTE_NAME else null end) as EVENTI_NAME,
+		MAX(case when WEN.SEQUENCE_ID = 102 then ND.NOTE_INFO else null end) as MOTIVAZIONE,
+		MAX(case when WEN.SEQUENCE_ID = 200 then ND.NOTE_INFO else null end) as MODALITA,
+		MAX(case when WEN.SEQUENCE_ID = 201 then ND.NOTE_INFO else null end) as EVENTI
+	from
+		WORK_EFFORT_NOTE WEN
+	join NOTE_DATA ND on
+		ND.NOTE_ID = WEN.NOTE_ID
+		and ND.NOTE_DATE_TIME >= $P{date0101}
+		and ND.NOTE_DATE_TIME <= $P{date3112}
+	group by
+		WEN.WORK_EFFORT_ID 
+) NOTEPRO on
+	NOTEPRO.WORK_EFFORT_ID = FIL_W.WORK_EFFORT_ID
+join PARTY P on
+	P.PARTY_ID = FIL_W.ORG_UNIT_ID
+join PARTY_PARENT_ROLE PPR on
+	PPR.PARTY_ID = P.PARTY_ID
+	and PPR.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+left join PARTY_RELATIONSHIP PR2 on
+	PR2.PARTY_ID_FROM = FIL_W.ORG_UNIT_ID
+	and PR2.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+	and PR2.THRU_DATE is null
+left join PARTY P2 on
+	P2.PARTY_ID = PR2.PARTY_ID_TO 
+/* START filterInnerJoin */
+	$P!{filterInnerJoinString} 
+/* END filterInnerJoin */
+	/* START filterLeftJoin */
+	$P!{filterLeftJoinString} 
+/* END filterLeftJoin */
+WHERE 1 = 1
+	/* START orgUnitIdString */
+	$P!{orgUnitIdString}
+	/* END orgUnitIdString */
+	/* START workEffortIdString */
+	$P!{workEffortIdString}
+	/* END workEffortIdString */
+	/* START organizationIdString */
+	$P!{organizationIdString} 
+    /* END organizationIdString */  
+	/* START filterWhere */
+	$P!{filterWhereString} 
+    /* END filterWhere */
+           
+ORDER BY wea.SEQUENCE_NUM,
+	AR.ETCH, 
+	WEA2.SEQUENCE_NUM,
+	FIL_W.ETCH,
+	FIL_W.WORK_EFFORT_NAME,
+	FIL_W.DESCRIPTION]]>
+	</queryString>
+	<field name="RAD_TITOLO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RAD_TITOLO"/>
+		<property name="com.jaspersoft.studio.field.label" value="RAD_TITOLO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_type_content"/>
+	</field>
+	<field name="RA_WORK_EFFORT_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RA_WORK_EFFORT_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="RA_WORK_EFFORT_ID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="AREA_TYPE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="AREA_TYPE"/>
+		<property name="com.jaspersoft.studio.field.label" value="AREA_TYPE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_type"/>
+	</field>
+	<field name="ID_AREA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_AREA"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_AREA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="AREA_RISCHIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="AREA_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="AREA_RISCHIO"/>
+	</field>
+	<field name="PROCESSO_TYPE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROCESSO_TYPE"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROCESSO_TYPE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_type"/>
+	</field>
+	<field name="ID_PROCESSO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_PROCESSO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_PROCESSO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="PROCESSO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROCESSO"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROCESSO"/>
+	</field>
+	<field name="STRUTTURA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="STRUTTURA"/>
+		<property name="com.jaspersoft.studio.field.label" value="STRUTTURA"/>
+	</field>
+	<field name="RESP_STRUTTURA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RESP_STRUTTURA"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESP_STRUTTURA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="party"/>
+	</field>
+	<field name="VALUTAZIONE_RISCHIO" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="VALUTAZIONE_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="VALUTAZIONE_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acctg_trans_entry"/>
+	</field>
+	<field name="FASCIA_VALUTAZIONE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="FASCIA_VALUTAZIONE"/>
+		<property name="com.jaspersoft.studio.field.label" value="FASCIA_VALUTAZIONE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="uom_range_values"/>
+	</field>
+	<field name="EMOTE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="EMOTE"/>
+		<property name="com.jaspersoft.studio.field.label" value="EMOTE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="data_resource"/>
+	</field>
+	<field name="MOTIVAZIONE_VAL_RISC_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MOTIVAZIONE_VAL_RISC_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="MOTIVAZIONE_VAL_RISC_NAME"/>
+	</field>
+	<field name="MODALITA_VERIFICA_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MODALITA_VERIFICA_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="MODALITA_VERIFICA_NAME"/>
+	</field>
+	<field name="EVENTI_SENTINELLA_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="EVENTI_SENTINELLA_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="EVENTI_SENTINELLA_NAME"/>
+	</field>
+	<field name="MOTIVAZIONE_VALUTAZIONE_RISCHIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MOTIVAZIONE_VALUTAZIONE_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="MOTIVAZIONE_VALUTAZIONE_RISCHIO"/>
+	</field>
+	<field name="MODALITA_VERIFICA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MODALITA_VERIFICA"/>
+		<property name="com.jaspersoft.studio.field.label" value="MODALITA_VERIFICA"/>
+	</field>
+	<field name="EVENTI_SENTINELLA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="EVENTI_SENTINELLA"/>
+		<property name="com.jaspersoft.studio.field.label" value="EVENTI_SENTINELLA"/>
+	</field>
+	<field name="ETCH_RESP_PROCESSO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ETCH_RESP_PROCESSO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ETCH_RESP_PROCESSO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="note_data"/>
+	</field>
+	<field name="RESP_PROCESSO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RESP_PROCESSO"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESP_PROCESSO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="note_data"/>
+	</field>
+	<group name="Gruppo_AREA" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{ID_AREA}]]></groupExpression>
+		<groupHeader>
+			<band height="52">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<frame>
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="555" height="50" isRemoveLineWhenBlank="true" backcolor="#D5D5D5" uuid="d7d4fc75-c2a0-4286-8da0-d8b9e58008a9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Frame Area"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#A5A5A5"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#A5A5A5"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement mode="Transparent" x="0" y="0" width="555" height="30" backcolor="#D5D5D5" uuid="04df71e1-7645-41e5-88dc-0c4471eb5095">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{RAD_TITOLO} != "" && $F{RAD_TITOLO} != null ? $F{RAD_TITOLO} +" "+ YEAR($P{monitoringDate})+" - "+(YEAR($P{monitoringDate})+2) : 
+$R{HeaderIndice}+" "+ YEAR($P{monitoringDate})+" - "+(YEAR($P{monitoringDate})+2)]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement mode="Transparent" x="0" y="30" width="100" height="20" forecolor="#808080" backcolor="#D5D5D5" uuid="a9061b86-da0b-4d7c-8f38-082ed052a77b">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{AREA_TYPE}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement x="100" y="30" width="455" height="20" uuid="d69164ce-4892-460b-a59c-cc7602f62496">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{AREA_RISCHIO}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="36">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<break>
+					<reportElement x="0" y="0" width="100" height="1" uuid="22a50299-e32f-47e0-9efe-b3219b68e7ea"/>
+				</break>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="4" width="555" height="30" uuid="ff67700b-0bb3-43a1-8c73-f375cf3a1743">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<subreportParameter name="areaId">
+						<subreportParameterExpression><![CDATA[$F{ID_AREA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date0101">
+						<subreportParameterExpression><![CDATA[$P{date0101}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3112">
+						<subreportParameterExpression><![CDATA[$P{date3112}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["BarChartXY.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Gruppo_PROCESSO">
+		<groupExpression><![CDATA[$F{ID_PROCESSO}]]></groupExpression>
+		<groupHeader>
+			<band height="125">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<frame>
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="555" height="15" isRemoveLineWhenBlank="true" backcolor="#EBEBEB" uuid="e0ede0bc-1675-42c8-b00b-61d50ac2659b">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Frame Sottoprocesso"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement mode="Transparent" x="0" y="0" width="100" height="15" forecolor="#808080" backcolor="#D5D5D5" uuid="640fa42d-f4de-489c-bfee-718f5e46917d">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{PROCESSO_TYPE}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor" bookmarkLevel="1">
+						<reportElement x="100" y="0" width="455" height="15" uuid="6d39bab0-8a66-4bcc-b2e1-e7e1cb077014">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{PROCESSO}]]></textFieldExpression>
+						<anchorNameExpression><![CDATA[$F{ID_PROCESSO}]]></anchorNameExpression>
+						<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+						<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+					</textField>
+					<line>
+						<reportElement stretchType="ContainerHeight" x="100" y="0" width="1" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#808080" uuid="4a53f2dd-eb6e-4d2a-9400-f7065133bf24">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1"/>
+						</graphicElement>
+					</line>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" mode="Transparent" x="0" y="15" width="555" height="20" isRemoveLineWhenBlank="true" backcolor="#F5F5F5" uuid="2dc76b9f-888d-495d-857c-66bc8a5d8e8f">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Frame Rischio"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement mode="Transparent" x="0" y="0" width="100" height="20" forecolor="#808080" backcolor="#D5D5D5" uuid="b65c2a0e-7798-419e-81d1-e2a9cd57d980">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+						</box>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{RischioP}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement x="100" y="0" width="131" height="20" uuid="265eead9-77b9-466a-b67a-0bad0c9a25e7">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="false"/>
+							<paragraph leftIndent="2" rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{FASCIA_VALUTAZIONE}]]></textFieldExpression>
+					</textField>
+					<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+						<reportElement x="231" y="0" width="50" height="20" uuid="fec911b7-bc85-4eb3-9353-e739719721c4">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<imageExpression><![CDATA[$F{EMOTE}]]></imageExpression>
+					</image>
+					<componentElement>
+						<reportElement positionType="Float" x="282" y="0" width="273" height="20" uuid="d3ffb409-42a5-4f74-87d9-0e977d01358d"/>
+						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+							<datasetRun subDataset="MaxScaleDS" uuid="4e45f2bf-0777-4e30-849f-cbc6a94b777d">
+								<datasetParameter name="valutRischio">
+									<datasetParameterExpression><![CDATA[$F{VALUTAZIONE_RISCHIO}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+							<jr:listContents height="20" width="273">
+								<textField>
+									<reportElement x="0" y="0" width="273" height="20" uuid="5b98b297-3a00-4734-8bff-5dd0bcf0cf5d"/>
+									<textFieldExpression><![CDATA[$P{valutRischio} !=null ? $P{valutRischio}+"/"+$F{MAX_VALUE} : "/"+$F{MAX_VALUE}]]></textFieldExpression>
+								</textField>
+							</jr:listContents>
+						</jr:list>
+					</componentElement>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" mode="Transparent" x="0" y="35" width="555" height="15" isRemoveLineWhenBlank="true" backcolor="#F5F5F5" uuid="27069d1c-de2f-4bc6-a0a0-494288f8d4a3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Frame Responsabile Processo"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement mode="Transparent" x="0" y="0" width="100" height="15" forecolor="#808080" backcolor="#D5D5D5" uuid="2743f46a-200c-4ba0-ad4d-7057a4ae9dd3">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+						</box>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ETCH_RESP_PROCESSO}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement x="100" y="0" width="455" height="15" uuid="e8570e9d-dae9-4cdd-a984-3afeb14993d0">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="false"/>
+							<paragraph leftIndent="2" rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{RESP_PROCESSO}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" mode="Transparent" x="0" y="50" width="555" height="15" isRemoveLineWhenBlank="true" backcolor="#F5F5F5" uuid="dbc9b469-e924-444e-bd13-f20962550aaa">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Frame Motivazione Valutazione"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement mode="Transparent" x="0" y="0" width="100" height="15" forecolor="#808080" backcolor="#D5D5D5" uuid="43ea8bb1-dcdd-41a7-a00a-05852155ee2a">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+						</box>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{MOTIVAZIONE_VAL_RISC_NAME}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement x="100" y="0" width="455" height="15" uuid="a6876e4e-ac27-402c-8a02-f859a3c7a292">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="false"/>
+							<paragraph leftIndent="2" rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{MOTIVAZIONE_VALUTAZIONE_RISCHIO}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="95" width="555" height="30" isRemoveLineWhenBlank="true" uuid="91340b18-6a31-446c-a357-218c4dadda60">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Sottoreport Rischio"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<subreportParameter name="ReportTitle">
+						<subreportParameterExpression><![CDATA[$P{ReportTitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="langLocale">
+						<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="defaultOrganizationPartyId">
+						<subreportParameterExpression><![CDATA[$P{defaultOrganizationPartyId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="orgUnitId">
+						<subreportParameterExpression><![CDATA[$P{orgUnitId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="localDispatcherName">
+						<subreportParameterExpression><![CDATA[$P{localDispatcherName}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="userLoginId">
+						<subreportParameterExpression><![CDATA[$P{userLoginId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="monitoringDate">
+						<subreportParameterExpression><![CDATA[$P{monitoringDate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="odaDialect">
+						<subreportParameterExpression><![CDATA[$P{odaDialect}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="Company">
+						<subreportParameterExpression><![CDATA[$P{Company}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="ReportSmallPath">
+						<subreportParameterExpression><![CDATA[$P{ReportSmallPath}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="IconNavPath">
+						<subreportParameterExpression><![CDATA[$P{IconNavPath}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="workEffortTypeId">
+						<subreportParameterExpression><![CDATA[$P{workEffortTypeId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="reportContentId">
+						<subreportParameterExpression><![CDATA[$P{reportContentId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="exposePaginator">
+						<subreportParameterExpression><![CDATA[$P{exposePaginator}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="excludeValidity">
+						<subreportParameterExpression><![CDATA[$P{excludeValidity}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="workEffortId">
+						<subreportParameterExpression><![CDATA[$P{workEffortId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="exposeReleaseDate">
+						<subreportParameterExpression><![CDATA[$P{exposeReleaseDate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="workEffortIdChild">
+						<subreportParameterExpression><![CDATA[$P{workEffortIdChild}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3112">
+						<subreportParameterExpression><![CDATA[$P{date3112}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3112sql">
+						<subreportParameterExpression><![CDATA[$P{date3112sql}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date0101">
+						<subreportParameterExpression><![CDATA[$P{date0101}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date0101sql">
+						<subreportParameterExpression><![CDATA[$P{date0101sql}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3009">
+						<subreportParameterExpression><![CDATA[$P{date3009}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3009sql">
+						<subreportParameterExpression><![CDATA[$P{date3009sql}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="monitoringDateString">
+						<subreportParameterExpression><![CDATA[$P{monitoringDateString}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3112P1">
+						<subreportParameterExpression><![CDATA[$P{date3112P1}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3112P1sql">
+						<subreportParameterExpression><![CDATA[$P{date3112P1sql}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3112P2">
+						<subreportParameterExpression><![CDATA[$P{date3112P2}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="date3112P2sql">
+						<subreportParameterExpression><![CDATA[$P{date3112P2sql}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="processoId">
+						<subreportParameterExpression><![CDATA[$F{ID_PROCESSO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["Sottoreport_Rischio.jasper"]]></subreportExpression>
+				</subreport>
+				<frame>
+					<reportElement positionType="Float" mode="Transparent" x="0" y="65" width="555" height="15" isRemoveLineWhenBlank="true" backcolor="#F5F5F5" uuid="deb36659-e446-4728-8150-293ba047164c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Frame Modalità Verifica"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<printWhenExpression><![CDATA[$F{MODALITA_VERIFICA}!=null && $F{MODALITA_VERIFICA}!="" && TRIM($F{MODALITA_VERIFICA}) !="" && LEN(TRIM($F{MODALITA_VERIFICA})) > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement mode="Transparent" x="0" y="0" width="100" height="15" forecolor="#808080" backcolor="#D5D5D5" uuid="55dc29ec-e679-456b-b807-fd01a242120e">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+						</box>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{MODALITA_VERIFICA_NAME}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement x="100" y="0" width="455" height="15" uuid="3582e35d-32ae-4021-b604-a9208a24ac39">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="false"/>
+							<paragraph leftIndent="2" rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{MODALITA_VERIFICA}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" mode="Transparent" x="0" y="80" width="555" height="15" isRemoveLineWhenBlank="true" backcolor="#F5F5F5" uuid="48150b54-10c1-46dc-b17c-c36ace53278a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Frame Eventi Sentinella"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<printWhenExpression><![CDATA[$F{EVENTI_SENTINELLA}!=null && $F{EVENTI_SENTINELLA}!="" && TRIM($F{EVENTI_SENTINELLA}) !="" && LEN(TRIM($F{EVENTI_SENTINELLA})) > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#A5A5A5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#A5A5A5"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement mode="Transparent" x="0" y="0" width="100" height="15" forecolor="#808080" backcolor="#D5D5D5" uuid="5f4fe013-dff1-425b-92a7-c9db7904de9a">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+						</box>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{EVENTI_SENTINELLA_NAME}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement x="100" y="0" width="455" height="15" uuid="7a63a94a-d681-49b9-8d5f-f149012c37b0">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font size="9" isBold="false"/>
+							<paragraph leftIndent="2" rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{EVENTI_SENTINELLA}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="40">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="265" y="4" width="25" height="25" uuid="af21e7a7-ef5a-4f4c-9e88-307e985f71da"/>
+				<imageExpression><![CDATA[$P{ReportSmallPath}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="1" y="12" width="179" height="15" uuid="ba1d794d-9325-44dd-a3f6-927392128478">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{Company}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="376" y="12" width="179" height="15" uuid="df53fdb5-809f-4b03-bb99-48e59e9a8fe3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+			</textField>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="22">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="7" width="128" height="15" uuid="00772855-e55b-4fcf-be76-f945ae6469bd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{exposeReleaseDate}.equals( "Y" )]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Stampato il " + DATEFORMAT(TODAY( ), "dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="266" y="6" width="23" height="16" uuid="0e1242ae-e61c-44a9-81de-a5831d98b53c"/>
+				<imageExpression><![CDATA[$P{IconNavPath}]]></imageExpression>
+			</image>
+			<textField evaluationTime="Page">
+				<reportElement mode="Transparent" x="505" y="7" width="50" height="15" backcolor="#FFFFFF" uuid="83ff446e-d76a-4e3c-9bbf-d020222bf5b1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[$P{exposePaginator}.equals( "Y")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="da9f8644-c81c-49aa-9521-9f94a2663b5d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

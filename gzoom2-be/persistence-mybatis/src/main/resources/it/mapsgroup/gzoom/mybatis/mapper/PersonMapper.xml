@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.PersonMapper">
+
+    <update id="anonymizePerson">
+        UPDATE PERSON
+        SET FIRST_NAME = PARTY_ID, LAST_NAME = PARTY_ID
+        WHERE PARTY_ID IN (SELECT PARTY_ID
+                           FROM PARTY
+                           WHERE PARTY_TYPE_ID = 'PERSON'
+                             AND STATUS_ID = 'PARTY_DISABLED'
+                             AND END_DATE IS NOT NULL
+                             AND END_DATE &lt; #{expirationDate}
+                             AND PARTY_NAME &lt;&gt; PARTY_ID)
+    </update>
+
+
+
+</mapper>

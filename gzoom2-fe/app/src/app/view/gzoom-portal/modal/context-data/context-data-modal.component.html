@@ -1,0 +1,41 @@
+<gzoom-modal [loadingModal]="loading">
+  <gzoom-modal-header>
+    <h1>Dati di contesto</h1>
+    <p>Dati estratti dall’ultimo RAV pubblicato</p>
+  </gzoom-modal-header>
+
+  <gzoom-modal-body>
+    <div>
+      @if (noteNames.length > 0) {
+        @for (noteName of noteNames; track $index) {
+          <div>
+            <h1>{{ noteName }}</h1>
+            <div>
+              <h2>Opportunità</h2>
+              <p>{{ opportunityNoteInfo(noteName) }}</p>
+            </div>
+            <div>
+              <h2>Vincoli</h2>
+              <p>{{ obstacleNoteInfo(noteName) }}</p>
+            </div>
+          </div>
+        }
+      } @else {
+        <div>
+          Dato non disponibile
+        </div>
+      }
+    </div>
+  </gzoom-modal-body>
+
+  <gzoom-modal-footer>
+    <gzoom-button label="Chiudi" (onClick)="closeModal()" [outlined]="true" />
+    <gzoom-button (onClick)="openDataIntegrationModal()" [ngClass]="{'with-badge': integrationNote?.info?.length > 0}">
+      @if (editEnabled) {
+        <i class="gzoom-icon gzoom-circle-plus"></i>Integra dati
+      } @else {
+        Dati integrati
+      }
+    </gzoom-button>
+  </gzoom-modal-footer>
+</gzoom-modal>

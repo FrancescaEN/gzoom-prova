@@ -1,0 +1,29 @@
+<div *ngIf=" visibleDialog" class="d-flex" style="width: 90%; flex-direction: row;  justify-content: center;">
+  <div style="width: 30%; display:flex; justify-content: center;">
+    <i class="pi pi-shield" style="font-size: 80px; color: green; position: absolute; top: 40%;"></i>
+  </div>
+  <div style="width: 70%">
+    <h3>Inserisci il codice OTP inviato al tuo indirizzo email associato</h3>
+    <h5>Il codice ha validità 15 minuti</h5>
+    <div class="mt-4 d-flex " style="gap: 5px;">
+      <input type="text" placeholder="Inserisci il codice OTP" id="otp" [(ngModel)]="otp" pInputText>
+      <gzoom-button label="{{ 'Verify' | i18n }}" (click)="verifyOTP()"></gzoom-button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="visibleDialogEnable" class="d-flex" style="width: 90%; flex-direction: row;  justify-content: center;">
+  <div style="width: 30%; display:flex; justify-content: center;">
+    <i class="pi pi-shield" style="font-size: 80px; color: green; position: absolute; top: 40%;"></i>
+  </div>
+  <div style="width: 70%">
+    <h3>Two Factory Authentication Abilitata</h3>
+    <div class="mt-4 d-flex " style="gap: 5px;">
+      <gzoom-button label="{{ 'Closed' | i18n }}" (click)="close()"></gzoom-button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="error" style="width: 100%" class="alert alert-danger mt-1" role="alert">
+  {{ error | i18n }}
+</div>

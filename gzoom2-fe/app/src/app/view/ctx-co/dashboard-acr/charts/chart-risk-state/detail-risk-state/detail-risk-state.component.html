@@ -1,0 +1,38 @@
+<gzoom-detail-chart (back)="back()" [backLabel]="'GP_MENU_00626' | i18n">
+  <gzoom-chart-detail-risk-state 
+  chart 
+  [year]="year()" 
+  [orgUnitId]="orgUnitId()"
+  />
+
+  <div options>
+    <gzoom-row-flex>
+      <gzoom-label label="referenceYear" labelPos="left" options twoPoints>
+        <p-calendar
+          [(ngModel)]="date"
+          [maxDate]="maxDate"
+          view="year"
+          appendTo="body"
+          dateFormat="yy"
+          (ngModelChange)="setYear($event)"
+        />
+      </gzoom-label>
+      <gzoom-label label="Responsible Unit" labelPos="left" twoPoints>
+          <p-dropdown
+            [(ngModel)]="selectedOrgUnitId"
+            [options]="organizationUnits"
+            optionValue="id"
+            optionLabel="name"
+            appendTo="body"
+            placeholder="{{ 'Select' | i18n }}"
+            [disabled]="true"
+          />
+        </gzoom-label>
+    </gzoom-row-flex>
+  </div>
+  <gzoom-table-detail-risk-state 
+  table 
+  [year]="year()" 
+  [orgUnitId]="orgUnitId()"
+  />
+</gzoom-detail-chart>

@@ -1,0 +1,337 @@
+<p-toast></p-toast>
+
+<p-messages [key]="stateKey()" />
+
+<gzoom-button-bar-table
+  deleteButton
+  [deleteLabel]="'Delete selected' | i18n"
+  [disabledDelete]="disabledDelete()"
+  (delete)="delete()"
+  [loadingDelete]="loadingDelete()"
+  resetButton
+  [disabledReset]="disableSave()"
+  (reset)="reset()"
+  [loadingReset]="loading()"
+  saveButton
+  [disabledSave]="disableSave()"
+  [loadingSave]="loadingSave()"
+  (save)="save()"
+/>
+
+<p-table
+  #tableMovement
+  [value]="acctgTransEntry$() | async"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [tableStyle]="{ 'min-width': '20rem' }"
+  id="table-card"
+  [(selection)]="selectedItems"
+  paginator
+  [rows]="10"
+  showCurrentPageReport
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  scrollHeight="60vh"
+  [scrollable]="scrollable()"
+  [loading]="loading()"
+  lazy
+  (onLazyLoad)="loadProducts($event)"
+  [totalRecords]="totalRecords$() | async"
+  stateStorage="session"
+  [stateKey]="stateKey()"
+  (selectionChange)="checkDisableDelete()"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        class="table-head-th"
+        style="width: 1rem; padding-right: 5px !important"
+      >
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ labelSelectGlAccount() | i18n }}*
+          <p-sortIcon pSortableColumn="glAccount" field="glAccount" />
+        </div>
+      </th>
+      @if (isBySingleObjective()) {
+        <th class="table-head-th padding-small-row-th">
+          <div class="d-flex align-items-center">
+            {{ "workEffortMeasure" | i18n }}*
+            <p-sortIcon
+              pSortableColumn="workEffortMeasure"
+              field="workEffortMeasure"
+            />
+            <p-columnFilter
+              type="text"
+              field="workEffortMeasure"
+              matchMode="contains"
+              display="menu"
+              [showMatchModes]="true"
+              [showOperator]="false"
+              [showAddButton]="false"
+            ></p-columnFilter>
+          </div>
+        </th>
+      }
+      @if (isByOrganizationalUnit()) {
+        <th class="table-head-th padding-small-row-th">
+          <div class="d-flex align-items-center">
+            {{ "PartyRelationshipUO" | i18n }}*
+            <p-sortIcon
+              pSortableColumn="organizationUnit"
+              field="organizationUnit"
+            />
+            <p-columnFilter
+              type="text"
+              field="party"
+              matchMode="contains"
+              display="menu"
+              [showMatchModes]="true"
+              [showOperator]="false"
+              [showAddButton]="false"
+            ></p-columnFilter>
+          </div>
+        </th>
+      }
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "customTimePeriod" | i18n }}*
+          <p-sortIcon
+            pSortableColumn="customTimePeriod"
+            field="customTimePeriod"
+          />
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "uom" | i18n }}*
+          <p-sortIcon pSortableColumn="currencyUom" field="currencyUom" />
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "amount" | i18n }}
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "glFiscalType" | i18n }}*
+          <p-sortIcon pSortableColumn="glFiscalType" field="glFiscalType" />
+        </div>
+      </th>
+      <th class="table-head-th" style="width: 1.5rem"></th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-item
+    let-columns="columns"
+    let-editing="editing"
+  >
+    <tr class="small-row">
+      <td>
+        <p-tableCheckbox [value]="item"></p-tableCheckbox>
+      </td>
+
+      <td
+        class="data-cell"
+        [ngClass]="{
+          'w-25': w25IndicatorColumn(),
+          'w-50': w50IndicatorColumn(),
+        }"
+      >
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "glAccount" | i18n }}*</b></span
+        >
+        {{ getGlAccountDescription(item.glAccount) }}
+      </td>
+      @if (isBySingleObjective()) {
+        <td class="data-cell" [ngClass]="{ 'w-25': scrollable() }">
+          <span class="p-column-title" style="padding-right: 10px">
+            <b>{{ "workEffortMeasure" | i18n }}*</b></span
+          >
+          <gzoom-button-link
+            icon="pi pi-info-circle"
+            tooltipLabel="{{
+              getWorkEffortMeasureInfoDescription(
+                item.acctgTrans.workEffortMeasure
+              )
+            }}"
+            tooltipPosition="left"
+            buttonStyle="padding-bottom: 3px !important; padding-top: 0px !important; width: min-content"
+          />
+          {{
+            getWorkEffortMeasureDescription(item.acctgTrans.workEffortMeasure)
+          }}
+        </td>
+      }
+      @if (isByOrganizationalUnit()) {
+        <td
+          class="data-cell"
+          [ngClass]="{ 'w-25': scrollable() }"
+          [pEditableColumn]="item.acctgTrans.partyId"
+          pEditableColumnField="party"
+        >
+          <span class="p-column-title" style="padding-right: 10px">
+            <b>{{ "PartyRelationshipUO" | i18n }}*</b></span
+          >
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-dropdown
+                [options]="partyRole"
+                [ngModel]="{
+                  partyId: item.acctgTrans.partyId,
+                  roleTypeId: item.acctgTrans.roleTypeId,
+                }"
+                appendTo="body"
+                placeholder="{{ 'Select' | i18n }}"
+                showClear="false"
+                filter
+                (onChange)="changePartyRole($event.value, item)"
+                (keydown.ArrowRight)="doNothing($event)"
+                (keydown.ArrowLeft)="doNothing($event)"
+                (keydown.ArrowDown)="doNothing($event)"
+                (keydown.ArrowUp)="doNothing($event)"
+                (ngModelChange)="changeValue(item)"
+              />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{
+                getPartyRoleDescription(
+                  item.acctgTrans.partyId,
+                  item.acctgTrans.roleTypeId
+                )
+              }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+      }
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "customTimePeriod" | i18n }}*</b></span
+        >
+        {{ item.acctgTrans.customTimePeriod.periodName }}
+      </td>
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "uom" | i18n }}*</b></span
+        >
+        {{ getUomDescription(item.currencyUom) }}
+      </td>
+      <td
+        class="data-cell"
+        [pEditableColumn]="item.amount"
+        pEditableColumnField="amount"
+      >
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "amount" | i18n }}</b></span
+        >
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            @switch (item.currencyUom?.uomTypeId) {
+              @case ("RATING_SCALE") {
+                <p-dropdown
+                  [options]="getUomRatingScaleByUomId(item.currencyUomId)"
+                  [(ngModel)]="item.amount"
+                  appendTo="body"
+                  placeholder="{{ 'Select' | i18n }}"
+                  showClear="true"
+                  filter
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                  (ngModelChange)="changeValue(item)"
+                />
+              }
+              @case ("DATE") {
+                <p-calendar
+                  appendTo="body"
+                  [ngModel]="selectedDate"
+                  (onFocus)="selectedDate = julianDate(item.amount)"
+                  (ngModelChange)="changeAmount($event, item)"
+                />
+              }
+              @default {
+                <p-inputNumber
+                  [(ngModel)]="item.amount"
+                  mode="decimal"
+                  [minFractionDigits]="item.currencyUom.decimalScale"
+                  [maxFractionDigits]="item.currencyUom.decimalScale"
+                  [min]="item.currencyUom.minValue"
+                  [max]="item.currencyUom.maxValue"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                  (ngModelChange)="changeValue(item)"
+                />
+              }
+            }
+          </ng-template>
+          <ng-template pTemplate="output">
+            <gzoom-uom-amout
+              [uomId]="item.currencyUomId"
+              [uomTypeId]="item.currencyUom?.uomTypeId"
+              [amount]="item.amount"
+              [decimalScale]="item.currencyUom.decimalScale"
+              [uomRatingScale]="uomRatingScaleAmount()"
+            />
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td
+        class="data-cell"
+        [pEditableColumn]="item.glFiscalTypeId"
+        pEditableColumnField="glFiscalTypeId"
+      >
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "glFiscalType" | i18n }}*</b></span
+        >
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <p-dropdown
+              [options]="glFiscalType"
+              [(ngModel)]="item.glFiscalTypeId"
+              appendTo="body"
+              placeholder="{{ 'Select' | i18n }}"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="changeValue(item)"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ getGlFiscalTypeDescription(item.glFiscalTypeId) }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <gzoom-button-outlined
+          [tooltipLabel]="'accessToDetail' | i18n"
+          tooltipPosition="bottom"
+          icon="pi pi-arrow-right"
+          size="small"
+          [routerLink]="
+            './' + item.acctgTransId + '/' + item.acctgTransEntrySeqId
+          "
+        />
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"> </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-confirmDialog [key]="stateKey()" />

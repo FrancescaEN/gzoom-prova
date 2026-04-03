@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BarChartXY" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="22c2ae8e-c01d-48c4-90cf-a6c01511a2f1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gzoom_comune_lecco"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="215"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="779"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<subDataset name="DatasetTestata" uuid="c3eaea67-f1e2-49e8-a4e5-ff3abc415718">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gzoom_comune_lecco"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="188"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="807"/>
+		<parameter name="areaId" class="java.lang.String"/>
+		<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="langLocale" class="java.lang.String"/>
+		<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+		<parameter name="orgUnitId" class="java.lang.String"/>
+		<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="localDispatcherName" class="java.lang.String"/>
+		<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="customTimePeriod" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="filterWhere" class="java.lang.String"/>
+		<parameter name="filterLeftJoin" class="java.lang.String"/>
+		<parameter name="filterInnerJoin" class="java.lang.String"/>
+		<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date0101sql" class="java.lang.String"/>
+		<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="workEffortTypeId" class="java.lang.String"/>
+		<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="YEAR" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT
+    wept.description AS "Tipologia Misura",
+    COUNT(mis.work_effort_id) AS "Quantità",
+    sotta.work_effort_name as "Nome Area",
+    ROUND(COUNT(mis.work_effort_id) * 100.0 / SUM(COUNT(mis.work_effort_id)) OVER (), 0) AS "Percentuale sul totale",
+    SUM(COUNT(mis.work_effort_id)) OVER () AS "Totale"
+from work_effort mis
+inner join work_effort_assoc wea1 on wea1.work_effort_id_to=mis.work_effort_id and wea1.work_effort_assoc_type_id='COPY' 
+inner join work_effort miscat on miscat.work_effort_id=wea1.work_effort_id_from
+inner join work_effort_assoc wea2 on wea2.work_effort_id_to=miscat.work_effort_id and wea2.work_effort_assoc_type_id='15APAREC' 
+inner join work_effort are on are.work_effort_id=wea2.work_effort_id_from
+inner join work_effort_purpose_type wept on wept.work_effort_purpose_type_id=mis.work_effort_purpose_type_id
+inner join work_effort proc on proc.work_effort_id=mis.work_effort_parent_id
+inner join work_effort_assoc wea4 on wea4.work_effort_id_to=proc.work_effort_id and wea4.work_effort_assoc_type_id='15APSARC'
+inner join work_effort sotta on sotta.work_effort_id=wea4.work_effort_id_from 
+where sotta.work_effort_id= $P{areaId} 
+and (mis.estimated_start_date<=$P{date3112}  and mis.estimated_completion_date>= $P{date0101} )
+GROUP BY wept.description, sotta.work_effort_name]]>
+		</queryString>
+		<field name="Tipologia Misura" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="Tipologia Misura"/>
+			<property name="com.jaspersoft.studio.field.label" value="Tipologia Misura"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_purpose_type"/>
+		</field>
+		<field name="Quantità" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="Quantità"/>
+			<property name="com.jaspersoft.studio.field.label" value="Quantità"/>
+		</field>
+		<field name="Nome Area" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="Nome Area"/>
+			<property name="com.jaspersoft.studio.field.label" value="Nome Area"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+		</field>
+		<field name="Percentuale sul totale" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="Percentuale sul totale"/>
+			<property name="com.jaspersoft.studio.field.label" value="Percentuale sul totale"/>
+		</field>
+		<field name="Totale" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="Totale"/>
+			<property name="com.jaspersoft.studio.field.label" value="Totale"/>
+		</field>
+		<group name="Group1" isReprintHeaderOnEachPage="true">
+			<groupExpression><![CDATA[$P{areaId}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3112" class="java.util.Date"/>
+	<parameter name="date0101" class="java.util.Date"/>
+	<parameter name="areaId" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+    wept.description AS "Tipologia Misura",
+    COUNT(mis.work_effort_id) AS "Quantità",
+    sotta.work_effort_name as "Nome Area",
+    ROUND(COUNT(mis.work_effort_id) * 100.0 / SUM(COUNT(mis.work_effort_id)) OVER (), 0) AS "Percentuale sul totale",
+    SUM(COUNT(mis.work_effort_id)) OVER () AS "Totale"
+from work_effort mis
+inner join work_effort_assoc wea1 on wea1.work_effort_id_to=mis.work_effort_id and wea1.work_effort_assoc_type_id='COPY' 
+inner join work_effort miscat on miscat.work_effort_id=wea1.work_effort_id_from
+inner join work_effort_assoc wea2 on wea2.work_effort_id_to=miscat.work_effort_id and wea2.work_effort_assoc_type_id='15APAREC' 
+inner join work_effort are on are.work_effort_id=wea2.work_effort_id_from
+inner join work_effort_purpose_type wept on wept.work_effort_purpose_type_id=mis.work_effort_purpose_type_id
+inner join work_effort proc on proc.work_effort_id=mis.work_effort_parent_id
+inner join work_effort_assoc wea4 on wea4.work_effort_id_to=proc.work_effort_id and wea4.work_effort_assoc_type_id='15APSARC'
+inner join work_effort sotta on sotta.work_effort_id=wea4.work_effort_id_from 
+where sotta.work_effort_id= $P{areaId} 
+and (mis.estimated_start_date<=$P{date3112}  and mis.estimated_completion_date>= $P{date0101} )
+GROUP BY wept.description, sotta.work_effort_name]]>
+	</queryString>
+	<field name="Tipologia Misura" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Tipologia Misura"/>
+		<property name="com.jaspersoft.studio.field.label" value="Tipologia Misura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_purpose_type"/>
+	</field>
+	<field name="Quantità" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="Quantità"/>
+		<property name="com.jaspersoft.studio.field.label" value="Quantità"/>
+	</field>
+	<field name="Nome Area" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nome Area"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nome Area"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="Percentuale sul totale" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="Percentuale sul totale"/>
+		<property name="com.jaspersoft.studio.field.label" value="Percentuale sul totale"/>
+	</field>
+	<field name="Totale" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="Totale"/>
+		<property name="com.jaspersoft.studio.field.label" value="Totale"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="479">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="420" width="555" height="59" isRemoveLineWhenBlank="true" uuid="994cccef-1db5-46db-818b-b3e80fee7257">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="DatasetTestata" uuid="a4a1f604-5aa9-4c5f-91dd-b69839359762">
+						<datasetParameter name="areaId">
+							<datasetParameterExpression><![CDATA[$P{areaId}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="date3112">
+							<datasetParameterExpression><![CDATA[$P{date3112}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="date0101">
+							<datasetParameterExpression><![CDATA[$P{date0101}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:columnGroup width="555" uuid="3c6e85f6-7e44-444e-8f70-6019b04f0bcc">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonne [3]"/>
+						<jr:tableHeader height="15" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField textAdjust="StretchHeight">
+								<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="555" height="15" backcolor="#D5D5D5" uuid="fd705e11-fae8-41dd-9d58-546f1e59d92f"/>
+								<box>
+									<pen lineWidth="0.1"/>
+									<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{Nome Area}]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:tableFooter height="15" rowSpan="1">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField textAdjust="StretchHeight">
+								<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="355" height="15" backcolor="#D5D5D5" uuid="f0077beb-ba29-4d96-85e4-c7af961ad269">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.2" lineColor="#000000"/>
+									<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+								</box>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA["Totale"]]></textFieldExpression>
+							</textField>
+							<textField textAdjust="StretchHeight">
+								<reportElement positionType="Float" stretchType="ContainerHeight" x="355" y="0" width="100" height="15" uuid="82565e81-885a-4cf7-9f58-bbe61cae8381"/>
+								<box>
+									<pen lineWidth="0.2" lineColor="#000000"/>
+									<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{Totale}]]></textFieldExpression>
+							</textField>
+							<textField textAdjust="StretchHeight">
+								<reportElement positionType="Float" stretchType="ContainerHeight" x="455" y="0" width="100" height="15" uuid="7861a686-d734-44f7-b49b-77b2925e4487"/>
+								<box>
+									<pen lineWidth="0.2" lineColor="#000000"/>
+									<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+									<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#808080"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA["100%"]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:column width="355" uuid="cb5ff022-d2de-4462-812a-638c24707143">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+							<jr:tableHeader height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableHeader>
+							<jr:tableFooter height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:groupHeader groupName="Group1">
+								<jr:cell height="15" rowSpan="1">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="355" height="15" backcolor="#D5D5D5" uuid="1b931f7a-b210-4dce-bfa4-e8e2e0dda6ea"/>
+										<box topPadding="2" leftPadding="2" bottomPadding="2"/>
+										<textFieldExpression><![CDATA["Tipologie misure"]]></textFieldExpression>
+									</textField>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:detailCell height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<box>
+									<pen lineWidth="0.2"/>
+									<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField textAdjust="StretchHeight">
+									<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="355" height="15" uuid="7de858a1-b385-4fc0-ab98-11e0cadca5a2"/>
+									<box topPadding="2" leftPadding="2" bottomPadding="2"/>
+									<textElement verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$F{Tipologia Misura}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="100" uuid="a9f328f0-6f4b-45cb-8b70-b5e5e199dd0e">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+							<jr:tableHeader height="0" rowSpan="1"/>
+							<jr:tableFooter height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:groupHeader groupName="Group1">
+								<jr:cell height="15" rowSpan="1">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="100" height="15" backcolor="#D5D5D5" uuid="19bc198d-59d0-45ec-aa68-23a1c7659ad5"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA["Numero misure"]]></textFieldExpression>
+									</textField>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:detailCell height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<box>
+									<pen lineWidth="0.2"/>
+									<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField textAdjust="StretchHeight">
+									<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="7dd1f68f-d7d8-46f1-8791-06d2063f20a3"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$F{Quantità}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="100" uuid="dd35d1d1-7bb8-41c0-a3d0-1c3e797d9f10">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader height="0" rowSpan="1"/>
+							<jr:tableFooter height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:groupHeader groupName="Group1">
+								<jr:cell height="15" rowSpan="1">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="100" height="15" backcolor="#D5D5D5" uuid="75c224f8-b059-42d9-ab4d-7cbd03a5e4e0"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA["Percentuale su totale"]]></textFieldExpression>
+									</textField>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:detailCell height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<box>
+									<pen lineWidth="0.2"/>
+									<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField textAdjust="StretchHeight">
+									<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="e5e5063c-977b-49e4-96af-c12dedd69121"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$F{Percentuale sul totale}+"%"]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:columnGroup>
+				</jr:table>
+			</componentElement>
+			<multiAxisChart>
+				<chart evaluationTime="Report" hyperlinkType="LocalAnchor" bookmarkLevel="1">
+					<reportElement positionType="Float" x="0" y="0" width="555" height="410" isRemoveLineWhenBlank="true" uuid="9757b837-3061-4d0a-bf39-38924ee50fbc">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<chartTitle>
+						<font size="14" isBold="true"/>
+						<titleExpression><![CDATA["Riepilogo tipologie misure per area"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend position="Top"/>
+					<anchorNameExpression><![CDATA["Misure attuate per Area di rischio"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+				</chart>
+				<multiAxisPlot>
+					<plot/>
+					<axis position="rightOrBottom">
+						<lineChart>
+							<chart evaluationTime="Report">
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="0" height="0" backcolor="#FFFFFF" uuid="d234a63b-5afa-4517-ac24-d6b552cb1e46"/>
+								<chartTitle color="#000000">
+									<font size="14" isBold="true"/>
+									<titleExpression><![CDATA["Riepilogo tipologie misure per area"]]></titleExpression>
+								</chartTitle>
+								<chartSubtitle color="#000000"/>
+								<chartLegend textColor="#000000" backgroundColor="#FFFFFF" position="Top"/>
+							</chart>
+							<categoryDataset>
+								<dataset resetType="Report"/>
+								<categorySeries>
+									<seriesExpression><![CDATA["Percentuale su totale"]]></seriesExpression>
+									<categoryExpression><![CDATA[$F{Tipologia Misura}]]></categoryExpression>
+									<valueExpression><![CDATA[$F{Percentuale sul totale}]]></valueExpression>
+									<labelExpression><![CDATA[$F{Tipologia Misura}]]></labelExpression>
+								</categorySeries>
+							</categoryDataset>
+							<linePlot>
+								<plot labelRotation="45.0">
+									<seriesColor seriesOrder="0" color="#4E79A7"/>
+									<seriesColor seriesOrder="1" color="#FF081C"/>
+								</plot>
+								<categoryAxisFormat labelRotation="45.0">
+									<axisFormat verticalTickLabels="true">
+										<labelFont>
+											<font size="8"/>
+										</labelFont>
+										<tickLabelFont>
+											<font size="8"/>
+										</tickLabelFont>
+									</axisFormat>
+								</categoryAxisFormat>
+								<valueAxisLabelExpression><![CDATA["Percentuale su totale"]]></valueAxisLabelExpression>
+								<valueAxisFormat>
+									<axisFormat labelColor="#050505" verticalTickLabels="false">
+										<labelFont>
+											<font size="8"/>
+										</labelFont>
+										<tickLabelFont>
+											<font size="8"/>
+										</tickLabelFont>
+									</axisFormat>
+								</valueAxisFormat>
+							</linePlot>
+						</lineChart>
+					</axis>
+					<axis>
+						<bar3DChart>
+							<chart evaluationTime="Report">
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="0" height="0" backcolor="#FFFFFF" uuid="3b620d83-850d-4570-9712-7ba9cfdaea69"/>
+								<chartTitle color="#000000">
+									<font size="14" isBold="true"/>
+									<titleExpression><![CDATA["Riepilogo tipologie misure per area"]]></titleExpression>
+								</chartTitle>
+								<chartSubtitle color="#000000"/>
+								<chartLegend textColor="#000000" backgroundColor="#FFFFFF" position="Top"/>
+							</chart>
+							<categoryDataset>
+								<dataset resetType="Report"/>
+								<categorySeries>
+									<seriesExpression><![CDATA["Numero di misure"]]></seriesExpression>
+									<categoryExpression><![CDATA[$F{Tipologia Misura}]]></categoryExpression>
+									<valueExpression><![CDATA[$F{Quantità}]]></valueExpression>
+									<labelExpression><![CDATA[$F{Tipologia Misura}]]></labelExpression>
+								</categorySeries>
+							</categoryDataset>
+							<bar3DPlot xOffset="10.0" yOffset="5.0">
+								<plot labelRotation="45.0">
+									<seriesColor seriesOrder="0" color="#A0CBE8"/>
+									<seriesColor seriesOrder="1" color="#F28E2B"/>
+									<seriesColor seriesOrder="2" color="#2A4E6B"/>
+									<seriesColor seriesOrder="3" color="#5F778C"/>
+								</plot>
+								<itemLabel>
+									<font size="8"/>
+								</itemLabel>
+								<categoryAxisFormat labelRotation="45.0">
+									<axisFormat>
+										<labelFont>
+											<font size="8"/>
+										</labelFont>
+										<tickLabelFont>
+											<font size="8"/>
+										</tickLabelFont>
+									</axisFormat>
+								</categoryAxisFormat>
+								<valueAxisLabelExpression><![CDATA["Numero di misure"]]></valueAxisLabelExpression>
+								<valueAxisFormat>
+									<axisFormat verticalTickLabels="false">
+										<labelFont>
+											<font size="8"/>
+										</labelFont>
+										<tickLabelFont>
+											<font size="8"/>
+										</tickLabelFont>
+									</axisFormat>
+								</valueAxisFormat>
+							</bar3DPlot>
+						</bar3DChart>
+					</axis>
+				</multiAxisPlot>
+			</multiAxisChart>
+		</band>
+	</columnHeader>
+</jasperReport>

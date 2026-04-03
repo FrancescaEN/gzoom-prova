@@ -1,0 +1,43 @@
+<p-toast></p-toast>
+<gzoom-selection-indicator [(selectedIndicator)]="selectedIndicator" />
+<form [formGroup]="form">
+  <gzoom-row-flex>
+    <gzoom-label label="Sequence" labelPos="top" required="true">
+      <gzoom-text
+        style="width: 240px"
+        controlName="inputSequenceNum"
+        maxlength="20"
+      />
+    </gzoom-label>
+    <gzoom-label label="Factor" labelPos="top" required="true">
+      <gzoom-text
+        style="width: 240px"
+        controlName="factorCalculator"
+        maxlength="60"
+      />
+    </gzoom-label>
+    <gzoom-label label="Value type" labelPos="top">
+      <gzoom-dropdown
+        [options]="this.glFiscalType"
+        style="width: 240px"
+        controlName="glFiscalTypeId"
+        [filter]="true"
+        [showClear]="true"
+      />
+    </gzoom-label>
+  </gzoom-row-flex>
+  <p-messages key="error-dialog-param"></p-messages>
+  <div class="d-flex flex-row-reverse pt-3" style="gap: 5px">
+    <gzoom-button
+      icon="pi pi-save"
+      label="{{ 'Add and save' | i18n }}"
+      [disabled]="!this.form.valid"
+      (onClick)="addAndSave()"
+    />
+    <gzoom-button-outlined
+      label="{{ 'Reset selection' | i18n }}"
+      [disabled]="!selectedIndicator"
+      (onClick)="resetSelection()"
+    />
+  </div>
+</form>

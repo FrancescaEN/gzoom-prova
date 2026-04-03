@@ -1,0 +1,146 @@
+<!-- Disappearing Messages -->
+<p-toast></p-toast>
+
+<!-- Messages Error -->
+<p-messages [(value)]="messagesError" [enableService]="false"></p-messages>
+
+
+<div style="width: 100%;">
+  <p-card >
+    <ng-template pTemplate="header">
+      <app-toolbar-data-table [buttonBack]="true" [buttonSave]="true" [buttonNew]="true" [buttonDelete]="true"  
+        (saveEvent)="save()" (deleteEvent)="delete()"></app-toolbar-data-table>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <gzoom-card-detail [details]="this.details" />
+      <br />
+      <form *ngIf="form" [formGroup]="form" (onSubmit)="onSubmit()">
+        <p-accordion [multiple]="true" [activeIndex]="activeIndex">
+
+          <p-accordionTab header="Dati Principali">
+            <gzoom-row-flex>
+
+              <gzoom-label-input-text *ngIf="this.form.get('sourceReferenceId')" label="Code"
+                controlName="sourceReferenceId" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('workEffortTypeId')" label="Title" [required]="true"
+                [options]="dropdownWorkEffortType" controlName="workEffortTypeId" [virtualScroll]="true"
+                [virtualScroll]="true" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('currentStatusId')" label="Actual State"
+                [options]="dropdownActualStatus" controlName="currentStatusId" />
+            </gzoom-row-flex>
+
+            <gzoom-row-flex>
+              <gzoom-label-input-date *ngIf="this.form.get('estimatedStartDate')" label="Planned Start"
+                controlName="estimatedStartDate" [minDate]="this.form.get('estimatedStartDate').value" />
+              <gzoom-label-input-date *ngIf="this.form.get('estimatedCompletionDate')" label="Expected End"
+                controlName="estimatedCompletionDate" [minDate]="this.form.get('estimatedCompletionDate').value" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('orgUnitId')" label="orgUnitId"
+                [options]="dropdownOrgUnit" controlName="orgUnitId" />
+
+            </gzoom-row-flex>
+          </p-accordionTab>
+
+          <p-accordionTab header="Altri Dati">
+            <gzoom-row-flex>
+              <gzoom-label-input-dropdown *ngIf="this.form.get('organizationId')" label="Organization" [required]="true"
+                [options]="dropdownOrgId" controlName="organizationId" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('workEffortParentId')" label="Reference sheet"
+                [required]="true" [options]="dropdownWEP" controlName="workEffortParentId" [virtualScroll]="true"
+                [virtualScroll]="true" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('workEffortTypePeriodId')"
+                label="Work Effort Type Period Id" [options]="dropdownWorkEffortTypePeriod"
+                controlName="workEffortTypePeriodId" />
+            </gzoom-row-flex>
+
+            <gzoom-row-flex>
+              <gzoom-label-input-dropdown *ngIf="this.form.get('workEffortPurposeTypeId')" label="Purpose"
+                [options]="dropdownWorkEffortTypePurpose" controlName="workEffortPurposeTypeId" />
+
+              <gzoom-label-input-text *ngIf="this.form.get('etch')" label="Etch" controlName="etch" />
+            </gzoom-row-flex>
+
+            <gzoom-row-flex>
+              <gzoom-label-input-text-area *ngIf="this.form.get('workEffortName')" [style]="
+                'width: ' +
+                (('BILING' | i18nLangType) ? 45 : 95) +
+                '%; min-width: 300px'
+              " label="Description" flag="0" maxLength="2000" controlName="workEffortName" />
+
+              <gzoom-label-input-text-area *ngIf="this.form.get('workEffortNameLang')" [style]="
+                'width: ' +
+                (('BILING' | i18nLangType) ? 45 : 95) +
+                '%; min-width: 300px'
+              " label="Description" flag="1" maxLength="2000" controlName="workEffortNameLang" />
+            </gzoom-row-flex>
+
+            <gzoom-row-flex>
+              <gzoom-label-input-date *ngIf="this.form.get('lastStatusUpdate')" label="Last Status Update"
+                controlName="lastStatusUpdate" [minDate]="this.form.get('lastStatusUpdate').value" />
+              <gzoom-label-input-date *ngIf="this.form.get('scheduledStartDate')" label="Budget start date"
+                controlName="scheduledStartDate" [minDate]="this.form.get('scheduledStartDate').value" />
+              <gzoom-label-input-date *ngIf="this.form.get('scheduledCompletionDate')" label="End date budget"
+                controlName="scheduledCompletionDate" [minDate]="this.form.get('scheduledCompletionDate').value" />
+            </gzoom-row-flex>
+
+            <gzoom-row-flex>
+              <gzoom-label-input-date *ngIf="this.form.get('actualStartDate')" label="Effective start date"
+                controlName="actualStartDate" [minDate]="this.form.get('actualStartDate').value" />
+              <gzoom-label-input-date *ngIf="this.form.get('actualCompletionDate')" label="Effective end date"
+                controlName="actualCompletionDate" [minDate]="this.form.get('actualCompletionDate').value" />
+              <gzoom-label-input-date *ngIf="this.form.get('dataSoll')" label="Last reminder date"
+                controlName="dataSoll" [minDate]="this.form.get('dataSoll').value" />
+            </gzoom-row-flex>
+
+            <gzoom-row-flex>
+              <gzoom-label-input-dropdown *ngIf="this.form.get('isPosted')" label="Confirmed"
+                [options]="dropdownIsPosted" controlName="isPosted" />
+
+              <gzoom-label-input-text-area *ngIf="this.form.get('specialTerms') && 'BILING' | i18nLangType"
+                [style]="'width: 45%;  min-width: 300px'" label="Notes" flag="1" maxLength="2000"
+                controlName="specialTerms" />
+            </gzoom-row-flex>
+          </p-accordionTab>
+
+          <p-accordionTab header="Calcolo Punteggio">
+            <gzoom-row-flex>
+              <gzoom-label-input-number *ngIf="this.form.get('weightKpi')" label="KPI weight" controlName="weightKpi"
+                mode="decimal" [minFractionDigits]="2" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('totalEnumIdKpi')" label="Totalize KPIs"
+                [options]="dropdownEnum" controlName="totalEnumIdKpi" />
+            </gzoom-row-flex>
+
+            <gzoom-row-flex>
+              <gzoom-label-input-number *ngIf="this.form.get('weightSons')" label="Weight Details"
+                controlName="weightSons" mode="decimal" [minFractionDigits]="2" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('totalEnumIdSons')" label="Totalize Details"
+                [options]="dropdownEnum" controlName="totalEnumIdSons" />
+            </gzoom-row-flex>
+
+            <gzoom-row-flex>
+              <gzoom-label-input-number *ngIf="this.form.get('weightAssocWorkEffort')" label="Weight Connected"
+                controlName="weightAssocWorkEffort" mode="decimal" [minFractionDigits]="2" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('totalEnumIdAssoc')" label="Totalize Connected"
+                [options]="dropdownEnum" controlName="totalEnumIdAssoc" />
+
+              <gzoom-label-input-dropdown *ngIf="this.form.get('workEffortAssocTypeId')" label="Connected Report"
+                [options]="dropdownWorkEffortAssocType" controlName="workEffortAssocTypeId" />
+
+              <gzoom-label-input-date *ngIf="this.form.get('lastCorrectScoreDate')" label="Date Last Score"
+                controlName="lastCorrectScoreDate" [minDate]="this.form.get('lastCorrectScoreDate').value" />
+            </gzoom-row-flex>
+          </p-accordionTab>
+        </p-accordion>
+      </form>
+    </ng-template>
+  </p-card>
+</div>
+
+<p-confirmDialog></p-confirmDialog>

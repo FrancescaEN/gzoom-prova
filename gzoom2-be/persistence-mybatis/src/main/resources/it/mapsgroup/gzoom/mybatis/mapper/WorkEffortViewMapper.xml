@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortViewMapper">
+
+
+    <select id="getWorkEffortView" resultMap="workEffortView">
+        select * from work_effort_view
+        where work_effort_snapshot_id is null and organization_id = #{organizationId}
+        <if test="field == 'work_effort_name_lang'">
+            and LOWER(concat( we_etch, concat(' - ', work_effort_name_lang))) like LOWER(concat('%', concat(#{val}, '%')))
+        </if>
+        <if  test="field == 'work_effort_name'">
+            and LOWER(concat( we_etch, concat(' - ', work_effort_name))) like LOWER(concat('%', concat(#{val}, '%')))
+        </if>
+    </select>
+
+    <select id="getWorkEffortViewFilter" resultMap="workEffortView">
+        select * from work_effort_view
+        where work_effort_snapshot_id is null and organization_id = #{organizationId}
+        <if test="field == 'work_effort_name_lang'">
+            and LOWER(concat( we_etch, concat(' - ', work_effort_name_lang))) like LOWER(concat('%', concat(#{val}, '%')))
+        </if>
+        <if  test="field == 'work_effort_name'">
+            and LOWER(concat( we_etch, concat(' - ', work_effort_name))) like LOWER(concat('%', concat(#{val}, '%')))
+        </if>
+    </select>
+
+</mapper>

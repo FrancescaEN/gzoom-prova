@@ -1,0 +1,330 @@
+<!-- Disappearing Messages -->
+<p-toast></p-toast>
+<p-messages key="error"></p-messages>
+<p-confirmDialog></p-confirmDialog>
+<div
+  style="
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 5px 0px;
+    margin-bottom: 10px;
+  "
+>
+  <gzoom-button
+    icon="pi pi-plus"
+    [label]="labelNewGlAccount() | i18n"
+    rounded="true"
+    (onClick)="newIndicator()"
+  ></gzoom-button>
+  <gzoom-button-outlined
+    icon="pi pi-trash"
+    [label]="'Delete selected' | i18n"
+    rounded="true"
+    [loading]="loadingDelete"
+    (onClick)="delete()"
+    [disabled]="!(selectedIndicators.length > 0)"
+  ></gzoom-button-outlined>
+</div>
+<div style="height: min-content; margin-bottom: 10px">
+  <form *ngIf="filterForm" [formGroup]="filterForm">
+    <div style="display: flex; flex-direction: column; gap: 5px">
+      <gzoom-search-filter
+        label="{{ (labelFilterSearchGlAccount() | i18n) + ':' }}"
+        [placeholder]="'Search by ID, code, title or description.' | i18n"
+        controlNameSearchField="search"
+        controlNameMachMode="matchModeSearch"
+        style="width: 100%"
+        (clearButton)="filter()"
+        (onEnter)="filter()"
+      />
+
+      <gzoom-row-flex style="width: fit-content; gap: 10px">
+        <gzoom-order-by-filter
+          [orderByColumn]="this.orderByColumn"
+          controlNameOrderBy="orderBy"
+          controlNameOrderType="orderType"
+        />
+        <gzoom-label label="{{ ('Tipology' | i18n) + ':' }}" labelPos="left">
+          <gzoom-dropdown
+            [options]="this.glAccountType"
+            style="width: 240px"
+            controlName="glAccountTypeId"
+            [showClear]="true"
+            placeholder="All"
+            [filter]="true"
+          />
+        </gzoom-label>
+        <gzoom-label label="{{ ('Purpose' | i18n) + ':' }}" labelPos="left">
+          <gzoom-multiselect
+            [options]="this.workEffortPurposeType"
+            style="width: 240px"
+            controlName="workEffortPurposeTypeId"
+            [showClear]="true"
+            placeholder="All"
+          />
+        </gzoom-label>
+      </gzoom-row-flex>
+      <div #collapse="ngbCollapse" [(ngbCollapse)]="collapseFilters">
+        <gzoom-row-flex>
+          <gzoom-label
+            label="{{ ('Detection mode' | i18n) + ':' }}"
+            labelPos="top"
+          >
+            <gzoom-dropdown
+              [options]="this.detectionModeItems"
+              style="width: 240px"
+              controlName="detectionMode"
+              [showClear]="true"
+              placeholder="All"
+              [filter]="true"
+            />
+          </gzoom-label>
+          <gzoom-label
+            label="{{ ('Debit Credit Default' | i18n) + ':' }}"
+            labelPos="top"
+          >
+            <gzoom-dropdown
+              [options]="this.debitCreditDefault$ | async"
+              style="width: 240px"
+              controlName="debitCreditDefault"
+              [showClear]="true"
+              placeholder="All"
+              [filter]="true"
+            />
+          </gzoom-label>
+          <gzoom-label
+            label="{{ ('Periodicity' | i18n) + ':' }}"
+            labelPos="top"
+          >
+            <gzoom-dropdown
+              [options]="this.periodType"
+              style="width: 240px"
+              controlName="periodTypeId"
+              [showClear]="true"
+              placeholder="All"
+              [filter]="true"
+            />
+          </gzoom-label>
+          <gzoom-label label="{{ ('State' | i18n) + ':' }}" labelPos="top">
+            <gzoom-dropdown
+              [options]="this.statusItems"
+              style="width: 240px"
+              controlName="currentStatusId"
+              [showClear]="true"
+              placeholder="All"
+              [filter]="true"
+            />
+          </gzoom-label>
+          <gzoom-label
+            label="{{ ('respCenterId' | i18n) + ':' }}"
+            labelPos="top"
+          >
+            <gzoom-dropdown
+              [options]="this.uoGestore"
+              style="width: 240px"
+              controlName="respCenterId"
+              [showClear]="true"
+              placeholder="All"
+              [filter]="true"
+            />
+          </gzoom-label>
+        </gzoom-row-flex>
+      </div>
+      <div style="display: flex">
+        <div style="width: 50%">
+          <gzoom-button-outlined
+            [icon]="collapseFilters ? 'pi pi-angle-down' : 'pi pi-angle-up'"
+            iconPos="right"
+            label="{{ 'Other filters' | i18n }}"
+            (onClick)="collapse.toggle()"
+            [attr.aria-expanded]="!collapseFilters"
+            aria-controls="collapseFilters"
+          ></gzoom-button-outlined>
+        </div>
+        <div
+          style="
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+          "
+        >
+          <gzoom-button-outlined
+            [label]="'Reset filters' | i18n"
+            [disabled]="this.loading || this.disableResetFilter"
+            (onClick)="resetFilter()"
+          ></gzoom-button-outlined>
+          <gzoom-button
+            [label]="'Apply filters' | i18n"
+            [disabled]="this.loading || this.filterForm.pristine"
+            (onClick)="filter()"
+          ></gzoom-button>
+        </div>
+      </div>
+      <gzoom-chip-filter *ngIf="collapseFilters" [chipFilter]="chipFilter" />
+    </div>
+  </form>
+</div>
+<label
+  style="
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    margin-bottom: 5px;
+  "
+>{{ labelGlAccountList() | i18n }}</label
+>
+<p-table
+  #dt
+  id="table-card"
+  [value]="indicators"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [tableStyle]="{ 'min-width': '320px' }"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [(selection)]="selectedIndicators"
+  [scrollable]="true"
+  [loading]="this.loading"
+  scrollHeight="57vh"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        class="table-head-th"
+        style="width: 1rem; padding-right: 5px !important"
+      >
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th
+        class="table-head-th table-head-title"
+        style="padding: 10px 7px !important"
+      >
+        <label style="font-weight: 600; font-size: 16px; line-height: 24px">{{
+            tableTitle$ | async | i18n
+          }}</label>
+      </th>
+      <th class="table-head-th" style="width: 1.5rem"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-indicator let-columns="columns">
+    <tr style="padding: 10px">
+      <td style="vertical-align: top">
+        <p-tableCheckbox [value]="indicator"></p-tableCheckbox>
+      </td>
+      <td class="table-body-td">
+        <div class="d-flex flex-row justify-content-between align-items-center">
+          <label>
+            <b>
+              {{
+                secondaryLang
+                  ? indicator.accountNameLang
+                  : indicator.accountName
+              }}
+            </b>
+          </label>
+        </div>
+
+        <gzoom-row-flex *ngIf="indicator.description">
+          <label>{{
+              secondaryLang ? indicator.descriptionLang : indicator.description
+            }}</label>
+        </gzoom-row-flex>
+
+        <gzoom-row-flex>
+          <div style="width: 200px">
+            <label>{{ "ID" }}: {{ indicator.glAccountId }}</label>
+          </div>
+          <div style="width: 200px">
+            <label>{{ "Cod" }}: {{ indicator.accountCode }}</label>
+          </div>
+          <div style="width: 200px">
+            <label *ngIf="this.glAccountType">{{
+                getGlAccountTypeDescription(indicator.glAccountTypeId)
+              }}</label>
+          </div>
+          <div style="width: 200px">
+            <label>{{
+                getTypeDetection(
+                  indicator.inputEnumId,
+                  indicator.detectOrgUnitIdFlag
+                ) | i18n
+              }}</label>
+          </div>
+          <div *ngIf="this.uoGestore">
+            <label>{{ getUOGestoreDescription(indicator.respCenterId) }}</label>
+          </div>
+        </gzoom-row-flex>
+      </td>
+      <td class="d-flex">
+        <div
+          class="flex-wrap flex-lg-nowrap"
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            align-items: flex-start;
+            justify-content: flex-start;
+          "
+        >
+          <p-tag
+            *ngIf="this.statusItems"
+            severity="{{ getStatusItemSeverity(indicator.currentStatusId) }}"
+            value="{{ getStatusItemDescription(indicator.currentStatusId) }}"
+          ></p-tag>
+
+          <gzoom-button-outlined
+            style="order: 4"
+            class="order-lg-2"
+            [tooltipLabel]="labelToAcctgTrans() | i18n"
+            tooltipPosition="bottom"
+            icon="pi pi-chart-bar"
+            (onClick)="toIndicatorMovements(indicator.glAccountId)"
+          ></gzoom-button-outlined>
+          <gzoom-button-outlined
+            style="order: 3"
+            class="order-lg-3"
+            [tooltipLabel]="'goToMeasuresObjectives' | i18n"
+            tooltipPosition="bottom"
+            icon="fa-solid fa-scale-unbalanced"
+            (onClick)="toMeasuresObjectives(indicator.glAccountId)"
+          ></gzoom-button-outlined>
+          <gzoom-button-outlined
+            style="order: 2"
+            class="order-lg-4"
+            [tooltipLabel]="labelToGlAccountTab() | i18n"
+            tooltipPosition="bottom"
+            icon="pi pi-arrow-right"
+            (onClick)="toIndicatorTab(indicator.glAccountId)"
+          ></gzoom-button-outlined>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"></ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+  <!-- <ng-template pTemplate="loadingbody" let-columns="columns">
+    <tr style="height: 46px">
+      <td *ngFor="let col of columns; let even = even">
+        <p-skeleton
+          [ngStyle]="{
+            width: even ? (col.field === 'year' ? '30%' : '40%') : '60%'
+          }"
+        ></p-skeleton>
+      </td>
+    </tr>
+  </ng-template>-->
+</p-table>

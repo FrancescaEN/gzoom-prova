@@ -1,0 +1,46 @@
+<!-- Disappearing Messages -->
+<p-toast></p-toast>
+<p-messages key="error"></p-messages>
+<p-confirmDialog></p-confirmDialog>
+<div
+  style="
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 5px 0px;
+    margin-bottom: 10px;
+  "
+>
+  <gzoom-button
+    icon="pi pi-plus"
+    [label]="'newMovement' | i18n"
+    rounded="true"
+    (onClick)="newMovements()"
+  ></gzoom-button>
+</div>
+<gzoom-indicator-movements-filters
+  [accountTypeEnumId]="accountTypeEnumId()"
+  [isReservedAccount]="isReservedAccount()"
+/>
+<gzoom-title-list [title]="title()" />
+<p-accordion
+  [activeIndex]="activeIndex()"
+  (onOpen)="saveAccordionOpen($event.index)"
+  (onClose)="deleteAccordionClose($event.index)"
+>
+  @for (item of detectionModeItems; track item.value) {
+    <p-accordionTab header="{{ item.label | i18n }}" [disabled]="item.disabled">
+      @if (activeIndex() === $index) {
+        <gzoom-indicator-movements-table
+          [accountTypeEnumId]="accountTypeEnumId()"
+          [isReservedAccount]="isReservedAccount()"
+          [inputEnumId]="item.value.inputEnumId"
+          [detectOrgUnitIdFlag]="item.value.detectOrgUnitIdFlag"
+          (isEmpty)="isEmpty($event, $index)"
+          [addDialogRef]="addDialog"
+        />
+      }
+    </p-accordionTab>
+  }
+</p-accordion>

@@ -1,0 +1,76 @@
+<div class="d-flex flex-row flex-wrap justify-content-between">
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    @if (backButton()) {
+      <gzoom-button-outlined
+        icon="pi pi-angle-left"
+        [rounded]="rounded()"
+        [label]="backLabel()"
+        [disabled]="disabledBack()"
+        [loading]="loadingBack()"
+        (onClick)="back.emit()"
+      />
+    }
+    @if (addButton()) {
+      <gzoom-button
+        icon="pi pi-plus"
+        [rounded]="rounded()"
+        [label]="addLabel()"
+        [disabled]="disabledAdd()"
+        [loading]="loadingAdd()"
+        (onClick)="add.emit()"
+      />
+    }
+
+    @if (deleteButton()) {
+      <gzoom-button-outlined
+        icon="pi pi-trash"
+        [rounded]="rounded()"
+        [label]="deleteLabel()"
+        [disabled]="disabledDelete()"
+        [loading]="loadingDelete()"
+        (onClick)="delete.emit()"
+      />
+    }
+  </div>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    @if (resetButton()) {
+      <gzoom-button-outlined
+        icon="pi pi-refresh"
+        [rounded]="rounded()"
+        [label]="resetLabel()"
+        [disabled]="disabledReset()"
+        [loading]="loadingReset()"
+        (onClick)="reset.emit()"
+      />
+    }
+
+    @if (saveButton()) {
+      <gzoom-button
+        icon="pi pi-save"
+        [rounded]="rounded()"
+        [label]="saveLabel()"
+        [disabled]="disabledSave()"
+        [loading]="loadingSave()"
+        (onClick)="save.emit()"
+      />
+    }
+  </div>
+</div>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.AcctgTransEntryMapper">
+
+    <select id="getMovementByPrimaryKey" resultMap="acctgTransEntryAcctgTrans">
+        <!--Input #{acctgTransId, acctgTransEntrySeqId, isAdmin, userLoginId} -->
+        select
+        ate.*,
+        at2.acctg_trans_id as at2_acctg_trans_id,
+        at2.description as at2_description,
+        at2.description_lang as at2_description_lang
+
+        from acctg_trans_entry ate
+        join acctg_trans at2 on at2.acctg_trans_id = ate.acctg_trans_id
+        join gl_account ga on ga.gl_account_id = ate.gl_account_id
+        where
+        ate.acctg_trans_id = #{acctgTransId,jdbcType=VARCHAR}
+        and ate.acctg_trans_entry_seq_id = #{acctgTransEntrySeqId,jdbcType=VARCHAR}
+        <if test="isAdmin == false">
+            AND ga.RESP_CENTER_ID IS NOT NULL
+            AND EXISTS (SELECT 1 from USER_LOGIN_SECURITY_GROUP ULSG
+            INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+            INNER JOIN PARTY_RELATIONSHIP PR ON PR.PARTY_ID_TO = UL.PARTY_ID
+            AND PR.PARTY_ID_FROM = ga.RESP_CENTER_ID
+            AND PR.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+            AND PR.THRU_DATE IS NULL
+            WHERE ULSG.USER_LOGIN_ID = #{userLoginId,jdbcType=VARCHAR})
+        </if>
+
+    </select>
+
+    <resultMap id="acctgTransEntryAcctgTrans" autoMapping="true" type="AcctgTransEntry">
+        <id property="acctgTransId" column="acctg_trans_id"/>
+        <id property="acctgTransEntrySeqId" column="acctg_trans_entry_seq_id"/>
+        <association property="acctgTrans" columnPrefix="at2_" javaType="AcctgTrans"/>
+    </resultMap>
+
+    <select id="countIndicatorMovements">
+        select
+        count(ate.ACCTG_TRANS_ID)
+        <include refid="IndicatorMovements"></include>
+    </select>
+    <sql id="IndicatorMovements">
+        from acctg_trans_entry ate
+        join acctg_trans at2 on at2.acctg_trans_id = ate.acctg_trans_id
+        <if test='inputEnumId=="ACCINP_UO" and detectOrgUnitIdFlag =="Y"'>
+            join role_type rt on rt.role_type_id = at2.role_type_id
+        </if>
+        join uom u on u.uom_id = ate.currency_uom_id
+        and at2.work_effort_revision_id is null
+        left outer join gl_fiscal_type gft on gft.gl_fiscal_type_id = ate.gl_fiscal_type_id and gft.gl_fiscal_type_id =
+        at2.gl_fiscal_type_id and
+        <if test="accountTypeEnumId == 'INDICATOR'">
+            gft.is_indicator_used = 'Y'
+        </if>
+        <if test="accountTypeEnumId == 'FINANCIAL'">
+            gft.is_financial_used = 'Y'
+        </if>
+        <if test="accountTypeEnumId == 'ACCOUNT'">
+            gft.is_account_used = 'Y'
+        </if>
+        join gl_account ga on ga.gl_account_id = ate.gl_account_id
+        join gl_account_organization gao on gao.gl_account_id = ga.gl_account_id
+        <if test="isReservedAccount">
+            join gl_account_type gat on gat.gl_account_type_id = ga.gl_account_type_id AND gat.is_reserved_account =
+            #{isReservedAccount,jdbcType=VARCHAR}
+        </if>
+        join custom_time_period ctp on ctp.period_type_id = ga.period_type_id and ctp.thru_date = at2.transaction_date
+        <if test='inputEnumId=="ACCINP_OBJ" and detectOrgUnitIdFlag =="N"'>
+            left outer join work_effort_measure wem on wem.work_effort_measure_id = at2.voucher_ref and
+            wem.work_effort_measure_id = ate.voucher_ref
+            inner join work_effort we on we.work_effort_id = wem.work_effort_id
+            inner join work_effort ra on ra.work_effort_id = we.work_effort_parent_id
+        </if>
+        <if test='inputEnumId=="ACCINP_UO" and detectOrgUnitIdFlag =="Y"'>
+            left outer join party p on p.party_id = at2.party_id
+            inner join party_parent_role pp on pp.party_id = p.party_id and pp.role_type_id = 'ORGANIZATION_UNIT' and
+            pp.organization_id = gao.organization_party_id
+        </if>
+        where
+        ga.account_type_enum_id = #{accountTypeEnumId,jdbcType=VARCHAR}
+        AND gao.organization_party_id = #{organizationId,jdbcType=VARCHAR}
+        and ga.input_enum_id = #{inputEnumId,jdbcType=VARCHAR}
+        and ga.detect_org_unit_id_flag = #{detectOrgUnitIdFlag,jdbcType=VARCHAR}
+        <if test="glAccountId != null">
+            and ga.gl_account_id = #{glAccountId,jdbcType=VARCHAR}
+        </if>
+        <if test="uomId != null">
+            and u.uom_id = #{uomId,jdbcType=VARCHAR}
+        </if>
+        <if test="customTimePeriodId != null">
+            and ctp.custom_time_period_id = #{customTimePeriodId,jdbcType=VARCHAR}
+        </if>
+        <if test="glFiscalTypeId != null">
+            and gft.gl_fiscal_type_id = #{glFiscalTypeId,jdbcType=VARCHAR}
+        </if>
+        <if test="isAdmin == false">
+            AND ga.RESP_CENTER_ID IS NOT NULL
+            AND EXISTS (SELECT 1 from USER_LOGIN_SECURITY_GROUP ULSG
+            INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+            INNER JOIN PARTY_RELATIONSHIP PR ON PR.PARTY_ID_TO = UL.PARTY_ID
+            AND PR.PARTY_ID_FROM = ga.RESP_CENTER_ID
+            AND PR.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+            AND PR.THRU_DATE IS NULL
+            WHERE ULSG.USER_LOGIN_ID = #{userLoginId})
+        </if>
+
+        <foreach index="key" item="filter" collection="tableLazyLoad.filters">
+            <if test="key == 'workEffortMeasure'">
+
+                <foreach collection="filter" item="item" separator=" item.operator ">
+                    <if test="item.value">
+                        <if test="tableLazyLoad.isSecondaryLang == false">
+                            AND
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName"
+                                          value="concat(we.etch, concat(' - ', we.work_effort_name))"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="item.matchMode"/>
+                            </include>
+                        </if>
+                        <if test="tableLazyLoad.isSecondaryLang == true">
+                            AND
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName"
+                                          value="concat(we.etch, concat(' - ', we.work_effort_name_lang))"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="item.matchMode"/>
+                            </include>
+                        </if>
+
+                    </if>
+                </foreach>
+
+            </if>
+            <if test="key == 'party'">
+
+                <foreach collection="filter" item="item" separator=" item.operator ">
+                    <if test="item.value">
+                        <if test="tableLazyLoad.isSecondaryLang == false">
+                            AND
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName"
+                                          value="concat(pp.parent_role_code, concat(p.party_name, rt.description))"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="item.matchMode"/>
+                            </include>
+                        </if>
+                        <if test="tableLazyLoad.isSecondaryLang == true">
+                            AND
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName"
+                                          value="concat(pp.parent_role_code, concat(p.party_name_lang, rt.description_lang))"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="item.matchMode"/>
+                            </include>
+                        </if>
+
+                    </if>
+                </foreach>
+
+            </if>
+
+        </foreach>
+
+
+    </sql>
+    <select id="getIndicatorMovements" resultMap="indicatorMovements">
+        select
+        ate.acctg_trans_id,
+        ate.acctg_trans_entry_seq_id,
+        ate.gl_account_id,
+        ate.amount,
+        ate.currency_uom_id,
+        ate.gl_fiscal_type_id,
+        at2.acctg_trans_id as at2_acctg_trans_id,
+        at2.transaction_date as at2_transaction_date,
+        at2.party_id as at2_party_id,
+        at2.role_type_id as at2_role_type_id,
+        ga.gl_account_id as ga_gl_account_id,
+        ga.account_code as ga_account_code,
+        ga.account_name as ga_account_name,
+        ga.account_name_lang as ga_account_name_lang,
+        ctp.thru_date as ctp_thru_date,
+        ctp.period_name as ctp_period_name,
+        ctp.period_name_lang as ctp_period_name_lang,
+        u.abbreviation as u_abbreviation,
+        u.abbreviation_lang as u_abbreviation_lang,
+        u.description as u_description,
+        u.description_lang as u_description_lang,
+        u.uom_type_id as u_uom_type_id,
+        u.decimal_scale as u_decimal_scale,
+        u.min_value as u_min_value,
+        u.max_value as u_max_value
+        <if test='inputEnumId=="ACCINP_OBJ" and detectOrgUnitIdFlag =="N"'>
+            ,
+            wem.uom_descr as wem_uom_descr,
+            wem.uom_descr_lang as wem_uom_descr_lang,
+            we.etch as we_etch,
+            we.work_effort_name as we_work_effort_name,
+            we.work_effort_name_lang as we_work_effort_name_lang,
+            ra.etch as ra_etch,
+            ra.work_effort_name as ra_work_effort_name,
+            ra.work_effort_name_lang as ra_work_effort_name_lang
+        </if>
+        <!-- <if test='inputEnumId=="ACCINP_UO" and detectOrgUnitIdFlag =="Y"'>
+             ,concat(pp.parent_role_code, p.party_name) as p_party_name,
+             concat(pp.parent_role_code, p.party_name_lang) as p_party_name_lang
+         </if>-->
+
+        <include refid="IndicatorMovements"/>
+
+        order by
+        <if test="tableLazyLoad.sortField != null">
+            <if test="tableLazyLoad.sortField == 'organizationUnit'">
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithCodeAndNameLang">
+                    <property name="tableLazyLoad" value="tableLazyLoad"/>
+                    <property name="columnCode" value="pp.parent_role_code"/>
+                    <property name="columnName" value="p.party_name"/>
+                </include>,
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithNameLang">
+                    <property name="tableLazyLoad" value="tableLazyLoad"/>
+                    <property name="columnName" value="rt.description"/>
+                </include>
+            </if>
+
+            <if test="tableLazyLoad.sortField == 'workEffortMeasure'">
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithCodeAndNameLang">
+                    <property name="tableLazyLoad" value="tableLazyLoad"/>
+                    <property name="columnCode" value="we.etch"/>
+                    <property name="columnName" value="we.work_effort_name"/>
+                </include>
+            </if>
+            <if test="tableLazyLoad.sortField == 'customTimePeriod'">
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithNameLang">
+                    <property name="tableLazyLoad" value="tableLazyLoad"/>
+                    <property name="columnName" value="ctp.period_name"/>
+                </include>
+            </if>
+            <if test="tableLazyLoad.sortField == 'currencyUom'">
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithNameLang">
+                    <property name="tableLazyLoad" value="tableLazyLoad"/>
+                    <property name="columnName" value="u.description"/>
+                </include>
+            </if>
+            <if test="tableLazyLoad.sortField == 'glFiscalType'">
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithNameLang">
+                    <property name="tableLazyLoad" value="tableLazyLoad"/>
+                    <property name="columnName" value="gft.description"/>
+                </include>
+            </if>
+            <if test="tableLazyLoad.sortField == 'glAccount'">
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.orderByTableLazyLoadWithCodeAndNameLang">
+                    <property name="tableLazyLoad" value="tableLazyLoad"/>
+                    <property name="columnCode" value="ga.account_code"/>
+                    <property name="columnName" value="ga.account_name"/>
+                </include>
+            </if>
+        </if>
+        <if test="tableLazyLoad.sortField == null">
+            ga.account_code,
+            <if test="tableLazyLoad.isSecondaryLang == false">
+                ga.account_name
+            </if>
+            <if test="tableLazyLoad.isSecondaryLang == true">
+                ga.account_name_lang
+            </if>
+        </if>
+        ,
+        <if test="tableLazyLoad.isSecondaryLang == false">
+            ctp.period_name
+        </if>
+        <if test="tableLazyLoad.isSecondaryLang == true">
+            ctp.period_name_lang
+        </if>
+
+        <!--Pagination-->
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.paginationLimitOffset">
+            <property name="LIMIT" value="#{tableLazyLoad.limit}"/>
+            <property name="OFFSET" value="#{tableLazyLoad.offset}"/>
+        </include>
+    </select>
+
+    <resultMap id="indicatorMovements" type="AcctgTransEntry">
+        <id column="acctg_trans_id" property="acctgTransId" jdbcType="VARCHAR"/>
+        <id column="acctg_trans_entry_seq_id" property="acctgTransEntrySeqId" jdbcType="VARCHAR"/>
+        <result column="gl_account_id" property="glAccountId" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="NUMERIC"/>
+        <result column="currency_uom_id" property="currencyUomId" jdbcType="VARCHAR"/>
+        <result column="gl_fiscal_type_id" property="glFiscalTypeId" jdbcType="VARCHAR"/>
+        <association property="acctgTrans" columnPrefix="at2_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.AcctgTransMapper.acctgTransMapper"
+                     javaType="AcctgTrans"/>
+        <association property="acctgTrans.customTimePeriod" columnPrefix="ctp_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.CustomTimePeriodMapper.customTimePeriodResultMap"
+                     javaType="CustomTimePeriod"/>
+        <association property="acctgTrans.party" columnPrefix="p_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.PartyMapper.party"
+                     javaType="Party"/>
+        <association property="acctgTrans.workEffortMeasure" columnPrefix="wem_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortMeasureMapper.workEffortMeasureResultMap"
+                     javaType="WorkEffortMeasure"/>
+
+        <association property="acctgTrans.workEffortMeasure.workEffort" columnPrefix="we_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortMapper.workEffort"
+                     javaType="WorkEffort"/>
+
+        <association property="acctgTrans.workEffortMeasure.workEffort.workEffortParent" columnPrefix="ra_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortMapper.workEffort"
+                     javaType="WorkEffort"/>
+
+        <association property="glAccount" columnPrefix="ga_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.GlAccountMapper.glAccountMapper"
+                     javaType="GlAccount"/>
+        <association property="currencyUom" columnPrefix="u_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.UomMapper.uom"
+                     javaType="Uom"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,22 @@
+<gzoom-modal [loadingModal]="loading">
+  <gzoom-modal-header>
+    <h1>{{ config.header }}</h1>
+  </gzoom-modal-header>
+
+  <gzoom-modal-body>
+    @for (message of messages; track $index) {
+      @if (StringUtils.notEmpty(message.message)) {
+        <p [ngClass]="{
+                        'error': message.messageLevel === MessageLevel.ERROR,
+                        'warning': message.messageLevel === MessageLevel.WARNING
+                      }">
+          {{ message.message }}
+        </p>
+      }
+    }
+  </gzoom-modal-body>
+
+  <gzoom-modal-footer>
+    <gzoom-button [label]="'btnClose' | i18n" (onClick)="closeModal()" [outlined]=true />
+  </gzoom-modal-footer>
+</gzoom-modal>

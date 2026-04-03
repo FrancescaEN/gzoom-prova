@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Jasper report" default="compile-jrxml" basedir=".">
+	<!-- Define paths and properties -->
+    <property name="src.dir" value="${basedir}" />	
+
+    <path id="ant-contrib.classpath">
+        <fileset dir="${basedir}/lib">
+            <include name="ant-contrib*.jar" />
+        </fileset>
+    </path>
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="ant-contrib.classpath" />
+
+    <target name="define-jasper-task" depends="validate-params">
+        <!-- Include JasperReports library -->
+        <path id="jasper.lib">
+            <fileset dir="${basedir}/lib">
+                <include name="jasperreports-*.jar"/>
+                <include name="commons-digester-*.jar"/>
+                <include name="commons-logging-*.jar"/>
+                <include name="commons-beanutils-*.jar"/>
+                <include name="commons-collections*-*.jar"/>
+                <include name="ecj-*.jar"/>
+                <include name="jfreechart-*.jar"/>
+				<include name="jcommon-*.jar"/>
+                <include name="joda-time-*.jar"/>
+                <include name="groovy-*.jar"/>
+                <include name="fonts/*.jar" />
+            </fileset>
+        </path>
+        <path id="gzoom2report.classes">
+            <fileset dir="${gzoom2be.dir}">
+                <include name="report/target/*.jar"/>
+                <include name="commons-spring-boot/target/*.jar"/>
+                <include name="persistence-mybatis/target/*.jar"/>
+            </fileset>
+        </path>
+        <path id="db.lib">
+            <fileset dir="${basedir}/jdbc">
+                <include name="ojdbc*.jar" />
+            </fileset>
+        </path>
+
+        <!-- Combine the paths -->
+        <path id="combined.classpath">
+            <path refid="jasper.lib" />
+            <path refid="db.lib" />
+            <path refid="gzoom2report.classes" />
+        </path>
+
+        <!-- Taskdef for JasperReports Ant Task -->
+        <taskdef name="jasper-compile" 
+                 classname="net.sf.jasperreports.ant.JRAntCompileTask"
+                 classpathref="combined.classpath" />
+    </target>
+
+    <!-- Target to validate the mandatory parameter -->
+    <target name="validate-params">
+        <!-- Check if the parameter is set -->
+        <condition property="is.param.set">
+            <isset property="gzoom2be.dir" />
+        </condition>
+        <!-- Fail if the parameter is not set -->
+        <fail unless="is.param.set">
+            The required parameter 'gzoom2be.dir' is missing! Pass it using -Dgzoom2be.dir=value.
+        </fail>
+    </target>
+
+    <target name="clean-jasper">
+        <echo message="Start cleaning of Jasper report files"/>
+
+        <delete>
+            <fileset dir="${src.dir}" includes="**/*.jasper"/>
+        </delete>
+    </target>
+
+    <!-- Target to compile .jrxml files -->
+    <target name="compile-jrxml" depends="clean-jasper">
+    	<echo message="Start compilation of Jasper report files"/>
+
+        <!-- Ensure build directory exists -->
+        <antcall target="clean-jasper"/>
+
+        <condition property="customer.exists" else="false">
+            <isset property="gzoom2customer"/>
+        </condition>
+        <condition property="jrxml.files.exists" else="false">
+            <isset property="jrxml.file"/>
+        </condition>
+
+        <if>
+            <equals arg1="${customer.exists}" arg2="true"/>
+            <then>
+                <echo message="customer.exists=${customer.exists}, gzoom2customer=${gzoom2customer}"/>
+                <path id="jrxml.files">
+                    <fileset id="general.jrxml.files" dir="${src.dir}">
+                        <include name="**/*.jrxml" />
+                        <exclude name="project/**" />
+                    </fileset>
+                    <fileset id="customer.jrxml.file"  dir="${src.dir}">
+                        <include name="project/${gzoom2customer}/**/*.jrxml"/>
+                    </fileset>
+                </path>
+            </then>
+            <elseif>
+                <equals arg1="${jrxml.files.exists}" arg2="true"/>
+                <then>
+                    <echo message="jrxml.files.exists=${jrxml.files.exists}, jrxml.file=${jrxml.file}"/>
+                    <path id="jrxml.files">
+                        <fileset id="requested.jrxml.file" dir="${src.dir}">
+                            <include name="${jrxml.file}"/>
+                        </fileset>
+                    </path>
+                </then>
+            </elseif>
+            <else>
+                <echo message="DEFAULT"/>
+                <path id="jrxml.files">
+                    <fileset id="general.jrxml.files" dir="${src.dir}">
+                        <include name="**/*.jrxml" />
+                        <exclude name="project/**/*.jrxml" />
+                    </fileset>
+                </path>
+            </else>
+        </if>
+       
+
+		<!-- Iterate over each .jrxml file and compile it -->
+        <foreach target="compile-single-jrxml" param="jrxml.file">
+            <path refid="jrxml.files" />
+        </foreach>
+        
+
+        <echo message="All .jrxml files compiled" />
+    </target>
+
+    <target name="compile-single-jrxml" depends="define-jasper-task">
+    	<echo message="Start compiling file ${jrxml.file}"/>
+        <dirname property="jrxml.dir" file="${jrxml.file}"/>
+        <basename property="jrxml.filename" file="${jrxml.file}" suffix="jrxml"/>
+    	<!-- Compile all .jrxml files -->
+        <jasper-compile srcdir="${jrxml.dir}" destdir="${jrxml.dir}" compiler="net.sf.jasperreports.engine.design.JRJdtCompiler">
+            <classpath refid="combined.classpath"/>
+            <include name="${jrxml.filename}.jrxml"/>
+        </jasper-compile>
+    </target>
+	
+	
+</project>

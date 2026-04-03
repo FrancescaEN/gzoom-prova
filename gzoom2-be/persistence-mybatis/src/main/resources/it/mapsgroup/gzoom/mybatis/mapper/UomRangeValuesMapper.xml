@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.UomRangeValuesMapper">
+
+    <resultMap id="uomRangeValuesExt" type="it.mapsgroup.gzoom.mybatis.dto.UomRangeValuesExt">
+        <id property="uomRangeValuesId" column="uom_range_values_id" jdbcType="VARCHAR"/>
+        <result property="uomRangeId" column="uom_range_id" jdbcType="VARCHAR"/>
+        <result property="comments" column="comments" jdbcType="VARCHAR"/>
+        <result property="isPositive" column="is_positive" jdbcType="CHAR"/>
+        <result property="fromValue" column="from_value" jdbcType="DOUBLE"/>
+        <result property="thruValue" column="thru_value" jdbcType="DOUBLE"/>
+        <result property="iconContentId" column="icon_content_id" jdbcType="VARCHAR"/>
+        <result property="alert" column="alert" jdbcType="CHAR"/>
+        <result property="rangeValuesFactor" column="range_values_factor" jdbcType="DOUBLE"/>
+        <result property="rangeValuesFactorMin" column="range_values_factor_min" jdbcType="DOUBLE"/>
+        <result property="colorEnumId" column="color_enum_id" jdbcType="VARCHAR"/>
+        <result property="prorateRange" column="prorate_range" jdbcType="CHAR"/>
+        <result property="commentsLang" column="comments_lang" jdbcType="VARCHAR"/>
+        <result property="lastModifiedByUserLogin" column="last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="created_by_user_login" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <association property="dataResource" resultMap="dataResource" />
+    </resultMap>
+
+
+    <resultMap id="dataResource" type="it.mapsgroup.gzoom.mybatis.dto.DataResource">
+        <id property="dataResourceId" column="data_resource_id" jdbcType="VARCHAR"/>
+        <result property="dataResourceTypeId" column="data_resource_type_id" jdbcType="VARCHAR"/>
+        <result property="dataTemplateTypeId" column="data_template_type_id" jdbcType="VARCHAR"/>
+        <result property="dataCategoryId" column="data_category_id" jdbcType="VARCHAR"/>
+        <result property="dataSourceId" column="data_source_id" jdbcType="VARCHAR"/>
+        <result property="statusId" column="status_id" jdbcType="VARCHAR"/>
+        <result property="dataResourceName" column="data_resource_name" jdbcType="VARCHAR"/>
+        <result property="localeString" column="locale_string" jdbcType="VARCHAR"/>
+        <result property="mimeTypeId" column="mime_type_id" jdbcType="VARCHAR"/>
+        <result property="characterSetId" column="character_set_id" jdbcType="VARCHAR"/>
+        <result property="objectInfo" column="object_info" jdbcType="VARCHAR"/>
+        <result property="surveyId" column="survey_id" jdbcType="VARCHAR"/>
+        <result property="surveyResponseId" column="survey_response_id" jdbcType="VARCHAR"/>
+        <result property="relatedDetailId" column="related_detail_id" jdbcType="VARCHAR"/>
+        <result property="isPublic" column="is_public" jdbcType="CHAR"/>
+        <result property="createdDate" column="created_date" jdbcType="TIMESTAMP"/>
+        <result property="createdByUserLogin" column="DR_CREATED_BY_USER_LOGIN" jdbcType="VARCHAR"/>
+        <result property="lastModifiedDate" column="last_modified_date" jdbcType="TIMESTAMP"/>
+        <result property="lastModifiedByUserLogin" column="last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="DR_LAST_UPDATED_STAMP" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="DR_LAST_UPDATED_TX_STAMP" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="DR_CREATED_STAMP" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="DR_CREATED_TX_STAMP" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+
+    <select id="getPathEmoticon" resultMap="uomRangeValuesExt">
+        SELECT URV.*, DR.*,
+        DR.CREATED_BY_USER_LOGIN AS DR_CREATED_BY_USER_LOGIN,
+        DR.CREATED_STAMP AS DR_CREATED_STAMP,
+        DR.LAST_UPDATED_STAMP AS DR_LAST_UPDATED_STAMP,
+        DR.CREATED_TX_STAMP AS DR_CREATED_TX_STAMP,
+        DR.LAST_UPDATED_TX_STAMP AS DR_LAST_UPDATED_TX_STAMP
+        FROM UOM_RANGE_VALUES URV
+        INNER JOIN DATA_RESOURCE DR ON DR.DATA_RESOURCE_ID = URV.ICON_CONTENT_ID
+        WHERE URV.UOM_RANGE_ID = #{rangeDefault} AND URV.FROM_VALUE &lt;= #{amount} AND URV.THRU_VALUE &gt;= #{amount}
+    </select>
+
+</mapper>

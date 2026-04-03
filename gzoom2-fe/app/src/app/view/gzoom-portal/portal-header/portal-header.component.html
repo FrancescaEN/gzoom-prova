@@ -1,0 +1,97 @@
+<div class="info-section">
+  <h2>
+    Sistema nazionale di valutazione dei risultati dei dirigenti scolastici
+  </h2>
+  <div>
+    <div class="info">
+      <div>
+        <strong>Anno scolastico:</strong>
+        @if (goals()?.length === 1) {
+          <span>
+            {{ goals()[0].goalPeriod.fromDate.getFullYear() }}-{{ goals()[0].goalPeriod.thruDate.getFullYear() % 100 }}
+          </span>
+        } @else if (goals()?.length > 1) {
+          <gzoom-dropdown [options]="yearsDropdown"
+                          [(selected)]="selectedGoalId"
+                          [panelStyleClass]="'gzoom-portal'"
+          />
+        }
+      </div>
+
+      <div>
+        <strong>Dirigente scolastico:</strong><span>{{ header.user | fullname }}</span>
+      </div>
+
+      <div>
+        <strong>Istituzione scolastica:</strong><span>{{ header.school }}</span>
+      </div>
+
+      <div>
+        <strong>USR:</strong><span>{{ header.usr }}</span>
+      </div>
+
+      <div>
+        <strong>Stato scheda:</strong>
+        @if (hasPermission()[PortalPermission.StatusWrite]) {
+          <gzoom-dropdown [options]="statusDropdown"
+                          [(selected)]="selectedStatus"
+                          [onChange]="statusSelectedHandler"
+                          [panelStyleClass]="'gzoom-portal'"
+          />
+        } @else {
+          <span>{{ goalRoot()?.goalStatus?.description }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="score">
+      @if (hasPermission()[PortalPermission.TotalResultRead] && hasPermission()[PortalPermission.DetailsRead]) {
+        <h3>
+          @if (extractTotalResult(goalRoot())) {
+            Punteggio complessivo:<strong>{{ extractTotalResult(goalRoot()) | formatNumberIT }}</strong>
+          } @else {
+            Punteggio complessivo:<strong>Non elaborato </strong>
+            <gzoom-tooltip text="Il punteggio verrà elaborato al completamento della fase valutativa."
+                           [textPosition]="'left'" />
+          }
+        </h3>
+      }
+
+      <div class="buttons">
+        @if (hasPermission()[PortalPermission.DetailsRead]) {
+          <gzoom-button (onClick)="print()" [disabled]="!printButtonEnabled()">
+            <i class="gzoom-icon gzoom-print"></i>Stampa
+          </gzoom-button>
+        }
+
+        @if (hasPermission()[PortalPermission.ContextDataRead]) {
+          <gzoom-button [outlined]="true"
+                        [ngClass]="{'with-badge': integrationNote?.info?.length > 0}"
+                        (onClick)="showContextDataModal()">
+            <i class="gzoom-icon gzoom-book"></i>Dati di contesto
+          </gzoom-button>
+        }
+
+        @if (hasPermission()[PortalPermission.ContradictoryRead]) {
+          <gzoom-button [outlined]="true"
+                        [ngClass]="{'with-badge': StringUtils.notEmpty(contradictoryInfo?.employeeComment)
+                                                  || StringUtils.notEmpty(contradictoryInfo?.evaluatorComment)
+                                                  || StringUtils.notEmpty(contradictoryInfo?.outcome)}"
+                        (onClick)="showContradictoryModal()">
+            Contraddittorio
+          </gzoom-button>
+        }
+
+        @if (hasPermission()[PortalPermission.ConciliationRead]) {
+          <gzoom-button [outlined]="true"
+                        [ngClass]="{'with-badge': StringUtils.notEmpty(conciliationInfo?.reason)
+                                                  || StringUtils.notEmpty(conciliationInfo?.guaranteeInstitutionReport)
+                                                  || StringUtils.notEmpty(conciliationInfo?.outcome)}"
+                        (onClick)="showConciliationModal()">
+            Conciliazione
+          </gzoom-button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<form *ngIf="this.form" [formGroup]="this.form" (ngSubmit)="onSubmit($event)">
+  <gzoom-label [label]="label" labelPos="left">
+    <div
+      style="
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+        align-items: center;
+      "
+    >
+      <gzoom-dropdown
+        [options]="constraints"
+        [controlName]="controlNameMachMode"
+        style="width: 200px"
+      ></gzoom-dropdown>
+      <div
+        style="
+          display: flex;
+          flex-grow: 5;
+          flex-direction: row;
+          gap: 5px;
+          align-items: center;
+        "
+      >
+        <span class="p-input-icon-right" style="flex-grow: 5">
+          <input
+            type="text"
+            id="search"
+            pInputText
+            class="p-inputtext-lg"
+            [formControlName]="controlNameSearchField"
+            [placeholder]="placeholder | i18n"
+            style="width: 100%"
+            (keyup.enter)="onSearch($event)"
+          />
+        </span>
+        <gzoom-button-outlined
+          icon="pi pi-delete-left"
+          [tooltipLabel]="'Reset search' | i18n"
+          tooltipPosition="bottom"
+          (onClick)="clearValue()"
+        ></gzoom-button-outlined>
+      </div>
+    </div>
+  </gzoom-label>
+</form>

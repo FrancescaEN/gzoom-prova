@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Procedimenti_Indicatori" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceProcedimenti" uuid="a6dd33a8-1f56-4efb-8eb9-abed98686d35">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box padding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3112" class="java.lang.String"/>
+	<parameter name="date3112sql" class="java.lang.String"/>
+	<parameter name="date0101" class="java.lang.String"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="customTimePeriodP1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodP2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM3" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-3)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearP1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )+1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearP2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )+2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearM1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )-1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearM2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )-2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearM3" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )-3]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_procedimento" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM (
+SELECT 
+	VPI.ID_PROCEDIMENTO AS ID_PROCEDIMENTO ,
+	MAX(CASE WHEN ID_INDICATORE = 10117 THEN NOME_INDICATORE_IT ELSE NULL END) AS NOME_ISTANZE_IT,
+	MAX(CASE WHEN ID_INDICATORE = 10117 THEN NOME_INDICATORE_DE ELSE NULL END) AS NOME_ISTANZE_DE,
+	MAX(CASE WHEN ID_INDICATORE = 10117 AND ANNO_RIFERIMENTO =  $P{year}  THEN TARGET_INDICATORE ELSE NULL END) AS TARGET_ANNO_ISTANZE,
+	MAX(CASE WHEN ID_INDICATORE = 10117 AND ANNO_RIFERIMENTO =  $P{yearP1}  THEN TARGET_INDICATORE ELSE NULL END) AS TARGET_ANNO_ISTANZE1,
+	MAX(CASE WHEN ID_INDICATORE = 10117 AND ANNO_RIFERIMENTO =  $P{yearP2}  THEN TARGET_INDICATORE ELSE NULL END) AS TARGET_ANNO_ISTANZE2,
+	MAX(CASE WHEN ID_INDICATORE = 10117 AND ANNO_RIFERIMENTO =  $P{yearM1}  THEN CONSUNTIVO_INDICATORE ELSE NULL END) AS CONSUNTIVO_ANNO_ISTANZE1,
+	MAX(CASE WHEN ID_INDICATORE = 10117 AND ANNO_RIFERIMENTO =  $P{yearM2} THEN CONSUNTIVO_INDICATORE ELSE NULL END) AS CONSUNTIVO_ANNO_ISTANZE2,
+	MAX(CASE WHEN ID_INDICATORE = 10117 AND ANNO_RIFERIMENTO =  $P{yearM3}  THEN CONSUNTIVO_INDICATORE ELSE NULL END) AS CONSUNTIVO_ANNO_ISTANZE3,
+	MAX(CASE WHEN ID_INDICATORE = 10125 THEN NOME_INDICATORE_IT ELSE NULL END) AS NOME_DURATA_IT,
+	MAX(CASE WHEN ID_INDICATORE = 10125 THEN NOME_INDICATORE_DE ELSE NULL END) AS NOME_DURATA_DE,
+	MAX(CASE WHEN ID_INDICATORE = 10125 AND ANNO_RIFERIMENTO =  $P{year}  THEN TARGET_INDICATORE ELSE NULL END) AS TARGET_ANNO_DURATA,
+	MAX(CASE WHEN ID_INDICATORE = 10125 AND ANNO_RIFERIMENTO = $P{yearP1}  THEN TARGET_INDICATORE ELSE NULL END) AS TARGET_ANNO_DURATA1,
+	MAX(CASE WHEN ID_INDICATORE = 10125 AND ANNO_RIFERIMENTO = $P{yearP2}  THEN TARGET_INDICATORE ELSE NULL END) AS TARGET_ANNO_DURATA2,
+	MAX(CASE WHEN ID_INDICATORE = 10125 AND ANNO_RIFERIMENTO =  $P{yearM1} THEN CONSUNTIVO_INDICATORE ELSE NULL END) AS CONSUNTIVO_ANNO_DURATA1,
+	MAX(CASE WHEN ID_INDICATORE = 10125 AND ANNO_RIFERIMENTO =  $P{yearM2} THEN CONSUNTIVO_INDICATORE ELSE NULL END) AS CONSUNTIVO_ANNO_DURATA2,
+	MAX(CASE WHEN ID_INDICATORE = 10125 AND ANNO_RIFERIMENTO =  $P{yearM3}  THEN CONSUNTIVO_INDICATORE ELSE NULL END) AS CONSUNTIVO_ANNO_DURATA3
+FROM VW_PROCEDIMENTI_INDIC VPI 
+GROUP BY VPI.ID_PROCEDIMENTO) 
+WHERE ID_PROCEDIMENTO = $P{id_procedimento}]]>
+	</queryString>
+	<field name="ID_PROCEDIMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_PROCEDIMENTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_PROCEDIMENTO"/>
+	</field>
+	<field name="NOME_ISTANZE_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_ISTANZE_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_ISTANZE_IT"/>
+	</field>
+	<field name="NOME_ISTANZE_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_ISTANZE_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_ISTANZE_DE"/>
+	</field>
+	<field name="TARGET_ANNO_ISTANZE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_ANNO_ISTANZE"/>
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_ANNO_ISTANZE"/>
+	</field>
+	<field name="TARGET_ANNO_ISTANZE1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_ANNO_ISTANZE1"/>
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_ANNO_ISTANZE1"/>
+	</field>
+	<field name="TARGET_ANNO_ISTANZE2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_ANNO_ISTANZE2"/>
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_ANNO_ISTANZE2"/>
+	</field>
+	<field name="CONSUNTIVO_ANNO_ISTANZE1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_ANNO_ISTANZE1"/>
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_ANNO_ISTANZE1"/>
+	</field>
+	<field name="CONSUNTIVO_ANNO_ISTANZE2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_ANNO_ISTANZE2"/>
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_ANNO_ISTANZE2"/>
+	</field>
+	<field name="CONSUNTIVO_ANNO_ISTANZE3" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_ANNO_ISTANZE3"/>
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_ANNO_ISTANZE3"/>
+	</field>
+	<field name="NOME_DURATA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOME_DURATA_IT"/>
+		<property name="com.jaspersoft.studio.field.name" value="NOME_DURATA_IT"/>
+	</field>
+	<field name="NOME_DURATA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOME_DURATA_DE"/>
+		<property name="com.jaspersoft.studio.field.name" value="NOME_DURATA_DE"/>
+	</field>
+	<field name="TARGET_ANNO_DURATA" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_ANNO_DURATA"/>
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_ANNO_DURATA"/>
+	</field>
+	<field name="TARGET_ANNO_DURATA1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_ANNO_DURATA1"/>
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_ANNO_DURATA1"/>
+	</field>
+	<field name="TARGET_ANNO_DURATA2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TARGET_ANNO_DURATA2"/>
+		<property name="com.jaspersoft.studio.field.name" value="TARGET_ANNO_DURATA2"/>
+	</field>
+	<field name="CONSUNTIVO_ANNO_DURATA1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_ANNO_DURATA1"/>
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_ANNO_DURATA1"/>
+	</field>
+	<field name="CONSUNTIVO_ANNO_DURATA2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_ANNO_DURATA2"/>
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_ANNO_DURATA2"/>
+	</field>
+	<field name="CONSUNTIVO_ANNO_DURATA3" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CONSUNTIVO_ANNO_DURATA3"/>
+		<property name="com.jaspersoft.studio.field.name" value="CONSUNTIVO_ANNO_DURATA3"/>
+	</field>
+	<detail>
+		<band height="45">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="462" height="15" isRemoveLineWhenBlank="true" forecolor="#383838" backcolor="#F5F5F5" uuid="9387817e-32a0-4757-a140-6c08b4c8df00">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Indicatore}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="462" y="0" width="60" height="15" isRemoveLineWhenBlank="true" forecolor="#383838" backcolor="#F5F5F5" uuid="78a169f9-418b-410d-8f2a-ed36a87df359">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Cons} + " " + $P{yearM3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="522" y="0" width="60" height="15" isRemoveLineWhenBlank="true" forecolor="#383838" backcolor="#F5F5F5" uuid="4845ec0c-38b4-498a-a7c4-e3ecfb92a1b3">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Cons} + " " + $P{yearM2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="582" y="0" width="60" height="15" isRemoveLineWhenBlank="true" forecolor="#383838" backcolor="#F5F5F5" uuid="97a9ae0a-e43f-4757-8b75-ac08f296075f">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Cons} + " " + $P{yearM1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="642" y="0" width="60" height="15" isRemoveLineWhenBlank="true" forecolor="#383838" backcolor="#F5F5F5" uuid="fee66460-eb23-45a8-9ac3-4337c94571df">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Targ} + " " + $P{year}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="702" y="0" width="60" height="15" isRemoveLineWhenBlank="true" forecolor="#383838" backcolor="#F5F5F5" uuid="c2deba4f-41c8-49bc-93ef-7ccddbff4c1a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Targ} + " " +$P{yearP1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="762" y="0" width="60" height="15" isRemoveLineWhenBlank="true" forecolor="#383838" backcolor="#F5F5F5" uuid="fdf59b0b-0de9-4865-9a9b-e12fde400946">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Targ} + " " +$P{yearP2}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement positionType="Float" x="0" y="15" width="822" height="15" isRemoveLineWhenBlank="true" uuid="c1e7e525-2e7e-4075-99de-687e543f1269">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="522" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="374ac33d-742a-4829-a1e1-fe9a658db4d0">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_ANNO_ISTANZE2}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="462" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="fe6662aa-a24c-4fe3-a50f-6a2ed8965080">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_ANNO_ISTANZE3}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="702" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="d570fd72-0dd1-4ccd-a6f9-8298948acd2f">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_ANNO_ISTANZE1}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="582" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="89e7b685-9520-4a3f-abc1-ca274f835881">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_ANNO_ISTANZE1}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="762" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="d396fd73-59dd-4da2-a0cd-a84bbbc3ca77">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_ANNO_ISTANZE2}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="642" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="eadd4aef-85a6-4d2d-87f9-24163f0705b1">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_ANNO_ISTANZE}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="0" y="0" width="462" height="15" isRemoveLineWhenBlank="true" forecolor="#333333" backcolor="#FFFFFF" uuid="547b0cd2-d6f3-4477-b6c7-636b9debb661">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ?  
+($F{NOME_ISTANZE_IT}) : 
+($F{NOME_ISTANZE_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="30" width="822" height="15" isRemoveLineWhenBlank="true" uuid="4f5558a5-5b6a-4f14-bf9b-c1f0d92609e8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="522" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="b066d320-c9b3-439f-ac43-48bcbdbac71a">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_ANNO_DURATA2}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="462" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="c0f2b795-839c-4e0d-9cc7-4a8a7cf14fa3">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_ANNO_DURATA3}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="702" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="9b81989a-2fe0-4a25-86d7-8275454435b4">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_ANNO_DURATA1}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="582" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="ce90f8aa-56bc-44c0-abc5-0397fdee1b0b">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{CONSUNTIVO_ANNO_DURATA1}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="762" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="23daa4bd-c4fa-4f44-8c94-8ea256ccde8b">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_ANNO_DURATA2}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="642" y="0" width="60" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="81d7cfd4-0ab1-4607-b969-4648825c0cd5">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols($P{REPORT_LOCALE})).format($F{TARGET_ANNO_DURATA}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="0" y="0" width="462" height="15" isRemoveLineWhenBlank="true" forecolor="#333333" backcolor="#FFFFFF" uuid="3bfad20b-ce28-446c-8b02-e58f9a5b7f63">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ?  
+($F{NOME_DURATA_IT}) : 
+($F{NOME_DURATA_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

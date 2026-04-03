@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_Strat_ObValPub" pageWidth="842" pageHeight="15" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="b1826acb-7e31-452e-a967-7fa0a3a01dd7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="131"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="864"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+OBS.WORK_EFFORT_ID AS ID_OBIETTIVO_STRATEGICO,
+	VALP.WORK_EFFORT_NAME_LANG AS NOME_OBIETTIVO_VALORE_PUBBLICO_IT,
+	VALP.WORK_EFFORT_NAME AS NOME_OBIETTIVO_VALORE_PUBBLICO_DE
+FROM WORK_EFFORT OBS
+/* OBIETTIVO DI VALORE PUBBLICO */
+LEFT JOIN WORK_EFFORT_ASSOC WEA ON WEA.WORK_EFFORT_ID_TO = OBS.WORK_EFFORT_ID AND WEA.WORK_EFFORT_ASSOC_TYPE_ID = '20R12C'
+LEFT JOIN WORK_EFFORT VALP ON VALP.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_FROM AND VALP.WORK_EFFORT_TYPE_ID = '20R124' AND VALP.WORK_EFFORT_REVISION_ID IS NULL
+WHERE OBS.WORK_EFFORT_TYPE_ID = '20D62' AND OBS.WORK_EFFORT_REVISION_ID IS NULL AND OBS.WORK_EFFORT_ID =  $P{work_effort_id_ob}
+GROUP BY 	OBS.WORK_EFFORT_ID,VALP.ETCH,VALP.WORK_EFFORT_NAME_LANG,VALP.WORK_EFFORT_NAME
+ORDER BY VALP.ETCH]]>
+	</queryString>
+	<field name="ID_OBIETTIVO_STRATEGICO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_OBIETTIVO_STRATEGICO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_OBIETTIVO_STRATEGICO"/>
+	</field>
+	<field name="NOME_OBIETTIVO_VALORE_PUBBLICO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_OBIETTIVO_VALORE_PUBBLICO_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_OBIETTIVO_VALORE_PUBBLICO_IT"/>
+	</field>
+	<field name="NOME_OBIETTIVO_VALORE_PUBBLICO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_OBIETTIVO_VALORE_PUBBLICO_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_OBIETTIVO_VALORE_PUBBLICO_DE"/>
+	</field>
+	<variable name="AGGREGATION" class="java.lang.String" resetType="Group" resetGroup="Gruppo1">
+		<variableExpression><![CDATA[$V{AGGREGATION} 
++ ($V{AGGREGATION}.isEmpty() ? "<html>" : "<br/>") 
++ (
+    $P{langLocale}.equals("_LANG")
+        ? (
+            $F{NOME_OBIETTIVO_VALORE_PUBBLICO_IT} != null && !$F{NOME_OBIETTIVO_VALORE_PUBBLICO_IT}.isEmpty()
+                ? $F{NOME_OBIETTIVO_VALORE_PUBBLICO_IT}
+                : ""
+        )
+        : (
+            $F{NOME_OBIETTIVO_VALORE_PUBBLICO_DE} != null && !$F{NOME_OBIETTIVO_VALORE_PUBBLICO_DE}.isEmpty()
+                ? $F{NOME_OBIETTIVO_VALORE_PUBBLICO_DE}
+                : ""
+        )
+)
++ "&nbsp;&nbsp;&nbsp;"]]></variableExpression>
+		<initialValueExpression><![CDATA[""]]></initialValueExpression>
+	</variable>
+	<group name="Gruppo1">
+		<groupExpression><![CDATA[$F{ID_OBIETTIVO_STRATEGICO}]]></groupExpression>
+		<groupFooter>
+			<band height="15">
+				<frame borderSplitType="DrawBorders">
+					<reportElement mode="Transparent" x="0" y="0" width="802" height="15" backcolor="#FFFFFF" uuid="6487c35a-6c9d-47c3-98c4-2287fd13e7c9">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textField textAdjust="StretchHeight" evaluationTime="Report" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="200" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="f7f7badd-65b8-46a2-9bc7-70cbe3c54d76"/>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement verticalAlignment="Middle">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{ObValPub}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" mode="Opaque" x="200" y="0" width="602" height="15" uuid="7feac7e5-1a53-4c6c-be85-d0adf8789f11">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement markup="html"/>
+						<textFieldExpression><![CDATA[$V{AGGREGATION}+"</html>"]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+</jasperReport>

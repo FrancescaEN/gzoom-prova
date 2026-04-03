@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortNoteMapper">
+
+    <resultMap id="workEffortNoteExNoteData" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortNoteExNoteData">
+        <id property="workEffortId" column="work_effort_id" jdbcType="VARCHAR"/>
+        <id property="noteId" column="note_id" jdbcType="VARCHAR"/>
+        <id property="noteData.noteId" column="nd_note_id" jdbcType="VARCHAR"/>
+        <result property="internalNote" column="internal_note" jdbcType="CHAR"/>
+        <result property="lastUpdatedStamp" column="last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="isMain" column="is_main" jdbcType="CHAR"/>
+        <result property="isHtml" column="is_html" jdbcType="CHAR"/>
+        <result property="sequenceId" column="sequence_id" jdbcType="NUMERIC"/>
+        <result property="isPosted" column="is_posted" jdbcType="CHAR"/>
+        <result property="lastModifiedByUserLogin" column="last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="created_by_user_login" jdbcType="VARCHAR"/>
+        <result column = "TOTALE" property = "totalRow"/>
+
+        <result property="noteData.noteName" column="nd_note_name" jdbcType="VARCHAR"/>
+        <result property="noteData.noteInfo" column="nd_note_info" jdbcType="VARCHAR"/>
+        <result property="noteData.noteDateTime" column="nd_note_date_time" jdbcType="TIMESTAMP"/>
+        <result property="noteData.lastUpdatedStamp" column="nd_last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="noteData.lastUpdatedTxStamp" column="nd_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="noteData.createdStamp" column="nd_created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="noteData.createdTxStamp" column="nd_created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="noteData.noteParty" column="nd_note_party" jdbcType="VARCHAR"/>
+        <result property="noteData.moreInfoPortletId" column="nd_more_info_portlet_id" jdbcType="VARCHAR"/>
+        <result property="noteData.moreInfoItemId" column="nd_more_info_item_id" jdbcType="VARCHAR"/>
+        <result property="noteData.isPublic" column="nd_is_public" jdbcType="CHAR"/>
+        <result property="noteData.noteNameLang" column="nd_note_name_lang" jdbcType="VARCHAR"/>
+        <result property="noteData.noteInfoLang" column="nd_note_info_lang" jdbcType="VARCHAR"/>
+        <result property="noteData.lastModifiedByUserLogin" column="nd_last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="noteData.createdByUserLogin" column="nd_created_by_user_login" jdbcType="VARCHAR"/>
+
+        <result column="WEV_WE_ETCH" property="workEffortView.weEtch" jdbcType="VARCHAR"/>
+        <result column="WEV_WORK_EFFORT_NAME_LANG" property="workEffortView.workEffortNameLang" jdbcType="VARCHAR"/>
+        <result column="WEV_WORK_EFFORT_NAME" property="workEffortView.workEffortName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getTotale" >
+        SELECT COUNT(WEN.WORK_EFFORT_ID) AS "TOTALE"
+        FROM WORK_EFFORT_NOTE WEN
+        INNER JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+        JOIN WORK_EFFORT_VIEW WEV ON WEV.WORK_EFFORT_ID = WEN.WORK_EFFORT_ID
+        <if test='(filterGenericLabel != null and filterGenericLabel.length > 0) or (filters != null and filters.length > 0)'>
+            WHERE
+        </if>
+        <include refid="filterWENMatch"></include>
+        <if test='filterGenericLabel != null and filterGenericLabel.length > 0 and filters != null and filters.length > 0'>
+            AND
+        </if>
+        <include refid="filterWEN"></include>
+    </select>
+
+    <sql id="selectWorkEffortNoteJoinNoteData">
+        SELECT WEN.NOTE_ID,
+               WEN.WORK_EFFORT_ID,
+               WEN.SEQUENCE_ID,
+               WEN.INTERNAL_NOTE,
+               WEN.IS_MAIN,
+               WEN.IS_HTML,
+        ND.NOTE_ID AS ND_NOTE_ID,
+        ND.NOTE_NAME AS ND_NOTE_NAME,
+        ND.NOTE_INFO AS ND_NOTE_INFO,
+        ND.NOTE_DATE_TIME AS ND_NOTE_DATE_TIME,
+        ND.NOTE_PARTY AS ND_NOTE_PARTY,
+        ND.IS_PUBLIC AS ND_IS_PUBLIC,
+        ND.NOTE_NAME_LANG AS ND_NOTE_NAME_LANG,
+        ND.NOTE_INFO_LANG AS ND_NOTE_INFO_LANG,
+        WEV.WORK_EFFORT_NAME_LANG AS WEV_WORK_EFFORT_NAME_LANG,
+        WEV.WORK_EFFORT_NAME AS WEV_WORK_EFFORT_NAME,
+        WEV.WE_ETCH AS WEV_WE_ETCH
+    </sql>
+
+    <select id="getWorkEffortNoteExNoteDataList" resultMap="workEffortNoteExNoteData" parameterType="java.util.Map">
+        <include refid="selectWorkEffortNoteJoinNoteData"/>
+
+        FROM WORK_EFFORT_NOTE WEN
+        INNER JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+        JOIN WORK_EFFORT_VIEW WEV ON WEV.WORK_EFFORT_ID = WEN.WORK_EFFORT_ID
+
+        <if test='(filterGenericLabel != null and filterGenericLabel.length > 0) or (filters != null and filters.length > 0)'>
+            WHERE
+        </if>
+        <include refid="filterWENMatch"></include>
+        <if test='filterGenericLabel != null and filterGenericLabel.length > 0 and filters != null and filters.length > 0'>
+            AND
+        </if>
+        <include refid="filterWEN"></include>
+
+
+        <if test='SORTFIELD != null'>
+            <choose>
+                <when test='SORTFIELD == "workEffortIdDesc"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEV.WORK_EFFORT_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEV.WORK_EFFORT_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "noteDateTime"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY ND.NOTE_DATE_TIME ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY ND.NOTE_DATE_TIME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "noteNameDesc"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY ND.NOTE_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY ND.NOTE_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "isHtmlDesc"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEN.IS_HTML_DESC ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEN.IS_HTML_DESC DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "noteInfo"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY ND.NOTE_INFO ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY ND.NOTE_INFO DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "noteInfoLang"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY ND.NOTE_INFO_LANG ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY ND.NOTE_INFO_LANG DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "sequenceId"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEN.SEQUENCE_ID ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEN.SEQUENCE_ID DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "internalNoteDesc"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEN.INTERNAL_NOTE ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEN.INTERNAL_NOTE DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "isMainDesc"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEN.IS_MAIN ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEN.IS_MAIN DESC
+                    </if>
+                </when>
+            </choose>
+        </if>
+        <if test='_databaseId == "mysql"'>
+            LIMIT #{LIMIT}
+            OFFSET #{OFFSET}
+        </if>
+        <if  test='_databaseId != "mysql"'>
+            OFFSET #{OFFSET} ROWS FETCH NEXT #{LIMIT} ROWS ONLY
+        </if>
+    </select>
+
+    <sql id="filterWEN" >
+        <if test='filters != null and filters.length > 0'>
+            (
+            <foreach collection='filters' item="item" index="index" open=" " close="" separator=" AND ">
+                <choose>
+                    <when test='item.field == "workEffortId" and item.value != null'>
+                        WEN.WORK_EFFORT_ID = #{item.value}
+                    </when>
+                    <when test='item.field == "workEffortIdDesc" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            LOWER(WEV.WORK_EFFORT_NAME_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))) OR WEN.WORK_EFFORT_ID = #{item.value}
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            LOWER(WEV.WORK_EFFORT_NAME) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))) OR WEN.WORK_EFFORT_ID = #{item.value}
+                        </if>
+                    </when>
+                    <when test='item.field == "noteDateTime" and item.dateValue != null'>
+                        ND.NOTE_DATE_TIME =  #{ item.dateValue }
+                    </when>
+                    <when test='item.field == "noteNameDesc" and item.value != null' >
+                        <if test='SECONDARYLANGUAGE == true'>
+                             LOWER(
+                            ND.NOTE_NAME_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                             LOWER(ND.NOTE_NAME) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                    </when>
+                    <when test='item.field == "isHtmlDesc" and item.value != null' >
+                         WEN.IS_HTML = #{item.value}
+                    </when>
+                    <when test='item.field == "noteInfo" and item.value != null' >
+                         LOWER(ND.NOTE_INFO) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "noteInfoLang" and item.value != null' >wor
+                         LOWER(ND.NOTE_INFO_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "sequenceId" and item.bigDecimalValue != null' >
+                         WEN.SEQUENCE_ID = #{item.bigDecimalValue}
+                    </when>
+                    <when test='item.field == "internalNoteDesc" and item.value != null' >
+                         WEN.INTERNAL_NOTE = #{item.value}
+                    </when>
+                    <when test='item.field == "isMainDesc" and item.value != null' >
+                         WEN.IS_MAIN = #{item.value}
+                    </when>
+                </choose>
+            </foreach>
+        )
+        </if>
+    </sql>
+
+
+    <sql id="filterWENMatch" >
+        <if test='filterGenericLabel != null and filterGenericLabel.length > 0'>
+            (
+            <foreach collection='filterGenericLabel' item="item" index="index" open="  " close=""
+                     separator=" OR ">
+                <choose>
+                    <when test='item.field == "workEffortIdMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WEV.WORK_EFFORT_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WEV.WORK_EFFORT_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "noteNameMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="ND.NOTE_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="ND.NOTE_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                </choose>
+            </foreach>
+            )
+        </if>
+    </sql>
+
+    <select id="getWorkEffortNoteExNoteData" resultMap="workEffortNoteExNoteData" parameterType="java.util.Map">
+        SELECT WEN.NOTE_ID, WEN.WORK_EFFORT_ID
+        FROM WORK_EFFORT_NOTE WEN
+        INNER JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+        WHERE WEN.WORK_EFFORT_ID = #{workEffortId,jdbcType=VARCHAR} AND WEN.NOTE_ID = #{noteId,jdbcType=VARCHAR} AND ND.NOTE_NAME = #{noteName,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

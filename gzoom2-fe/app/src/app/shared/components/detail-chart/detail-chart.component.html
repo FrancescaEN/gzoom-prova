@@ -1,0 +1,33 @@
+<gzoom-button-bar-table
+  rounded
+  backButton
+  (back)="back.emit($event)"
+  [backLabel]="backLabel()"
+/>
+<div
+  style="display: flex; align-items: stretch; width: 100%; padding-bottom: 10px"
+>
+  <p-card>
+    <div><ng-content select="[options]" /></div>
+  </p-card>
+</div>
+<div style="display: flex; align-items: stretch; width: 100%; height: 100%">
+  <p-card>
+    <div
+      class="d-flex flex-column flex-wrap"
+      style="
+        align-content: stretch;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+      "
+    >
+      <div style="min-width: 320px; width: 100%">
+        <ng-content select="[chart]" />
+      </div>
+      <div class="w-100">
+        <ng-content select="[table]" />
+      </div>
+    </div>
+  </p-card>
+</div>

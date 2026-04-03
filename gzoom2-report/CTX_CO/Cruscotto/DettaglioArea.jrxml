@@ -1,0 +1,1191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DettaglioArea" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="22c2ae8e-c01d-48c4-90cf-a6c01511a2f1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="milanocciaPROD"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="140"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="855"/>
+	<subDataset name="DatasetTabella" uuid="96e10e7b-dc66-4f92-8dc6-8694997a8294">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="milanocciaPROD"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="areaId" class="java.lang.String"/>
+		<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="langLocale" class="java.lang.String"/>
+		<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+		<parameter name="orgUnitId" class="java.lang.String"/>
+		<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="localDispatcherName" class="java.lang.String"/>
+		<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="customTimePeriod" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="filterWhere" class="java.lang.String"/>
+		<parameter name="filterLeftJoin" class="java.lang.String"/>
+		<parameter name="filterInnerJoin" class="java.lang.String"/>
+		<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date0101sql" class="java.lang.String"/>
+		<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="workEffortTypeId" class="java.lang.String"/>
+		<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="YEAR" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select m1.DATA_RIFERIMENTO,m1.ANNO, m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG, m1.ARE_ID,m1.PROCESSO, m1.PROCESSO_LANG, m1.PRO_ID, 
+sum(m1.NUM_PREVISTE) as NUM_PREVISTE,
+sum(m1.MIS_ATTUATE) as MIS_ATTUATE, 
+sum(m1.MIS_NO_ATTUATE) as MIS_NO_ATTUATE, 
+sum(m1.NUM_IN_CORSO) as NUM_IN_CORSO,
+sum(m1.NUM_DA_AVVIARE) as NUM_DA_AVVIARE,
+sum(m1.NUM_RITARDO) as NUM_RITARDO,
+sum(m1.NUM_PARZIALE) as NUM_PARZIALE,
+sum(m1.NUM_NESSUNO) as NUM_NESSUNO,
+sum(m1.NUM_PERSONALE) as NUM_PERSONALE,
+sum(m1.NUM_FINANZIARIO) as NUM_FINANZIARIO,
+sum(m1.NUM_COMPETENZE) as NUM_COMPETENZE,
+sum(m1.NUM_ALTRO) as NUM_ALTRO,
+sum(m1.NUM_IDONEO) as NUM_IDONEO,
+sum(m1.NUM_NON_IDONEO) as NUM_NON_IDONEO,
+sum(m1.NUM_DA_VALUTARE) as NUM_DA_VALUTARE
+from (select m.DATA_RIFERIMENTO,m.ANNO, m.PROCESSO, m.PROCESSO_LANG, m.pRO_ID, m.AREA_RISCHIO, m.AREA_RISCHIO_LANG, m.ARE_ID,
+1 as NUM_PREVISTE, 
+m.SAL_ATTUATA as MIS_ATTUATE,
+case when m.SAL_ATTUATA = 0 then 1 else 0 end as MIS_NO_ATTUATE,
+m.SAL_IN_CORSO as NUM_IN_CORSO,
+m.SAL_DA_AVVIARE as NUM_DA_AVVIARE,
+m.SAL_RITARDO as NUM_RITARDO,
+m.SAL_PARZIALE as NUM_PARZIALE,
+m.OST_NESSUNO as NUM_NESSUNO,
+m.OST_PERSONALE as NUM_PERSONALE,
+m.OST_FINANZIARIO as NUM_FINANZIARIO,
+m.OST_COMPETENZE as NUM_COMPETENZE,
+m.OST_ALTRO as NUM_ALTRO,
+m.IDO_IDONEO as NUM_IDONEO,
+m.IDO_NON_IDONEO as NUM_NON_IDONEO,
+m.IDO_DA_VALUTARE as NUM_DA_VALUTARE
+from COR_MIS_DETAIL_VIEW m
+where are_id= $P{areaId} 
+and anno= $P{YEAR} 
+ $P!{orgUnitIdString} ) m1
+      where 1=1
+   and m1.DATA_RIFERIMENTO= $P{customTimePeriod}
+group by m1.DATA_RIFERIMENTO,m1.ANNO, m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG, m1.ARE_ID,m1.PROCESSO, m1.PROCESSO_LANG, m1.PRO_ID
+order by m1.DATA_RIFERIMENTO,m1.ANNO, m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG, m1.ARE_ID,m1.PROCESSO, m1.PROCESSO_LANG, m1.PRO_ID]]>
+		</queryString>
+		<field name="ANNO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ANNO"/>
+			<property name="com.jaspersoft.studio.field.label" value="ANNO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="pdo"/>
+		</field>
+		<field name="AREA_RISCHIO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="AREA_RISCHIO"/>
+			<property name="com.jaspersoft.studio.field.label" value="AREA_RISCHIO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="are"/>
+		</field>
+		<field name="AREA_RISCHIO_LANG" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="AREA_RISCHIO_LANG"/>
+			<property name="com.jaspersoft.studio.field.label" value="AREA_RISCHIO_LANG"/>
+		</field>
+		<field name="ARE_ID" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ARE_ID"/>
+			<property name="com.jaspersoft.studio.field.label" value="ARE_ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="are"/>
+		</field>
+		<field name="PROCESSO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="PROCESSO"/>
+			<property name="com.jaspersoft.studio.field.label" value="PROCESSO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="pro"/>
+		</field>
+		<field name="PROCESSO_LANG" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="PROCESSO_LANG"/>
+			<property name="com.jaspersoft.studio.field.label" value="PROCESSO_LANG"/>
+		</field>
+		<field name="PRO_ID" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="PRO_ID"/>
+			<property name="com.jaspersoft.studio.field.label" value="PRO_ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="pro"/>
+		</field>
+		<field name="NUM_PREVISTE" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_PREVISTE"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_PREVISTE"/>
+		</field>
+		<field name="MIS_ATTUATE" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="MIS_ATTUATE"/>
+			<property name="com.jaspersoft.studio.field.label" value="MIS_ATTUATE"/>
+		</field>
+		<field name="MIS_NO_ATTUATE" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="MIS_NO_ATTUATE"/>
+			<property name="com.jaspersoft.studio.field.label" value="MIS_NO_ATTUATE"/>
+		</field>
+		<field name="NUM_IN_CORSO" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_IN_CORSO"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_IN_CORSO"/>
+		</field>
+		<field name="NUM_DA_AVVIARE" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_DA_AVVIARE"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_DA_AVVIARE"/>
+		</field>
+		<field name="NUM_RITARDO" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_RITARDO"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_RITARDO"/>
+		</field>
+		<field name="NUM_NESSUNO" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_NESSUNO"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_NESSUNO"/>
+		</field>
+		<field name="NUM_PERSONALE" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_PERSONALE"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_PERSONALE"/>
+		</field>
+		<field name="NUM_FINANZIARIO" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_FINANZIARIO"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_FINANZIARIO"/>
+		</field>
+		<field name="NUM_COMPETENZE" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_COMPETENZE"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_COMPETENZE"/>
+		</field>
+		<field name="NUM_ALTRO" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_ALTRO"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_ALTRO"/>
+		</field>
+		<field name="NUM_IDONEO" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_IDONEO"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_IDONEO"/>
+		</field>
+		<field name="NUM_NON_IDONEO" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_NON_IDONEO"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_NON_IDONEO"/>
+		</field>
+		<field name="NUM_DA_VALUTARE" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="NUM_DA_VALUTARE"/>
+			<property name="com.jaspersoft.studio.field.label" value="NUM_DA_VALUTARE"/>
+		</field>
+		<field name="NUM_PARZIALE" class="java.math.BigDecimal"/>
+		<field name="DATA_RIFERIMENTO" class="java.util.Date"/>
+		<group name="Group1" isReprintHeaderOnEachPage="true" keepTogether="true">
+			<groupExpression><![CDATA[$F{ARE_ID}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="DatasetTestata" uuid="b916a078-5a6f-4cf0-9dac-8574a0903bc4">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="milanocciaPROD"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="188"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="807"/>
+		<parameter name="areaId" class="java.lang.String"/>
+		<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="langLocale" class="java.lang.String"/>
+		<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+		<parameter name="orgUnitId" class="java.lang.String"/>
+		<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="localDispatcherName" class="java.lang.String"/>
+		<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="customTimePeriod" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="filterWhere" class="java.lang.String"/>
+		<parameter name="filterLeftJoin" class="java.lang.String"/>
+		<parameter name="filterInnerJoin" class="java.lang.String"/>
+		<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date0101sql" class="java.lang.String"/>
+		<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="workEffortTypeId" class="java.lang.String"/>
+		<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="YEAR" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select m2.DATA_RIFERIMENTO,m2.ANNO,m2.ETCH_TIPO_MISURA,m2.ETCH_AREA_RISCHIO,
+m2.AREA_RISCHIO, m2.AREA_RISCHIO_LANG, m2.ARE_ID, m2.TIPO_MISURA, m2.TIPO_MISURA_LANG, m2.MIS_TIP, 
+m2.MIS_PREVISTE, m2.MIS_ATTUATE 
+-- round((cast(m2.MIS_ATTUATE as decimal(10,2))/ cast(m2.MIS_PREVISTE as decimal(10,2))* 100.0 )- 100.0 , 0) as MIS_DELTA_PERC
+from (select m1.DATA_RIFERIMENTO,m1.ANNO,m1.ETCH_TIPO_MISURA,m1.ETCH_AREA_RISCHIO, m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG, m1.ARE_ID, m1.TIPO_MISURA, m1.TIPO_MISURA_LANG, m1.MIS_TIP, 
+sum(m1.MIS_PREVISTE) as MIS_PREVISTE, sum(m1.MIS_ATTUATE) as MIS_ATTUATE
+from (select m.DATA_RIFERIMENTO,m.ANNO,m.ETCH_TIPO_MISURA,m.ETCH_AREA_RISCHIO, m.AREA_RISCHIO, m.AREA_RISCHIO_LANG, m.ARE_ID, m.TIPO_MISURA, m.TIPO_MISURA_LANG, m.MIS_TIP, 1 as MIS_PREVISTE, m.SAL_ATTUATA as MIS_ATTUATE
+from COR_MIS_DETAIL_VIEW m 
+where anno= $P{YEAR} 
+and are_id= $P{areaId} 
+ $P!{orgUnitIdString} ) m1
+group by m1.DATA_RIFERIMENTO,m1.ANNO, m1.ETCH_TIPO_MISURA,m1.ETCH_AREA_RISCHIO,m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG, m1.ARE_ID, m1.TIPO_MISURA, m1.TIPO_MISURA_LANG, m1.MIS_TIP
+order by m1.DATA_RIFERIMENTO,m1.ANNO, m1.ETCH_TIPO_MISURA,m1.ETCH_AREA_RISCHIO,m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG, m1.ARE_ID, m1.TIPO_MISURA, m1.TIPO_MISURA_LANG, m1.MIS_TIP) m2
+   where 1=1
+   AND m2.DATA_RIFERIMENTO= $P{customTimePeriod}]]>
+		</queryString>
+		<field name="ANNO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ANNO"/>
+			<property name="com.jaspersoft.studio.field.label" value="ANNO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="custom_time_period"/>
+		</field>
+		<field name="ETCH_TIPO_MISURA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ETCH_TIPO_MISURA"/>
+			<property name="com.jaspersoft.studio.field.label" value="ETCH_TIPO_MISURA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_purpose_type"/>
+		</field>
+		<field name="ETCH_AREA_RISCHIO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ETCH_AREA_RISCHIO"/>
+			<property name="com.jaspersoft.studio.field.label" value="ETCH_AREA_RISCHIO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+		</field>
+		<field name="AREA_RISCHIO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="AREA_RISCHIO"/>
+			<property name="com.jaspersoft.studio.field.label" value="AREA_RISCHIO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+		</field>
+		<field name="AREA_RISCHIO_LANG" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="AREA_RISCHIO_LANG"/>
+			<property name="com.jaspersoft.studio.field.label" value="AREA_RISCHIO_LANG"/>
+		</field>
+		<field name="ARE_ID" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ARE_ID"/>
+			<property name="com.jaspersoft.studio.field.label" value="ARE_ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+		</field>
+		<field name="TIPO_MISURA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="TIPO_MISURA"/>
+			<property name="com.jaspersoft.studio.field.label" value="TIPO_MISURA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_purpose_type"/>
+		</field>
+		<field name="TIPO_MISURA_LANG" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="TIPO_MISURA_LANG"/>
+			<property name="com.jaspersoft.studio.field.label" value="TIPO_MISURA_LANG"/>
+		</field>
+		<field name="MIS_TIP" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="MIS_TIP"/>
+			<property name="com.jaspersoft.studio.field.label" value="MIS_TIP"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+		</field>
+		<field name="MIS_PREVISTE" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="MIS_PREVISTE"/>
+			<property name="com.jaspersoft.studio.field.label" value="MIS_PREVISTE"/>
+		</field>
+		<field name="MIS_ATTUATE" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="MIS_ATTUATE"/>
+			<property name="com.jaspersoft.studio.field.label" value="MIS_ATTUATE"/>
+		</field>
+		<field name="DATA_RIFERIMENTO" class="java.util.Date"/>
+		<variable name="MIS_DELTA_PERC" class="java.math.BigDecimal">
+			<variableExpression><![CDATA[$F{MIS_PREVISTE} != null && new BigDecimal($F{MIS_PREVISTE}).compareTo(BigDecimal.ZERO) != 0 
+    ? ((new BigDecimal($F{MIS_ATTUATE}).divide(new BigDecimal($F{MIS_PREVISTE}), MathContext.DECIMAL64)).multiply(new BigDecimal(100)) .subtract(new BigDecimal(100)).setScale(0, RoundingMode.HALF_UP)): BigDecimal.ZERO]]></variableExpression>
+			<initialValueExpression><![CDATA[$F{MIS_PREVISTE} != null && new BigDecimal($F{MIS_PREVISTE}).compareTo(BigDecimal.ZERO) != 0 
+    ? ((new BigDecimal($F{MIS_ATTUATE}).divide(new BigDecimal($F{MIS_PREVISTE}), MathContext.DECIMAL64)).multiply(new BigDecimal(100)) .subtract(new BigDecimal(100)).setScale(0, RoundingMode.HALF_UP)): BigDecimal.ZERO]]></initialValueExpression>
+		</variable>
+		<group name="Group1" isReprintHeaderOnEachPage="true">
+			<groupExpression><![CDATA[$F{ARE_ID}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="DatasetAltro" uuid="a1e206b8-6f24-4c25-a37b-069df96b4232">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="milanocciaPROD"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="areaId" class="java.lang.String"/>
+		<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="langLocale" class="java.lang.String"/>
+		<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+		<parameter name="orgUnitId" class="java.lang.String"/>
+		<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="localDispatcherName" class="java.lang.String"/>
+		<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="customTimePeriod" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="filterWhere" class="java.lang.String"/>
+		<parameter name="filterLeftJoin" class="java.lang.String"/>
+		<parameter name="filterInnerJoin" class="java.lang.String"/>
+		<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date0101sql" class="java.lang.String"/>
+		<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="workEffortTypeId" class="java.lang.String"/>
+		<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="YEAR" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select m.DATA_RIFERIMENTO,m.are_id,m.misura,m.nota_ostativa
+from COR_MIS_DETAIL_VIEW m
+where are_id= $P{areaId} 
+and anno= $P{YEAR} 
+and m.DATA_RIFERIMENTO= $P{customTimePeriod}
+and ost_altro='1'
+group by m.DATA_RIFERIMENTO,m.are_id,m.misura,m.nota_ostativa
+]]>
+		</queryString>
+		<field name="ARE_ID" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ARE_ID"/>
+			<property name="com.jaspersoft.studio.field.label" value="ARE_ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="cor_mis_detail_view"/>
+		</field>
+		<field name="MISURA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="MISURA"/>
+			<property name="com.jaspersoft.studio.field.label" value="MISURA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="cor_mis_detail_view"/>
+		</field>
+		<field name="NOTA_OSTATIVA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOTA_OSTATIVA"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOTA_OSTATIVA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="cor_mis_detail_view"/>
+		</field>
+		<field name="DATA_RIFERIMENTO" class="java.util.Date"/>
+		<group name="Group1" isReprintHeaderOnEachPage="true" keepTogether="true">
+			<groupExpression><![CDATA[$F{ARE_ID}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="YEAR" class="java.lang.String"/>
+	<parameter name="areaId" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select m2.ANNO, 
+	m2.AREA_RISCHIO, 
+	m2.AREA_RISCHIO_LANG, 
+	m2.ETCH_AREA_RISCHIO,
+	m2.ARE_ID, 
+	m2.TIPO_MISURA, 
+	m2.TIPO_MISURA_LANG, 
+	m2.MIS_TIP, 
+	m2.MIS_PREVISTE, 
+	-- round((cast(m2.MIS_ATTUATE as decimal(10,2))/ cast(m2.MIS_PREVISTE as decimal(10,2))* 100.0 )- 100.0 ,0) as MIS_DELTA_PERC,
+	m2.MIS_ATTUATE 
+from (select m1.ANNO, m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG,	m1.ETCH_AREA_RISCHIO, m1.ARE_ID, m1.TIPO_MISURA, m1.TIPO_MISURA_LANG, m1.MIS_TIP, 
+sum(m1.MIS_PREVISTE) as MIS_PREVISTE, sum(m1.MIS_ATTUATE) as MIS_ATTUATE
+from (select m.ANNO, m.AREA_RISCHIO, m.AREA_RISCHIO_LANG,m.ETCH_AREA_RISCHIO,m.ARE_ID, m.TIPO_MISURA, m.TIPO_MISURA_LANG, m.MIS_TIP, 1 as MIS_PREVISTE, m.SAL_ATTUATA as MIS_ATTUATE
+from COR_MIS_DETAIL_VIEW m 
+where anno= $P{YEAR} 
+ $P!{orgUnitIdString} ) m1
+group by m1.ANNO,m1.ETCH_AREA_RISCHIO, m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG,m1.ARE_ID, m1.TIPO_MISURA, m1.TIPO_MISURA_LANG, m1.MIS_TIP
+order by m1.ANNO,m1.ETCH_AREA_RISCHIO,m1.AREA_RISCHIO, m1.AREA_RISCHIO_LANG,m1.ARE_ID, m1.TIPO_MISURA, m1.TIPO_MISURA_LANG, m1.MIS_TIP
+) m2
+   where 1=1]]>
+	</queryString>
+	<field name="ANNO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ANNO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ANNO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="custom_time_period"/>
+	</field>
+	<field name="AREA_RISCHIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="AREA_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="AREA_RISCHIO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="AREA_RISCHIO_LANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="AREA_RISCHIO_LANG"/>
+		<property name="com.jaspersoft.studio.field.label" value="AREA_RISCHIO_LANG"/>
+	</field>
+	<field name="ARE_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ARE_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="ARE_ID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="TIPO_MISURA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TIPO_MISURA"/>
+		<property name="com.jaspersoft.studio.field.label" value="TIPO_MISURA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_purpose_type"/>
+	</field>
+	<field name="TIPO_MISURA_LANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TIPO_MISURA_LANG"/>
+		<property name="com.jaspersoft.studio.field.label" value="TIPO_MISURA_LANG"/>
+	</field>
+	<field name="MIS_TIP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MIS_TIP"/>
+		<property name="com.jaspersoft.studio.field.label" value="MIS_TIP"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="MIS_PREVISTE" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="MIS_PREVISTE"/>
+		<property name="com.jaspersoft.studio.field.label" value="MIS_PREVISTE"/>
+	</field>
+	<field name="MIS_ATTUATE" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="MIS_ATTUATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="MIS_ATTUATE"/>
+	</field>
+	<field name="ETCH_AREA_RISCHIO" class="java.lang.String"/>
+	<group name="Gruppo1" isStartNewPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{ARE_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="135" splitType="Stretch">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="40" width="802" height="45" isRemoveLineWhenBlank="true" uuid="52de8968-fb4f-43e4-89e1-7817f7b55ffe">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<subreportParameter name="areaId">
+						<subreportParameterExpression><![CDATA[$F{ARE_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="orgUnitIdString">
+						<subreportParameterExpression><![CDATA[$P{orgUnitIdString}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="customTimePeriod">
+						<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["IstogrammaDettaglioArea.jasper"]]></subreportExpression>
+				</subreport>
+				<componentElement>
+					<reportElement positionType="Float" x="1" y="90" width="802" height="45" isRemoveLineWhenBlank="true" uuid="d5c4fba0-8ad2-4ad2-b6c8-ba0b32c19b38">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetTestata" uuid="c12113e4-aea8-4007-b76d-4b12e6bcea57">
+							<datasetParameter name="areaId">
+								<datasetParameterExpression><![CDATA[$F{ARE_ID}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="orgUnitIdString">
+								<datasetParameterExpression><![CDATA[$P{orgUnitIdString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="YEAR">
+								<datasetParameterExpression><![CDATA[$P{YEAR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="customTimePeriod">
+								<datasetParameterExpression><![CDATA[$P{customTimePeriod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:columnGroup width="802" uuid="478e766a-d484-4d0e-8837-5600af64fb37">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonne [4]"/>
+							<jr:tableHeader height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<textField textAdjust="StretchHeight">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="802" height="15" backcolor="#A0CBE8" uuid="a7ad1c82-831b-4f35-b41d-bfa0d6935ab4"/>
+									<box>
+										<pen lineWidth="0.1"/>
+										<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textElement textAlignment="Center"/>
+									<textFieldExpression><![CDATA[$F{ETCH_AREA_RISCHIO}+" - "+$F{AREA_RISCHIO}]]></textFieldExpression>
+								</textField>
+							</jr:tableHeader>
+							<jr:column width="510" uuid="22e3d174-ceb4-43ba-9ec7-4019ce9e7bcd">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+								<jr:tableHeader height="0" rowSpan="1">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</jr:tableHeader>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.height" value="px"/>
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="510" height="15" backcolor="#A0CBE8" uuid="f69be63b-dbb7-45dd-a3a6-45fe355b2ce0"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2"/>
+											<textFieldExpression><![CDATA["Tipologie misure"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="15">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="510" height="15" uuid="2819870c-3230-445f-bd17-daa48426e6dc"/>
+										<box topPadding="2" leftPadding="2" bottomPadding="2"/>
+										<textElement verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{ETCH_TIPO_MISURA}+" - "+$F{TIPO_MISURA}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="120" uuid="6e1e748e-3a94-4ca6-bd5d-ef10e09da648">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+								<jr:tableHeader height="0" rowSpan="1"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="120" height="15" backcolor="#A0CBE8" uuid="aa6400e0-9d00-4b77-aa66-5e82ca850f53"/>
+											<textElement textAlignment="Center"/>
+											<textFieldExpression><![CDATA["Misure programmate"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="15">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="120" height="15" uuid="18183f71-0f48-4bb2-bad6-577327dfe5d3"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{MIS_PREVISTE}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="100" uuid="99377851-13e5-489a-aeb6-f3e1e8947a52">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+								<jr:tableHeader height="0" rowSpan="1"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="100" height="15" backcolor="#A0CBE8" uuid="d7679f02-4b64-4353-bc78-3c9d4142eb9f"/>
+											<textElement textAlignment="Center"/>
+											<textFieldExpression><![CDATA["Misure attuate"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="15">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="100" height="15" uuid="7da5f664-e113-4d74-9e74-4e991a0052b7"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{MIS_ATTUATE}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="72" uuid="2c60ba26-313d-4506-8bb4-584fbe239a81">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna4"/>
+								<jr:tableHeader height="0" rowSpan="1"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="72" height="15" backcolor="#A0CBE8" uuid="2fb771b4-6460-49ec-83ac-6b17637b99b0"/>
+											<textElement textAlignment="Center"/>
+											<textFieldExpression><![CDATA["Delta (%)"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="15">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="72" height="15" uuid="281cf57f-3c44-40f3-a2e6-eb11e3c6def0"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$V{MIS_DELTA_PERC}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+						</jr:columnGroup>
+					</jr:table>
+				</componentElement>
+				<textField textAdjust="StretchHeight" hyperlinkType="LocalAnchor" bookmarkLevel="1">
+					<reportElement x="1" y="0" width="802" height="30" uuid="0cfb5fe1-3c43-4ddd-8273-d23c2709aad5">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{AREA_RISCHIO}+" - Attuazione delle misure specifiche di contrasto ad eventi di maladministration, riportate per tipologia misura"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA[$F{ETCH_AREA_RISCHIO}+" - "+$F{AREA_RISCHIO}]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+				</textField>
+			</band>
+			<band height="50" splitType="Prevent">
+				<componentElement>
+					<reportElement positionType="Float" x="0" y="0" width="802" height="45" isRemoveLineWhenBlank="true" uuid="d47765a9-99de-44b9-9147-9aabdbc042cb">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetTabella" uuid="869995da-e045-4720-9343-5b163883a1a9">
+							<datasetParameter name="areaId">
+								<datasetParameterExpression><![CDATA[$F{ARE_ID}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="orgUnitIdString">
+								<datasetParameterExpression><![CDATA[$P{orgUnitIdString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="YEAR">
+								<datasetParameterExpression><![CDATA[$P{YEAR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="customTimePeriod">
+								<datasetParameterExpression><![CDATA[$P{customTimePeriod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:columnGroup width="802" uuid="b148ad37-58b6-43fc-9850-5e59188dde4e">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonne [11]"/>
+							<jr:groupHeader groupName="Group1">
+								<jr:cell height="0" rowSpan="1">
+									<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:column width="342" uuid="b86aa1fb-507f-4c9d-af90-4989a13ac1bf">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.height" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="342" height="15" backcolor="#A0CBE8" uuid="30e28447-a999-46d1-8f62-6a55310525de"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2"/>
+											<textElement verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Processi"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="342" height="30" uuid="e1f7747a-9bb1-4760-aff8-72f9686571db"/>
+										<box topPadding="2" leftPadding="2" bottomPadding="2"/>
+										<textElement verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{PROCESSO}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="8a20e5ec-3891-4678-aca2-e74581bb11d8">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="0df9d459-7c49-4a33-96c3-757d94f44d3a"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Totale misure attuate"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="2eb0629b-e20f-4e7a-bec0-64da3027448b"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{MIS_ATTUATE}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="854b5c16-8bcd-40b3-8d55-22e2a6608958">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="8b5bf83e-5e4e-4f2e-ad5c-001a10851d78"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Misure attuate parzialmente"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="55062e8b-3b60-434b-8bd0-e4f745a6a236"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_PARZIALE}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="106bbbf2-90fb-4981-81e3-3adb36f35cf0">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna4"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="933dd929-6e10-4fcd-b1f7-3df3cc0a256e"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Misure in corso d’adozione"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="00e90a3e-291d-4c79-a678-68a78847f1bd"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_IN_CORSO}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="7de0d7bc-aa7b-409f-ab34-a17fd69ab31c">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna5"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="a4b08c70-224b-4245-b73c-68194905d7cd"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Misure da avviare nei tempi previsti"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="6359ac73-5891-4fde-b26b-8970781163e8"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_DA_AVVIARE}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="34fe7eb5-ee4f-45b0-9cbd-e64c145c5954">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna6"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="2f1be338-3cd4-4d61-b596-d55f5216a331"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Misura che non si riuscirà ad attuare nei tempi previsti"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="8dbc0457-fa8a-4748-a77f-9659dffff729"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_RITARDO}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="9ec085c3-6412-4896-8562-2fd21168283a">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna7"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="cb1ac607-6c63-4150-bf0b-7b4224829f91"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Causa carenza personale"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="06b59d1c-a2cb-45a1-8568-58b2a22b9f1f"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_PERSONALE}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="3c0dd0b8-f3b1-4aef-b027-9bea55f96393">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna8"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="e870985c-9139-41cd-94f5-53e952233ff1"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Causa carenza ris. finanziarie"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="ac48c5aa-869d-424d-b8c1-5e15384c5c5c"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_FINANZIARIO}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="e962dadd-92b1-482f-bd7c-55f365c779be">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna9"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="72985c0e-fa6e-44b9-be57-24c91e758cc1"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Causa carenza competenze"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="9973f2b5-56c1-436c-bd1a-7ed134d9e356"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_COMPETENZE}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="980eea80-1118-4b4e-b156-0b3865d657dd">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna10"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="82f3bb48-27e8-4a47-8bfd-8f376cd38eda"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Altre cause ostative"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="d3c7e238-bb85-4fe9-8d74-4dc9f0fdbd86"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_ALTRO}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="46" uuid="593f00bb-9187-4b34-811d-aade02e06c31">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna11"/>
+								<jr:groupHeader groupName="Group1">
+									<jr:cell height="15" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<box>
+											<pen lineWidth="0.2"/>
+											<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textField textAdjust="StretchHeight">
+											<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="46" height="15" backcolor="#A0CBE8" uuid="227cee41-1dc4-496a-aa22-eda721b692a9"/>
+											<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA["Totale misure idonee"]]></textFieldExpression>
+										</textField>
+									</jr:cell>
+								</jr:groupHeader>
+								<jr:detailCell height="30">
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement positionType="Float" x="0" y="0" width="46" height="30" uuid="6adf5163-3fcf-4506-91df-c3c5e164e5b9"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NUM_IDONEO}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+						</jr:columnGroup>
+					</jr:table>
+				</componentElement>
+			</band>
+			<band height="15">
+				<componentElement>
+					<reportElement positionType="Float" x="0" y="0" width="802" height="15" isRemoveLineWhenBlank="true" uuid="d25a3610-9fc9-49f7-99ec-d0301657afe3">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetAltro" uuid="0caf0a82-a147-4b59-82e9-1bd17876a1d6">
+							<datasetParameter name="areaId">
+								<datasetParameterExpression><![CDATA[$F{ARE_ID}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="YEAR">
+								<datasetParameterExpression><![CDATA[$P{YEAR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="customTimePeriod">
+								<datasetParameterExpression><![CDATA[$P{customTimePeriod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:columnGroup width="802" uuid="4c1f5d63-9d3b-4966-bc98-7fee27782c53">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonne [2]"/>
+							<jr:column width="401" uuid="8555e311-26ec-42f2-a3ca-c030d0c15e75">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+								<jr:detailCell height="15">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight">
+										<reportElement x="0" y="0" width="401" height="15" uuid="0e58a786-fd6f-46c3-acee-a73e0307f773"/>
+										<box padding="3"/>
+										<textElement verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{MISURA}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="401" uuid="f6312e16-8e1c-4064-b2ad-36fc385f5b14">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+								<jr:detailCell height="15">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<box>
+										<pen lineWidth="0.2"/>
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+										<reportElement x="0" y="0" width="401" height="15" uuid="6b9b67c3-8f99-4ccb-882d-0d8c81d0aa44"/>
+										<box padding="3"/>
+										<textElement verticalAlignment="Middle"/>
+										<textFieldExpression><![CDATA[$F{NOTA_OSTATIVA}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+						</jr:columnGroup>
+					</jr:table>
+				</componentElement>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+</jasperReport>

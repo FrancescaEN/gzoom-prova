@@ -1,0 +1,81 @@
+<app-overlay-screen></app-overlay-screen>
+<p-toast></p-toast>
+
+<!-- Messages Error -->
+<p-messages [(value)]="messagesError" [enableService]="false"></p-messages>
+
+<app-information-bar [bodyBarArray]="bodyBarArray"></app-information-bar>
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table
+      [gridArray]="gridArray"
+      (buttonNewEvent)="openNew()"
+      (deleteEvent)="deleteRowSelected()"
+      (saveEvent)="saveAllElement()"
+      (bldxEvent)="validation()"
+      [buttonDelete]="buttonDelete"
+      [backLinkRelToThisRoute]="backLink"
+      [buttonBack]="true"
+      (bldx2Event)="reopen()"
+      [buttonNew]="buttonNew"
+      [bldx]="buttonValidation"
+      [bldx2]="buttonValidationReopen"
+      [dataTable]="dataTable"
+      [buttonSave]="buttonSave"
+    ></app-toolbar-data-table>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <div *ngIf="loading" class="d-flex justify-content-center">
+      <p-progressSpinner
+        [style]="{ width: '50px', height: '50px' }"
+        styleClass="custom-spinner"
+        strokeWidth="8"
+        fill="var(--surface-ground)"
+        animationDuration=".5s"
+      ></p-progressSpinner>
+    </div>
+    <app-table-editing-cell
+      *ngIf="!loading"
+      [isNewItem]="newTimeEntry"
+      [selectedOn]="selectedOn"
+      [isAction]="true"
+      [headArray]="headArray"
+      [gridArray]="gridArray"
+      [editingCell]="true"
+      [formShape]="range"
+      [editingKeyId]="editingKeyId"
+      [typeDropdownInputArray]="workEffortsName"
+      [scrollHeight]="'45vh'"
+      (selectedItemDropdown)="selectedItemDropdown($event)"
+      (shareDescriptorTable)="shareDescriptorTable($event)"
+      (notifyInputChanges)="notifyInputChanges($event)"
+      (shareSelectionItem)="shareSelectionItem($event)"
+    ></app-table-editing-cell>
+  </ng-template>
+</p-card>
+
+<!-- ###################CONFIRM #################### -->
+
+<p-confirmDialog #cd [style]="{ width: '450px' }">
+  <ng-template pTemplate="header" icon="pi pi-times-circle">
+    <h3>{{ "Attention" | i18n }}</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times-circle"
+      label="No"
+      (click)="cd.reject()"
+      aria-label="select no"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      label="Yes"
+      (click)="cd.accept()"
+      aria-label="select yes"
+    ></button>
+  </ng-template>
+</p-confirmDialog>

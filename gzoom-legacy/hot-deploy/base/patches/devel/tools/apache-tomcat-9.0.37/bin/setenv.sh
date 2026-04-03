@@ -1,0 +1,1 @@
+CATALINA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server @startofbiz.MEMIF@ -XX:+DisableExplicitGC @debugofbiz.REMOTE@"

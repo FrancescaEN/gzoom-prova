@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.UomMapper">
+
+
+    <resultMap id="uomType" type="it.mapsgroup.gzoom.mybatis.dto.UomType">
+        <id property="uomTypeId" column="uom_type_id" jdbcType="VARCHAR"/>
+        <result property="parentTypeId" column="parent_type_id" jdbcType="VARCHAR"/>
+        <result property="hasTable" column="has_table" jdbcType="CHAR"/>
+        <result property="description" column="UT_DESCRIPTION" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="UT_LASTUPDATEDSTAMP" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="UT_LASTUPDATEDTXSTAMP" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="UT_CREATEDSTAMP" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="UT_CREATEDTXSTAMP" jdbcType="TIMESTAMP"/>
+        <result property="isReserved" column="is_reserved" jdbcType="CHAR"/>
+        <result property="lastModifiedByUserLogin" column="last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="UT_CREATEDBYUSERLOGIN" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="uomEx" type="it.mapsgroup.gzoom.mybatis.dto.UomEx">
+        <id property="uomId" column="uom_id" jdbcType="VARCHAR"/>
+        <result property="uomTypeId" column="uom_type_id" jdbcType="VARCHAR"/>
+        <result property="abbreviation" column="abbreviation" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="decimalScale" column="decimal_scale" jdbcType="NUMERIC"/>
+        <result property="minValue" column="min_value" jdbcType="DOUBLE"/>
+        <result property="maxValue" column="max_value" jdbcType="DOUBLE"/>
+        <result property="abbreviationLang" column="abbreviation_lang" jdbcType="VARCHAR"/>
+        <result property="descriptionLang" column="description_lang" jdbcType="VARCHAR"/>
+        <result property="lastModifiedByUserLogin" column="last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="created_by_user_login" jdbcType="VARCHAR"/>
+        <association property="uomType" resultMap="uomType" />
+    </resultMap>
+
+    <select id="getUoms" resultMap="uomEx">
+        SELECT U.*, UT.*, UT.DESCRIPTION AS UT_DESCRIPTION,
+        UT.CREATED_BY_USER_LOGIN AS UT_CREATED_BY_USER_LOGIN,
+        UT.CREATED_STAMP AS UT_CREATED_STAMP,
+        UT.LAST_UPDATED_STAMP AS UT_LAST_UPDATED_STAMP,
+        UT.CREATED_TX_STAMP AS UT_CREATED_TX_STAMP,
+        UT.LAST_UPDATED_TX_STAMP AS UT_LAST_UPDATED_TX_STAMP
+        FROM UOM U
+        INNER JOIN UOM_TYPE UT ON UT.UOM_TYPE_ID = U.UOM_TYPE_ID
+        ORDER BY UT.DESCRIPTION
+    </select>
+
+    <select id="getUom" resultMap="uomEx">
+        SELECT U.*, UT.*, UT.DESCRIPTION AS UT_DESCRIPTION,
+        UT.CREATED_BY_USER_LOGIN AS UT_CREATED_BY_USER_LOGIN,
+        UT.CREATED_STAMP AS UT_CREATED_STAMP,
+        UT.LAST_UPDATED_STAMP AS UT_LAST_UPDATED_STAMP,
+        UT.CREATED_TX_STAMP AS UT_CREATED_TX_STAMP,
+        UT.LAST_UPDATED_TX_STAMP AS UT_LAST_UPDATED_TX_STAMP
+        FROM UOM U
+        INNER JOIN UOM_TYPE UT ON UT.UOM_TYPE_ID = U.UOM_TYPE_ID
+        WHERE U.UOM_ID = #{uomId}
+        ORDER BY UT.DESCRIPTION
+    </select>
+
+</mapper>

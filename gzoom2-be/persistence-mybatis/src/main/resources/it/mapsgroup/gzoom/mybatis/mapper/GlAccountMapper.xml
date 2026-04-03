@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.GlAccountMapper">
+
+    <select id="selectGlAccount">
+        select ga.* from gl_account ga
+        join gl_account_organization gao on gao.gl_account_id = ga.gl_account_id
+        <if test="isReservedAccount != null">
+            join gl_account_type gat on gat.gl_account_type_id = ga.gl_account_type_id
+        </if>
+        <if test="workEffortPurposeTypeId">
+            join work_effort_purpose_account wepa on wepa.gl_account_id = ga.gl_account_id
+            join work_effort_purpose_type wept on wept.work_effort_purpose_type_id = wepa.work_effort_purpose_type_id
+        </if>
+        where
+        ga.account_type_enum_id = #{accountTypeEnumId,jdbcType=VARCHAR}
+        AND gao.organization_party_id = #{organizationId,jdbcType=VARCHAR}
+        <if test="isReservedAccount != null">
+            AND gat.is_reserved_account = #{isReservedAccount,jdbcType=VARCHAR}
+        </if>
+        <if test="isAdmin == false">
+            AND ga.RESP_CENTER_ID IS NOT NULL
+        </if>
+        <if test="respCenterId">
+            AND ga.resp_center_id = #{respCenterId}
+        </if>
+
+        <if test="workEffortPurposeTypeId">
+            AND
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.forEachIn">
+                <property name="columnName" value="wept.work_effort_purpose_type_id"/>
+                <property name="inList" value="workEffortPurposeTypeId"/>
+            </include>
+        </if>
+        <if test="glAccountTypeId">
+            AND ga.gl_account_type_id = #{glAccountTypeId}
+        </if>
+        <if test="inputEnumId">
+            AND ga.input_enum_id = #{inputEnumId}
+        </if>
+        <if test="detectOrgUnitIdFlag != null">
+            AND ga.detect_org_unit_id_flag = #{detectOrgUnitIdFlag}
+        </if>
+        <if test="debitCreditDefault">
+            AND ga.debit_credit_default = #{debitCreditDefault}
+        </if>
+        <if test="periodTypeId">
+            AND ga.period_type_id = #{periodTypeId}
+        </if>
+        <if test="currentStatusId">
+            AND ga.current_status_id = #{currentStatusId}
+        </if>
+
+        <if test="search and matchMode">
+            <include refid="searchByMatchMode"/>
+        </if>
+        order by
+        <if test="orderBy">${orderBy} <if test="orderType">${orderType}</if>,
+        </if>
+        ga.gl_account_id
+    </select>
+
+    <select id="selectGlAccountByFilterParams">
+        select ga.* from gl_account ga
+        <if test="workEffortPurposeTypeId">
+            join work_effort_purpose_account wepa on wepa.gl_account_id = ga.gl_account_id
+            join work_effort_purpose_type wept on wept.work_effort_purpose_type_id = wepa.work_effort_purpose_type_id
+        </if>
+        where
+        1=1
+        <if test="workEffortPurposeTypeId">
+            AND
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.forEachIn">
+                <property name="columnName" value="wept.work_effort_purpose_type_id"/>
+                <property name="inList" value="workEffortPurposeTypeId"/>
+            </include>
+        </if>
+        <if test="glAccountTypeId">
+            AND ga.gl_account_type_id = #{glAccountTypeId}
+        </if>
+        <if test="search and matchMode">
+            AND (
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                <property name="columnName" value="ga.gl_account_id"/>
+                <property name="text" value="#{search}"/>
+                <property name="matchMode" value="matchModeSearch"/>
+            </include>
+            OR
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                <property name="columnName" value="ga.account_code"/>
+                <property name="text" value="#{search}"/>
+                <property name="matchMode" value="matchModeSearch"/>
+            </include>
+
+            <if test="isSecondaryLang == true">
+                OR
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                    <property name="columnName" value="ga.account_name_lang"/>
+                    <property name="text" value="#{search}"/>
+                    <property name="matchMode" value="matchModeSearch"/>
+                </include>
+            </if>
+            <if test="isSecondaryLang == false">
+                OR
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                    <property name="columnName" value="ga.account_name"/>
+                    <property name="text" value="#{search}"/>
+                    <property name="matchMode" value="matchModeSearch"/>
+                </include>
+            </if>
+            )
+        </if>
+        order by
+        ga.gl_account_id
+    </select>
+
+    <select id="getGlAccountMovements">
+        SELECT GA.* FROM GL_ACCOUNT GA
+        JOIN ACCTG_TRANS_ENTRY ATE ON GA.GL_ACCOUNT_ID = ATE.GL_ACCOUNT_ID
+        JOIN ACCTG_TRANS AT2 ON AT2.ACCTG_TRANS_ID = ATE.ACCTG_TRANS_ID
+        JOIN GL_FISCAL_TYPE GFT ON GFT.GL_FISCAL_TYPE_ID = ATE.GL_FISCAL_TYPE_ID AND GFT.GL_FISCAL_TYPE_ID = AT2.GL_FISCAL_TYPE_ID AND
+        <if test="accountTypeEnumId == 'INDICATOR'">
+            GFT.IS_INDICATOR_USED = 'Y'
+        </if>
+        <if test="accountTypeEnumId == 'FINANCIAL'">
+            GFT.IS_FINANCIAL_USED = 'Y'
+        </if>
+        <if test="accountTypeEnumId == 'ACCOUNT'">
+            GFT.IS_ACCOUNT_USED = 'Y'
+        </if>
+        JOIN GL_ACCOUNT_ORGANIZATION GAO ON GAO.GL_ACCOUNT_ID = GA.GL_ACCOUNT_ID
+            <if test="isReservedAccount">
+                JOIN GL_ACCOUNT_TYPE GAT ON GAT.GL_ACCOUNT_TYPE_ID = GA.GL_ACCOUNT_TYPE_ID AND GAT.IS_RESERVED_ACCOUNT = #{isReservedAccount,jdbcType=VARCHAR}
+            </if>
+        JOIN CUSTOM_TIME_PERIOD CTP ON CTP.PERIOD_TYPE_ID = GA.PERIOD_TYPE_ID AND CTP.THRU_DATE = AT2.TRANSACTION_DATE
+        WHERE
+        GA.ACCOUNT_TYPE_ENUM_ID = #{accountTypeEnumId,jdbcType=VARCHAR}
+        AND GAO.ORGANIZATION_PARTY_ID = #{organizationId,jdbcType=VARCHAR}
+        AND GA.INPUT_ENUM_ID = #{inputEnumId,jdbcType=VARCHAR}
+        AND GA.DETECT_ORG_UNIT_ID_FLAG = #{detectOrgUnitIdFlag,jdbcType=VARCHAR}
+        <if test="isAdmin == false">
+            AND ga.RESP_CENTER_ID IS NOT NULL
+            AND EXISTS (SELECT 1 from USER_LOGIN_SECURITY_GROUP ULSG
+            INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+            INNER JOIN PARTY_RELATIONSHIP PR ON PR.PARTY_ID_TO = UL.PARTY_ID
+            AND PR.PARTY_ID_FROM = ga.RESP_CENTER_ID
+            AND PR.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+            AND PR.THRU_DATE IS NULL
+            WHERE ULSG.USER_LOGIN_ID = #{userLoginId})
+        </if>
+        GROUP BY GA.GL_ACCOUNT_ID
+    </select>
+
+    <sql id="searchByMatchMode">
+        AND (
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+            <property name="columnName" value="ga.gl_account_id"/>
+            <property name="text" value="#{search}"/>
+            <property name="matchMode" value="matchModeSearch"/>
+        </include>
+        OR
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+            <property name="columnName" value="ga.account_code"/>
+            <property name="text" value="#{search}"/>
+            <property name="matchMode" value="matchModeSearch"/>
+        </include>
+
+        <if test="isSecondaryLang == true">
+            OR
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                <property name="columnName" value="ga.account_name_lang"/>
+                <property name="text" value="#{search}"/>
+                <property name="matchMode" value="matchModeSearch"/>
+            </include>
+            OR
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                <property name="columnName" value="ga.description_lang"/>
+                <property name="text" value="#{search}"/>
+                <property name="matchMode" value="matchModeSearch"/>
+            </include>
+        </if>
+        <if test="isSecondaryLang == false">
+            OR
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                <property name="columnName" value="ga.account_name"/>
+                <property name="text" value="#{search}"/>
+                <property name="matchMode" value="matchModeSearch"/>
+            </include>
+            OR
+            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                <property name="columnName" value="ga.description"/>
+                <property name="text" value="#{search}"/>
+                <property name="matchMode" value="matchModeSearch"/>
+            </include>
+        </if>
+        )
+    </sql>
+
+    <select id="selectGlAccountByOrgId">
+        select ga.* from gl_account ga
+        join gl_account_organization gao on gao.gl_account_id = ga.gl_account_id
+        where gao.organization_party_id = #{organizationId,jdbcType=VARCHAR}
+    <if test="isAdmin == false">
+        AND ga.RESP_CENTER_ID IS NOT NULL
+        AND EXISTS (SELECT 1 from USER_LOGIN_SECURITY_GROUP ULSG
+        INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+        INNER JOIN PARTY_RELATIONSHIP PR ON PR.PARTY_ID_TO = UL.PARTY_ID
+        AND PR.PARTY_ID_FROM = ga.RESP_CENTER_ID
+        AND PR.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+        AND PR.THRU_DATE IS NULL
+        WHERE ULSG.USER_LOGIN_ID = #{userLoginId})
+    </if>
+    </select>
+
+
+</mapper>

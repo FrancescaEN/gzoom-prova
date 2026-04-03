@@ -1,0 +1,26 @@
+<div>
+  <p-card class="flex-shrink-3" [style]="{ scale: '0.8' }">
+    <ng-template pTemplate="header">
+      <div class="card-line-header"></div>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <div class="row" style="
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-around;
+        ">
+        <div *ngFor="let item of bodyBarArray" class="col" style="flex-shrink: 3; width: 3em">
+          <h6 class="first" role="heading">{{ item.head | i18n }}</h6>
+          <hr style="color: black" />
+          @if(item.unit === this.unitType.PERCENTAGE) {
+            <h5 class="first" role="heading">{{ item.label | formatPercentNumberStyle}}</h5>
+          }@else {
+            <h5 class="first" role="heading">{{ item.label }}</h5>
+          }
+          
+        </div>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.GlAccountRoleMapper">
+
+
+
+
+    <select id="getUoDetectedByGlAccountId" resultMap="glAccountRoleEx">
+        select gar.*,
+               rt.role_type_id as rt_role_type_id,
+               rt.description as rt_description,
+               rt.description_lang as rt_description_lang,
+               p.party_id as p_party_id,
+               p.party_name as p_party_name,
+               p.party_name_lang as p_party_name_lang,
+               ppr.party_id as ppr_party_id,
+               ppr.role_type_id as ppr_role_type_id,
+               ppr.parent_role_code as ppr_parent_role_code
+        from gl_account_role gar
+                 join role_type rt on rt.ROLE_TYPE_ID = gar.ROLE_TYPE_ID
+                 join party p on p.PARTY_ID = gar.PARTY_ID
+                 join party_parent_role ppr on ppr.PARTY_ID = p.PARTY_ID  and ppr.ROLE_TYPE_ID = rt.PARENT_TYPE_ID
+        where gar.GL_ACCOUNT_ID = #{glAccountId}
+    </select>
+    
+    <resultMap id="glAccountRoleEx" type="it.mapsgroup.gzoom.mybatis.dto.GlAccountRole">
+        <id column="gl_account_id" property="glAccountId"/>
+        <id column="party_id" property="partyId"/>
+        <id column="role_type_id" property="roleTypeId"/>
+        <id column="from_date" property="fromDate"/>
+        <result column="thru_date" property="thruDate"/>
+        <association property="party" columnPrefix="p_">
+            <id column="party_id" property="partyId"/>
+            <result column="party_name" property="partyName"/>
+            <result column="party_name_lang" property="partyNameLang" />
+        </association>
+        <association property="party.partyParentRole" columnPrefix="ppr_" >
+            <id column="party_id" property="partyId" />
+            <id column="role_type_id" property="roleTypeId" />
+            <result column="parent_role_code" property="parentRoleCode" />
+        </association>
+        <association property="roleType" columnPrefix="rt_">
+            <id column="role_type_id" property="roleTypeId" />
+            <result column="description" property="description"/>
+            <result column="description_lang" property="descriptionLang" />
+        </association>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.mapper.goalfile.GoalNoteMapper">
+    <resultMap id="workEffortNoteDto" type="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortNoteDto">
+        <id column="WORK_EFFORT_ID" property="workEffortId"/>
+        <id column="NOTE_ID" property="noteId"/>
+        <result column="NOTE_NAME" property="noteName" jdbcType="VARCHAR"/>
+        <result column="NOTE_NAME_LANG" property="noteNameLang" jdbcType="VARCHAR"/>
+        <result column="NOTE_INFO" property="noteInfo" jdbcType="VARCHAR"/>
+        <result column="NOTE_INFO_LANG" property="noteInfoLang" jdbcType="VARCHAR"/>
+        <result column="NOTE_DATE_TIME" property="noteDateTime" jdbcType="TIMESTAMP"/>
+        <result column="NOTE_PARTY" property="noteParty" jdbcType="VARCHAR"/>
+        <result column="INTERNAL_NOTE" property="internalNote" jdbcType="VARCHAR"/>
+        <result column="MAIN" property="main" jdbcType="VARCHAR"/>
+        <result column="HTML" property="html" jdbcType="VARCHAR"/>
+        <result column="SEQUENCE_ID" property="sequenceId" jdbcType="NUMERIC"/>
+        <result column="POSTED" property="posted" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="LAST_MODIFIED_BY_USER_LOGIN" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY_USER_LOGIN" property="createdByUserLogin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectWorkEffortNotesFromWorkEffortId" resultMap="workEffortNoteDto">
+        SELECT
+<!--                WETA.CONTENT_ID,-->
+            WEN.WORK_EFFORT_ID,
+            WEN.NOTE_ID,
+            ND.NOTE_NAME,
+            ND.NOTE_NAME_LANG,
+            ND.NOTE_INFO,
+            ND.NOTE_INFO_LANG,
+            ND.NOTE_DATE_TIME,
+            ND.NOTE_PARTY,
+            WEN.INTERNAL_NOTE,
+            WEN.IS_MAIN AS MAIN,
+            WEN.IS_HTML AS HTML,
+            WEN.SEQUENCE_ID,
+            WEN.IS_POSTED AS POSTED,
+            WEN.LAST_UPDATED_STAMP,
+            WEN.LAST_UPDATED_TX_STAMP,
+            WEN.CREATED_STAMP,
+            WEN.CREATED_TX_STAMP,
+            WEN.LAST_MODIFIED_BY_USER_LOGIN,
+            WEN.CREATED_BY_USER_LOGIN
+        FROM
+            WORK_EFFORT_NOTE WEN
+            LEFT JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+            INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WEN.WORK_EFFORT_ID
+            LEFT JOIN WORK_EFFORT_TYPE_ATTR WETA ON WETA.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID AND WETA.ATTR_NAME = ND.NOTE_NAME
+        WHERE
+            (WEN.WORK_EFFORT_ID = #{workEffortId, mode=IN, jdbcType=VARCHAR})
+            <if test='nameSearch != null &amp;&amp; nameSearch != ""'>
+                <choose>
+                    <when test='secondaryLang==true'>
+                        AND LOWER(NOTE_NAME_LANG) LIKE CONCAT(CONCAT('%', #{nameSearch, mode=IN, jdbcType=VARCHAR}), '%')
+                    </when>
+                    <when test='secondaryLang==false || secondaryLang == null'>
+                        AND LOWER(NOTE_NAME) LIKE CONCAT(CONCAT('%', #{nameSearch, mode=IN, jdbcType=VARCHAR}), '%')
+                    </when>
+                </choose>
+            </if>
+            <if test="contentId != null">
+                AND WETA.CONTENT_ID = #{contentId, mode=IN, jdbcType=VARCHAR}
+            </if>
+    </select>
+</mapper>

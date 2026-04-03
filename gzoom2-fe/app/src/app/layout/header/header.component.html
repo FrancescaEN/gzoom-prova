@@ -1,0 +1,390 @@
+<app-change-password></app-change-password>
+
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<div class="pos-f-t fixed-top header">
+  <nav class="navbar navbar-expand-sm" aria-label="navbar" role="navigation">
+
+
+    <div class="sidebar-brand-navbar">
+      <a
+        href="javascript:void(0)"
+        class="navbar-toggleable-sm"
+        (click)="toggleSidebar()"
+        attr.aria-label="{{ 'Click for open menù' | i18n }}"
+        [class.disabled]="menu.length == 0"
+        [style.pointer-events]="menu.length == 0 ? 'none' : 'auto'"
+      >
+        @if (menu.length > 0) {
+          <i
+            class="fas fa-bars icon-menu icon-navbar-mobile"
+            style="font-size: 1.2em"
+          ></i>
+        }
+      </a>
+    </div>
+
+
+    <div
+      class="navbar-brand curve"
+      routerLink="/c"
+      attr.aria-label="{{ 'Logo' | i18n }}"
+      role="img"
+    >
+      @if (switchTitleLogo()) {
+        <h5>{{ node?.noteData.noteInfo }}</h5>
+      } @else {
+        @if (keycloakEnabled) {
+          <img
+            id="loginLogo"
+            alt="Gzoom Logo"
+            class="img-fluid"
+          />
+        } @else {
+          <img
+            alt="Gzoom Logo"
+            class="img-fluid"
+            src="/rest/node/logo/{{ organizationSelected }}/LOGO"
+          />
+        }
+
+      }
+    </div>
+
+    <div class="navbar-title no-mobile" attr.aria-label="{{ 'Title' | i18n }}">
+      @if (switchTitleLogo()) {
+        <div
+          class="navbar-brand"
+          routerLink="/c"
+          attr.aria-label="{{ 'Logo' | i18n }}"
+          role="img"
+        >
+          <img
+            alt="Gzoom Logo"
+            class="img-fluid img_custom"
+            src="/rest/node/logo/{{ organizationSelected }}/LOGO"
+          />
+        </div>
+      } @else {
+        <h5>{{ node?.noteData.noteInfo }}</h5>
+        <p *ngIf="organizationType == 'Y'">
+          <p-dropdown
+            [autoWidth]="false"
+            [style]="{ width: '100%' }"
+            attr.aria-label="{{ 'Change organization' | i18n }}"
+            [options]="organizationSelectItem"
+            (onChange)="setOrganization()"
+            [(ngModel)]="organizationSelected"
+          >
+          </p-dropdown>
+        </p>
+      }
+    </div>
+
+    <div class="navbar-user">
+      <p-overlayPanel #op>
+        <ng-template pTemplate="content">
+          <div
+            class="navbar-title mobile"
+            attr.aria-label="{{ 'Title' | i18n }}"
+          >
+            <p *ngIf="organizationType == 'Y'">
+              <p-dropdown
+                [autoWidth]="false"
+                [style]="{ width: '100%' }"
+                attr.aria-label="{{ 'Change organization' | i18n }}"
+                [options]="organizationSelectItem"
+                (onChange)="setOrganization()"
+                [(ngModel)]="organizationSelected"
+              >
+              </p-dropdown>
+            </p>
+          </div>
+
+          <div class="dropdown" ngbDropdown placement="bottom-right">
+            <a
+              href="javascript:void(0)"
+              class="nav-link dropdown-toggle text-overlayPanel"
+              ngbDropdownToggle
+            >
+              <i class="fa fa-user"></i> &nbsp; {{ user | fullname }}
+              <b class="caret"></b>
+            </a>
+            <div ngbDropdownMenu>
+              <a
+                class="dropdown-item"
+                (click)="changeThemeDialog(true)"
+                attr.aria-label="{{ 'Change theme' | i18n }}"
+                role="link"
+              ><i class="fa fa-fw fa-user"></i> {{ "Tema" | i18n }}
+              </a>
+              <a
+                class="dropdown-item"
+                *ngIf="allowChangePassword"
+                (click)="changePasswordDialog()"
+                attr.aria-label="{{ 'Change password' | i18n }}"
+                role="link"
+              ><i class="fa fa-fw fa-key"></i>
+                {{ "Change Password" | i18n }}</a
+              >
+              <a
+                class="dropdown-item"
+                (click)="logout()"
+                attr.aria-label="{{ 'Logout' | i18n }}"
+                role="link"
+              ><i class="fa fa-fw fa-power-off"></i> {{ "Logout" | i18n }}</a
+              >
+            </div>
+          </div>
+          <div>
+            <app-report-download></app-report-download>
+          </div>
+          @if (!versions["name"]) {
+            <div class="nav-item" placement="bottom-right">
+              <a
+                class="nav-link active text-overlayPanel"
+                aria-current="page"
+                href="javascript:void(0)"
+                (click)="openInfo('')"
+              ><i
+                class="fa fa-info"
+                style="margin-left: 0.3em; margin-right: 0.5em"
+              ></i>
+                &nbsp;{{ "Info" | i18n }}</a
+              >
+            </div>
+          } @else {
+            <div
+              class="nav-item dropdown"
+              [autoClose]="'outside'"
+              ngbDropdown
+              placement="bottom-right"
+            >
+              <a
+                href="javascript:void(0)"
+                class="nav-link dropdown-toggle text-overlayPanel"
+                attr.aria-label="{{ 'Informations' | i18n }}"
+                role="link"
+                ngbDropdownToggle
+              >
+                <i
+                  class="fa fa-info"
+                  style="margin-left: 0.3em; margin-right: 0.5em"
+                ></i>
+                &nbsp; {{ "Info" | i18n }}
+              </a>
+              <div ngbDropdownMenu>
+                <a class="dropdown-item">
+                  <div>
+                    <span>{{ versions["name"] }}</span
+                    >&nbsp;<span>{{ versions["version"] }}</span>
+                    <span>/{{ restVersions }}</span>
+                  </div>
+                  <div>
+                    <span>{{ legacyAppVersions }}</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          }
+
+          <div
+            *ngIf="langType == ('BILING' || 'REPORT')"
+            class="nav-item dropdown"
+            [autoClose]="'outside'"
+            ngbDropdown
+            placement="bottom-left"
+          >
+            <a
+              href="javascript:void(0)"
+              class="nav-link dropdown-toggle text-overlayPanel"
+              ngbDropdownToggle
+            >
+              <i class="fa fa-globe"></i>
+            </a>
+            <div ngbDropdownMenu class="dropdown-change-language">
+              <div *ngFor="let l of languages">
+                <a
+                  class="dropdown-item"
+                  (click)="changeLang(l)"
+                  attr.aria-label="{{ 'Change language' | i18n }}"
+                ><span>{{ l | i18n }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- Bottone helper '?' nascosto per GN-6533-->
+          <!-- <div
+            class="nav-item"
+            placement="bottom-right"
+            (click)="openHelp()"
+            attr.aria-label="{{ 'Help' | i18n }}"
+          >
+            <a
+              href="javascript:void(0)"
+              class="nav-link text-overlayPanel"
+              title="help"
+            >
+              <i class="fa fa-question"></i>
+            </a>
+          </div> -->
+        </ng-template>
+      </p-overlayPanel>
+      <button class="btn" (click)="op.toggle($event)" [attr.aria-label]="'Open/Close menu' | i18n">
+        <i class="pi pi-user icon-navbar-mobile"></i>
+      </button>
+    </div>
+
+    <div
+      class="navbar-collapse navbar-collapse-desktop justify-content-end"
+      id="collapsibleNavbar"
+    >
+      <ul class="navbar-nav" style="margin-right: 1rem">
+        <li class="nav-item">
+          <div class="nav-item dropdown" ngbDropdown placement="bottom-right">
+            <a
+              href="javascript:void(0)"
+              class="nav-link dropdown-toggle"
+              ngbDropdownToggle
+            >
+              <i class="fa fa-user"></i> &nbsp; {{ user | fullname }}
+              <b class="caret"></b>
+            </a>
+            <div ngbDropdownMenu>
+              <a
+                class="dropdown-item"
+                (click)="changeThemeDialog(true)"
+                attr.aria-label="{{ 'Change theme' | i18n }}"
+                role="link"
+              ><i class="fa fa-fw fa-user"></i> {{ "Tema" | i18n }}
+              </a>
+              <a
+                class="dropdown-item"
+                *ngIf="allowChangePassword"
+                (click)="changePasswordDialog()"
+                attr.aria-label="{{ 'Change password' | i18n }}"
+                role="link"
+              ><i class="fa fa-fw fa-key"></i>
+                {{ "Change Password" | i18n }}</a
+              >
+              <a
+                class="dropdown-item"
+                *ngIf="
+                  !this.enableldap &&
+                  (enableTwoFamanage2fauth$ | async) &&
+                  (enableTwoFa$ | async) &&
+                  (userPreference2fAuth$ | async) &&
+                  this.userPrefValue2Fauth == 'N'
+                "
+                (click)="twoFactorEnable()"
+                attr.aria-label="{{ 'Enable' | i18n }} 2FA"
+                role="link"
+              ><i class="pi pi-shield"></i> {{ "Enable" | i18n }} 2FA</a
+              >
+              <a
+                class="dropdown-item"
+                *ngIf="
+                  !this.enableldap &&
+                  (enableTwoFamanage2fauth$ | async) &&
+                  (enableTwoFa$ | async) &&
+                  (userPreference2fAuth$ | async) &&
+                  this.userPrefValue2Fauth == 'Y'
+                "
+                (click)="twoFactorDisable()"
+                attr.aria-label="{{ 'Disable' | i18n }} 2FA"
+                role="link"
+              ><i class="pi pi-shield"></i> {{ "Disable" | i18n }} 2FA</a
+              >
+              <a
+                class="dropdown-item"
+                (click)="logout()"
+                attr.aria-label="{{ 'Logout' | i18n }}"
+                role="link"
+              ><i class="fa fa-fw fa-power-off"></i> {{ "Logout" | i18n }}</a
+              >
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div>
+            <app-report-download></app-report-download>
+          </div>
+        </li>
+        @if (!versions["name"]) {
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="javascript:void(0)"
+              (click)="openInfo()"
+            ><i class="fa fa-info"></i> &nbsp; {{ "Info" | i18n }}</a
+            >
+          </li>
+        } @else {
+          <li class="nav-item">
+            <div
+              class="nav-item dropdown"
+              [autoClose]="'outside'"
+              ngbDropdown
+              placement="bottom-right"
+            >
+              <a
+                href="javascript:void(0)"
+                class="nav-link dropdown-toggle"
+                attr.aria-label="{{ 'Informations' | i18n }}"
+                role="link"
+                ngbDropdownToggle
+              >
+                <i class="fa fa-info"></i> &nbsp; {{ "Info" | i18n }}
+              </a>
+              <div ngbDropdownMenu style="left: -12rem">
+                <a class="dropdown-item">
+                  <div>
+                    <span>{{ versions["name"] }}</span
+                    >&nbsp;<span>{{ versions["version"] }}</span>
+                    <span>/{{ restVersions }}</span>
+                  </div>
+                  <div>
+                    <span>{{ legacyAppVersions }}</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </li>
+        }
+        <li *ngIf="langType == ('BILING' || 'REPORT')" class="nav-item">
+          <div
+            class="nav-item dropdown"
+            [autoClose]="'outside'"
+            ngbDropdown
+            placement="bottom-left"
+          >
+            <a
+              href="javascript:void(0)"
+              class="nav-link dropdown-toggle"
+              ngbDropdownToggle
+              [attr.aria-label]="'Change language' | i18n"
+            >
+              <i class="fa fa-globe"></i>
+            </a>
+            <div ngbDropdownMenu style="left: -7rem">
+              <div *ngFor="let l of languages">
+                <a
+                  class="dropdown-item"
+                  (click)="changeLang(l)"
+                  [attr.aria-label]="'Change language' | i18n"
+                ><span>{{ l | i18n }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<gzoom-change-theme
+  [(displayChangeTheme)]="displayChangeTheme"
+  (saveChangeTheme)="saveChangeTheme($event)"
+></gzoom-change-theme>

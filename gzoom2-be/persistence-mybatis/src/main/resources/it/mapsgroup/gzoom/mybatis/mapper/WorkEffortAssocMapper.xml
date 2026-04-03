@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortAssocMapper">
+
+
+    <resultMap id="workEffortAssocEx" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortAssocEx">
+    <id column= "WORK_EFFORT_ID_FROM" property = "workEffortIdFrom"/>
+    <result  column= "WORK_EFFORT_ID_TO" property = "workEffortIdTo"/>
+    <result  column= "WORK_EFFORT_ASSOC_TYPE_ID" property = "workEffortAssocTypeId"/>
+    <result column = "SEQUENCE_NUM" property = "sequenceNum"/>
+    <result  column = "FROM_DATE" property = "fromDate"/>
+    <result column = "THRU_DATE" property = "thruDate"/>
+    <result column = "ASSOC_WEIGHT" property = "assocWeight"/>
+    <result column = "COMMENTS" property = "comments"/>
+    <result column = "COMMENTS_LANG" property = "commentsLang"/>
+    <result column = "NOTE" property = "note"/>
+    <result column = "IS_POSTED" property = "isPosted"/>
+    <result column = "RESPONSE_ENUM_ID" property = "responseEnumId"/>
+    <result column = "WE_MEASURE_EVAL_ID" property = "weMeasureEvalId"/>
+    <result column = "WORK_EFFORT_REVISION_ID" property = "workEffortRevisionId"/>
+
+    <result column = "WORK_EFFORT_MEASURE_ID" property = "workEffortMeasure.workEffortMeasureId"/>
+    <result column = "UOM_DESCR" property = "workEffortMeasure.uomDescr"/>
+    <result column = "UOM_DESCR_LANG" property = "workEffortMeasure.uomDescrLang"/>
+    <result column = "DESCRIPTION" property = "workEffortAssocType.description"/>
+    <result column = "PARTENZA" property = "workEffort.workEffortName"/>
+    <result column = "PARTENZALANG" property = "workEffort.workEffortNameLang"/>
+    <result column = "ARRIVO" property = "workEffort2.workEffortName"/>
+    <result column = "ARRIVOLANG" property = "workEffort2.workEffortNameLang"/>
+</resultMap>
+
+
+    <select id="getTotale" >
+        SELECT COUNT(WEA.WORK_EFFORT_ID_FROM)   AS "TOTALE"
+        FROM WORK_EFFORT_ASSOC WEA
+        LEFT JOIN WORK_EFFORT_MEASURE WEM ON WEM.WORK_EFFORT_MEASURE_ID = WEA.WE_MEASURE_EVAL_ID
+        JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_FROM AND WE.WORK_EFFORT_REVISION_ID IS NULL
+        JOIN WORK_EFFORT WE2 ON WE2.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_TO AND WE2.WORK_EFFORT_REVISION_ID IS NULL
+        JOIN WORK_EFFORT_ASSOC_TYPE WEAT ON WEAT.WORK_EFFORT_ASSOC_TYPE_ID  = WEA.WORK_EFFORT_ASSOC_TYPE_ID
+        WHERE WEA.WORK_EFFORT_REVISION_ID IS NULL
+        AND WE.ORGANIZATION_ID = #{organizationId,jdbcType=VARCHAR}
+        AND WE2.ORGANIZATION_ID = #{organizationId,jdbcType=VARCHAR}
+        <include refid="filterMatch"></include>
+        <if test='control and filters != null '>
+            AND (
+        </if>
+        <include refid="filter"></include>
+        <if test='control and filters != null '>
+            )
+        </if>
+
+    </select>
+
+
+    <select id="getWorkEffortAssocPagination" resultMap="workEffortAssocEx" parameterType="java.util.Map">
+        SELECT
+        WEA.WORK_EFFORT_ID_FROM AS WORK_EFFORT_ID_FROM,
+        WEA.WORK_EFFORT_ID_TO AS WORK_EFFORT_ID_TO,
+        WEA.WORK_EFFORT_ASSOC_TYPE_ID AS WORK_EFFORT_ASSOC_TYPE_ID,
+        WEA.SEQUENCE_NUM AS SEQUENCE_NUM,
+        WEA.FROM_DATE AS FROM_DATE,
+        WEA.THRU_DATE AS THRU_DATE,
+        WEA.ASSOC_WEIGHT AS ASSOC_WEIGHT,
+        WEA.COMMENTS AS COMMENTS,
+        WEA.COMMENTS_LANG AS COMMENTS_LANG,
+        WEA.NOTE AS NOTE,
+        WEA.IS_POSTED AS IS_POSTED,
+        WEA.RESPONSE_ENUM_ID AS RESPONSE_ENUM_ID,
+        WEA.WE_MEASURE_EVAL_ID AS WE_MEASURE_EVAL_ID,
+        WEA.WORK_EFFORT_REVISION_ID AS WORK_EFFORT_REVISION_ID,
+        WE.WORK_EFFORT_NAME AS "PARTENZA",
+        WE.WORK_EFFORT_NAME_LANG AS "PARTENZALANG" ,
+        WE2.WORK_EFFORT_NAME  AS "ARRIVO",
+        WE2.WORK_EFFORT_NAME_LANG  AS "ARRIVOLANG",
+        WEAT.DESCRIPTION,
+        WEM.UOM_DESCR AS UOM_DESCR,
+        WEM.UOM_DESCR_LANG AS UOM_DESCR_LANG,
+        WEM.WORK_EFFORT_MEASURE_ID AS WORK_EFFORT_MEASURE_ID
+
+        FROM WORK_EFFORT_ASSOC WEA
+        LEFT JOIN WORK_EFFORT_MEASURE WEM ON WEM.WORK_EFFORT_MEASURE_ID = WEA.WE_MEASURE_EVAL_ID
+        JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_FROM AND WE.WORK_EFFORT_REVISION_ID IS NULL
+        JOIN WORK_EFFORT WE2 ON WE2.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_TO AND WE2.WORK_EFFORT_REVISION_ID IS NULL
+        JOIN WORK_EFFORT_ASSOC_TYPE WEAT ON WEAT.WORK_EFFORT_ASSOC_TYPE_ID  = WEA.WORK_EFFORT_ASSOC_TYPE_ID
+
+        WHERE WEA.WORK_EFFORT_REVISION_ID IS NULL
+        AND WE.ORGANIZATION_ID = #{organizationId,jdbcType=VARCHAR}
+        AND WE2.ORGANIZATION_ID = #{organizationId,jdbcType=VARCHAR}
+        <include refid="filterMatch"></include>
+        <if test='control and filters != null '>
+            AND (
+        </if>
+        <include refid="filter"></include>
+        <if test='control and filters != null '>
+            )
+        </if>
+
+        <include refid="sort"></include>
+
+        <if test='_databaseId == "mysql"'>
+        LIMIT #{LIMIT}
+        OFFSET #{OFFSET}
+        </if>
+        <if  test='_databaseId != "mysql"'>
+            OFFSET #{OFFSET} ROWS FETCH NEXT #{LIMIT} ROWS ONLY
+        </if>
+    </select>
+
+    <sql id="sort">
+        <if test='SORTFIELD != null'>
+            <choose>
+                <when test='SORTFIELD == "workEffortAssocTypeDesc"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEAT.DESCRIPTION ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEAT.DESCRIPTION DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "workEffortIdFromDesc"' >
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY WE.WORK_EFFORT_NAME_LANG ASC
+                    </if>
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY WE.WORK_EFFORT_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY WE.WORK_EFFORT_NAME_LANG DESC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY WE.WORK_EFFORT_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "workEffortIdToDesc"' >
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY WE2.WORK_EFFORT_NAME_LANG ASC
+                    </if>
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY WE2.WORK_EFFORT_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY WE2.WORK_EFFORT_NAME_LANG DESC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY WE2.WORK_EFFORT_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "fromDate"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEA.FROM_DATE ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEA.FROM_DATE DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "thruDate"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEA.THRU_DATE ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEA.THRU_DATE DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "sequenceNum"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEA.SEQUENCE_NUM ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEA.SEQUENCE_NUM DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "assocWeight"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEA.ASSOC_WEIGHT ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEA.ASSOC_WEIGHT DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "comments"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEA.COMMENTS ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEA.COMMENTS DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "commentsLang"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEA.COMMENTS_LANG ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEA.COMMENTS_LANG DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "weMeasureEvalIdDesc"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEM.WORK_EFFORT_MEASURE_ID ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEM.WORK_EFFORT_MEASURE_ID DESC
+                    </if>
+                </when>
+            </choose>
+        </if>
+        <if test='SORTFIELD == null'>
+            ORDER BY WEA.WORK_EFFORT_ASSOC_TYPE_ID ASC, WEA.WORK_EFFORT_ID_FROM ASC, WEA.WORK_EFFORT_ID_TO ASC, WEA.FROM_DATE ASC
+        </if>
+    </sql>
+
+    <sql id="filter" >
+        <if test='filters != null and filters.length > 0'>
+            <foreach collection='filters' item="item" index="index" open="" close="" separator=" AND ">
+                <choose>
+                    <when test='item.field == "workEffortIdFrom" and item.value != null'>
+                         (WEA.WORK_EFFORT_ID_FROM = #{item.value })
+                    </when>
+                    <when test='item.field == "workEffortIdTo" and item.value != null'>
+                         (WEA.WORK_EFFORT_ID_TO = #{item.value })
+                    </when>
+                    <when test='item.field == "workEffortAssocTypeId" and item.value != null'>
+                         (WEA.WORK_EFFORT_ASSOC_TYPE_ID = #{item.value })
+                    </when>
+                    <when test='item.field == "workEffortAssocTypeDesc" and item.value != null'>
+                         ((LOWER(WEAT.DESCRIPTION) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))) OR (WEA.WORK_EFFORT_ASSOC_TYPE_ID = #{item.value }))
+                    </when>
+                    <when test='item.field == "workEffortIdFromDesc" and item.value != null'>
+                        (WEA.WORK_EFFORT_ID_FROM = #{item.value })
+                    </when>
+                    <when test='item.field == "workEffortIdToDesc" and item.value != null'>
+                        (WEA.WORK_EFFORT_ID_TO = #{item.value })
+                    </when>
+                    <when test='item.field == "fromDate" and item.dateValue != null'>
+                         (WEA.FROM_DATE = #{item.dateValue })
+                    </when>
+                    <when test='item.field == "thruDate" and item.dateValue != null'>
+                         (WEA.THRU_DATE = #{item.dateValue })
+                    </when>
+                    <when test='item.field == "sequenceNum" and item.bigDecimalValue != null'>
+                         (WEA.SEQUENCE_NUM = #{item.bigDecimalValue})
+                    </when>
+                    <when test='item.field == "assocWeight" and item.doubleValue != null'>
+                         (WEA.ASSOC_WEIGHT = #{item.doubleValue})
+                    </when>
+                    <when test='item.field == "comments" and item.value != null'>
+                         (LOWER(WEA.COMMENTS) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))))
+                    </when>
+                    <when test='item.field == "commentsLang" and item.value != null'>
+                         (LOWER(WEA.COMMENTS_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))))
+                    </when>
+                    <when test='item.field == "weMeasureEvalIdDesc" and item.value != null'>
+                         (LOWER(WEM.WORK_EFFORT_MEASURE_ID) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))))
+                    </when>
+                </choose>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="filterMatch" >
+        <if test='filterGenericLabel != null and filterGenericLabel.length > 0'>
+            AND (
+            <foreach collection='filterGenericLabel' item="item" index="index" open=" " close=""
+                     separator=" OR ">
+                <choose>
+                    <when test='item.field == "workEffortIdFromDescMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WE.WORK_EFFORT_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WE.WORK_EFFORT_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "workEffortIdToDescMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WE2.WORK_EFFORT_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WE2.WORK_EFFORT_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "workEffortAssocTypeDescMatch" and item.value != null'>
+                        <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                            <property name="columnName" value="WEAT.DESCRIPTION"/>
+                            <property name="text" value="#{item.value}"/>
+                            <property name="matchMode" value="matchModeSearch"/>
+                        </include>
+                    </when>
+                </choose>
+            </foreach>
+            )
+        </if>
+    </sql>
+</mapper>

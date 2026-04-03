@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortRevisionMapper">
+
+    <select id="getWorkEffortRevisions" resultMap="workEffortRevisionResultMap" parameterType="java.util.Map">
+        SELECT *
+        FROM work_effort_revision wer
+        WHERE wer.work_effort_type_id_ctx  = #{workEffortTypeId} AND wer.is_automatic = 'N'
+    </select>
+
+</mapper>

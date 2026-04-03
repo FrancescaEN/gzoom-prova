@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.PartyContactMechMapper">
+    <select id="getContactMechWorkEffortTypeRole" resultMap="partyContactMech" parameterType="java.util.Map">
+        SELECT PCM.*
+        FROM PARTY_ROLE PR
+        INNER JOIN PARTY_CONTACT_MECH PCM ON PCM.PARTY_ID = PR.PARTY_ID
+                                            AND <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.filterByDate">
+                                                    <property name="alias" value="PCM"/>
+                                                </include>
+        INNER JOIN CONTACT_MECH CM ON CM.CONTACT_MECH_ID = PCM.CONTACT_MECH_ID
+        INNER JOIN WORK_EFFORT_TYPE_ROLE WETR ON WETR.ROLE_TYPE_ID = PR.ROLE_TYPE_ID
+        WHERE WETR.WORK_EFFORT_TYPE_ID = #{workEffortTypeId}
+        AND CM.CONTACT_MECH_TYPE_ID = 'EMAIL_ADDRESS'
+        AND CM.INFO_STRING IS NOT NULL
+    </select>
+</mapper>

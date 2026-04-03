@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.mapper.goalfile.GoalFileMapper">
+<!--    <resultMap id="workEffortDto" type="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortDto">-->
+<!--        <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>-->
+<!--        <association property="workEffortTypePeriod" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortTypePeriodDto">-->
+<!--            <association property="customTimePeriod" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.CustomTimePeriodDto">-->
+<!--                <result column="ct_period_name" property="periodName" jdbcType="VARCHAR"/>-->
+<!--                <result column="ct_from_date" property="fromDate" jdbcType="TIMESTAMP"/>-->
+<!--                <result column="ct_thru_date" property="thruDate" jdbcType="TIMESTAMP"/>-->
+<!--            </association>-->
+<!--        </association>-->
+<!--    </resultMap>-->
+
+    <resultMap id="workEffortDto" type="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortDto">
+        <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="work_effort_name" property="workEffortName" jdbcType="VARCHAR"/>
+        <result column="work_effort_name_lang" property="workEffortNameLang" jdbcType="VARCHAR"/>
+        <result column="source_reference_id" property="sourceReferenceId" jdbcType="VARCHAR"/>
+        <result column="etch" property="etch" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="estimated_start_date" property="estimatedStartDate" jdbcType="TIMESTAMP"/>
+        <result column="estimated_completion_date" property="estimatedCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="scheduled_start_date" property="scheduledStartDate" jdbcType="TIMESTAMP"/>
+        <result column="scheduled_completion_date" property="scheduledCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="actual_start_date" property="actualStartDate" jdbcType="TIMESTAMP"/>
+        <result column="actual_completion_date" property="actualCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="organization_id" property="organizationId" jdbcType="VARCHAR"/>
+        <result column="ref_date" property="refDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_date" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="is_posted" property="posted" jdbcType="VARCHAR"/>
+        <association property="workEffortType" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortTypeDto">
+            <result column="work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+            <result column="parent_type_id" property="parentTypeId" jdbcType="VARCHAR"/>
+            <result column="type_description" property="description" jdbcType="VARCHAR"/>
+            <result column="type_description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+            <result column="order_typ" property="seqEsp" jdbcType="NUMERIC"/>
+<!--            <result column="work_effort_type_hierarchy_id" property="workEffortTypeHierarchyId" jdbcType="VARCHAR"/>-->
+            <result column="is_root" property="root" jdbcType="BOOLEAN" typeHandler="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+            <association property="icon" javaType="it.mapsgroup.gzoom.infrastructure.content.dto.DataResourceDto">
+                <result column="work_effort_type_icon_path" property="objectInfo" jdbcType="VARCHAR"/>
+            </association>
+        </association>
+        <association property="orgUnitParty" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.PartyDto">
+            <result column="org_unit_id" property="partyId" jdbcType="VARCHAR"/>
+            <result column="org_main_code" property="parentRoleCode" jdbcType="VARCHAR"/>
+            <result column="org_other_code" property="externalId" jdbcType="VARCHAR"/>
+            <result column="org_name" property="partyName" jdbcType="VARCHAR"/>
+            <result column="org_name_lang" property="partyNameLang" jdbcType="VARCHAR"/>
+            <association property="roleType" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.RoleTypeDto">
+                <id column="org_unit_role_type_id" property="roleTypeId" jdbcType="VARCHAR"/>
+                <result column="org_unit_role_type_name" property="description" jdbcType="VARCHAR"/>
+                <result column="org_unit_role_type_name_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+            </association>
+            <association property="responsible" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.PartyDto">
+                <id column="resp_id" property="partyId" jdbcType="VARCHAR"/>
+                <result column="resp_name" property="partyName" jdbcType="VARCHAR"/>
+            </association>
+        </association>
+        <association property="supUnitParty" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.PartyDto">
+            <result column="sup_unit_id" property="partyId" jdbcType="VARCHAR"/>
+            <result column="sup_main_code" property="parentRoleCode" jdbcType="VARCHAR"/>
+            <result column="sup_other_code" property="externalId" jdbcType="VARCHAR"/>
+            <result column="sup_name" property="partyName" jdbcType="VARCHAR"/>
+            <result column="sup_name_lang" property="partyNameLang" jdbcType="VARCHAR"/>
+            <association property="responsible" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.PartyDto">
+                <id column="supresp_id" property="partyId" jdbcType="VARCHAR"/>
+                <result column="supresp_name" property="partyName" jdbcType="VARCHAR"/>
+            </association>
+        </association>
+        <association property="topUnitParty" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.PartyDto">
+            <result column="top_unit_id" property="partyId" jdbcType="VARCHAR"/>
+            <result column="top_main_code" property="parentRoleCode" jdbcType="VARCHAR"/>
+            <result column="top_other_code" property="externalId" jdbcType="VARCHAR"/>
+            <result column="top_name" property="partyName" jdbcType="VARCHAR"/>
+            <result column="top_name_lang" property="partyNameLang" jdbcType="VARCHAR"/>
+            <association property="responsible" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.PartyDto">
+                <id column="topresp_id" property="partyId" jdbcType="VARCHAR"/>
+                <result column="topresp_name" property="partyName" jdbcType="VARCHAR"/>
+            </association>
+        </association>
+        <association property="statusItem" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.StatusItemDto">
+            <result column="current_status_id" property="statusId" jdbcType="VARCHAR"/>
+            <result column="sch_act_status" property="description" jdbcType="VARCHAR"/>
+            <result column="sch_act_status_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+            <result column="order_sta" property="sequenceId" jdbcType="VARCHAR"/>
+        </association>
+        <association property="workEffortRevision" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortRevisionDto">
+            <result column="work_effort_revision_id" property="workEffortRevisionId" jdbcType="VARCHAR"/>
+            <result column="sch_revision" property="description" jdbcType="VARCHAR"/>
+            <result column="sch_revision_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+            <result column="order_rev" property="refDate" jdbcType="TIMESTAMP"/>
+        </association>
+        <association property="workEffortParent" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortDto">
+            <result column="work_effort_parent_id" property="workEffortId" jdbcType="VARCHAR"/>
+            <result column="fath_code" property="sourceReferenceId" jdbcType="VARCHAR"/>
+            <result column="fath_etch" property="etch" jdbcType="VARCHAR"/>
+            <result column="fath_name" property="workEffortName" jdbcType="VARCHAR"/>
+            <result column="fath_name_lang" property="workEffortNameLang" jdbcType="VARCHAR"/>
+        </association>
+        <association property="workEffortPurposeType" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortPurposeTypeDto">
+            <result column="work_effort_purpose_type_id" property="workEffortPurposeTypeId" jdbcType="VARCHAR"/>
+            <result column="work_effort_purpose_type_description" property="description" jdbcType="VARCHAR"/>
+            <result column="work_effort_purpose_type_description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+            <result column="work_effort_purpose_type_code" property="workEffortPurposeTypeCode" jdbcType="VARCHAR"/>
+        </association>
+        <association property="workEffortTypePeriod" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortTypePeriodDto">
+            <result column="gl_fiscal_type_enum_id" property="glFiscalTypeEnumId" jdbcType="VARCHAR"/>
+            <result column="status_enum_id" property="statusEnumId" jdbcType="VARCHAR"/>
+            <result column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+            <result column="des_proc" property="desProc" jdbcType="VARCHAR"/>
+            <result column="ref_date" property="refDate" jdbcType="TIMESTAMP"/>
+            <association property="customTimePeriod" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.CustomTimePeriodDto">
+                <result column="ct_period_name" property="periodName" jdbcType="VARCHAR"/>
+                <result column="ct_from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+                <result column="ct_thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <update id="updateWorkEffort" parameterType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortDto">
+        update work_effort
+        set
+            work_effort_name = #{workEffortName,jdbcType=VARCHAR},
+            work_effort_name_lang = #{workEffortNameLang,jdbcType=VARCHAR},
+            source_reference_id = #{sourceReferenceId,jdbcType=VARCHAR},
+            etch = #{etch,jdbcType=VARCHAR},
+            estimated_start_date = #{estimatedStartDate,jdbcType=TIMESTAMP},
+            estimated_completion_date = #{estimatedCompletionDate,jdbcType=TIMESTAMP},
+            actual_start_date = #{actualStartDate,jdbcType=TIMESTAMP},
+            actual_completion_date = #{actualCompletionDate,jdbcType=TIMESTAMP},
+            scheduled_start_date = #{scheduledStartDate,jdbcType=TIMESTAMP},
+            scheduled_completion_date = #{scheduledCompletionDate,jdbcType=TIMESTAMP},
+            current_status_id = #{statusItem.statusId,jdbcType=VARCHAR},
+            work_effort_purpose_type_id = #{workEffortPurposeType.workEffortPurposeTypeId,jdbcType=VARCHAR},
+            org_unit_id = #{orgUnitParty.partyId,jdbcType=VARCHAR},
+            org_unit_role_type_id = #{orgUnitParty.roleType.roleTypeId,jdbcType=VARCHAR},
+            last_status_update = #{lastStatusUpdate,jdbcType=TIMESTAMP},
+            last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+            last_modified_by_user_login = #{lastModifiedByUserLogin,jdbcType=VARCHAR},
+            last_updated_stamp = #{lastUpdatedStamp,jdbcType=TIMESTAMP},
+            last_updated_tx_stamp = #{lastUpdatedTxStamp,jdbcType=TIMESTAMP}
+        where work_effort_id like #{workEffortId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectWorkEffortRoots" databaseId="postgres" resultMap="workEffortDto">
+        SELECT
+            we.work_effort_id,
+            ct.period_name as ct_period_name,
+            ct.from_date as ct_from_date,
+            ct.thru_date as ct_thru_date
+        FROM
+            work_effort we
+            INNER JOIN work_effort_type wet
+                ON wet.work_effort_type_id = we.work_effort_type_id
+            left outer join work_effort_type_period wetp
+                on wetp.work_effort_type_period_id = we.work_effort_type_period_id
+            left outer join custom_time_period ct
+                on ct.custom_time_period_id = wetp.custom_time_period_id
+            inner join work_effort_party_assignment wepa
+                on wepa.work_effort_id = we.work_effort_id
+                and wepa.role_type_id = 'WEM_EVAL_IN_CHARGE'
+            inner join user_login ul
+                on ul.party_id = wepa.party_id
+        WHERE
+            ul.user_login_id = #{userLoginId, jdbcType=VARCHAR}
+            AND we.work_effort_revision_id is null
+            and wet.is_root = 'Y'
+        ORDER BY ct_from_date desc
+    </select>
+
+    <select id="searchWorkEffortById" resultMap="workEffortDto">
+        SELECT
+            SCH.WORK_EFFORT_ID AS work_effort_id,
+            SCHT.ETCH AS type_description,
+            SCHT.ETCH_LANG AS type_description_lang,
+            SCHT.IS_ROOT AS is_root,
+            SCH.SOURCE_REFERENCE_ID AS source_reference_id,
+            SCH.ETCH AS etch,
+            SCH.WORK_EFFORT_NAME AS work_effort_name,
+            SCH.WORK_EFFORT_NAME_LANG AS work_effort_name_lang,
+            SCH.DESCRIPTION AS description,
+            SCH.DESCRIPTION_LANG AS description_lang,
+            SCH.ESTIMATED_START_DATE as estimated_start_date,
+            SCH.ESTIMATED_COMPLETION_DATE as estimated_completion_date,
+            SCH.scheduled_start_date as scheduled_start_date,
+            SCH.scheduled_completion_date as scheduled_completion_date,
+            SCH.ACTUAL_START_DATE as actual_start_date,
+            SCH.ACTUAL_COMPLETION_DATE as actual_completion_date,
+            SCHIF.OBJECT_INFO AS work_effort_type_icon_path,
+<!--            SCHP.WORK_EFFORT_TYPE_PERIOD_ID,-->
+<!--            SCHP.STATUS_ENUM_ID,-->
+<!--            SCHP.DES_PROC,-->
+<!--            SCHP.GL_FISCAL_TYPE_ENUM_ID,-->
+<!--            SCHP.REF_DATE,-->
+<!--            CTP.CUSTOM_TIME_PERIOD_ID,-->
+<!--            CTP.FROM_DATE,-->
+<!--            CTP.THRU_DATE,-->
+            SCS.STATUS_ID AS current_status_id,
+            SCS.DESCRIPTION AS sch_act_status,
+            SCS.DESCRIPTION_LANG AS sch_act_status_lang,
+            SCS.ACT_ST_ENUM_ID AS order_sta,
+            SCH.LAST_MODIFIED_BY_USER_LOGIN AS last_modified_by_user_login,
+            SCH.LAST_UPDATED_STAMP AS last_updated_date,
+            SCH.IS_POSTED AS is_posted,
+            SCH.WORK_EFFORT_REVISION_ID AS work_effort_revision_id,
+            SCH.ORG_UNIT_ID,
+            SCH.ORG_UNIT_ROLE_TYPE_ID AS ORG_UNIT_ROLE_TYPE_ID,
+            ORGRT.description as org_unit_role_type_name,
+            ORGRT.description_lang as org_unit_role_type_name_lang,
+            ORGC.PARENT_ROLE_CODE AS org_main_code,
+            ORG.EXTERNAL_ID AS org_other_code,
+            ORG.PARTY_NAME AS org_name,
+            ORG.PARTY_NAME_LANG AS org_name_lang,
+<!--            SCHT.WORK_EFFORT_TYPE_HIERARCHY_ID AS work_effort_type_hierarchy_id,-->
+            SCHT.WORK_EFFORT_TYPE_ID AS work_effort_type_id,
+            WEPT.work_effort_purpose_type_id as work_effort_purpose_type_id,
+            WEPT.description as work_effort_purpose_type_description,
+            WEPT.description_lang as work_effort_purpose_type_description_lang,
+            WEPT.work_effort_purpose_type_code as work_effort_purpose_type_code,
+            RES.PARTY_ID AS RESP_ID,
+            RES.PARTY_NAME AS RESP_NAME
+        FROM
+            WORK_EFFORT SCH
+                INNER JOIN STATUS_ITEM SCS
+                           ON SCS.STATUS_ID = SCH.CURRENT_STATUS_ID
+                INNER JOIN WORK_EFFORT_TYPE SCHT
+                           ON SCHT.WORK_EFFORT_TYPE_ID = SCH.WORK_EFFORT_TYPE_ID
+                LEFT JOIN CONTENT SCHCF
+                          ON SCHCF.CONTENT_ID = SCHT.ICON_CONTENT_ID
+                LEFT JOIN DATA_RESOURCE SCHIF
+                          ON SCHIF.DATA_RESOURCE_ID = SCHCF.DATA_RESOURCE_ID
+                INNER JOIN PARTY ORG
+                           ON SCH.ORG_UNIT_ID = ORG.PARTY_ID
+                INNER JOIN PARTY_PARENT_ROLE ORGC
+                           ON ORGC.PARTY_ID = ORG.PARTY_ID
+                               AND ORGC.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+                inner join PARTY_ROLE ORGPR on ORGPR.party_id = ORG.PARTY_ID and ORGPR.parent_role_type_id = ORGC.ROLE_TYPE_ID
+                inner join ROLE_TYPE ORGRT on ORGRT.ROLE_TYPE_ID=ORGPR.ROLE_TYPE_ID
+                LEFT JOIN PARTY_RELATIONSHIP UORES ON UORES.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE' AND UORES.PARTY_ID_FROM = ORG.PARTY_ID
+                AND UORES.FROM_DATE <![CDATA[<=]]> #{currentTimestamp,jdbcType=TIMESTAMP}
+                AND (UORES.THRU_DATE IS NULL OR UORES.THRU_DATE <![CDATA[>=]]> #{currentTimestamp,jdbcType=TIMESTAMP})
+                LEFT JOIN PARTY RES ON RES.PARTY_ID = UORES.PARTY_ID_TO
+<!--                LEFT JOIN WORK_EFFORT_TYPE_PERIOD_VIEW SCHP-->
+<!--                          ON SCHP.WORK_EFFORT_TYPE_PERIOD_ID = SCH.WORK_EFFORT_TYPE_PERIOD_ID-->
+<!--                LEFT JOIN CUSTOM_TIME_PERIOD CTP-->
+<!--                          ON CTP.CUSTOM_TIME_PERIOD_ID = SCHP.CUSTOM_TIME_PERIOD_ID-->
+                LEFT JOIN work_effort_purpose_type WEPT
+                          ON WEPT.work_effort_purpose_type_id = SCH.work_effort_purpose_type_id
+        WHERE
+            SCH.WORK_EFFORT_ID = #{id, jdbcType=VARCHAR}
+    </select>
+
+    <select id="searchReferenceWorkEffortChildren" resultMap="workEffortDto">
+        select distinct we.*
+        from
+            work_effort_assoc wea
+            join work_effort we
+                 on we.work_effort_id = wea.work_effort_id_to
+        where
+            wea.work_effort_id_from like #{goalFileId, jdbcType=VARCHAR}
+            and wea.work_effort_id_to not like #{goalFileId, jdbcType=VARCHAR}
+            and wea.work_effort_assoc_type_id like 'ROOT'
+    </select>
+</mapper>

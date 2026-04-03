@@ -1,0 +1,120 @@
+<div
+  class="card"
+  style="
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  "
+>
+  <div style="width: 100%">
+    <gzoom-button-link
+      label="{{ 'Back' | i18n }}"
+      icon="pi pi-chevron-left"
+      (onClick)="back()"
+    >
+    </gzoom-button-link>
+  </div>
+
+  <div class="row align-items-center" style="width: 100%; height: 100%">
+    <div
+      class="card-body p-4 p-lg-5 text-black d-grid flex-row justify-content-center align-items-center"
+      style="column-gap: 20px"
+    >
+      <div class="row dimHalfFull">
+        <div
+          id="div1"
+          class="d-flex flex-column align-items-center justify-content-center"
+        >
+          <form
+            role="form"
+            name="form"
+            (ngSubmit)="f.form.valid && reset()"
+            #f="ngForm"
+            (keyup)="f.form.valid && onKeyUp($event)"
+            novalidate
+          >
+            <div
+              class="d-flex flex-column align-items-center justify-content-center"
+            >
+              <div class="d-flex justify-content-center b-5 pb-1">
+                <span
+                  class="h2 fw-bold mb- titlePrimary"
+                  style="text-align: center"
+                  >Inserisci il tuo Username per recuperare la Password</span
+                >
+              </div>
+              <div
+                class="d-flex flex-column form-outline mb-2 align-items-center"
+                style="width: 100%"
+              >
+                <div style="width: 250px">
+                  <label class="label" for="username">Username o Email</label>
+                  <div class="d-flex flex-row">
+                    <input
+                      id="username"
+                      type="text"
+                      pAutoFocus
+                      pInputText
+                      name="username"
+                      [(ngModel)]="model.username"
+                      #username="ngModel"
+                      aria-label="insert username"
+                      required
+                      [autofocus]="true"
+                      style="width: 100%"
+                    />
+                  </div>
+                  <div
+                    class="form-text"
+                    style="height: 20px"
+                    aria-label="username is required"
+                  >
+                    <small
+                      *ngIf="username.dirty &amp;&amp; !username.valid"
+                      id="username-help"
+                      class="p-error block"
+                    >
+                      {{ "Username is required" | i18n }}</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div style="width: 80%">
+                <div
+                  *ngIf="error"
+                  style="width: 100%"
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  {{ error | i18n }}
+                </div>
+              </div>
+
+              <div class="mb-4 form-group">
+                <gzoom-button
+                  label="{{ 'Send' | i18n }}"
+                  [disabled]="loading || !f.form.valid"
+                  [loading]="loading"
+                  rounded="true"
+                  (onClick)="reset()"
+                ></gzoom-button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div
+          id="div2"
+          *ngIf="showDiv2"
+          class="d-flex flex-column align-items-center justify-content-center"
+        >
+          <span class="h3 mb-0 titlePrimary"
+            >Email di recupero password inviata correttamente!
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

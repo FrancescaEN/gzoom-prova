@@ -1,0 +1,39 @@
+<gzoom-modal [loadingModal]="loading">
+  <gzoom-modal-header>
+    <h1>Commento per obiettivo specifico</h1>
+  </gzoom-modal-header>
+
+  <gzoom-modal-body>
+    <div class="tip">
+      <i class="gzoom-icon gzoom-circle-info"></i>
+      <span>Esplicitare nel testo l'indicatore a cui si fa riferimento.</span>
+    </div>
+    <gzoom-form>
+      <div class="input-group">
+        <span class="label">Obiettivo specifico</span>
+        <span id="title">{{ goal.name }}</span>
+      </div>
+
+      <div class="input-group" style="flex-grow: 2;">
+        @if (editEnabled) {
+          <label for="text">Commento</label>
+          <textarea pInputTextarea [(ngModel)]="text" id="text" name="text"
+                    maxlength="{{textMaxLength}}"
+                    style="height: 400px;"
+                    placeholder="Inserisci commento qui (max 6000 caratteri)"></textarea>
+          <p class="text-length">{{ text ? text.length : 0 }}/{{ textMaxLength }} caratteri</p>
+        } @else {
+          <span class="label">Commento</span>
+          <span id="text">{{ text }}</span>
+        }
+      </div>
+    </gzoom-form>
+  </gzoom-modal-body>
+
+  <gzoom-modal-footer>
+    <gzoom-button [label]="editEnabled? 'Annulla' : 'Chiudi'" (onClick)="closeModal()" [outlined]=true />
+    @if (editEnabled) {
+      <gzoom-button label="Salva" (onClick)="save()" />
+    }
+  </gzoom-modal-footer>
+</gzoom-modal>

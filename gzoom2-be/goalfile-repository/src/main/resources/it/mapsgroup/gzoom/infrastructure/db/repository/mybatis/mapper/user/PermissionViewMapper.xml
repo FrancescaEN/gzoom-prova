@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.mapper.user.PermissionViewMapper">
+
+    <resultMap id="UserCtxPermissionViewDto" type="it.mapsgroup.gzoom.infrastructure.user.dto.UserCtxPermissionViewDto">
+        <result column="USER_LOGIN_ID" property="userLoginId" jdbcType="VARCHAR"/>
+        <result column="PARTY_ID" property="partyId" jdbcType="VARCHAR"/>
+        <result column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR"/>
+        <result column="USER_CTX" property="userCtx" jdbcType="VARCHAR"/>
+        <result column="CTX_PERMISSION" property="ctxPermission" jdbcType="VARCHAR"/>
+        <result column="IS_ORG" property="isOrg" jdbcType="NUMERIC"/>
+        <result column="IS_SUP" property="isSup" jdbcType="NUMERIC"/>
+        <result column="IS_TOP" property="isTop" jdbcType="NUMERIC"/>
+        <result column="IS_ROLE" property="isRole" jdbcType="NUMERIC"/>
+        <result column="IS_VIEW" property="isView" jdbcType="NUMERIC"/>
+        <result column="ROOT_ENABLED" property="rootEnabled" jdbcType="NUMERIC"/>
+    </resultMap>
+
+    <select id="getPermissionView" resultMap="UserCtxPermissionViewDto">
+        SELECT
+            UCPV.USER_LOGIN_ID as USER_LOGIN_ID,
+            UCPV.PARTY_ID as PARTY_ID,
+            UCPV.ORGANIZATION_ID as ORGANIZATION_ID,
+            UCPV.USER_CTX as USER_CTX,
+            UCPV.CTX_PERMISSION as CTX_PERMISSION,
+            UCPV.IS_ORG as IS_ORG,
+            UCPV.IS_SUP as IS_SUP,
+            UCPV.IS_TOP as IS_TOP,
+            UCPV.IS_ROLE as IS_ROLE,
+            UCPV.IS_VIEW as IS_VIEW,
+            UCPV.ROOT_ENABLED as ROOT_ENABLED
+        FROM
+            USER_CTX_PERMISSION_VIEW UCPV
+        WHERE
+            UCPV.USER_LOGIN_ID = #{userLoginId, mode=IN, jdbcType=VARCHAR}
+            AND UCPV.USER_CTX = #{userCtx, mode=IN, jdbcType=VARCHAR}
+    </select>
+</mapper>

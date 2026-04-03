@@ -1,0 +1,248 @@
+<p-toast></p-toast>
+<gzoom-message
+  *ngIf="(isEnable | async) == false"
+  severity="warn"
+  icon="pi pi-exclamation-triangle"
+  message="{{
+    'To enable detected OUs set Detection Mode by organizational unit.' | i18n
+  }}"
+/>
+<gzoom-message
+  *ngIf="isEnable | async"
+  severity="info"
+  icon="pi pi-info-circle"
+  message="{{
+    'Select the Organizational Units on which the indicator values will be collected.'
+      | i18n
+  }}"
+/>
+<p-messages key="error"></p-messages>
+<div *ngIf="isEnable | async">
+  <div class="d-flex flex-row flex-wrap justify-content-between">
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin: 5px 0px;
+        margin-bottom: 10px;
+      "
+    >
+      <gzoom-button
+        icon="pi pi-plus"
+        [label]="'Add UO' | i18n"
+        (onClick)="newGlAccountRole()"
+        [disabled]="!disableSave"
+      ></gzoom-button>
+      <gzoom-button-outlined
+        icon="pi pi-trash"
+        [label]="'Delete UO selected' | i18n"
+        (onClick)="delete()"
+        [disabled]="!(this.selectedGlAccountRole.length > 0)"
+      ></gzoom-button-outlined>
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin: 5px 0px;
+        margin-bottom: 10px;
+      "
+    >
+      <gzoom-button-outlined
+        icon="pi pi-refresh"
+        [label]="'Reset' | i18n"
+        [disabled]="disableSave"
+        (onClick)="reset()"
+      ></gzoom-button-outlined>
+
+      <gzoom-button
+        icon="pi pi-save"
+        [disabled]="disableSave"
+        [label]="'Save' | i18n"
+        [loading]="loadingSave"
+        (onClick)="save()"
+      ></gzoom-button>
+    </div>
+  </div>
+
+  <p-table
+    #dt
+    [value]="glAccountRoleList"
+    responsiveLayout="stack"
+    [breakpoint]="'960px'"
+    [tableStyle]="{ 'min-width': '20rem' }"
+    id="table-card"
+    [(selection)]="selectedGlAccountRole"
+    [paginator]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{
+      'Showing {first} to {last} of {totalRecords} entries' | i18n
+    }}"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    scrollHeight="50vh"
+    [scrollable]="scrollable | async"
+    [loading]="loading"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th
+          class="table-head-th"
+          style="width: 1rem; padding-right: 5px !important"
+        >
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+
+        <th class="table-head-th padding-medium-row-th">
+          <div class="d-flex align-items-center">
+            {{ "Role" | i18n }}*
+            <p-sortIcon
+              pSortableColumn="{{
+                this.secondaryLang
+                  ? 'roleType.descriptionLang'
+                  : 'roleType.description'
+              }}"
+              field="{{
+                this.secondaryLang
+                  ? 'roleType.descriptionLang'
+                  : 'roleType.description'
+              }}"
+            />
+            <p-columnFilter
+              type="text"
+              field="{{
+                this.secondaryLang
+                  ? 'roleType.descriptionLang'
+                  : 'roleType.description'
+              }}"
+              display="menu"
+              matchMode="contains"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th class="table-head-th padding-medium-row-th">
+          <div class="d-flex align-items-center">
+            {{ "Subject" | i18n }}*
+            <p-sortIcon
+              pSortableColumn="party.partyName
+          "
+              field="party.partyName"
+            />
+            <p-columnFilter
+              type="text"
+              field="party.partyName"
+              display="menu"
+              matchMode="contains"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th class="table-head-th padding-medium-row-th">
+          <div class="d-flex align-items-center">
+            {{ "Start validity" | i18n }}*
+
+            <p-sortIcon pSortableColumn="fromDate" field="fromDate" />
+            <p-columnFilter
+              type="date"
+              field="fromDate"
+              display="menu"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th class="table-head-th padding-medium-row-th">
+          <div class="d-flex align-items-center">
+            {{ "End validity" | i18n }}
+
+            <p-sortIcon pSortableColumn="endDate" field="endDate" />
+            <p-columnFilter
+              type="date"
+              field="endDate"
+              display="menu"
+            ></p-columnFilter>
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-glAccountRole
+      let-columns="columns"
+      let-editing="editing"
+    >
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="glAccountRole"></p-tableCheckbox>
+        </td>
+
+        <td style="padding-left: 0px !important">
+          <span class="p-column-title" style="padding-right: 10px">
+            <b>{{ "Role" | i18n }}*</b></span
+          >{{
+            this.secondaryLang
+              ? glAccountRole.roleType.descriptionLang
+              : glAccountRole.roleType.description
+          }}
+        </td>
+        <td style="padding-left: 0px !important">
+          <span class="p-column-title" style="padding-right: 10px"
+          ><b>{{ "Subject" | i18n }}*</b></span
+          >
+          {{ glAccountRole.party.partyName }}
+        </td>
+        <td
+          style="padding-left: 0px !important"
+          [pEditableColumn]="glAccountRole.fromDate"
+          pEditableColumnField="fromDate"
+        >
+          <span class="p-column-title" style="padding-right: 10px"
+          ><b>{{ "Start validity" | i18n }}*</b>
+          </span>
+
+          {{ glAccountRole.fromDate | date: i18nService.dateShortFormat() }}
+        </td>
+        <td
+          style="padding-left: 0px !important"
+          [pEditableColumn]="glAccountRole.thruDate"
+          pEditableColumnField="thruDate"
+        >
+          <span class="p-column-title" style="padding-right: 10px">
+            <b> {{ "End validity" | i18n }}</b>
+          </span>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar
+                appendTo="body"
+                [(ngModel)]="glAccountRole.thruDate"
+                dateFormat="dd/mm/yy"
+                (keydown.ArrowRight)="doNothing($event)"
+                (keydown.ArrowLeft)="doNothing($event)"
+                (keydown.ArrowDown)="doNothing($event)"
+                (keydown.ArrowUp)="doNothing($event)"
+                (ngModelChange)="changeValue(glAccountRole)"
+                showIcon="true"
+                showClear="true"
+                [minDate]="glAccountRole.fromDate"
+              ></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ glAccountRole.thruDate | date: i18nService.dateShortFormat() }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorleft"></ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="20" role="cell">
+          <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-confirmDialog></p-confirmDialog>

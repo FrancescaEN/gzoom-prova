@@ -1,0 +1,1691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.8.0.v201806261756</property>
+    <simple-property-list name="includeResource">
+        <value>custom/Procedimenti/Procedimenti</value>
+        <value>project/ProvinciaBolzano/Procedimenti/Procedimenti</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[importPackage(Packages.java.util);
+importPackage(Packages.java.lang);
+importPackage(Packages.javolution.util);
+importPackage(Packages.org.ofbiz.base.util);
+importPackage(Packages.com.mapsengineering.base.appheader);
+importPackage(Packages.it.mapsgroup.gzoom);
+importPackage(Packages.com.mapsengineering.base.birt.util);
+
+var vectorPageNumber = new Vector();
+reportContext.setGlobalVariable("vectorPageNumber", vectorPageNumber);
+reportContext.setGlobalVariable("nPagina", 1);
+reportContext.setGlobalVariable("NpageIndex", 0 );
+reportContext.setGlobalVariable("nPageEmpty", 0 );
+
+var mapRealPageNumber = reportContext.getPersistentGlobalVariable("mapRealPageNumber");
+if (mapRealPageNumber == null ) {
+	mapRealPageNumber = new java.util.HashMap();
+	reportContext.setPersistentGlobalVariable("mapRealPageNumber", mapRealPageNumber);
+}
+
+var logo_login = AppHeaderLogo.getReportContentUrl("REPORT_LARGE",  params["defaultOrganizationPartyId"].value);
+reportContext.setPersistentGlobalVariable("logo_login", logo_login);
+var logo_large = AppHeaderLogo.getReportContentUrl("REPORT_LARGE", params["defaultOrganizationPartyId"].value);
+reportContext.setPersistentGlobalVariable("logo_large", logo_large);
+var logo_header = AppHeaderLogo.getReportContentUrl("REPORT_HEADER", params["defaultOrganizationPartyId"].value);
+reportContext.setPersistentGlobalVariable("logo_header", logo_header);
+
+var title_custom='';
+if(params["langLocale"].value != '')
+	title_custom = 'Procedimenti';
+else
+	title_custom = 'Verfahren';
+title_custom = title_custom + ' - ' + BirtDateTime.year(params["customTimePeriod"].value);
+reportContext.setPersistentGlobalVariable("title_custom",title_custom);
+reportContext.setPersistentGlobalVariable("titleMasterPage",title_custom);]]></method>
+    <method name="beforeFactory"><![CDATA[
+]]></method>
+    <property name="theme">base_structure_JDBC.Base</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">hot-deploy/base/webapp/resources/report/birt/base_general_JDBC.rptlibrary</property>
+            <property name="namespace">base_general_JDBC</property>
+        </structure>
+        <structure>
+            <property name="fileName">hot-deploy/base/webapp/resources/report/birt/base_structure_JDBC.rptlibrary</property>
+            <property name="namespace">base_structure_JDBC</property>
+        </structure>
+        <structure>
+            <property name="fileName">hot-deploy/workeffortext/webapp/workeffortext/birt/report/LibreriaSchedeStruttura.rptlibrary</property>
+            <property name="namespace">LibreriaSchedeStruttura</property>
+        </structure>
+        <structure>
+            <property name="fileName">hot-deploy/base/webapp/resources/report/birt/base_scripted_index.rptlibrary</property>
+            <property name="namespace">base_scripted_index</property>
+        </structure>
+        <structure>
+            <property name="fileName">hot-deploy/base/webapp/resources/report/birt/legacy_base_structure_JDBC.rptlibrary</property>
+            <property name="namespace">legacy_base_structure_JDBC</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="userLoginId" id="10" extends="base_structure_JDBC.userLoginId">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">admin</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="defaultOrganizationPartyId" id="11" extends="base_structure_JDBC.defaultOrganizationPartyId">
+            <property name="dataType">string</property>
+        </scalar-parameter>
+        <scalar-parameter name="exposeReleaseDate" id="39222" extends="LibreriaSchedeStruttura.exposeReleaseDate">
+            <property name="dataType">string</property>
+        </scalar-parameter>
+        <scalar-parameter name="monitoringDate" id="39233" extends="LibreriaSchedeStruttura.monitoringDate">
+            <property name="valueType">static</property>
+            <property name="dataType">dateTime</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="workEffortId" id="39234" extends="LibreriaSchedeStruttura.workEffortId">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="orgUnitId" id="39236" extends="LibreriaSchedeStruttura.orgUnitId">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="workEffortIdChild" id="39237" extends="LibreriaSchedeStruttura.workEffortIdChild">
+            <property name="dataType">string</property>
+        </scalar-parameter>
+        <scalar-parameter name="roleTypeId" id="39239" extends="LibreriaSchedeStruttura.roleTypeId">
+            <property name="dataType">string</property>
+        </scalar-parameter>
+        <scalar-parameter name="exposePaginator" id="40978" extends="LibreriaSchedeStruttura.exposePaginator">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">N</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="reportContentId" id="45791">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="outputFormat" id="54511">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="exposeRespIndex" id="57920">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">S</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="customTimePeriodDate" id="58598">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.java.util);&#13;
+importPackage(Packages.java.lang);&#13;
+importPackage(Packages.javolution.util);&#13;
+importPackage(Packages.org.ofbiz.base.util);&#13;
+importPackage(Packages.com.mapsengineering.base.appheader);&#13;
+importPackage(Packages.it.mapsgroup.gzoom);&#13;
+importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+UtilDateTime.toDate(params["customTimePeriod"].value,reportContext.getLocale(),reportContext.getTimeZone().getID())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date0101" id="40979">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+UtilDateTime.getMonthStartFromDatetime('1', reportContext.getTimeZone().getID(), BirtDateTime.year(params["customTimePeriodDate"].value), reportContext.getLocale())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3112" id="45680">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+UtilDateTime.getMonthEndFromDatetime('12', reportContext.getTimeZone().getID(), BirtDateTime.year(params["customTimePeriodDate"].value), reportContext.getLocale())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3006" id="55932">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+UtilDateTime.getMonthEndFromDatetime('6', reportContext.getTimeZone().getID(), BirtDateTime.year(params["customTimePeriodDate"].value), reportContext.getLocale())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3112Sql" id="51186">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date3112"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3006Sql" id="55933">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date3006"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date0101Sql" id="55931">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date0101"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="customTimePeriod" id="41188">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="workEffortTypeId" id="55934">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="monitoringDateSql" id="50975">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["monitoringDate"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date1231-1" id="45555">
+            <property name="valueType">static</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+UtilDateTime.getMonthEndFromDatetime('12', reportContext.getTimeZone().getID(), BirtDateTime.year(params["customTimePeriod"].value)-1, reportContext.getLocale())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3112+1" id="47104">
+            <property name="valueType">static</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+UtilDateTime.getMonthEndFromDatetime('12', reportContext.getTimeZone().getID(), BirtDateTime.year(params["customTimePeriod"].value)+1, reportContext.getLocale())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date1231-2" id="45556">
+            <property name="valueType">static</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+UtilDateTime.getMonthEndFromDatetime('12', reportContext.getTimeZone().getID(), BirtDateTime.year(params["customTimePeriod"].value)-2, reportContext.getLocale())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3112+2" id="47105">
+            <property name="valueType">static</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+UtilDateTime.getMonthEndFromDatetime('12', reportContext.getTimeZone().getID(), BirtDateTime.year(params["customTimePeriod"].value)+2, reportContext.getLocale())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date1231-1Sql" id="56159">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date1231-1"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date1231-2Sql" id="56160">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date1231-2"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date1231-3Sql" id="59486">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date1231-3"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3112+1Sql" id="56162">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date3112+1"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3112+2Sql" id="56163">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date3112+2"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date1231-3" id="59397">
+            <property name="valueType">static</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">importPackage(Packages.com.mapsengineering.base.birt.util);&#13;
+UtilDateTime.getMonthEndFromDatetime('12', reportContext.getTimeZone().getID(), BirtDateTime.year(params["customTimePeriod"].value)-3, reportContext.getLocale())</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="GeneralDataSource" id="7"
+ extends="base_general_JDBC.GeneralDataSource">
+            <property name="odaDriverClass">oracle.jdbc.driver.OracleDriver</property>
+            <property name="odaURL">jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = orcl12c)))</property>
+            <property name="odaUser">GZ_BOLZANOWIN</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">QWIxMjM0NTY=</encrypted-property>
+        </oda-data-source>
+        <script-data-source name="ScriptedIndex" id="45491" extends="base_scripted_index.ScriptedIndex"/>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ProcedimentiDS" id="58601">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">Codice - Code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Codice - Code</text-property>
+                    <text-property name="heading">Codice - Code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Denominazione</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Denominazione</text-property>
+                    <text-property name="heading">Denominazione</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Bezeichnung</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Bezeichnung</text-property>
+                    <text-property name="heading">Bezeichnung</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Codice esterno - Externer Code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Codice esterno - Externer Code</text-property>
+                    <text-property name="heading">Codice esterno - Externer Code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Codice struttura - Strukturcode</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Codice struttura - Strukturcode</text-property>
+                    <text-property name="heading">Codice struttura - Strukturcode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Unità Responsabile</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Unità Responsabile</text-property>
+                    <text-property name="heading">Unità Responsabile</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Organisationseinheit</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Organisationseinheit</text-property>
+                    <text-property name="heading">Organisationseinheit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Codice responsabile - Führungskraft Code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Codice responsabile - Führungskraft Code</text-property>
+                    <text-property name="heading">Codice responsabile - Führungskraft Code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Responsabile - Führungskraft</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Responsabile - Führungskraft</text-property>
+                    <text-property name="heading">Responsabile - Führungskraft</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Codice esterno padre - Externer Vaterncode</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Codice esterno padre - Externer Vaterncode</text-property>
+                    <text-property name="heading">Codice esterno padre - Externer Vaterncode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Codice struttura padre - Übergeordneter Strukturcode</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Codice struttura padre - Übergeordneter Strukturcode</text-property>
+                    <text-property name="heading">Codice struttura padre - Übergeordneter Strukturcode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Unità Responsabile padre</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Unità Responsabile padre</text-property>
+                    <text-property name="heading">Unità Responsabile padre</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Organisationseinheit Vater</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Organisationseinheit Vater</text-property>
+                    <text-property name="heading">Organisationseinheit Vater</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Durata procedimento - Verfahrensdauer</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Durata procedimento - Verfahrensdauer</text-property>
+                    <text-property name="heading">Durata procedimento - Verfahrensdauer</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Commento</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Commento</text-property>
+                    <text-property name="heading">Commento</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Kommentar</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Kommentar</text-property>
+                    <text-property name="heading">Kommentar</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Normativa di riferimento</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Normativa di riferimento</text-property>
+                    <text-property name="heading">Normativa di riferimento</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Normative Grundlage</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Normative Grundlage</text-property>
+                    <text-property name="heading">Normative Grundlage</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Avvio del procedimento</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Avvio del procedimento</text-property>
+                    <text-property name="heading">Avvio del procedimento</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Einleitung des Verfahrens</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Einleitung des Verfahrens</text-property>
+                    <text-property name="heading">Einleitung des Verfahrens</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Decorrenza del termine</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Decorrenza del termine</text-property>
+                    <text-property name="heading">Decorrenza del termine</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Beginn des Fristenlaufes</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Beginn des Fristenlaufes</text-property>
+                    <text-property name="heading">Beginn des Fristenlaufes</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">Codice - Code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">Denominazione</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">Bezeichnung</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">Codice esterno - Externer Code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">Codice struttura - Strukturcode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">Unità Responsabile</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">Organisationseinheit</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">Codice responsabile - Führungskraft Code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">Responsabile - Führungskraft</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">Codice esterno padre - Externer Vaterncode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">Codice struttura padre - Übergeordneter Strukturcode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">Unità Responsabile padre</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">Organisationseinheit Vater</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">Durata procedimento - Verfahrensdauer</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">Commento</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">Kommentar</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">Normativa di riferimento</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">Normative Grundlage</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">Avvio del procedimento</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">Einleitung des Verfahrens</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">Decorrenza del termine</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">Beginn des Fristenlaufes</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[this.queryText = this.queryText.replace("@date0101",  params["date0101Sql"].value);
+this.queryText = this.queryText.replace("@date3112",  params["date3112Sql"].value);	
+this.queryText = this.queryText.replace("@langLocale",  params["langLocale"].value);
+
+/*
+this.queryText = this.queryText.replace("@date0101",  "'2019-01-01 00:00:00.000'" );
+this.queryText = this.queryText.replace("@date3112",  "'2019-12-31 00:00:00.000'" );
+this.queryText = this.queryText.replace("@langLocale", "");
+*/
+
+//GESTIRE PERMESSI
+
+filter = new com.mapsengineering.base.birt.util.UtilFilter(params["userLoginId"].value, params["localDispatcherName"].value);
+var filterInnerJoin = filter.getWorkEffortFilterInner();
+var filterLeftJoin = filter.getWorkEffortFilterLeftJoin();
+var filterWhere = filter.getWorkEffortFilterWhere(); 
+
+/*var filterInnerJoin = "";
+var filterLeftJoin = "";
+var filterWhere = "";*/
+
+
+this.queryText = this.queryText.replace("@filterInnerJoin",  filterInnerJoin );
+this.queryText = this.queryText.replace("@filterLeftJoin",  filterLeftJoin );
+this.queryText = this.queryText.replace("@filterWhere",  filterWhere );
+ 
+
+/*ReportLog.info("ProcedimentiDS :");
+ReportLog.info(this.queryText);*/]]></method>
+            <property name="dataSource">GeneralDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">Codice - Code</property>
+                    <property name="nativeName">Codice - Code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">Denominazione</property>
+                    <property name="nativeName">Denominazione</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">Bezeichnung</property>
+                    <property name="nativeName">Bezeichnung</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">Codice esterno - Externer Code</property>
+                    <property name="nativeName">Codice esterno - Externer Code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">Codice struttura - Strukturcode</property>
+                    <property name="nativeName">Codice struttura - Strukturcode</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">Unità Responsabile</property>
+                    <property name="nativeName">Unità Responsabile</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">Organisationseinheit</property>
+                    <property name="nativeName">Organisationseinheit</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">Codice responsabile - Führungskraft Code</property>
+                    <property name="nativeName">Codice responsabile - Führungskraft Code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">Responsabile - Führungskraft</property>
+                    <property name="nativeName">Responsabile - Führungskraft</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">Codice esterno padre - Externer Vaterncode</property>
+                    <property name="nativeName">Codice esterno padre - Externer Vaterncode</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">Codice struttura padre - Übergeordneter Strukturcode</property>
+                    <property name="nativeName">Codice struttura padre - Übergeordneter Strukturcode</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">Unità Responsabile padre</property>
+                    <property name="nativeName">Unità Responsabile padre</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">Organisationseinheit Vater</property>
+                    <property name="nativeName">Organisationseinheit Vater</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">Durata procedimento - Verfahrensdauer</property>
+                    <property name="nativeName">Durata procedimento - Verfahrensdauer</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">Commento</property>
+                    <property name="nativeName">Commento</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">Kommentar</property>
+                    <property name="nativeName">Kommentar</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">Normativa di riferimento</property>
+                    <property name="nativeName">Normativa di riferimento</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">Normative Grundlage</property>
+                    <property name="nativeName">Normative Grundlage</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">Avvio del procedimento</property>
+                    <property name="nativeName">Avvio del procedimento</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">Einleitung des Verfahrens</property>
+                    <property name="nativeName">Einleitung des Verfahrens</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">Decorrenza del termine</property>
+                    <property name="nativeName">Decorrenza del termine</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">Beginn des Fristenlaufes</property>
+                    <property name="nativeName">Beginn des Fristenlaufes</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 
+	PROC.SOURCE_REFERENCE_ID AS "Codice - Code",
+	PROC.WORK_EFFORT_NAME@langLocale AS "Denominazione",
+	PROC.WORK_EFFORT_NAME AS "Bezeichnung",
+	P.EXTERNAL_ID AS "Codice esterno - Externer Code",
+	PPR.PARENT_ROLE_CODE AS "Codice struttura - Strukturcode",
+	P.PARTY_NAME_LANG AS "Unità Responsabile",
+	P.PARTY_NAME@langLocale AS "Organisationseinheit",
+	PPRESP.PARENT_ROLE_CODE AS "Codice responsabile - Führungskraft Code",
+	RESP.PARTY_NAME AS "Responsabile - Führungskraft",
+	PAPA.EXTERNAL_ID AS "Codice esterno padre - Externer Vaterncode",
+	PPRPA.PARENT_ROLE_CODE AS "Codice struttura padre - Übergeordneter Strukturcode",
+	PAPA.PARTY_NAME_LANG AS "Unità Responsabile padre",
+	PAPA.PARTY_NAME AS "Organisationseinheit Vater",
+	GAMRS.UOM_DESCR_LANG AS "Durata procedimento - Verfahrensdauer",
+	ACT.DESCRIPTION_LANG AS "Commento",
+	ACT.DESCRIPTION AS "Kommentar",
+	MAX(CASE WHEN NOTE.SEQUENCE_ID = 120 THEN NOTE.NOTE_INFO@langLocale ELSE NULL END) AS "Normativa di riferimento",
+	MAX(CASE WHEN NOTE.SEQUENCE_ID = 120 THEN NOTE.NOTE_INFO ELSE NULL END) AS "Normative Grundlage",
+	MAX(CASE WHEN CAR.GL_ACCOUNT_ID = '10113' THEN CAR.UOM_DESCR_LANG ELSE NULL END) AS "Avvio del procedimento",
+	MAX(CASE WHEN CAR.GL_ACCOUNT_ID = '10113' THEN CAR.UOM_DESCR@langLocale ELSE NULL END) AS "Einleitung des Verfahrens",
+	MAX(CASE WHEN CAR.GL_ACCOUNT_ID = '10116' THEN CAR.UOM_DESCR_LANG ELSE NULL END) AS "Decorrenza del termine",
+	MAX(CASE WHEN CAR.GL_ACCOUNT_ID = '10116' THEN CAR.UOM_DESCR@langLocale ELSE NULL END) AS "Beginn des Fristenlaufes"
+/* PROCEDIMENTO */
+FROM WORK_EFFORT PROC
+/* STRUTTURA */
+JOIN PARTY P ON P.PARTY_ID = PROC.ORG_UNIT_ID
+JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = P.PARTY_ID
+/* RESPONSABILE */
+LEFT JOIN PARTY_RELATIONSHIP PR ON PR.PARTY_ID_FROM = P.PARTY_ID AND PR.THRU_DATE IS NULL AND PR.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+LEFT JOIN PARTY RESP ON RESP.PARTY_ID = PR.PARTY_ID_TO
+LEFT JOIN PARTY_PARENT_ROLE PPRESP ON PPRESP.PARTY_ID = RESP.PARTY_ID
+/* STRUTTURA PADRE */ 
+LEFT JOIN PARTY_RELATIONSHIP PRPA ON PRPA.PARTY_ID_TO = P.PARTY_ID AND PRPA.THRU_DATE IS NULL
+LEFT JOIN PARTY PAPA ON PAPA.PARTY_ID = PRPA.PARTY_ID_FROM
+LEFT JOIN PARTY_PARENT_ROLE PPRPA ON PPRPA.PARTY_ID = PAPA.PARTY_ID
+/* DURATA DEL PROCEDIMENTO */
+JOIN WORK_EFFORT_MEASURE WEM ON WEM.WORK_EFFORT_ID = PROC.WORK_EFFORT_ID AND WEM.GL_ACCOUNT_ID = '10115'
+JOIN ACCTG_TRANS_ENTRY ATE ON ATE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID
+JOIN ACCTG_TRANS ACT ON ACT.ACCTG_TRANS_ID = ATE.ACCTG_TRANS_ID
+JOIN GL_ACCOUNT_MEAS_RAT_SC GAMRS ON GAMRS.GL_ACCOUNT_ID = ATE.GL_ACCOUNT_ID 
+	AND GAMRS.UOM_RATING_VALUE <= ATE.AMOUNT AND GAMRS.UOM_RATING_VALUE >= ATE.AMOUNT
+/* CARATTERISTICHE */
+LEFT JOIN (
+	SELECT 
+		GL.GL_ACCOUNT_ID,
+		GAMRS.UOM_DESCR,
+		GAMRS.UOM_DESCR_LANG,
+		ATE.AMOUNT,
+		WEM.WORK_EFFORT_ID
+	FROM WORK_EFFORT_MEASURE WEM 
+	JOIN ACCTG_TRANS ACT ON ACT.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID 
+	JOIN ACCTG_TRANS_ENTRY ATE ON ATE.ACCTG_TRANS_ID = ACT.ACCTG_TRANS_ID 
+	JOIN GL_ACCOUNT GL ON GL.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID 
+	JOIN GL_ACCOUNT_MEAS_RAT_SC GAMRS ON GAMRS.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID 
+		AND GAMRS.UOM_RATING_VALUE <= ATE.AMOUNT AND GAMRS.UOM_RATING_VALUE >= ATE.AMOUNT
+) CAR ON CAR.WORK_EFFORT_ID = PROC.WORK_EFFORT_ID 
+/* NOTE */
+LEFT JOIN (
+	SELECT 
+		WEN.WORK_EFFORT_ID,
+		WEN.SEQUENCE_ID,
+		TO_CHAR(ND.NOTE_INFO) AS NOTE_INFO,
+		TO_CHAR(ND.NOTE_INFO_LANG) AS NOTE_INFO_LANG
+	FROM WORK_EFFORT_NOTE WEN 
+	JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+) NOTE ON NOTE.WORK_EFFORT_ID = PROC.WORK_EFFORT_ID 
+
+@filterInnerJoin
+@filterLeftJoin
+
+WHERE PROC.WORK_EFFORT_TYPE_ID = '20C44' AND PROC.WORK_EFFORT_REVISION_ID IS NULL
+	AND PROC.ESTIMATED_START_DATE <= @date3112 AND (PROC.ESTIMATED_COMPLETION_DATE >= @date0101 OR PROC.ESTIMATED_COMPLETION_DATE IS NULL)
+	AND ATE.AMOUNT > 30
+@filterWhere
+
+GROUP BY
+	PROC.SOURCE_REFERENCE_ID,
+	PROC.WORK_EFFORT_NAME_LANG,
+	PROC.WORK_EFFORT_NAME,
+	P.EXTERNAL_ID,
+	PPR.PARENT_ROLE_CODE,
+	P.PARTY_NAME_LANG,
+	P.PARTY_NAME,
+	PPRESP.PARENT_ROLE_CODE,
+	RESP.PARTY_NAME,
+	PAPA.EXTERNAL_ID,
+	PPRPA.PARENT_ROLE_CODE,
+	PAPA.PARTY_NAME_LANG,
+	PAPA.PARTY_NAME,
+	GAMRS.UOM_DESCR_LANG,
+	ACT.DESCRIPTION_LANG,
+	ACT.DESCRIPTION
+ORDER BY
+	P.EXTERNAL_ID,
+	PROC.SOURCE_REFERENCE_ID
+--FETCH FIRST 50 ROWS ONLY]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="tableAllBorder213" id="56033">
+            <property name="backgroundColor">#D5D5D5</property>
+            <property name="borderBottomColor">#808080</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#808080</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#808080</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#808080</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="rowAllBorder" id="56103">
+            <property name="fontSize">8pt</property>
+            <property name="borderBottomColor">#D5D5D5</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#D5D5D5</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#D5D5D5</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#D5D5D5</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="rowRughtBorder" id="56126">
+            <property name="borderRightColor">#D5D5D5</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+        </style>
+        <style name="all-grey-border" id="56430">
+            <property name="backgroundColor">#D5D5D5</property>
+            <property name="borderBottomColor">#808080</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#808080</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#808080</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#808080</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="all-grey-border-235" id="56440">
+            <property name="backgroundColor">#EBEBEB</property>
+            <property name="borderBottomColor">#808080</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#808080</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#808080</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#808080</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="all-grey-border-245" id="56438">
+            <property name="backgroundColor">#F5F5F5</property>
+            <property name="borderBottomColor">#808080</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#808080</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#808080</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#808080</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="rowAllDarkBorder" id="57065">
+            <property name="borderBottomColor">#808080</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#808080</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#808080</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#808080</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="rowBottomTopBorder" id="57093">
+            <property name="fontSize">8pt</property>
+            <property name="borderBottomColor">#D5D5D5</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#D5D5D5</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="rowTopBorder" id="57124">
+            <property name="fontSize">8pt</property>
+            <property name="borderBottomColor">#D5D5D5</property>
+            <property name="borderBottomStyle">none</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#D5D5D5</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="rowLeftBorder" id="57097">
+            <property name="borderLeftColor">#D5D5D5</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+        </style>
+        <style name="all-light-grey-border-245" id="57122">
+            <property name="backgroundColor">#F5F5F5</property>
+            <property name="borderBottomColor">#D5D5D5</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#D5D5D5</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#D5D5D5</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#D5D5D5</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="top-bottom-light-grey-border-245" id="57123">
+            <property name="backgroundColor">#F5F5F5</property>
+            <property name="borderBottomColor">#D5D5D5</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#D5D5D5</property>
+            <property name="borderLeftStyle">none</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#D5D5D5</property>
+            <property name="borderRightStyle">none</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#D5D5D5</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="rowTopLeftRightBorder" id="57125">
+            <property name="fontSize">8pt</property>
+            <property name="borderBottomColor">#D5D5D5</property>
+            <property name="borderBottomStyle">none</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#D5D5D5</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#D5D5D5</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#D5D5D5</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="rowLeftRightBorder" id="57127">
+            <property name="fontSize">8pt</property>
+            <property name="borderBottomColor">#D5D5D5</property>
+            <property name="borderBottomStyle">none</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#D5D5D5</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#D5D5D5</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#D5D5D5</property>
+            <property name="borderTopStyle">none</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="MasterPageLSConTitoloFooterCustomTramiteVariabile" id="59536" extends="base_structure_JDBC.MasterPageLSConTitoloFooterCustomTramiteVariabile">
+            <overridden-values>
+                <ref-entry baseId="50817" name="headerGridNew" id="50817"/>
+                <ref-entry baseId="50818" id="50818"/>
+                <ref-entry baseId="50819" id="50819"/>
+                <ref-entry baseId="50820" id="50820"/>
+                <ref-entry baseId="50821" name="imgHeaderNew" id="50821">
+                    <method name="onCreate"><![CDATA[reportContext.getPersistentGlobalVariable("logo_header");
+if (reportContext.getGlobalVariable("nPagina")== 1) {
+    this.getStyle().display = "none";
+}]]></method>
+                </ref-entry>
+                <ref-entry baseId="50822" id="50822"/>
+                <ref-entry baseId="50823" id="50823"/>
+                <ref-entry baseId="50824" id="50824"/>
+                <ref-entry baseId="50825" id="50825"/>
+                <ref-entry baseId="50826" id="50826"/>
+                <ref-entry baseId="50827" id="50827"/>
+                <ref-entry baseId="50828" id="50828"/>
+                <ref-entry baseId="50829" id="50829"/>
+                <ref-entry baseId="50830" id="50830"/>
+                <ref-entry baseId="50831" id="50831"/>
+                <ref-entry baseId="50832" id="50832"/>
+                <ref-entry baseId="50833" id="50833"/>
+                <ref-entry baseId="50834" id="50834"/>
+                <ref-entry baseId="50835" name="newDataHeader" id="50835"/>
+                <ref-entry baseId="50836" id="50836"/>
+                <ref-entry baseId="50837" id="50837"/>
+                <ref-entry baseId="50838" id="50838"/>
+                <ref-entry baseId="50839" id="50839"/>
+                <ref-entry baseId="50840" id="50840"/>
+                <ref-entry baseId="50841" id="50841"/>
+                <ref-entry baseId="50842" id="50842"/>
+                <ref-entry baseId="50843" id="50843"/>
+                <ref-entry baseId="50844" id="50844"/>
+                <ref-entry baseId="50845" id="50845"/>
+                <ref-entry baseId="50846" id="50846"/>
+                <ref-entry baseId="50847" id="50847"/>
+                <ref-entry baseId="50848" id="50848"/>
+                <ref-entry baseId="50849" id="50849"/>
+                <ref-entry baseId="50850" name="NewAutoText3711" id="50850"/>
+                <ref-entry baseId="50851" id="50851"/>
+                <ref-entry baseId="50852" id="50852"/>
+                <ref-entry baseId="50853" id="50853"/>
+                <ref-entry baseId="50854" name="NewAutoText2711" id="50854"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid name="masterGrid" id="25243">
+            <property name="height">5.9375in</property>
+            <property name="width">100%</property>
+            <column id="25244"/>
+            <row id="59481">
+                <property name="masterPage">MasterPageLSConTitoloFooterCustomTramiteVariabile</property>
+                <property name="pageBreakAfter">always</property>
+                <property name="height">110mm</property>
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!(params["workEffortId"].value == null || params["workEffortId"].value == '')</expression>
+                    </structure>
+                </list-property>
+                <cell id="59482">
+                    <property name="paddingLeft">0pt</property>
+                    <property name="paddingRight">0pt</property>
+                    <property name="textAlign">center</property>
+                    <property name="verticalAlign">middle</property>
+                    <image id="59483">
+                        <property name="height">185px</property>
+                        <property name="width">540px</property>
+                        <property name="source">file</property>
+                        <expression name="uri" type="javascript">reportContext.getPersistentGlobalVariable("logo_large");</expression>
+                    </image>
+                </cell>
+            </row>
+            <row id="55975">
+                <property name="masterPage">MasterPageLSConTitoloFooterCustomTramiteVariabile</property>
+                <property name="pageBreakAfter">auto</property>
+                <cell id="55976">
+                    <property name="paddingLeft">0pt</property>
+                    <property name="paddingRight">0pt</property>
+                    <table id="59902">
+                        <property name="dataSet">ProcedimentiDS</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">Codice - Code</property>
+                                <text-property name="displayName">Codice - Code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Codice - Code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Denominazione</property>
+                                <text-property name="displayName">Denominazione</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Denominazione"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Bezeichnung</property>
+                                <text-property name="displayName">Bezeichnung</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Bezeichnung"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Codice esterno - Externer Code</property>
+                                <text-property name="displayName">Codice esterno - Externer Code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Codice esterno - Externer Code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Codice struttura - Strukturcode</property>
+                                <text-property name="displayName">Codice struttura - Strukturcode</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Codice struttura - Strukturcode"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Unità Responsabile</property>
+                                <text-property name="displayName">Unità Responsabile</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Unità Responsabile"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Organisationseinheit</property>
+                                <text-property name="displayName">Organisationseinheit</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Organisationseinheit"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Codice responsabile - Führungskraft Code</property>
+                                <text-property name="displayName">Codice responsabile - Führungskraft Code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Codice responsabile - Führungskraft Code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Responsabile - Führungskraft</property>
+                                <text-property name="displayName">Responsabile - Führungskraft</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Responsabile - Führungskraft"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Codice esterno padre - Externer Vaterncode</property>
+                                <text-property name="displayName">Codice esterno padre - Externer Vaterncode</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Codice esterno padre - Externer Vaterncode"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Codice struttura padre - Übergeordneter Strukturcode</property>
+                                <text-property name="displayName">Codice struttura padre - Übergeordneter Strukturcode</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Codice struttura padre - Übergeordneter Strukturcode"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Unità Responsabile padre</property>
+                                <text-property name="displayName">Unità Responsabile padre</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Unità Responsabile padre"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Organisationseinheit Vater</property>
+                                <text-property name="displayName">Organisationseinheit Vater</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Organisationseinheit Vater"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Durata procedimento - Verfahrensdauer</property>
+                                <text-property name="displayName">Durata procedimento - Verfahrensdauer</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Durata procedimento - Verfahrensdauer"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Commento</property>
+                                <text-property name="displayName">Commento</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Commento"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Kommentar</property>
+                                <text-property name="displayName">Kommentar</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Kommentar"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Normativa di riferimento</property>
+                                <text-property name="displayName">Normativa di riferimento</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Normativa di riferimento"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Normative Grundlage</property>
+                                <text-property name="displayName">Normative Grundlage</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Normative Grundlage"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Avvio del procedimento</property>
+                                <text-property name="displayName">Avvio del procedimento</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Avvio del procedimento"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Einleitung des Verfahrens</property>
+                                <text-property name="displayName">Einleitung des Verfahrens</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Einleitung des Verfahrens"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Decorrenza del termine</property>
+                                <text-property name="displayName">Decorrenza del termine</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Decorrenza del termine"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Beginn des Fristenlaufes</property>
+                                <text-property name="displayName">Beginn des Fristenlaufes</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Beginn des Fristenlaufes"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <column id="59924"/>
+                        <column id="59925">
+                            <property name="width">25%</property>
+                        </column>
+                        <column id="59926">
+                            <property name="width">40%</property>
+                        </column>
+                        <column id="59927"/>
+                        <column id="59928"/>
+                        <column id="59929"/>
+                        <header>
+                            <row id="59903">
+                                <property name="style">all-grey-border-235</property>
+                                <property name="textAlign">left</property>
+                                <cell id="59904">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <label id="59930">
+                                        <text-property name="text" key="StrutturaOrganizzativa">Organisationseinheit</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="59905">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <label id="59932">
+                                        <text-property name="text" key="DenominazioneProcedimento">Denominazione</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="59906">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <label id="59934">
+                                        <text-property name="text" key="NormativaRiferimento">Normativa di riferimento</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="59907">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <label id="59936">
+                                        <text-property name="text" key="Durata">Durata procedimento - Verfahrensdauer</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="59908">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <label id="59938">
+                                        <text-property name="text" key="DecorrenzaTermine">Beginn des Fristenlaufes</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="59909">
+                                    <label id="59940">
+                                        <text-property name="text" key="AvvioProcedimento">Einleitung des Verfahrens</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <detail>
+                            <row id="59910">
+                                <property name="style">rowAllBorder</property>
+                                <cell id="59911">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <data id="59931">
+                                        <property name="resultSetColumn">Organisationseinheit</property>
+                                    </data>
+                                </cell>
+                                <cell id="59912">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <data id="59933">
+                                        <property name="resultSetColumn">Denominazione</property>
+                                    </data>
+                                </cell>
+                                <cell id="59913">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <data id="59935">
+                                        <property name="resultSetColumn">Normativa di riferimento</property>
+                                    </data>
+                                </cell>
+                                <cell id="59914">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <data id="59937">
+                                        <property name="resultSetColumn">Durata procedimento - Verfahrensdauer</property>
+                                    </data>
+                                </cell>
+                                <cell id="59915">
+                                    <property name="borderRightColor">#C0C0C0</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <data id="59939">
+                                        <property name="resultSetColumn">Beginn des Fristenlaufes</property>
+                                    </data>
+                                </cell>
+                                <cell id="59916">
+                                    <data id="59941">
+                                        <property name="resultSetColumn">Einleitung des Verfahrens</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </detail>
+                        <footer>
+                            <row id="59917">
+                                <cell id="59918"/>
+                                <cell id="59919"/>
+                                <cell id="59920"/>
+                                <cell id="59921"/>
+                                <cell id="59922"/>
+                                <cell id="59923"/>
+                            </row>
+                        </footer>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+    </body>
+    <property name="pageVariables">
+        <variable-element name="NpageNumber">
+            <property name="type">page</property>
+        </variable-element>
+        <variable-element name="NpageIndexRoman">
+            <property name="type">page</property>
+        </variable-element>
+        <variable-element name="NumberPageEmpty">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
+    <list-property name="images">
+        <structure>
+            <property name="name">pallino_nero.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAABYAAAAXCAIAAACAiijJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+                YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABwSURBVDhP7czLDsAgCERR//+nKZHb+CJVqt31bIzATJJt
+                H1ekFtOBvyDk4aLSjzic4TprPxFkDlewiSBoj2IcQZDnrb+iKBWKWQRBexTjCIL2GDZryJyvUOxnuM76
+                CsOhh4uKX2EI3ZgOnioWbVeIXPphrHBVs84RAAAAAElFTkSuQmCC
+</property>
+        </structure>
+        <structure>
+            <property name="name">mezzo_pallino_nero.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAABYAAAAXCAIAAACAiijJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+                YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABlSURBVDhPzZTBCgAhCER1//+fXcEoVqLFcQ69S11meAql
+                ZiY9nnE2OFmoalzOpnsLD8/8L7miFA4+FdVwQFjnqsAUHJ4FrOBQdwFzVUXnvVIHgUXY68REsoW3VIv2
+                g5SKbvh+RV7fhyEjScgSeQAAAABJRU5ErkJggg==
+</property>
+        </structure>
+        <structure>
+            <property name="name">pallino_vuoto.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAABMAAAARCAIAAACw+gCQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+                YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB2SURBVDhP1ZNLDoAwCESL979zxZbQ6VCIcefbaOZTUKP0
+                3ltAROxucM6QSh2EkpddB0VNIXfNRKNYxC2bWdQUVDy5bavE2iTqT9OPyWoTd2eeZ77nf0169Ax6kTwz
+                K0fdmvg9YgiVtWDdITC8bYtGhNyv/2drN0KZRQ9JG1IzAAAAAElFTkSuQmCC
+</property>
+        </structure>
+    </list-property>
+</report>

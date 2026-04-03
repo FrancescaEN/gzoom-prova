@@ -1,0 +1,33 @@
+<p-dialog
+  header="{{ 'Change theme' | i18n }}"
+  [(visible)]="displayChangeTheme"
+  width="600"
+  [modal]="true"
+  [dismissableMask]="true"
+  closeOnEscape="true"
+  role="dialog"
+  [attr.aria-labelledby]="displayChangeTheme ? 'changeThemeDialogHeader' : null"
+  (onHide)="onHide()"
+>
+  <form>
+    <h3 id="changeThemeDialogHeader" class="sr-only">
+      {{ 'Change theme' | i18n }}
+    </h3>
+    <ul class="list-unstyled">
+      <li *ngFor="let theme of themes">
+        <button
+          type="button"
+          class="dropdown-item d-flex align-items-center gap-2 py-2 w-100 "
+          (click)="themeChange(theme.labelLegacy)"
+          [attr.aria-label]="'Select ' + (theme.label | i18n) + ' theme'"
+        >
+          <span
+            class="d-inline-block rounded-circle p-2"
+            [style.backgroundColor]="theme.color"
+          ></span>
+          <label style="color: black;">{{ theme.label | i18n }}</label>
+        </button>
+      </li>
+    </ul>
+  </form>
+</p-dialog>

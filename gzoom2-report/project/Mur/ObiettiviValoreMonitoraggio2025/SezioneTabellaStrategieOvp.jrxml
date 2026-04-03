@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SezioneRiepilogoStrategieOvp" pageWidth="1191" pageHeight="842" orientation="Landscape" columnWidth="1191" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="22c2ae8e-c01d-48c4-90cf-a6c01511a2f1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgres_gzoom_mur"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="337"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="657"/>
+	<style name="Radar" fontSize="8"/>
+	<parameter name="areaId" class="java.lang.String"/>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="YEAR" class="java.lang.Integer"/>
+	<parameter name="YEARM2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{YEAR}-2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEARM1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{YEAR}-1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEARP1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{YEAR}+1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEARP2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{YEAR}+2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idOvp" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+	ovp.work_effort_id as "Id Obiettivo valore pubblico",
+	strat.etch as "Etichetta strategia",
+	strat.work_effort_name as "Nome strategia",
+	score.baseline as "Baseline",
+	score.target as "Target",
+	score.consuntivo as "Consuntivo",
+	score.monitoraggio as "Monitoraggio"
+from work_effort ovp
+/* SEZIONE PIAO */
+join work_effort_assoc wea on wea.work_effort_id_from = ovp.work_effort_id and wea.work_effort_assoc_type_id = '23R4'
+join work_effort sez on sez.work_effort_id = wea.work_effort_id_to
+	and sez.work_effort_type_id = '23R42SEZ' and sez.work_effort_revision_id is null
+/* SOTTOSEZIONE VALORE PUBBLICO */
+join work_effort_assoc wea2 on wea2.work_effort_id_from = sez.work_effort_id and wea2.work_effort_assoc_type_id = '23R4'
+join work_effort subsez on subsez.work_effort_id = wea2.work_effort_id_to
+	and subsez.work_effort_type_id = '23R44S21' and subsez.work_effort_revision_id is null
+/* STRATEGIE */
+join work_effort_assoc wea3 on wea3.work_effort_id_from = subsez.work_effort_id and wea3.work_effort_assoc_type_id = '23R4'
+join work_effort strat on strat.work_effort_id = wea3.work_effort_id_to 
+	and strat.work_effort_type_id = '23R80OBS' and strat.work_effort_revision_id is null
+/* RAGGIUNGIMENTI STRATEGIE */
+left join (
+	select 
+		wem.work_effort_id,
+		max(case when extract(year from act.transaction_date) = 2022 and ate.gl_fiscal_type_id = 'BASELINE' then ate.amount else null end) as baseline,
+		max(case when extract(year from act.transaction_date) =  $P{YEAR}  and ate.gl_fiscal_type_id = 'BUDGET' then ate.amount else null end) as target,
+		max(case when extract(year from act.transaction_date) =  $P{YEAR}  and ate.gl_fiscal_type_id = 'ACTUAL' then ate.amount else null end) as consuntivo,
+		max(case when extract(year from act.transaction_date) =  $P{YEAR}  and ate.gl_fiscal_type_id = 'MONINT' then ate.amount else null end) as monitoraggio
+	from work_effort_measure wem
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id and ate.gl_account_id = 'SCORE'
+	join acctg_trans act on act.acctg_trans_id = ate.acctg_trans_id
+	where wem.gl_account_id = 'SCORE'
+	group by
+		wem.work_effort_id
+) score on score.work_effort_id = strat.work_effort_id 
+where ovp.work_effort_type_id = '23R40PIAO' and ovp.work_effort_revision_id is null  and ovp.work_effort_id = $P{idOvp} 
+order by strat.etch]]>
+	</queryString>
+	<field name="Id Obiettivo valore pubblico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Id Obiettivo valore pubblico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Id Obiettivo valore pubblico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="Etichetta strategia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Etichetta strategia"/>
+		<property name="com.jaspersoft.studio.field.label" value="Etichetta strategia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="Nome strategia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nome strategia"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nome strategia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="Baseline" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Baseline"/>
+		<property name="com.jaspersoft.studio.field.label" value="Baseline"/>
+	</field>
+	<field name="Target" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Target"/>
+		<property name="com.jaspersoft.studio.field.label" value="Target"/>
+	</field>
+	<field name="Consuntivo" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Consuntivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="Consuntivo"/>
+	</field>
+	<field name="Monitoraggio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="Monitoraggio"/>
+		<property name="com.jaspersoft.studio.field.label" value="Monitoraggio"/>
+	</field>
+	<group name="GruppoObiettivoValPub">
+		<groupExpression><![CDATA[$F{Id Obiettivo valore pubblico}]]></groupExpression>
+		<groupHeader>
+			<band height="190">
+				<componentElement>
+					<reportElement style="Radar" x="0" y="0" width="522" height="190" backcolor="#FFFFFF" uuid="4a00da72-8283-4939-a8e4-08d2c2c7211e">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<sc:spiderChart xmlns:sc="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" evaluationTime="Report">
+						<sc:chartSettings isShowLegend="true" renderType="draw">
+							<chartTitle position="Top" color="#2D65AE">
+								<font fontName="Titillium-Web" isBold="true"/>
+								<titleExpression><![CDATA["Valore pubblico atteso "+$P{YEAR}]]></titleExpression>
+							</chartTitle>
+							<chartSubtitle/>
+							<chartLegend position="Top">
+								<font fontName="Titillium-Web" size="8.0"/>
+							</chartLegend>
+						</sc:chartSettings>
+						<sc:spiderDataset>
+							<dataset resetType="Report"/>
+							<categorySeries>
+								<seriesExpression><![CDATA["Baseline"]]></seriesExpression>
+								<categoryExpression><![CDATA[$F{Etichetta strategia}]]></categoryExpression>
+								<valueExpression><![CDATA[$F{Baseline}]]></valueExpression>
+								<labelExpression><![CDATA[$F{Etichetta strategia}]]></labelExpression>
+							</categorySeries>
+							<categorySeries>
+								<seriesExpression><![CDATA["Target"]]></seriesExpression>
+								<categoryExpression><![CDATA[$F{Etichetta strategia}]]></categoryExpression>
+								<valueExpression><![CDATA[$F{Target}]]></valueExpression>
+								<labelExpression><![CDATA[$F{Etichetta strategia}]]></labelExpression>
+							</categorySeries>
+							<categorySeries>
+								<seriesExpression><![CDATA["Monitoraggio"]]></seriesExpression>
+								<categoryExpression><![CDATA[$F{Etichetta strategia}]]></categoryExpression>
+								<valueExpression><![CDATA[$F{Monitoraggio}]]></valueExpression>
+								<labelExpression><![CDATA[$F{Etichetta strategia}]]></labelExpression>
+							</categorySeries>
+						</sc:spiderDataset>
+						<sc:spiderPlot isWebFilled="true" headPercent="0.01" interiorGap="0.25" axisLineColor="#B8B8B8"/>
+					</sc:spiderChart>
+				</componentElement>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+</jasperReport>

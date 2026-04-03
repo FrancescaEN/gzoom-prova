@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortMeasureMapper">
+
+    <select id="getWeMeasureEvalId" resultMap="workEffortMeasureResultMap">
+    SELECT *
+    FROM work_effort_measure wem
+    WHERE wem.work_effort_id = #{workEffortIdFrom}
+    </select>
+
+    <resultMap id="uomResultMap" type="it.mapsgroup.gzoom.mybatis.dto.Uom">
+        <id column="UMuomId" property="uomId" jdbcType="VARCHAR"/>
+        <result column="UMuomTypeId" property="uomTypeId" jdbcType="VARCHAR"/>
+        <result column="UMabbreviation" property="abbreviation" jdbcType="VARCHAR"/>
+        <result column="UMdescription" property="description" jdbcType="VARCHAR"/>
+        <result column="UMlastUpdatedStamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="UMlastUpdatedTxStamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="UMcreatedStamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="UMcreatedTxStamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="UMdecimalScale" property="decimalScale" jdbcType="NUMERIC"/>
+        <result column="UMminValue" property="minValue" jdbcType="DOUBLE"/>
+        <result column="UMmaxValue" property="maxValue" jdbcType="DOUBLE"/>
+        <result column="UMabbreviationLang" property="abbreviationLang" jdbcType="VARCHAR"/>
+        <result column="UMdescriptionLang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="UMlastModifiedByUserLogin" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="UMcreatedByUserLogin" property="createdByUserLogin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="workEffortMeasureExUomResultMap" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortMeasExUom">
+        <id column="WEMworkEffortMeasureId" property="workEffortMeasureId" jdbcType="VARCHAR" />
+        <result column="WEMproductId" property="productId" jdbcType="VARCHAR"/>
+        <result column="WEMemplPositionTypeId" property="emplPositionTypeId" jdbcType="VARCHAR"/>
+        <result column="WEMglFiscalTypeEnumId" property="glFiscalTypeEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMpartyId" property="partyId" jdbcType="VARCHAR"/>
+        <result column="WEMroleTypeId" property="roleTypeId" jdbcType="VARCHAR"/>
+        <result column="WEMweMeasureTypeEnumId" property="weMeasureTypeEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMweScoreRangeEnumId" property="weScoreRangeEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMweScoreConvEnumId" property="weScoreConvEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMweAlertRuleEnumId" property="weAlertRuleEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMworkEffortInfluenceId" property="workEffortInfluenceId" jdbcType="VARCHAR"/>
+        <result column="WEMuomRangeId" property="uomRangeId" jdbcType="VARCHAR"/>
+        <result column="WEMweOtherGoalEnumId" property="weOtherGoalEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMworkEffortId" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="WEMglAccountId" property="glAccountId" jdbcType="VARCHAR"/>
+        <result column="WEMfromDate" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="WEMthruDate" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="WEMuomDescr" property="uomDescr" jdbcType="VARCHAR"/>
+        <result column="WEMcomments" property="comments" jdbcType="VARCHAR"/>
+        <result column="WEMkpiScoreWeight" property="kpiScoreWeight" jdbcType="DOUBLE"/>
+        <result column="WEMotherWorkEffortId" property="otherWorkEffortId" jdbcType="VARCHAR"/>
+        <result column="WEMperiodTypeId" property="periodTypeId" jdbcType="VARCHAR"/>
+        <result column="WEMweWithoutPerf" property="weWithoutPerf" jdbcType="VARCHAR"/>
+        <result column="WEMorgUnitRoleTypeId" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="WEMorgUnitId" property="orgUnitId" jdbcType="VARCHAR"/>
+        <result column="WEMdetailEnumId" property="detailEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMdataSourceId" property="dataSourceId" jdbcType="VARCHAR"/>
+        <result column="WEMcurrentStatusId" property="currentStatusId" jdbcType="VARCHAR"/>
+        <result column="WEMisPosted" property="isPosted" jdbcType="CHAR"/>
+        <result column="WEMsource" property="source" jdbcType="VARCHAR"/>
+        <result column="WEMsequenceId" property="sequenceId" jdbcType="NUMERIC"/>
+        <result column="WEMuomDescrLang" property="uomDescrLang" jdbcType="VARCHAR"/>
+        <result column="WEMkpiOtherWeight" property="kpiOtherWeight" jdbcType="DOUBLE"/>
+        <result column="WEMisInvisible" property="isInvisible" jdbcType="CHAR"/>
+        <result column="WEMcommentsLang" property="commentsLang" jdbcType="VARCHAR"/>
+        <result column="WEMlastModifiedByUserLogin" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="WEMcreatedByUserLogin" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="WEMlastUpdatedStamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="WEMlastUpdatedTxStamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="WEMcreatedStamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="WEMcreatedTxStamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+
+        <association property="uom" resultMap="uomResultMap"/>
+    </resultMap>
+
+
+    <select id="getWorkEffortMeasureList" resultMap="workEffortMeasureExUomResultMap">
+    SELECT
+        WEM.work_effort_measure_id AS WEMworkEffortMeasureId,
+        WEM.product_id AS WEMproductId,
+        WEM.empl_position_type_id AS WEMemplPositionTypeId,
+        WEM.gl_fiscal_type_enum_id AS WEMglFiscalTypeEnumId,
+        WEM.party_id AS WEMpartyId,
+        WEM.role_type_id AS WEMroleTypeId,
+        WEM.we_measure_type_enum_id AS WEMweMeasureTypeEnumId,
+        WEM.we_score_range_enum_id AS WEMweScoreRangeEnumId,
+        WEM.we_score_conv_enum_id AS WEMweScoreConvEnumId,
+        WEM.we_alert_rule_enum_id AS WEMweAlertRuleEnumId,
+        WEM.work_effort_influence_id AS WEMworkEffortInfluenceId,
+        WEM.uom_range_id AS WEMuomRangeId,
+        WEM.we_other_goal_enum_id AS WEMweOtherGoalEnumId,
+        WEM.work_effort_id AS WEMworkEffortId,
+        WEM.gl_account_id AS WEMglAccountId,
+        WEM.from_date AS WEMfromDate,
+        WEM.thru_date AS WEMthruDate,
+        WEM.uom_descr AS WEMuomDescr,
+        WEM.comments AS WEcomments,
+        WEM.kpi_score_weight AS WEMkpiScoreWeight,
+        WEM.other_work_effort_id AS WEMotherWorkEffortId,
+        WEM.period_type_id AS WEMperiodTypeId,
+        WEM.we_without_perf AS WEMweWithoutPerf,
+        WEM.org_unit_role_type_id AS WEMorgUnitRoleTypeId,
+        WEM.org_unit_id AS WEMorgUnitId,
+        WEM.detail_enum_id AS WEMdetailEnumId,
+        WEM.data_source_id AS WEMdataSourceId,
+        WEM.current_status_id AS WEMcurrentStatusId,
+        WEM.is_posted AS WEMisPosted,
+        WEM.source AS WEMsource,
+        WEM.sequence_id AS WEMsequenceId,
+        WEM.uom_descr_lang AS WEMuomDescrLang,
+        WEM.kpi_other_weight AS WEMkpiOtherWeight,
+        WEM.is_invisible AS WEMisInvisible,
+        WEM.comments_lang AS WEMcommentsLang,
+        WEM.last_modified_by_user_login AS WEMlastModifiedByUserLoginWE,
+        WEM.created_by_user_login AS WEMcreatedByUserLoginWE,
+        WEM.last_updated_stamp AS WEMlastUpdatedStampWE,
+        WEM.last_updated_tx_stamp AS WEMlastUpdatedTxStampWE,
+        WEM.created_stamp AS WEMcreatedStampWE,
+        WEM.created_tx_stamp AS WEMcreatedTxStampWE,
+
+        UM.uom_id AS UMuomId,
+        UM.uom_type_id AS UMuomTypeId,
+        UM.abbreviation AS UMabbreviation,
+        UM.description AS UMuomDescription,
+        UM.last_updated_stamp AS UMuomLastUpdatedStamp,
+        UM.last_updated_tx_stamp AS UMuomLastUpdatedTxStamp,
+        UM.created_stamp AS UMuomCreatedStamp,
+        UM.created_tx_stamp AS UMuomCreatedTxStamp,
+        UM.decimal_scale AS UMdecimalScale,
+        UM.min_value AS UMminValue,
+        UM.max_value AS UMmaxValue,
+        UM.abbreviation_lang AS UMabbreviationLang,
+        UM.description_lang AS UMuomDescriptionLang,
+        UM.last_modified_by_user_login AS UMlastModifiedByUserLoginUom,
+        UM.created_by_user_login AS UMcreatedByUserLoginUom
+    FROM WORK_EFFORT_MEASURE WEM
+    INNER JOIN GL_ACCOUNT AC ON AC.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+    INNER JOIN UOM UM ON UM.UOM_ID = AC.DEFAULT_UOM_ID
+    ORDER BY WEM.WORK_EFFORT_MEASURE_ID ASC
+    </select>
+
+    <resultMap id="workEffortMeasureExUomResultMap2" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortMeasExUom">
+        <id column="WEMworkEffortMeasureId" property="workEffortMeasureId" jdbcType="VARCHAR" />
+        <result column="WEMproductId" property="productId" jdbcType="VARCHAR"/>
+        <result column="WEMemplPositionTypeId" property="emplPositionTypeId" jdbcType="VARCHAR"/>
+        <result column="WEMglFiscalTypeEnumId" property="glFiscalTypeEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMpartyId" property="partyId" jdbcType="VARCHAR"/>
+        <result column="WEMroleTypeId" property="roleTypeId" jdbcType="VARCHAR"/>
+        <result column="WEMweMeasureTypeEnumId" property="weMeasureTypeEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMweScoreRangeEnumId" property="weScoreRangeEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMweScoreConvEnumId" property="weScoreConvEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMweAlertRuleEnumId" property="weAlertRuleEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMworkEffortInfluenceId" property="workEffortInfluenceId" jdbcType="VARCHAR"/>
+        <result column="WEMuomRangeId" property="uomRangeId" jdbcType="VARCHAR"/>
+        <result column="WEMweOtherGoalEnumId" property="weOtherGoalEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMworkEffortId" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="WEMglAccountId" property="glAccountId" jdbcType="VARCHAR"/>
+        <result column="WEMfromDate" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="WEMthruDate" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="WEMuomDescr" property="uomDescr" jdbcType="VARCHAR"/>
+        <result column="WEMcomments" property="comments" jdbcType="VARCHAR"/>
+        <result column="WEMkpiScoreWeight" property="kpiScoreWeight" jdbcType="DOUBLE"/>
+        <result column="WEMotherWorkEffortId" property="otherWorkEffortId" jdbcType="VARCHAR"/>
+        <result column="WEMperiodTypeId" property="periodTypeId" jdbcType="VARCHAR"/>
+        <result column="WEMweWithoutPerf" property="weWithoutPerf" jdbcType="VARCHAR"/>
+        <result column="WEMorgUnitRoleTypeId" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="WEMorgUnitId" property="orgUnitId" jdbcType="VARCHAR"/>
+        <result column="WEMdetailEnumId" property="detailEnumId" jdbcType="VARCHAR"/>
+        <result column="WEMdataSourceId" property="dataSourceId" jdbcType="VARCHAR"/>
+        <result column="WEMcurrentStatusId" property="currentStatusId" jdbcType="VARCHAR"/>
+        <result column="WEMisPosted" property="isPosted" jdbcType="CHAR"/>
+        <result column="WEMsource" property="source" jdbcType="VARCHAR"/>
+        <result column="WEMsequenceId" property="sequenceId" jdbcType="NUMERIC"/>
+        <result column="WEMuomDescrLang" property="uomDescrLang" jdbcType="VARCHAR"/>
+        <result column="WEMkpiOtherWeight" property="kpiOtherWeight" jdbcType="DOUBLE"/>
+        <result column="WEMisInvisible" property="isInvisible" jdbcType="CHAR"/>
+        <result column="WEMcommentsLang" property="commentsLang" jdbcType="VARCHAR"/>
+        <result column="WEMlastModifiedByUserLogin" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="WEMcreatedByUserLogin" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="WEMlastUpdatedStamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="WEMlastUpdatedTxStamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="WEMcreatedStamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="WEMcreatedTxStamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="AC_ACCOUNT_NAME_LANG" property="glAccount.accountNameLang" jdbcType="VARCHAR"/>
+        <result column="AC_ACCOUNT_NAME" property="glAccount.accountName" jdbcType="VARCHAR"/>
+        <result column="AC_ACCOUNT_CODE" property="glAccount.accountCode" jdbcType="VARCHAR"/>
+        <result column="WE_WORK_EFFORT_NAME" property="workEffort.workEffortName" jdbcType="VARCHAR"/>
+        <result column="WE_WORK_EFFORT_NAME_LANG" property="workEffort.workEffortNameLang" jdbcType="VARCHAR"/>
+        <result column="TOTALE" property="totalRow" jdbcType="NUMERIC"/>
+
+        <association property="uom" resultMap="uomResultMap"/>
+    </resultMap>
+
+
+    <select id="getTotale" >
+        SELECT COUNT(WEM.WORK_EFFORT_MEASURE_ID) AS "TOTALE"
+        FROM WORK_EFFORT_MEASURE WEM
+        INNER JOIN GL_ACCOUNT AC ON AC.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+        INNER JOIN UOM UM ON UM.UOM_ID = AC.DEFAULT_UOM_ID
+        INNER JOIN PERIOD_TYPE PT ON PT.PERIOD_TYPE_ID = WEM.PERIOD_TYPE_ID
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WEM.WORK_EFFORT_ID
+        LEFT JOIN UOM_RANGE UR ON UR.UOM_RANGE_ID = WEM.UOM_RANGE_ID
+        LEFT JOIN ENUMERATION EN ON EN.ENUM_ID = WEM.DETAIL_ENUM_ID
+        WHERE WE.WORK_EFFORT_REVISION_ID IS NULL
+        AND WE.ORGANIZATION_ID = #{ORGANIZATIONID}
+        <include refid="filterMatch"></include>
+        <if test='control and filters != null '>
+            AND (
+        </if>
+        <include refid="filter"></include>
+        <if test='control and filters != null '>
+            )
+        </if>
+
+    </select>
+
+    <select id="getWorkEffortMeasureListPagination" resultMap="workEffortMeasureExUomResultMap2" parameterType="java.util.Map">
+        SELECT
+        WEM.work_effort_measure_id AS WEMworkEffortMeasureId,
+        WEM.empl_position_type_id AS WEMemplPositionTypeId,
+        WEM.gl_fiscal_type_enum_id AS WEMglFiscalTypeEnumId,
+        WEM.uom_range_id AS WEMuomRangeId,
+        WEM.work_effort_id AS WEMworkEffortId,
+        WEM.gl_account_id AS WEMglAccountId,
+        WEM.from_date AS WEMfromDate,
+        WEM.thru_date AS WEMthruDate,
+        WEM.uom_descr AS WEMuomDescr,
+        WEM.org_unit_id AS WEMorgUnitId,
+        UM.uom_id AS UMuomId,
+        UM.uom_type_id AS UMuomTypeId,
+        UM.abbreviation AS UMabbreviation,
+        UM.description AS UMuomDescription,
+        UM.decimal_scale AS UMdecimalScale,
+        UM.min_value AS UMminValue,
+        UM.max_value AS UMmaxValue,
+        UM.abbreviation_lang AS UMabbreviationLang,
+        UM.description_lang AS UMuomDescriptionLang,
+        AC.ACCOUNT_NAME AS AC_ACCOUNT_NAME,
+        AC.ACCOUNT_NAME_LANG AS AC_ACCOUNT_NAME_LANG,
+        AC.ACCOUNT_CODE AS AC_ACCOUNT_CODE,
+        WE.WORK_EFFORT_NAME AS WE_WORK_EFFORT_NAME,
+        WE.WORK_EFFORT_NAME_LANG AS WE_WORK_EFFORT_NAME_LANG
+        FROM WORK_EFFORT_MEASURE WEM
+        INNER JOIN GL_ACCOUNT AC ON AC.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+        INNER JOIN UOM UM ON UM.UOM_ID = AC.DEFAULT_UOM_ID
+        INNER JOIN PERIOD_TYPE PT ON PT.PERIOD_TYPE_ID = WEM.PERIOD_TYPE_ID
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_ID = WEM.WORK_EFFORT_ID
+        LEFT JOIN UOM_RANGE UR ON UR.UOM_RANGE_ID = WEM.UOM_RANGE_ID
+        LEFT JOIN ENUMERATION EN ON EN.ENUM_ID = WEM.DETAIL_ENUM_ID
+        WHERE WE.WORK_EFFORT_REVISION_ID IS NULL
+        AND WE.ORGANIZATION_ID = #{ORGANIZATIONID}
+
+        <include refid="filterMatch"></include>
+        <if test='control and filters != null '>
+            AND (
+        </if>
+        <include refid="filter"></include>
+        <if test='control and filters != null '>
+            )
+        </if>
+
+        <if test='SORTFIELD != null'>
+            <choose>
+
+                <when test='SORTFIELD == "workEffortIdDesc"' >
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY WE.WORK_EFFORT_NAME_LANG ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY WE.WORK_EFFORT_NAME_LANG DESC
+                    </if>
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY WE.WORK_EFFORT_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY WE.WORK_EFFORT_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "workEffortMeasureId"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY WEM.WORK_EFFORT_MEASURE_ID ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY WEM.WORK_EFFORT_MEASURE_ID DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "glAccountIdDesc"' >
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY AC.ACCOUNT_NAME_LANG ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY AC.ACCOUNT_NAME_LANG DESC
+                    </if>
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY AC.ACCOUNT_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY AC.ACCOUNT_NAME DESC
+                    </if>
+                </when>
+
+            </choose>
+        </if>
+        <if test='SORTFIELD == null'>
+            ORDER BY WEM.WORK_EFFORT_MEASURE_ID ASC
+        </if>
+        <if test='_databaseId == "mysql"'>
+            LIMIT #{LIMIT}
+            OFFSET #{OFFSET}
+        </if>
+        <if  test='_databaseId != "mysql"'>
+            OFFSET #{OFFSET} ROWS FETCH NEXT #{LIMIT} ROWS ONLY
+        </if>
+    </select>
+
+    <sql id="filter">
+        <if test='filters != null and filters.length > 0'>
+        <foreach collection='filters' item="item" index="index" open="" close="" separator=" AND ">
+            <choose>
+                <when test='item.field == "workEffortId" and item.value != null' >
+                    (WEM.WORK_EFFORT_ID = #{item.value})
+                </when>
+                <when test='item.field == "glAccountId" and item.value != null' >
+                    (WEM.GL_ACCOUNT_ID = #{item.value})
+                </when>
+                <when test='item.field == "workEffortMeasureId" and item.value != null' >
+                    (LOWER(WEM.WORK_EFFORT_MEASURE_ID) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))))
+                </when>
+                <when test='item.field == "workEffortIdDesc" and item.value != null' >
+                    (WEM.WORK_EFFORT_ID = #{item.value})
+                </when>
+                <when test='item.field == "glAccountIdDesc" and item.value != null' >
+                    (WEM.GL_ACCOUNT_ID = #{item.value})
+                </when>
+            </choose>
+        </foreach>
+    </if>
+    </sql>
+
+    <sql id="filterMatch" >
+        <if test='filterGenericLabel != null and filterGenericLabel.length > 0'>
+            AND (
+            <foreach collection='filterGenericLabel' item="item" index="index" open=" " close=""
+                     separator=" OR ">
+                <choose>
+                    <when test='item.field == "glAccountIdMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="AC.ACCOUNT_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="AC.ACCOUNT_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "workEffortIdMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WE.work_effort_name_lang"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WE.work_effort_name"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                </choose>
+            </foreach>
+            )
+        </if>
+    </sql>
+
+    <select id="getWorkEffortMeasureId" resultMap="workEffortMeasureExUomResultMap">
+    SELECT
+        WEM.work_effort_measure_id AS WEMworkEffortMeasureId,
+        WEM.product_id AS WEMproductId,
+        WEM.empl_position_type_id AS WEMemplPositionTypeId,
+        WEM.gl_fiscal_type_enum_id AS WEMglFiscalTypeEnumId,
+        WEM.party_id AS WEMpartyId,
+        WEM.role_type_id AS WEMroleTypeId,
+        WEM.we_measure_type_enum_id AS WEMweMeasureTypeEnumId,
+        WEM.we_score_range_enum_id AS WEMweScoreRangeEnumId,
+        WEM.we_score_conv_enum_id AS WEMweScoreConvEnumId,
+        WEM.we_alert_rule_enum_id AS WEMweAlertRuleEnumId,
+        WEM.work_effort_influence_id AS WEMworkEffortInfluenceId,
+        WEM.uom_range_id AS WEMuomRangeId,
+        WEM.we_other_goal_enum_id AS WEMweOtherGoalEnumId,
+        WEM.work_effort_id AS WEMworkEffortId,
+        WEM.gl_account_id AS WEMglAccountId,
+        WEM.from_date AS WEMfromDate,
+        WEM.thru_date AS WEMthruDate,
+        WEM.uom_descr AS WEMuomDescr,
+        WEM.comments AS WEcomments,
+        WEM.kpi_score_weight AS WEMkpiScoreWeight,
+        WEM.other_work_effort_id AS WEMotherWorkEffortId,
+        WEM.period_type_id AS WEMperiodTypeId,
+        WEM.we_without_perf AS WEMweWithoutPerf,
+        WEM.org_unit_role_type_id AS WEMorgUnitRoleTypeId,
+        WEM.org_unit_id AS WEMorgUnitId,
+        WEM.detail_enum_id AS WEMdetailEnumId,
+        WEM.data_source_id AS WEMdataSourceId,
+        WEM.current_status_id AS WEMcurrentStatusId,
+        WEM.is_posted AS WEMisPosted,
+        WEM.source AS WEMsource,
+        WEM.sequence_id AS WEMsequenceId,
+        WEM.uom_descr_lang AS WEMuomDescrLang,
+        WEM.kpi_other_weight AS WEMkpiOtherWeight,
+        WEM.is_invisible AS WEMisInvisible,
+        WEM.comments_lang AS WEMcommentsLang,
+        WEM.last_modified_by_user_login AS WEMlastModifiedByUserLoginWE,
+        WEM.created_by_user_login AS WEMcreatedByUserLoginWE,
+        WEM.last_updated_stamp AS WEMlastUpdatedStampWE,
+        WEM.last_updated_tx_stamp AS WEMlastUpdatedTxStampWE,
+        WEM.created_stamp AS WEMcreatedStampWE,
+        WEM.created_tx_stamp AS WEMcreatedTxStampWE,
+
+        UM.uom_id AS UMuomId,
+        UM.uom_type_id AS UMuomTypeId,
+        UM.abbreviation AS UMabbreviation,
+        UM.description AS UMuomDescription,
+        UM.last_updated_stamp AS UMuomLastUpdatedStamp,
+        UM.last_updated_tx_stamp AS UMuomLastUpdatedTxStamp,
+        UM.created_stamp AS UMuomCreatedStamp,
+        UM.created_tx_stamp AS UMuomCreatedTxStamp,
+        UM.decimal_scale AS UMdecimalScale,
+        UM.min_value AS UMminValue,
+        UM.max_value AS UMmaxValue,
+        UM.abbreviation_lang AS UMabbreviationLang,
+        UM.description_lang AS UMuomDescriptionLang,
+        UM.last_modified_by_user_login AS UMlastModifiedByUserLoginUom,
+        UM.created_by_user_login AS UMcreatedByUserLoginUom
+    FROM WORK_EFFORT_MEASURE WEM
+    INNER JOIN GL_ACCOUNT AC ON AC.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+    INNER JOIN UOM UM ON UM.UOM_ID = AC.DEFAULT_UOM_ID
+    WHERE WEM.WORK_EFFORT_MEASURE_ID = #{workEffortMeasureId}
+    </select>
+
+    <select id="getWorkEffortMeasureJoinWorkEffort" resultMap="WorkEffortMeasureJoinWorkEffort" >
+        select
+        wem.work_effort_measure_id,
+        wem.work_effort_id,
+        we.etch as work_effort_etch,
+        we.work_effort_name as work_effort_work_effort_name,
+        we.work_effort_name_lang as work_effort_work_effort_name_lang
+        from work_effort_measure wem
+        inner join work_effort we on we.work_effort_id = wem.work_effort_id
+        where
+        <if test="secondaryLang == true">
+            we.work_effort_name_lang LIKE concat('%', concat(#{query}, '%'))
+        </if>
+        <if test="secondaryLang == false">
+            we.work_effort_name LIKE concat('%', concat(#{query}, '%'))
+        </if>
+    </select>
+
+    <resultMap id="WorkEffortMeasureJoinWorkEffort" type="WorkEffortMeasure">
+        <id column="work_effort_measure_id" property="workEffortMeasureId" jdbcType="VARCHAR" />
+        <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="uom_descr" property="uomDescr" jdbcType="VARCHAR"/>
+        <result column="uom_descr_lang" property="uomDescrLang" jdbcType="VARCHAR"/>
+        <association property="workEffort" columnPrefix="work_effort_" javaType="WorkEffort">
+            <result property="etch" column="etch" jdbcType="VARCHAR"/>
+            <result property="workEffortName" column="work_effort_name" jdbcType="VARCHAR"/>
+            <result property="workEffortNameLang" column="work_effort_name_lang" jdbcType="VARCHAR"/>
+        </association>
+        <association property="workEffort.workEffortParent" columnPrefix="ra_"
+                     resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortMapper.workEffort"
+                     javaType="WorkEffort"/>
+        <association property="workEffortType" columnPrefix="wet_" javaType="workEffortType">
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="descriptionLang" column="description_lang" jdbcType="VARCHAR"/>
+        </association>
+        <association property="workEffortType2" columnPrefix="rat_" javaType="workEffortType">
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="descriptionLang" column="description_lang" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <select id="dropdownWorkEffortMeasure" resultMap="WorkEffortMeasureJoinWorkEffort">
+        select
+        wem.work_effort_measure_id,
+        wem.work_effort_id,
+        wem.uom_descr,
+        wem.uom_descr_lang,
+        we.etch as work_effort_etch,
+        concat(we.etch, concat(' - ', we.work_effort_name)) as work_effort_work_effort_name,
+        concat(we.etch, concat(' - ',we.work_effort_name_lang)) as work_effort_work_effort_name_lang,
+        concat(ra.etch, concat(' - ', ra.work_effort_name)) as ra_work_effort_name,
+        concat(ra.etch, concat(' - ',ra.work_effort_name_lang)) as ra_work_effort_name_lang,
+        wet.description as wet_description,
+        wet.description_lang as wet_description_lang,
+        rat.description as rat_description,
+        rat.description_lang rat_description_lang
+        from work_effort_measure wem
+        inner join work_effort we on we.work_effort_id = wem.work_effort_id
+        inner join work_effort_type wet on wet.work_effort_type_id = we.work_effort_type_id
+        inner join work_effort ra on ra.work_effort_id = we.work_effort_parent_id
+        inner join work_effort_type rat on rat.work_effort_type_id = ra.work_effort_type_id
+        where we.organization_id = #{organizationId,jdbcType=VARCHAR}
+          and we.work_effort_revision_id is null
+
+    </select>
+
+
+
+    <select id="dropdownWorkEffortMeasureWEA" resultMap="WorkEffortMeasureJoinWorkEffort">
+        select
+            wem.work_effort_measure_id,
+            wem.work_effort_id,
+            wem.uom_descr,
+            wem.uom_descr_lang
+        from work_effort_measure wem
+        inner join work_effort we on we.work_effort_id = wem.work_effort_id
+        where we.organization_id = #{organizationId,jdbcType=VARCHAR}
+          and we.work_effort_revision_id is null
+
+    </select>
+</mapper>

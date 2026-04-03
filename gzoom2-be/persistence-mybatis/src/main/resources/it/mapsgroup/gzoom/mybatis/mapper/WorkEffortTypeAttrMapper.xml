@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortTypeAttrMapper">
+
+    <select id="getWorkEffortTypeAttrList" resultMap="workEffortTypeAttrResultMap">
+    SELECT *
+    FROM work_effort_type_attr weta
+    WHERE weta.is_note = 'Y'
+      AND weta.content_id LIKE 'WEFLD_NOTE%'
+      AND weta.work_effort_type_id = #{workEffortTypeId}
+    </select>
+
+
+    <select id="get" resultMap="workEffortTypeAttrResultMap">
+    SELECT *
+    FROM work_effort_type_attr weta
+    WHERE weta.work_effort_type_id = #{workEffortTypeId}
+      AND weta.attr_name = #{attrName}
+    </select>
+
+
+</mapper>

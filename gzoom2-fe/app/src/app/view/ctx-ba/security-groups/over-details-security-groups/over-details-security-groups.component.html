@@ -1,0 +1,15 @@
+<gzoom-tab-menu [activeIndexTabView]="activeIndexTabView" class="mobile" *ngIf="menuDetails"
+    [itemsn]="itemsn"></gzoom-tab-menu>
+<div style="
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: nowrap;
+        gap: 15px;
+        height: fit-content;
+      ">
+    <p-menu class="no-mobile" *ngIf="menuDetails" id="menu-detail" [model]="itemsn"
+        routerLinkActive="active-link"></p-menu>
+    <div style="flex-grow: 2">
+        <router-outlet></router-outlet>
+    </div>
+</div>

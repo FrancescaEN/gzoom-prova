@@ -1,0 +1,238 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "gzoom2": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "allowedCommonJsDependencies": [
+              "moment-timezone",
+              "lodash",
+              "quill",
+              "quill-delta",
+              "jquery",
+              "moment",
+              "file-saver"
+            ],
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": ["src/assets", "src/favicon.ico"],
+            "styles": [
+              "node_modules/ionicons-npm/css/ionicons.css",
+              "node_modules/fullcalendar/dist/fullcalendar.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/nova/theme.css",
+              "node_modules/@fortawesome/fontawesome-free/css/brands.css",
+              "node_modules/@fortawesome/fontawesome-free/css/regular.css",
+              "node_modules/@fortawesome/fontawesome-free/css/solid.css",
+              "node_modules/@fortawesome/fontawesome-free/css/fontawesome.css",
+              "node_modules/quill/dist/quill.snow.css",
+              {
+                "inject": false,
+                "input": "src/styles/blue.scss",
+                "bundleName": "blue"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/violet.scss",
+                "bundleName": "violet"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/green.scss",
+                "bundleName": "green"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/blue_light.scss",
+                "bundleName": "blue_light"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/green_light.scss",
+                "bundleName": "green_light"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/violet_light.scss",
+                "bundleName": "violet_light"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/high_contrast.scss",
+                "bundleName": "high_contrast"
+              }
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/jwt-decode/build/jwt-decode.js",
+              "node_modules/lodash/lodash.js",
+              "node_modules/moment/moment.js",
+              "node_modules/moment-timezone/builds/moment-timezone-with-data.js",
+              "node_modules/fullcalendar/dist/fullcalendar.min.js",
+              "node_modules/fullcalendar/dist/locale-all.js",
+              "node_modules/chart.js/dist/chart.umd.js",
+              "node_modules/quill/dist/quill.js"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "dev": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]
+            },
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "gzoom2:build"
+          },
+          "configurations": {
+            "dev": {
+              "buildTarget": "gzoom2:build:dev"
+            },
+            "production": {
+              "buildTarget": "gzoom2:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "gzoom2:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/jwt-decode/build/jwt-decode.js",
+              "node_modules/lodash/lodash.js",
+              "node_modules/moment/moment.js",
+              "node_modules/moment-timezone/builds/moment-timezone-with-data.js",
+              "node_modules/fullcalendar/dist/fullcalendar.min.js",
+              "node_modules/fullcalendar/dist/locale-all.js",
+              "node_modules/chart.js/dist/chart.umd.js",
+              "node_modules/quill/dist/quill.js"
+            ],
+            "styles": [
+              "node_modules/ionicons-npm/css/ionicons.css",
+              "node_modules/fullcalendar/dist/fullcalendar.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/nova/theme.css",
+              "node_modules/@fortawesome/fontawesome-free/css/brands.css",
+              "node_modules/@fortawesome/fontawesome-free/css/regular.css",
+              "node_modules/@fortawesome/fontawesome-free/css/solid.css",
+              "node_modules/@fortawesome/fontawesome-free/css/fontawesome.css",
+              "node_modules/quill/dist/quill.snow.css",
+              {
+                "inject": false,
+                "input": "src/styles/green.scss",
+                "bundleName": "green"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/blue.scss",
+                "bundleName": "blue"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/violet.scss",
+                "bundleName": "violet"
+              }
+            ],
+            "assets": ["src/assets", "src/favicon.ico"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
+        }
+      }
+    },
+    "gzoom2-e2e": {
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "gzoom2:serve"
+          }
+        }
+      }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "gzoom",
+      "style": "scss",
+      "skipTests": true
+    },
+    "@schematics/angular:directive": {
+      "prefix": "gzoom",
+      "skipTests": true
+    }
+  },
+  "cli": {
+    "analytics": "9eadc07e-33d8-47b1-9067-8e61c9cf88dd",
+    "schematicCollections": ["@angular-eslint/schematics"]
+  }
+}

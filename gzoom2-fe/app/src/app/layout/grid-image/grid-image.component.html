@@ -1,0 +1,19 @@
+<div
+  *ngIf="images; else no_images"
+  style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px 30px"
+>
+  <div
+    *ngFor="let image of images; let index = index"
+    style="width: 50px; height: 60px"
+    key="index"
+  >
+    <img
+      src="{{ image.src }}"
+      alt="{{ image.alt }}"
+      title="{{ image.alt }}"
+      style="cursor: pointer; max-width: 50px; max-height: 60px"
+      (click)="imageClick(image)"
+    />
+  </div>
+</div>
+<ng-template #no_images>{{ "No image" | i18n }}</ng-template>

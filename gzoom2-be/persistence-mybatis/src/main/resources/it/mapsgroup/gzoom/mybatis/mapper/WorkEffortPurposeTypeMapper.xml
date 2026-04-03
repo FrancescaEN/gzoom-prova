@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortPurposeTypeMapper">
+
+    <select id="getPurposeTabType" resultMap="workEffortPurposeTypeEx" parameterType="java.util.Map">
+        <if test="exists == true">
+        select
+            tab.parent_work_effort_type_id as wet2_work_effort_type_id,
+            tab.work_effort_type_id as wet_work_effort_type_id,
+            wept.work_effort_purpose_type_id,
+            tab.parent_description as wet2_description,
+            tab.parent_description_lang as wet2_description_lang,
+            tab.description as wet_description,
+            tab.description_lang as wet_description_lang,
+            wept.description,
+            wept.description_lang,
+            wepa.comments as wepa_comments
+        from
+        work_effort_purpose_type wept
+        left join (
+            select
+                wet2.work_effort_type_id as parent_work_effort_type_id,
+                wet2.description as parent_description,
+                wet2.description_lang as parent_description_lang,
+                wet.work_effort_type_id,
+                wet.description,
+                wet.description_lang,
+                wetc.work_effort_purpose_type_id as id_finalita,
+                wetc.content_id
+            from
+            work_effort_type_content wetc
+            inner join work_effort_type wet on
+            wet.work_effort_type_id = wetc.work_effort_type_id
+            inner join work_effort_type wet2 on
+            wet2.work_effort_type_id = wet.parent_type_id
+            union all
+            select
+                wet2.work_effort_type_id as parent_work_effort_type_id,
+                wet2.description as parent_description,
+                wet2.description_lang as parent_description_lang,
+                wet.work_effort_type_id,
+                wet.description,
+                wet.description_lang,
+                wet.we_purpose_type_id_ind as id_finalita,
+                null
+            from work_effort_type wet
+            inner join work_effort_type wet2 on
+            wet2.work_effort_type_id = wet.parent_type_id
+        ) tab on
+        tab.id_finalita = wept.work_effort_purpose_type_id
+        left join work_effort_purpose_account wepa on wepa.work_effort_purpose_type_id = wept.work_effort_purpose_type_id
+        where
+        wept.purpose_type_enum_id = 'PT_INDICATOR' and wepa.gl_account_id = #{glAccountId}
+       <!-- <if test="glAccountId">
+            and wept.work_effort_purpose_type_id
+            <if test="exists == true">in</if>
+            <if test="exists == false">not in</if>
+            (
+            select wepa.work_effort_purpose_type_id from work_effort_purpose_account wepa
+            where wepa.gl_account_id = #{glAccountId}
+            )
+        </if>-->
+        group by
+        tab.parent_work_effort_type_id,
+        tab.work_effort_type_id,
+        wept.work_effort_purpose_type_id,
+        tab.parent_description,
+        tab.parent_description_lang,
+        tab.description,
+        tab.description_lang,
+        wept.description,
+        wept.description_lang,
+        wepa.comments
+        order by wept.work_effort_purpose_type_id
+
+        </if>
+        <if test="exists == false">
+            select
+            tab.parent_work_effort_type_id as wet2_work_effort_type_id,
+            tab.work_effort_type_id as wet_work_effort_type_id,
+            wept.work_effort_purpose_type_id,
+            tab.parent_description as wet2_description,
+            tab.parent_description_lang as wet2_description_lang,
+            tab.description as wet_description,
+            tab.description_lang as wet_description_lang,
+            wept.description,
+            wept.description_lang
+            from
+            work_effort_purpose_type wept
+            left join (
+            select
+            wet2.work_effort_type_id as parent_work_effort_type_id,
+            wet2.description as parent_description,
+            wet2.description_lang as parent_description_lang,
+            wet.work_effort_type_id,
+            wet.description,
+            wet.description_lang,
+            wetc.work_effort_purpose_type_id as id_finalita,
+            wetc.content_id
+            from
+            work_effort_type_content wetc
+            inner join work_effort_type wet on
+            wet.work_effort_type_id = wetc.work_effort_type_id
+            inner join work_effort_type wet2 on
+            wet2.work_effort_type_id = wet.parent_type_id
+            union all
+            select
+            wet2.work_effort_type_id as parent_work_effort_type_id,
+            wet2.description as parent_description,
+            wet2.description_lang as parent_description_lang,
+            wet.work_effort_type_id,
+            wet.description,
+            wet.description_lang,
+            wet.we_purpose_type_id_ind as id_finalita,
+            null
+            from
+            work_effort_type wet
+            inner join work_effort_type wet2 on
+            wet2.work_effort_type_id = wet.parent_type_id ) tab on
+            tab.id_finalita = wept.work_effort_purpose_type_id
+            where
+            wept.purpose_type_enum_id = 'PT_INDICATOR' and wept.work_effort_purpose_type_id not in (
+            select wepa.work_effort_purpose_type_id from work_effort_purpose_account wepa
+            where wepa.gl_account_id = #{glAccountId}
+            )
+            group by
+            tab.parent_work_effort_type_id,
+            tab.work_effort_type_id,
+            wept.work_effort_purpose_type_id,
+            tab.parent_description,
+            tab.parent_description_lang,
+            tab.description,
+            tab.description_lang,
+            wept.description,
+            wept.description_lang
+            order by
+            wept.work_effort_purpose_type_id
+
+        </if>
+    </select>
+
+    <resultMap id="workEffortPurposeTypeEx" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortPurposeTypeEx" >
+        <association property="workEffortPurposeType" resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortPurposeTypeMapper.workEffortPurposeType"/>
+        <association property="workEffortType" columnPrefix="wet_" resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortTypeMapper.workEffortType"/>
+        <association property="parentWorkEffortType" columnPrefix="wet2_" resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortTypeMapper.workEffortType"/>
+        <association property="workEffortPurposeAccount" columnPrefix="wepa_" resultMap="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortPurposeAccountMapper.workEffortPurposeAccount"/>
+
+    </resultMap>
+
+
+
+
+</mapper>

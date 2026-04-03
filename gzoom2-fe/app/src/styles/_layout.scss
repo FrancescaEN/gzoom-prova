@@ -1,0 +1,1748 @@
+/*----------------------------------------------------------------------------*/
+/* Layout styles                                                              */
+/*----------------------------------------------------------------------------*/
+@import "styles/_measures";
+@import "../../node_modules/primeicons/primeicons.css";
+
+@import "../assets/fonts/Montserrat/Montserrat.css";
+
+$font-family: "Montserrat", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+body.bodylayout {
+  font-family: $font-family;
+  background-color: map-get($app-colors, background-cl);
+  color: map-get($app-colors, default-cl);
+
+  .p-component,
+  .p-component .p-component,
+  .p-component input,
+  .p-component select,
+  .p-component textarea,
+  .p-component button,
+  .p-component p-chips {
+    font-family: $font-family !important;
+  }
+
+  .p-component-content {
+    color: map-get($app-colors, default-cl);
+
+    .p-editable-column {
+      color: map-get($app-colors, active-cl);
+    }
+  }
+
+  .p-component-header {
+    border: none;
+  }
+
+  .p-state-default {
+    // border: none;
+    background: map-get($app-colors, default-bg);
+    color: map-get($app-colors, default-cl);
+  }
+
+  .p-state-active {
+    // border: none;
+    background: map-get($app-colors, default-bg);
+    color: map-get($app-colors, default-cl);
+  }
+
+  .p-highlight {
+    background: map-get($app-colors, color-50);
+  }
+
+  a {
+    color: map-get($app-colors, default-cl);
+  }
+
+  input,
+  button,
+  select,
+  textarea {
+    line-height: initial;
+  }
+
+  .btn-primary,
+  .btn-primary:focus,
+  .btn-primary:hover,
+  .btn-primary:active {
+    background: map-get($app-colors, color-60);
+    color: map-get($app-colors, active-cl);
+    border: none;
+  }
+
+  .btn-primary:not(:disabled):not(.disabled):active,
+  .btn-primary:not(:disabled):not(.disabled).active,
+  .show > .btn-primary.dropdown-toggle {
+    background: map-get($app-colors, navbar-fg);
+    color: map-get($app-colors, active-cl);
+    border: none;
+  }
+
+  .btn-primary.disabled,
+  .btn-primary:disabled {
+    background: map-get($app-colors, navbar-fg);
+    color: map-get($app-colors, disabled);
+    border: none;
+  }
+
+  .focuslayout-container input.form-control {
+    color: map-get($app-colors, grey);
+    background-color: map-get($app-colors, background-cl);
+  }
+
+  .p-checkbox .p-checkbox-box.p-highlight {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      border-color: map-get($app-colors, color-grey-80);
+      background-color: map-get($app-colors, color-grey-80);
+    } @else {
+      border-color: map-get($app-colors, color-70);
+      background-color: map-get($app-colors, color-70);
+    }
+  }
+
+  .p-checkbox .p-checkbox-box.p-highlight:hover {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      border-color: map-get($app-colors, color-grey-90);
+      background-color: map-get($app-colors, color-grey-90);
+    } @else {
+      border-color: map-get($app-colors, color-80);
+      background-color: map-get($app-colors, color-80);
+    }
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Scrollbar                                                                  */
+  /*----------------------------------------------------------------------------*/
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    //box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      background: map-get($app-colors, color-grey-80);
+    } @else {
+      background: map-get($app-colors, color-grey-30);
+    }
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      background: map-get($app-colors, color-grey-90);
+    } @else {
+      background: map-get($app-colors, color-grey-40);
+    }
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Valid / Invalid                                                            */
+  /*----------------------------------------------------------------------------*/
+  .form-control {
+    height: auto;
+  }
+
+  .p-inputtext {
+    font-family: $font-family;
+    font-weight: 400;
+    font-size: 13px;
+  }
+
+  .p-inputtext:enabled:focus {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      box-shadow: 0 0 0 0.2rem map-get($app-colors, color-grey-50);
+      border-color: map-get($app-colors, color-grey-80);
+    } @else {
+      box-shadow: 0 0 0 0.2rem map-get($app-colors, color-30);
+      border-color: map-get($app-colors, color-40);
+    }
+  }
+
+  textarea.ng-invalid {
+    border-color: #a94442;
+  }
+
+  p-editor.ng-invalid > .p-editor-container > .p-editor-content {
+    border-left: 5px solid #a94442;
+    /* red */
+  }
+
+  input.ng-invalid {
+    border-color: #a94442;
+    /* red */
+  }
+
+  p-inputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
+    border-color: #a94442;
+    /* red */
+  }
+
+  p-inputNumber.ng-invalid > .p-inputnumber > .p-inputtext {
+    border-color: #a94442;
+    /* red */
+  }
+
+  p-inputNumber.ng-invalid:hover > .p-inputnumber > .p-inputtext {
+    border-color: black;
+    /* black */
+  }
+
+  p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
+    border-color: #a94442;
+    /* red */
+  }
+
+  p-dropdown.ng-invalid > .p-dropdown {
+    border-color: #a94442;
+    /* red */
+  }
+
+  p-spinner.ng-invalid > .p-spinner > .p-inputtext {
+    border-color: #a94442;
+    /* red */
+  }
+
+  p-autocomplete.ng-invalid > .p-autocomplete > .p-autocomplete-input {
+    border-color: #a94442;
+    /* red */
+  }
+
+  p-dropdown .fa-caret-down::before {
+    content: "\f13a";
+  }
+
+  /*.p-multiselect.p-component {
+    border: none;
+    font-size: 1rem;
+  }*/
+
+  p-multiselect .p-state-default {
+    border: none;
+  }
+
+  p-multiselect.p-element.p-inputwrapper.form-control {
+    padding: 0;
+  }
+
+  .p-multiselect-panel {
+    max-width: 50em;
+  }
+
+
+  p-dropdown .p-dropdown,
+  p-dropdown .p-state-default,
+  p-dropdown .p-dropdown-label {
+    background-color: map-get($app-colors, color-white);
+    // border: none;
+  }
+
+  p-dropdown span {
+    //font-size: 1em !important; // commented !important due to the impact on components' styles
+    font-size: 1em;
+  }
+
+  p-calendar .p-state-default {
+    border: none;
+  }
+
+  // /*----------------------------------------------------------------------------*/
+  // /* Tab menu                                                                  */
+  // /*----------------------------------------------------------------------------*/
+  .p-tabmenu-scrollable .p-tabmenu-nav-container {
+    margin-bottom: 3px;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
+    border-radius: 10px !important;
+    border: 1px solid map-get($app-colors, navbar-bg) !important;
+    // background-color: #fff;
+    background-color: map-get($app-colors, navbar-bg) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    margin: 0 0 0 0 !important;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+    background-color: #fff !important;
+    color: map-get($app-colors, navbar-bg) !important;
+    border-radius: 10px;
+    font-weight: normal;
+    margin: 0 0 0 0 !important;
+  }
+
+  .p-tabmenu .p-tabmenu-nav-btn.p-link {
+    border-radius: 100px;
+  }
+
+  .p-tabmenu .p-tabmenu-nav-btn.p-link {
+    background: map-get($app-colors, navbar-bg) !important;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Dropdown                                                                   */
+  /*----------------------------------------------------------------------------*/
+  .dropdown-label {
+    background: map-get($app-colors, title-bg);
+    color: map-get($app-colors, gray);
+  }
+
+  .dropdown-menu {
+    .p-component-content {
+      background: map-get($app-colors, navbar-bg);
+    }
+
+    background: map-get($app-colors, navbar-bg);
+    color: map-get($app-colors, text-color) !important;
+  }
+
+  .dropdown-item {
+    color: map-get($app-colors, text-color) !important;
+  }
+
+  .dropdown-item:hover {
+    color: map-get($app-colors, color-black) !important;
+  }
+
+  .dropdown-menu:not(.p-highlight):hover {
+    background: map-get($app-colors, navbar-bg);
+    color: map-get($app-colors, color-black) !important;
+  }
+
+  .dropdown-item:not(.p-highlight):active {
+    background: map-get($app-colors, color-white);
+  }
+
+  .dropdown-panel {
+    max-width: 50em;
+
+    .dropdown-menu:not(.p-highlight):hover {
+      border: none;
+      background: map-get($app-colors, title-bg);
+      color: map-get($app-colors, default-cl);
+    }
+  }
+
+  .dropdown .dropdown-label,
+  .dropdown .dropdown-trigger,
+  .dropdown-filter-container {
+    background: map-get($app-colors, background-cl);
+  }
+
+  .p-speeddial {
+    position: relative;
+  }
+
+  .p-speeddial-button.p-button.p-button-icon-only {
+    width: 3em;
+    height: 3em;
+  }
+
+  .p-speeddial-action {
+    background-color: map-get($app-colors, default-cl);
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* radiobutton                                                               */
+  /*----------------------------------------------------------------------------*/
+  .p-radiobutton-label {
+    color: map-get($app-colors, default-cl);
+    font-family: $font-family;
+    font-size: 0.75rem;
+    margin-bottom: 0rem;
+  }
+
+  p-radiobutton .p-label-active {
+    font-weight: bold;
+    font-size: 0.85rem;
+  }
+
+  .p-radiobutton .p-radiobutton-box {
+    border: 1px solid map-get($app-colors, navbar-bg);
+  }
+
+  .p-radiobutton .p-radiobutton-box.p-highlight {
+    background-color: map-get($app-colors, navbar-bg);
+  }
+
+  .p-togglebutton.p-button.p-highlight {
+    border: none;
+  }
+
+  .p-radiobutton .p-focus {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      box-shadow: 0 0 0 0.2rem map-get($app-colors, color-grey-50) !important;
+    } @else {
+      box-shadow: 0 0 0 0.2rem map-get($app-colors, color-30) !important;
+    }
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* inputswitch                                                               */
+  /*----------------------------------------------------------------------------*/
+
+  .p-inputswitch .p-inputswitch-on,
+  .p-inputswitch .p-inputswitch-off {
+    color: map-get($app-colors, default-cl);
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* toggleButton                                                               */
+  /*----------------------------------------------------------------------------*/
+
+  .p-togglebutton:not(.p-disabled),
+  .p-togglebutton:not(.p-disabled):hover {
+    //color: map-get($app-colors, item-sidebar-active-cl);
+    color: #ffffff;
+    background-color: map-get($app-colors, navbar-bg);
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Autocomplete                                                               */
+  /*----------------------------------------------------------------------------*/
+
+  // .p-autocomplete-panel {
+  //   max-width: 50em;
+  // }
+
+  /*----------------------------------------------------------------------------*/
+  /* Autocomplete / Dropdwon icon                                               */
+  /*----------------------------------------------------------------------------*/
+  p-autocomplete .fa-caret-down::before {
+    content: "\f13a";
+  }
+
+  p-dropdown .fa-caret-down::before {
+    content: "\f13a";
+  }
+
+  .p-fluid .p-autocomplete .p-autocomplete-dropdown.p-button {
+    width: 1em;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Sortable                                                                   */
+  /*----------------------------------------------------------------------------*/
+  .fa-sort-desc:before,
+  .fa-sort-down:before {
+    content: "\f0dd";
+  }
+
+  .fa-sort-asc:before,
+  .fa-sort-up:before {
+    content: "\f0de";
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Calendar                                                                   */
+  /*----------------------------------------------------------------------------*/
+  .p-datepicker table td > span.p-highlight {
+    background-color: map-get($app-colors, navbar-bg);
+    color: white;
+  }
+
+  p-calendar.p-calendar-clearable .p-calendar-clear-icon {
+    left: 70% !important;
+  }
+
+  .calendar-icon .p-button.p-state-default span {
+    font-weight: 400;
+  }
+
+  p-calendar.form-control {
+    padding: 0em;
+  }
+
+  p-calendar.form-control-report {
+    width: 12em;
+  }
+
+  /*p-calendar span {
+    padding-right: 0.2em;
+  }*/
+
+  p-calendar.ng-invalid > .p-calendar > .p-inputtext {
+    border-color: #a94442;
+    /* red */
+  }
+
+  /*button.p-element.p-ripple.p-datepicker-trigger.p-button {
+    border: none;
+    background: transparent;
+    flex-basis: content;
+    margin: 0;
+    margin-left: 0.75em;
+  }*/
+
+  p-autocomplete.form-control {
+    padding: 0em;
+  }
+
+  p-dropdown.form-control {
+    padding: 0em;
+  }
+
+  p-dialog {
+    .p-component-header {
+      background: map-get($app-colors, title-bg);
+      color: map-get($app-colors, default-cl);
+    }
+  }
+
+  .p-dialog .p-dialog-content:last-of-type {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  .min-width {
+    min-width: 300px;
+  }
+
+  .p-dialog-width {
+    width: 60vw;
+  }
+
+  .p-dialog-width-min {
+    width: 30vw;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .p-dialog-width {
+      width: 100vw;
+    }
+
+    .p-dialog-width-min {
+      width: 100vw;
+    }
+  }
+
+  .p-accordion .p-accordion-header .p-accordion-header-link {
+    background: #eeeeee;
+    color: map-get($app-colors, default-cl) !important;
+  }
+
+  .p-accordion
+  .p-accordion-header:not(.p-disabled)
+  .p-accordion-header-link:focus {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      box-shadow: 0 0 0 0.1rem map-get($app-colors, color-grey-50);
+    } @else {
+      box-shadow: 0 0 0 0.1rem map-get($app-colors, color-30);
+    }
+  }
+
+  .p-accordion
+  .p-accordion-header:not(.p-disabled).p-highlight
+  .p-accordion-header-link {
+    border-color: #eeeeee !important;
+  }
+
+  .p-accordion .p-accordion-content {
+    border: none !important;
+  }
+
+  .p-card .p-card-body {
+    padding: 0.6rem;
+  }
+
+  .p-card .p-card-content {
+    padding: 0;
+  }
+
+  input.form-control {
+    padding: 0.2em;
+  }
+
+  button.p-datepicker-prev::before {
+    content: none !important;
+  }
+
+  button.p-datepicker-next::before {
+    content: none !important;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Button                                                                     */
+  /*----------------------------------------------------------------------------*/
+
+  .p-button:enabled:active {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      background: map-get($app-colors, color-grey-60);
+      color: map-get($app-colors, text-color);
+    } @else {
+      background: map-get($app-colors, color-90);
+      color: white;
+    }
+  }
+
+  .p-button:focus {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      box-shadow: 0 0 0 0.2rem map-get($app-colors, color-grey-50);
+    } @else {
+      box-shadow: 0 0 0 0.2rem map-get($app-colors, color-30);
+    }
+  }
+
+  /* .p-button .p-button-outlined {
+    color: map-get($app-colors, color-60) !important;
+  }*/
+
+  .p-button.p-button-icon-only {
+    background: map-get($app-colors, color-30);
+    border: 1px solid map-get($app-colors, color-30);
+  }
+
+  .p-button.p-button-icon-only:hover {
+    background: map-get($app-colors, color-40);
+    border: 1px solid map-get($app-colors, color-40);
+  }
+
+  p-footer .p-button-text {
+    border: 1px solid map-get($app-colors, title-bd-cl);
+    border-radius: 5px;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Filtro Generale su DataTable                                                            */
+  /*----------------------------------------------------------------------------*/
+  .global-filter {
+    background: map-get($app-colors, title-bg);
+    color: map-get($app-colors, default-cl);
+
+    input {
+      border: 1px solid map-get($app-colors, title-bd-cl);
+      background: map-get($app-colors, title-bg);
+    }
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Datatable                                                            */
+  /*----------------------------------------------------------------------------*/
+
+  .p-datatable .p-datatable-table .p-datatable-thead > tr > th {
+    border: 1px solid map-get($app-colors, title-bd-cl);
+    @if map-get($app-colors, theme) != "high_contrast" {
+      background: map-get($app-colors, color-5);
+    }
+    color: map-get($app-colors, default-cl) !important;
+  }
+
+  .p-datatable .p-datatable-table .p-datatable-tbody > tr > th {
+    border: 1px solid map-get($app-colors, title-bd-cl);
+  }
+
+  .p-datatable .p-datatable-table .p-datatable-tbody > tr > th {
+    .p-button {
+      border: none;
+      background: none;
+      color: map-get($app-colors, default-cl) !important;
+    }
+  }
+
+  .p-datatable-responsive-scroll > .p-datatable-wrapper {
+    border-radius: 7px;
+  }
+
+  .p-datatable .p-paginator-bottom {
+    border-width: 0 0px 0px 0px;
+  }
+
+  .p-datatable .p-datatable-table {
+    .p-datatable-thead > tr > th,
+    .p-datatable-tfoot > tr > td,
+    .p-datatable-tbody > tr > td {
+      border: 0px solid map-get($app-colors, title-bd-cl);
+      border-top: 0px solid map-get($app-colors, title-bd-cl);
+      border-bottom: 0px solid map-get($app-colors, title-bd-cl);
+    }
+
+    tr:nth-child(even) {
+      background: map-get($app-colors, alt-cl);
+    }
+
+    td.col-button {
+      text-align: center;
+    }
+
+    thead.p-datatable-thead {
+      .p-dropdown {
+        .p-dropdown-label {
+          background: map-get($app-colors, color-white);
+        }
+      }
+
+      .p-state-active {
+        background: map-get($app-colors, title-bg);
+        color: map-get($app-colors, active-cl) !important;
+      }
+
+      .p-sortable-column {
+        text-align: center;
+      }
+
+      .p-sortable-column:not(.p-state-active):hover {
+        background: map-get($app-colors, title-bg);
+        color: map-get($app-colors, active-cl);
+      }
+
+      .col-button {
+        .p-state-default {
+          border: none;
+          font-size: 1em;
+          height: 20px;
+        }
+
+        .p-state-default:hover {
+          color: map-get($app-colors, active-cl);
+        }
+
+        .p-state-default:disabled {
+          color: map-get($app-colors, disabled);
+        }
+      }
+    }
+
+    .p-datatable .p-datatable-table thead.p-datatable-thead .p-sortable-column {
+      background: map-get($app-colors, color-40);
+    }
+
+    .p-datatable-tfoot .p-state-default {
+      border: 1px solid map-get($app-colors, title-bd-cl);
+      background: map-get($app-colors, title-bg);
+      color: map-get($app-colors, default-cl);
+    }
+  }
+
+  .p-datatable .p-datatable-tfoot > tr > td {
+    background-color: map-get($app-colors, color-5);
+  }
+
+  .p-accordion .p-accordion-header.p-state-active {
+    background-color: map-get($app-colors, navbar-bg);
+  }
+
+  .rowSelected {
+    background-color: map-get($app-colors, navbar-bg);
+  }
+
+  .p-datatable .p-sortable-column.p-highlight:hover .p-sortable-column-icon {
+    color: map-get($app-colors, overlay);
+  }
+
+  .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: map-get($app-colors, color-90);
+  }
+
+  .p-component textarea {
+    font-family: $font-family;
+    font-size: small;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Datatable   class - datatable-list                                        */
+  /*----------------------------------------------------------------------------*/
+  .datatable-list {
+    .p-datatable-table .p-datatable-table-thead > tr > th,
+    .p-datatable-table .p-datatable-table-tfoot > tr > td,
+    .p-datatable-table .p-datatable-table-tbody > tr > td {
+      padding: 0em 0em !important;
+    }
+
+    .p-button {
+      font-size: 1em;
+    }
+
+    .p-component-header {
+      visibility: collapse;
+    }
+  }
+
+  .p-datatable .p-datatable-thead > tr > th {
+    padding: 0 !important;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Table                                                                   */
+  /*----------------------------------------------------------------------------*/
+
+  .p-datatable-table {
+    table-layout: auto;
+  }
+
+  .p-datatable.p-component.p-datatable-responsive-scroll {
+    overflow-y: hidden;
+    max-height: 10em;
+  }
+
+  .p-datatable-table .p-column-filter-row p-columnfilterformelement {
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+  }
+
+  /*.p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.3rem 0.4rem !important;
+  }
+*/
+  .p-datatable-table .p-column-filter-row .p-column-filter-menu-button {
+    margin-right: 0;
+  }
+
+  .ng-trigger.ng-trigger-overlayAnimation.p-column-filter-overlay.p-component.p-fluid.ng-star-inserted {
+    background-color: map-get($app-colors, navbar-hl);
+  }
+
+  .p-column-filter-menu-button:hover {
+    color: map-get($app-colors, navbar-bg);
+  }
+
+  .p-column-filter-row-item.p-highlight.ng-star-inserted {
+    background-color: map-get($app-colors, navbar-bg);
+    color: map-get($app-colors, active-cl);
+  }
+
+  .p-paginator-bottom.p-paginator.p-component.ng-star-inserted {
+    background-color: map-get($app-colors, navbar-hl);
+    padding: 5px;
+  }
+
+  .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: map-get($app-colors, navbar-bg);
+    border-radius: 100%;
+  }
+
+  .p-paginator .p-paginator-pages .p-paginator-page {
+    border-radius: 100%;
+  }
+
+  .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
+    border-radius: 100%;
+  }
+
+  .p-toolbar {
+    @if map-get($app-colors, theme) == "high_contrast" {
+      background: map-get($app-colors, color-grey-20);
+    } @else {
+      background: map-get($app-colors, color-10);
+    }
+    padding: 2px;
+    border-radius: 10px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: none;
+  }
+
+  .p-datatable .p-datatable-header .ng-star-inserted {
+    text-align: right;
+  }
+
+  .p-datatable .p-datatable-tbody > tr.p-highlight {
+    color: map-get($app-colors, color-grey-90);
+    background: map-get($app-colors, color-40);
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Dialog new uom                                                             */
+  /*----------------------------------------------------------------------------*/
+
+  .input-text-diplay-new-uom {
+    width: 30em;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Sidebar                                                                    */
+  /*----------------------------------------------------------------------------*/
+
+  .navbar {
+    justify-content: normal;
+  }
+
+  .navbar-user {
+    display: none;
+  }
+
+  .navbar-nav a.nav-link {
+    color: map-get($app-colors, text-color);
+  }
+
+  .sidebar {
+    /* search bar (same color of navigation bar) */
+    .search {
+      background-color: map-get($app-colors, navbar-bg);
+    }
+
+    /* tab content (where menus are) */
+    .tab-content {
+      background-color: map-get($sidebar-colors, tab-sel-bg);
+    }
+
+    /* top tabs (same color of navigation bar) */
+    .nav-tabs {
+      background-color: map-get($app-colors, navbar-bg);
+      padding-top: 20px;
+      border-bottom: 1px solid map-get($sidebar-colors, tab-border);
+    }
+
+    .nav-tabs a.nav-link {
+      /*color: darken(map-get($sidebar-colors, tab-cl), 20%);*/
+      color: map-get($app-colors, text-color);
+    }
+
+    .nav-item {
+      display: contents;
+      color: map-get($app-colors, text-color);
+    }
+
+    .nav-tabs .nav-item.show .nav-link,
+    .nav-tabs .nav-link.active,
+    .nav-tabs .nav-link.active:focus,
+    .nav-tabs .nav-link.active:hover {
+      color: map-get($app-colors, active-cl);
+      background-color: map-get($sidebar-colors, tab-sel-bg);
+      border-color: map-get($sidebar-colors, tab-border) map-get($sidebar-colors, tab-border) map-get($sidebar-colors, tab-sel-bg);
+      border-radius: 0.25rem 0.25rem 0 0;
+    }
+
+    .nav-tabs .nav-link:focus,
+    .nav-tabs .nav-link:hover {
+      @if map-get($app-colors, theme) == "high_contrast" {
+        color: map-get($app-colors, white);
+      } @else {
+        color: map-get($app-colors, active-cl);
+      }
+      background-color: map-get($sidebar-colors, tab-bg);
+      border-color: map-get($sidebar-colors, tab-border);
+    }
+
+    .nav-item span {
+      font-size: 1.2em;
+    }
+
+    /* group of menu items */
+    .list-group {
+      a.list-group-item {
+        background-color: map-get($sidebar-colors, tab-sel-bg);
+        border: 0;
+        border-radius: 0;
+        color: map-get($app-colors, navbar-cl);
+        text-decoration: none;
+        padding: 0.05rem 0.25rem;
+      }
+
+      a:not([href]):not([tabindex]) {
+        color: map-get($app-colors, default-cl);
+      }
+
+      a:not([href]):not([tabindex]):hover {
+        //color: map-get($app-colors, item-sidebar-active-cl);
+        color: #ffffff;
+      }
+
+      a:hover {
+        background-color: darken(map-get($app-colors, navbar-bg), 5%);
+        // color: map-get($app-colors, item-sidebar-active-cl);
+        color: #ffffff;
+      }
+
+      a.active {
+        background-color: darken(map-get($app-colors, navbar-bg), 5%);
+        color: map-get($app-colors, text-color);
+      }
+    }
+
+    /* sidebar dropdown */
+    .sidebar-dropdown {
+      *:focus {
+        border-radius: none;
+        border: none;
+      }
+
+      .panel-title {
+        font-size: 1rem;
+        height: 50px;
+        margin-bottom: 0;
+
+        a {
+          color: map-get($app-colors, navbar-fg);
+          text-decoration: none;
+          font-weight: 400;
+          background-color: map-get($app-colors, navbar-bg);
+
+          span {
+            position: relative;
+            display: block;
+            padding: 1rem 1.5rem 0.75rem;
+          }
+        }
+
+        a:focus,
+        a:hover {
+          color: map-get($app-colors, navbar-hl);
+          outline: none;
+          outline-offset: -2px;
+        }
+      }
+
+      .panel-title:hover {
+        background-color: darken(map-get($app-colors, navbar-bg), 5%);
+      }
+
+      .panel-collapse {
+        border-radius: 0;
+        border: none;
+
+        .panel-body {
+          .list-group-item {
+            border-radius: 0;
+            background-color: map-get($app-colors, navbar-bg);
+            border: 0 solid transparent;
+
+            a {
+              color: map-get($app-colors, navbar-fg);
+            }
+
+            a:hover {
+              color: map-get($app-colors, navbar-hl);
+            }
+          }
+
+          .list-group-item:hover {
+            background-color: darken(map-get($app-colors, navbar-bg), 5%);
+          }
+        }
+      }
+    }
+
+    /* nested menu */
+    .nested-menu {
+      .list-group-item {
+        cursor: pointer;
+      }
+
+      .nested {
+        list-style-type: none;
+
+        & > ul.submenu {
+          display: none;
+          height: 0;
+        }
+
+        &.expand > ul.submenu {
+          display: block;
+          list-style-type: none;
+          height: auto;
+
+          li {
+            a {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Toast                                                                      */
+  /*----------------------------------------------------------------------------*/
+
+  p-toast div.p-toast {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 20em;
+
+    .p-highlight {
+      background-color: map-get($app-colors, navbar-bg);
+      color: map-get($app-colors, default-cl);
+    }
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Dialog                                                                     */
+  /*----------------------------------------------------------------------------*/
+  .p-dialog {
+    //background: map-get($app-colors, alt-cl);
+    background: none;
+    border: none;
+
+    .p-component-content {
+      background: map-get($app-colors, background-cl);
+    }
+
+    .p-footer {
+      font-size: 1.3em;
+    }
+  }
+
+  .p-dialog .p-dialog-header {
+    @if map-get($app-colors, theme) != "high_contrast" {
+      background: white;
+    }
+    //background: white;
+    border: none;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+  }
+
+  .dialog-button-accept {
+    background: map-get($app-colors, color-50) !important;
+    border: 1px solid map-get($app-colors, color-50) !important;
+    color: white !important;
+  }
+
+  .dialog-button-reject {
+    background: white !important;
+    border: 1px solid map-get($app-colors, color-50) !important;
+    color: map-get($app-colors, color-50) !important;
+  }
+
+  .p-dialog .p-dialog-footer {
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+}
+
+.tooltip-inner {
+  background: map-get($app-colors, default-cl);
+  color: map-get($app-colors, background-cl);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar                                                                   */
+/*---------------------------------------------------------------------------*/
+.sidebar-brand-navbar {
+  z-index: 2;
+
+  .navbar-toggleable-sm {
+    margin: 1em;
+  }
+}
+
+.sidebar-brand {
+  width: $sidebar-width;
+
+  .navbar-toggleable-sm {
+    margin-left: 1em;
+  }
+}
+
+.sidebar {
+  border-radius: 0;
+  position: fixed;
+  z-index: 1000;
+  top: $header-height;
+  left: $sidebar-width;
+  margin-left: -$sidebar-width;
+  border: none;
+  border-radius: 0;
+  overflow-y: auto;
+  background-color: map-get($sidebar-colors, tab-sel-bg);
+  bottom: 0;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+  // padding-top: 20px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.curve {
+  z-index: 0;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.curve::before {
+  content: "";
+  position: absolute;
+  border-radius: 24% 0%;
+  width: 350px;
+  height: 160%;
+  transform: translate(-18.75%, -18.5%);
+  background-color: #ffffff;
+  z-index: -1;
+  left: 0%;
+}
+
+.curve::after {
+  content: "";
+  position: absolute;
+  border-radius: 100% 0% 0% 0%;
+  width: 190px;
+  height: 150%;
+  background-color: map-get($app-colors, navbar-bg);
+  transform: translate(80%, -15%);
+  z-index: -1;
+  height: 100.5px;
+}
+
+.topnav {
+  border-radius: 0;
+  background-color: map-get($app-colors, navbar-bg);
+  padding: 6px;
+  z-index: 2;
+
+  .text-center {
+    text-align: center;
+    padding-left: 0;
+    cursor: pointer;
+  }
+
+  .top-right-nav {
+    .buy-now {
+      a {
+        color: map-get($app-colors, navbar-fg);
+      }
+    }
+
+    .dropdown-menu {
+      top: 40px;
+      right: -5px;
+      left: auto;
+
+      .message-preview {
+        .media {
+          .media-body {
+            .media-heading {
+              font-size: 14px;
+              font-weight: bold;
+              margin-bottom: 0;
+            }
+
+            p {
+              margin: 0;
+            }
+
+            p.last {
+              font-size: 13px;
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+
+      hr {
+        margin-top: 1px;
+        margin-bottom: 4px;
+      }
+    }
+  }
+}
+
+.messages {
+  width: 300px;
+
+  .media {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .media-body {
+    h5 {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .small {
+      margin: 0;
+    }
+
+    .last {
+      font-size: 12px;
+      margin: 0;
+    }
+  }
+}
+
+.header .navbar {
+  height: $header-height;
+  background: map-get($app-colors, navbar-bg) !important;
+}
+
+.navbar-brand {
+  height: $header-height;
+  width: 130px;
+
+  img {
+    max-width: 130px;
+    max-height: 60px;
+  }
+
+  .img_custom {
+    max-width: 450px;
+    max-height: 60px;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*Focus                                                                       */
+/*----------------------------------------------------------------------------*/
+
+.focuslayout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  // padding-top: 200px;
+  background-color: map-get($app-colors, background-cl);
+  background-size: cover;
+  color: map-get($app-colors, default-cl);
+
+  > .container,
+  > .container-fluid,
+  > .container > .row,
+  > .container-fluid > .row {
+    height: 100%;
+  }
+
+  .focuslayout-container {
+    position: relative;
+    text-align: center;
+    margin: 0;
+    background-color: map-get($app-colors, color-40);
+    padding: 10% 3%;
+    border: 1px solid map-get($app-colors, grey);
+    border-radius: 5px;
+
+    input,
+    span {
+      color: map-get($app-colors, grey);
+      background-color: map-get($app-colors, background-cl);
+    }
+
+    h1 small {
+      color: white;
+    }
+
+    .input-group-addon {
+      background-color: map-get($inspinia-colors, primary);
+      border-color: map-get($inspinia-colors, primary);
+    }
+
+    .input-group-addon .fa {
+      color: white;
+    }
+
+    .link-inverse {
+      color: #b3f5fa;
+      text-decoration: underline;
+    }
+  }
+
+  .focuslayout-footer {
+    color: map-get($app-colors, grey);
+    position: absolute;
+    bottom: -2rem;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.legacy-container {
+  background-color: map-get($app-colors, background-cl);
+}
+
+p-breadcrumb {
+  font-size: 0.8em;
+  margin: 0;
+
+  color: darkgrey;
+
+  a:hover,
+  span:hover {
+    text-decoration: none;
+    cursor: default;
+  }
+
+  li {
+    list-style: none;
+    float: left;
+    margin: 5px;
+  }
+
+  li:last-child {
+    margin-right: 20px;
+  }
+
+  li::after {
+    content: "";
+    color: darkgrey;
+  }
+
+  li:last-child::after {
+    content: "";
+  }
+}
+
+.pi-chevron-right:before {
+  color: darkgrey !important;
+}
+
+.p-breadcrumb {
+  padding: 0 0.1em !important;
+  border: 0px !important;
+  background-color: map-get($app-colors, background-cl) !important;
+}
+
+.report-print {
+  padding: 0 2em !important;
+}
+
+.p-message.p-message-info {
+  border-width: 0.5em;
+  border-radius: 1em;
+}
+
+.p-slidemenu .p-menuitem-link {
+  height: 3em;
+}
+
+.p-tabview .p-tabview-panels {
+  background: map-get($app-colors, color-grey-15) !important;
+  border: 0px !important;
+  /*background-color: rgb(0, 64, 128);*/
+  border-color: #00264d !important;
+  border-radius: 0px 10px 10px 10px !important;
+
+  -webkit-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -moz-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -o-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: map-get($app-colors, color-40) !important;
+  border-color: transparent;
+  color: white !important;
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background: map-get($app-colors, color-20) !important;
+  color: white !important;
+}
+
+.p-card {
+  border-radius: 10px !important;
+
+  -webkit-box-shadow: 0px 0px 15px -4px map-get($app-colors, color-grey-30) !important;
+  -moz-box-shadow: 0px 0px 15px -4px map-get($app-colors, color-grey-30) !important;
+  -o-box-shadow: 0px 0px 15px -4px map-get($app-colors, color-grey-30) !important;
+  box-shadow: 0px 0px 15px -4px map-get($app-colors, color-grey-30) !important;
+}
+
+.cardTable {
+  overflow: hidden;
+  perspective: 1px;
+  border-radius: 7px;
+
+  -webkit-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -moz-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -o-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  //background: map-get($app-colors, navbar-bg) !important;
+  background: map-get($app-colors, navbar-bg);
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  //background: map-get($app-colors, navbar-bg) !important; // commented !important due to the impact on components' styles
+  background: map-get($app-colors, navbar-bg);
+  //color: white !important; // commented !important due to the impact on components' styles
+  color: white;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  //todo
+  @if map-get($app-colors, theme) == "high_contrast" {
+    //box-shadow: 0 0 0 0.2rem map-get($app-colors, color-grey-50) !important; // commented !important due to the impact on components' styles
+    box-shadow: 0 0 0 0.2rem map-get($app-colors, color-grey-50);
+    border-color: map-get($app-colors, color-grey-80) !important;
+  } @else {
+    //box-shadow: 0 0 0 0.2rem map-get($app-colors, color-20) !important; // commented !important due to the impact on components' styles
+    box-shadow: 0 0 0 0.2rem map-get($app-colors, color-20);
+    border-color: map-get($app-colors, color-30) !important;
+  }
+}
+
+body.bodylayout .p-datatable.p-component.p-datatable-responsive-scroll {
+  max-height: 100%;
+}
+
+// id first card of target component
+// the id of second card of target component is radar
+#half {
+  width: 49.5%;
+}
+
+.mobile {
+  display: none;
+}
+
+.no-mobile {
+  display: block;
+}
+
+@media (max-width: 1400px) {
+  .navbar-brand img {
+    scale: 0.9;
+  }
+
+  .navbar-title h5 {
+    font-size: 0.8em;
+  }
+
+  .navbar-nav {
+    font-size: 0.8em;
+  }
+
+  .mobile {
+    display: block;
+  }
+
+  .no-mobile {
+    display: none;
+  }
+}
+
+.card-line-header {
+  background-color: map-get($app-colors, navbar-bg);
+  height: 0.5em;
+}
+
+@media (max-width: 800px) {
+  .mobile {
+    display: block;
+  }
+
+  .no-mobile {
+    display: none;
+  }
+
+  body.bodylayout .navbar {
+    justify-content: center;
+  }
+
+  .navbar-collapse-desktop .navbar-nav {
+    display: none !important;
+  }
+
+  #collapsibleNavbar {
+    display: none !important;
+  }
+
+  .navbar-brand {
+    margin-left: 2em !important;
+    margin-right: 2em !important;
+    padding-top: 0rem !important;
+  }
+
+  .navbar-user {
+    display: block !important;
+  }
+
+  #radar {
+    display: none;
+  }
+
+  #half {
+    width: 100%;
+  }
+
+  .p-datatable .p-paginator {
+    flex-wrap: unset;
+  }
+
+  .fa-bars {
+    margin-top: 0rem;
+  }
+
+  .curve::after {
+    display: none;
+  }
+
+  .curve::before {
+    width: 0;
+    border-radius: 0% 0%;
+  }
+
+  .navbar-title {
+    padding-left: 0 !important;
+  }
+
+  .navbar-title h5 {
+    width: 40vw;
+  }
+
+  .navbar-nav a.nav-link {
+    color: #000 !important;
+    //padding-left: 1em;
+  }
+
+  .icon-navbar-mobile {
+    color: #fff;
+  }
+
+  .sidebar {
+    width: 100vw;
+
+    .nav-tabs {
+      padding-top: 30px !important;
+    }
+  }
+
+  .p-paginator .p-paginator-current {
+    height: auto !important;
+  }
+
+  .p-overlaypanel .p-overlaypanel-content {
+    margin-top: 4vh;
+  }
+
+  .p-overlaypanel {
+    width: 100vw !important;
+    left: 0 !important;
+  }
+
+  .text-overlayPanel {
+    font-size: medium;
+  }
+
+  .p-breadcrumb ul {
+    margin-top: 2em !important;
+  }
+
+  p-chips .ng-invalid > .p-chips > .p-inputtext {
+    border-color: #a80000 !important;
+  }
+}
+
+.isDisabled {
+  color: currentColor;
+  opacity: 0.5;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.col-3 {
+  display: flex;
+  align-items: center;
+}
+
+#table-card {
+  .table-head-th {
+    background: #f4f5f8 !important;
+  }
+
+  .table-head-title {
+    font-size: medium;
+    font-weight: 400 !important;
+  }
+
+  tr:nth-child(even) {
+    background: white !important;
+  }
+
+  tr {
+    border-bottom: 2px solid #f4f5f8;
+  }
+
+  td {
+    font-weight: 400;
+    font-size: 13px;
+    padding: 7px 10px !important;
+  }
+
+  // Set border-radius on the top-left and bottom-left of the first table data on the table row
+  td:first-child,
+  th:first-child {
+    border-radius: 3px 0 0 0;
+    padding-left: 15px !important;
+  }
+
+  // Set border-radius on the top-right and bottom-right of the last table data on the table row
+  td:last-child,
+  th:last-child {
+    border-radius: 0 3px 0 0;
+    padding-right: 15px !important;
+  }
+
+  .p-sortable-column {
+    text-align: left;
+  }
+
+  .p-datatable .p-datatable-table {
+    thead.p-datatable-thead {
+      .p-sortable-column:not(.p-state-active):hover {
+        background: transparent;
+        color: map-get($app-colors, active-cl);
+      }
+
+      .p-sortable-column:focus {
+        box-shadow: none;
+      }
+
+      .p-sortable-column.p-highlight {
+        background: transparent !important;
+        color: black !important;
+      }
+    }
+  }
+
+  .small-row {
+    td {
+      padding-top: 7px !important;
+      padding-bottom: 7px !important;
+    }
+  }
+
+  .data-cell {
+    padding-left: 0px !important;
+  }
+
+  .padding-small-row-th {
+    padding: 5px 20px 5px 0px !important;
+  }
+
+  .padding-medium-row-th {
+    padding: 10px 20px 10px 0px !important;
+  }
+}
+
+#menu-detail {
+  .p-menu {
+    border: none;
+    border-left: 1px solid #c8c8c8;
+    border-radius: unset;
+  }
+
+  .p-menuitem-link-active {
+    background: map-get($app-colors, color-40);
+    transition: background 0.5s ease-out;
+  }
+
+  .p-menuitem-link-active > .p-menuitem-text {
+    color: map-get($app-colors, text-color) !important;
+  }
+}

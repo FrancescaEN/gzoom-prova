@@ -1,0 +1,146 @@
+<div #textEditor [style]="{ height: height, width: width }">
+  <p-editor
+    [(ngModel)]="text"
+    (onTextChange)="changeText($event)"
+    [style]="{ height: height }"
+    [readonly]="readonly"
+    [required]="required"
+  >
+    <ng-template pTemplate="header">
+      @if (!readonly) {
+        <span
+          *ngIf="toolbarButton.FONT || toolbarButton.SIZE"
+          class="ql-formats"
+        >
+          <select *ngIf="toolbarButton.FONT" class="ql-font"></select>
+          <select *ngIf="toolbarButton.SIZE" class="ql-size"></select>
+        </span>
+        <span
+          *ngIf="
+            toolbarButton.BOLD ||
+            toolbarButton.ITALIC ||
+            toolbarButton.UNDERLINE ||
+            toolbarButton.STRIKE
+          "
+          class="ql-formats"
+        >
+          <button *ngIf="toolbarButton.BOLD" class="ql-bold"></button>
+          <button *ngIf="toolbarButton.ITALIC" class="ql-italic"></button>
+          <button *ngIf="toolbarButton.UNDERLINE" class="ql-underline"></button>
+          <button *ngIf="toolbarButton.STRIKE" class="ql-strike"></button>
+        </span>
+        <span
+          *ngIf="toolbarButton.COLOR || toolbarButton.BACKGROUND"
+          class="ql-formats"
+        >
+          <select *ngIf="toolbarButton.COLOR" class="ql-color"></select>
+          <select
+            *ngIf="toolbarButton.BACKGROUND"
+            class="ql-background"
+          ></select>
+        </span>
+        <span
+          *ngIf="toolbarButton.SCRIPT_SUB || toolbarButton.SCRIPT_SUPER"
+          class="ql-formats"
+        >
+          <button
+            *ngIf="toolbarButton.SCRIPT_SUB"
+            class="ql-script"
+            value="sub"
+          ></button>
+          <button
+            *ngIf="toolbarButton.SCRIPT_SUPER"
+            class="ql-script"
+            value="super"
+          ></button>
+        </span>
+        <span
+          *ngIf="
+            toolbarButton.HEADER_ONE ||
+            toolbarButton.HEADER_TWO ||
+            toolbarButton.BLOCKQUOTE ||
+            toolbarButton.CODE_BLOCK
+          "
+          class="ql-formats"
+        >
+          <button
+            *ngIf="toolbarButton.HEADER_ONE"
+            class="ql-header"
+            value="1"
+          ></button>
+          <button
+            *ngIf="toolbarButton.HEADER_TWO"
+            class="ql-header"
+            value="2"
+          ></button>
+          <button
+            *ngIf="toolbarButton.BLOCKQUOTE"
+            class="ql-blockquote"
+          ></button>
+          <button
+            *ngIf="toolbarButton.CODE_BLOCK"
+            class="ql-code-block"
+          ></button>
+        </span>
+        <span
+          *ngIf="
+            toolbarButton.LIST_ORDERED ||
+            toolbarButton.LIST_BULLET ||
+            toolbarButton.INDENT_NEG ||
+            toolbarButton.INDENT_POS
+          "
+          class="ql-formats"
+        >
+          <button
+            *ngIf="toolbarButton.LIST_ORDERED"
+            class="ql-list"
+            value="ordered"
+          ></button>
+          <button
+            *ngIf="toolbarButton.LIST_BULLET"
+            class="ql-list"
+            value="bullet"
+          ></button>
+          <button
+            *ngIf="toolbarButton.INDENT_NEG"
+            class="ql-indent"
+            value="-1"
+          ></button>
+          <button
+            *ngIf="toolbarButton.INDENT_POS"
+            class="ql-indent"
+            value="+1"
+          ></button>
+        </span>
+        <span
+          *ngIf="toolbarButton.DIRECTION || toolbarButton.ALIGN"
+          class="ql-formats"
+        >
+          <button
+            *ngIf="toolbarButton.DIRECTION"
+            class="ql-direction"
+            value="rtl"
+          ></button>
+          <select *ngIf="toolbarButton.ALIGN" class="ql-align"></select>
+        </span>
+        <span
+          *ngIf="
+            toolbarButton.LINK ||
+            toolbarButton.IMAGE ||
+            toolbarButton.VIDEO ||
+            toolbarButton.FORMULA
+          "
+          class="ql-formats"
+        >
+          <button *ngIf="toolbarButton.LINK" class="ql-link"></button>
+          <button *ngIf="toolbarButton.IMAGE" class="ql-image"></button>
+          <button *ngIf="toolbarButton.VIDEO" class="ql-video"></button>
+          <button *ngIf="toolbarButton.FORMULA" class="ql-formula"></button>
+        </span>
+        <span *ngIf="toolbarButton.CLEAN" class="ql-formats">
+          <button class="ql-clean"></button>
+        </span>
+      }
+    </ng-template>
+  </p-editor>
+</div>

@@ -1,0 +1,179 @@
+<div
+  class="card"
+  style="
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  "
+>
+  <div
+    class="card-body row align-items-center"
+    style="width: 100%; height: 100%"
+  >
+    <div class="d-flex justify-content-center align-items-center">
+      <span
+        class="h2 mb-0 titlePrimary fw-bold"
+        style="text-align: center; color: #575756"
+      >
+        {{
+          titleLogin
+            ? titleLogin
+            : ("Welcome in" | i18n) + " GZOOM VALUE GOVERNANCE"
+        }}
+      </span>
+    </div>
+    <div
+      class="p-4 p-lg-5 text-black d-flex flex-row justify-content-between"
+      style="column-gap: 20px"
+    >
+      <div
+        class="logo d-flex align-items-center justify-content-center"
+        style="width: 50%; height: 400px"
+      >
+        @if (isKeycloak) {
+          <img
+            id="login-logo"
+            alt="login form"
+            class="img-fluid"
+            style="width: 100%; height: 100%; object-fit: contain"
+          />
+        } @else {
+          <img
+            src="/rest/node/logo/Company/LOGO_LOGIN"
+            alt="login form"
+            class="img-fluid"
+            style="width: 100%; height: 100%; object-fit: contain"
+          />
+        }
+      </div>
+      <div
+        class="dimHalfFull"
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <form
+          role="form"
+          name="form"
+          #f="ngForm"
+          (keyup)="f.form.valid && onKeyUp($event)"
+          novalidate
+          class="w-100"
+        >
+          <div
+            class="d-flex flex-column align-items-center justify-content-center"
+          >
+            <div
+              class="d-flex flex-column form-outline mb-2 align-items-center"
+              style="width: 100%"
+            >
+              <div style="width: 250px">
+                <label class="label" for="username">Username</label>
+                <div class="d-flex flex-row">
+                  <input
+                    type="username"
+                    pAutoFocus
+                    pInputText
+                    name="username"
+                    [(ngModel)]="model['username']"
+                    (ngModelChange)="onUsernameChange($event)"
+                    #username="ngModel"
+                    aria-label="username-help"
+                    required="true"
+                    [autofocus]="true"
+                    style="width: 100%"
+                  />
+                </div>
+                <div
+                  class="form-text"
+                  style="height: 20px"
+                  aria-label="username is required"
+                >
+                  <small
+                    *ngIf="username.dirty && !username.valid"
+                    id="username-help"
+                    class="username-error p-error block"
+                  >
+                    {{ "Username is required" | i18n }}
+                  </small>
+                </div>
+              </div>
+              <div
+                class="d-flex flex-column form-outline mb-2 align-items-center"
+                style="width: 100%"
+              >
+                <div style="width: 250px">
+                  <label class="label" for="password">Password</label>
+                  <div
+                    class="d-flex flex-row align-items-stretch"
+                    style="width: 100%"
+                  >
+                    <p-password
+                      name="password"
+                      [(ngModel)]="model['password']"
+                      (ngModelChange)="onPasswordChange($event)"
+                      #password="ngModel"
+                      aria-label="insert password"
+                      required
+                      [feedback]="false"
+                      [toggleMask]="true"
+                    >
+                    </p-password>
+                  </div>
+                  <div
+                    class="form-text"
+                    aria-label="password is required"
+                    style="height: 20px"
+                  >
+                    <small
+                      *ngIf="password.dirty && !password.valid"
+                      id="password-help"
+                      class="p-error block"
+                    >
+                      {{ "Password is required" | i18n }}</small
+                    >
+                  </div>
+                </div>
+
+                <div style="width: 80%">
+                  <div
+                    id="errorDiv"
+                    *ngIf="error"
+                    style="width: 100%"
+                    class="alert alert-danger"
+                    role="alert"
+                  >
+                    {{ error | i18n }}
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="
+                    (enableChangePsw$ | async) && (allowChangePassword$ | async)
+                  "
+                  class="mb-2 align-items-center"
+                >
+                  <p>
+                    {{ "Hai dimenticato la password?" | i18n }}
+                    <a routerLink="/login/check-user">{{
+                      "Clicca qui" | i18n
+                    }}</a>
+                  </p>
+                </div>
+
+                <div class="mb-4 form-group">
+                  <gzoom-button
+                    label="{{ 'Login' | i18n }}"
+                    [loading]="loading"
+                    [disabled]="loading || !f.form.valid"
+                    rounded="true"
+                    (onClick)="login()"
+                  ></gzoom-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

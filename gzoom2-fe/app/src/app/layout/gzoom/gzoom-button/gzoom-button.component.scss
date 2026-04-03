@@ -1,0 +1,179 @@
+gzoom-button {
+  // size, margins, etc.
+  --gzoom-button-justify-content: unset;
+  --gzoom-button-margin: 0;
+  --gzoom-button-height: unset;
+  --gzoom-button-width: unset;
+  --gzoom-button-padding: 8px 12px;
+  --gzoom-button-gap: 8px;
+
+  // background
+  --gzoom-button-background: var(--color-50);
+  --gzoom-button-background-color-hover: var(--gzoom-button-background);
+  --gzoom-button-background-color-active: var(--gzoom-button-background);
+
+  // borders
+  --gzoom-button-border-radius: 4px;
+  --gzoom-button-border-width: 1px;
+  --gzoom-button-border-color: var(--color-50);
+  --gzoom-button-border-color-hover: var(--gzoom-button-border-color);
+  --gzoom-button-border-color-active: var(--gzoom-button-border-color);
+
+  // text
+  --gzoom-button-font-family: Montserrat, serif;
+  --gzoom-button-font-weight: 700;
+  --gzoom-button-font-size: 16px;
+  --gzoom-button-letter-spacing: 0;
+  --gzoom-button-line-height: 20px;
+  // text color
+  --gzoom-button-text-color: #fff;
+  --gzoom-button-text-color-hover: var(--gzoom-button-text-color);
+  --gzoom-button-text-color-active: var(--gzoom-button-text-color);
+
+  // link button
+  --gzoom-button-link-font-weight: 400;
+  --gzoom-button-link-font-size: 14px;
+  --gzoom-button-link-line-height: 24px;
+  --gzoom-button-link-text-color: #07254A;
+  --gzoom-button-link-text-decoration: underline;
+  --gzoom-button-link-hover-text-decoration: none;
+
+  // outlined button
+  --gzoom-button-outlined-background-color: #FAFAFA;
+  --gzoom-button-outlined-background-color-hover: var(--gzoom-button-outlined-background-color);
+  --gzoom-button-outlined-background-color-active: var(--gzoom-button-outlined-background-color);
+  --gzoom-button-outlined-border-color: var(--color-50);
+  --gzoom-button-outlined-text-color: var(--gzoom-button-outlined-border-color);
+  --gzoom-button-outlined-text-color-hover: var(--gzoom-button-outlined-text-color);
+  --gzoom-button-outlined-text-color-active: var(--gzoom-button-outlined-text-color);
+}
+
+gzoom-button {
+  button {
+    margin: var(--gzoom-button-margin);
+  }
+
+  .p-button {
+    // size, margins, etc.
+    height: var(--gzoom-button-height);
+    width: var(--gzoom-button-width);
+    padding: var(--gzoom-button-padding);
+    gap: var(--gzoom-button-gap);
+    justify-content: var(--gzoom-button-justify-content);
+
+    // background
+    background: var(--gzoom-button-background) !important; // overwritten by layout.css without !important
+
+    // borders
+    border-radius: var(--gzoom-button-border-radius);
+    border-width: var(--gzoom-button-border-width) !important; // overwritten by layout.css without !important
+    border-style: solid;
+    border-color: var(--gzoom-button-border-color) !important; // overwritten by layout.css without !important
+
+    // text
+    font-family: var(--gzoom-button-font-family) !important; // overwritten by layout.css without !important
+    font-weight: var(--gzoom-button-font-weight);
+    font-size: var(--gzoom-button-font-size) !important; // overwritten by layout.css without !important
+    line-height: var(--gzoom-button-line-height) !important; // overwritten by layout.css without !important
+    letter-spacing: var(--gzoom-button-letter-spacing);
+    color: var(--gzoom-button-text-color);
+
+    &.p-button-link,
+    &.p-button-link:hover,
+    &.p-button-link:focus {
+      background: unset !important;
+      border: none !important;
+      color: var(--gzoom-button-link-text-color) !important;
+      --gzoom-button-font-weight: 400;
+      --gzoom-button-font-size: 14px;
+      --gzoom-button-letter-spacing: 0;
+      --gzoom-button-line-height: unset !important;
+      text-decoration: var(--gzoom-button-link-text-decoration);
+      padding: 0;
+
+      &:hover {
+        text-decoration: var(--gzoom-button-link-hover-text-decoration);
+      }
+
+      i {
+        text-decoration: none;
+      }
+    }
+
+    &:hover {
+      background-color: var(--gzoom-button-background-color-hover) !important; // overwritten by layout.css without !important
+      border-color: var(--gzoom-button-border-color-hover) !important;
+      color: var(--gzoom-button-text-color-hover);
+    }
+
+    &:focus {
+      box-shadow: none !important;
+    }
+
+    &:active {
+      background: var(--gzoom-button-background-color-active) !important;
+      border-color: var(--gzoom-button-border-color-active) !important;
+      color: var(--gzoom-button-text-color-active) !important;
+    }
+
+    &.p-button-rounded {
+      border-radius: calc(var(--gzoom-button-height) / 2.0);
+    }
+  }
+
+  .p-button-outlined {
+    background-color: var(--gzoom-button-outlined-background-color) !important; // overwritten by layout.css without !important
+    border-color: var(--gzoom-button-outlined-border-color) !important; // overwritten by layout.css without !important
+    color: var(--gzoom-button-outlined-text-color);
+
+    &:hover {
+      background-color: var(--gzoom-button-outlined-background-color-hover) !important;
+      border-color: var(--gzoom-button-outlined-border-color) !important; // overwritten by layout.css without !important
+      color: var(--gzoom-button-outlined-text-color-hover);
+    }
+
+    &:active {
+      background-color: var(--gzoom-button-outlined-background-color-active) !important;
+      border-color: var(--gzoom-button-outlined-border-color) !important; // overwritten by layout.css without !important
+      color: var(--gzoom-button-outlined-text-color-active) !important;
+    }
+  }
+
+  &.with-badge {
+    button {
+      position: relative;
+      overflow: visible;
+    }
+
+    button::before {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background-color: #F97316;
+      border-radius: 50%;
+      top: -6px;
+      right: -6px;
+      z-index: 1;
+    }
+  }
+}
+
+gzoom-button[size="small"] {
+  --gzoom-button-height: 24px;
+
+  .p-button-icon-only {
+    --gzoom-button-width: 24px;
+  }
+}
+
+gzoom-button[size="large"] {
+  --gzoom-button-height: 48px;
+
+  .p-button-icon-only {
+    --gzoom-button-width: 48px;
+  }
+}
+
+
+

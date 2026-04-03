@@ -1,0 +1,23 @@
+<form *ngIf="this.form" [formGroup]="this.form">
+  <p-multiSelect
+    [virtualScroll]="virtualScroll"
+    [virtualScrollItemSize]="virtualScrollItemSize"
+    [options]="this.options"
+    formControlName="{{ this.controlName }}"
+    appendTo="body"
+    autoWidth="false"
+    [style]="{
+      width: '100%',
+      minWidth: '100%',
+      maxWidth: '100%',
+      maxHeight: '33.33px'
+    }"
+    placeholder="{{ placeholder | i18n }}"
+    [showClear]="showClear"
+    aria-label="Options"
+    [selectedItemsLabel]="'{0} selected' | i18n"
+    [maxSelectedLabels]="1"
+    (onChange)="onSelectionChange($event)"
+    (onClear)="onClear()"
+  ></p-multiSelect>
+</form>

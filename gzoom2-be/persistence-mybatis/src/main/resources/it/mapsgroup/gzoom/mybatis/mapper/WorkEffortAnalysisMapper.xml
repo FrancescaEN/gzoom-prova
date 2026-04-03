@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortAnalysisMapper">
+    <select id="getWorkEffortAnalysesWithContext" resultMap="workEffortAnalysis" parameterType="java.util.Map">
+        SELECT WA.*
+        FROM WORK_EFFORT_ANALYSIS WA
+        INNER JOIN WORK_EFFORT_TYPE WET ON WA.WORK_EFFORT_TYPE_ID = WET.WORK_EFFORT_TYPE_ID
+        WHERE WET.PARENT_TYPE_ID = #{context}
+        AND (
+          EXISTS (
+            SELECT 1
+            FROM USER_LOGIN_SECURITY_GROUP ULSG
+            INNER JOIN SECURITY_GROUP_PERMISSION SGP ON ULSG.GROUP_ID = SGP.GROUP_ID AND SGP.PERMISSION_ID LIKE CONCAT(#{permission}, 'MGR_ADMIN')
+            WHERE ULSG.USER_LOGIN_ID = #{userLoginId} AND WA.AVAILABILITY_ID = 'AVAIL_INTERNAL'
+          )
+          OR WA.AVAILABILITY_ID = 'AVAIL_PUBLIC'
+        )
+        ORDER BY WA.REFERENCE_DATE DESC, WA.WORK_EFFORT_ANALYSIS_ID ASC
+    </select>
+
+    <select id="getWorkEffortAnalysisTargetHeader" resultMap="workEffortAnalysisTypeTypeExt"  parameterType="java.util.Map">
+        SELECT
+
+        <include refid="columnNameWithAliasWorkEffortAnalysisTypeTypeExt">
+            <property name="aliasWorkEffortTypeType" value="wtt"/>
+            <property name="aliasWorkEffort" value="we"/>
+            <property name="aliasWorkEffortAnalysis" value="wa"/>
+            <property name="aliasParty" value="p"/>
+            <property name="aliasPartyParentRole" value="ppr"/>
+        </include>
+
+        FROM WORK_EFFORT_ANALYSIS WA
+        INNER JOIN WORK_EFFORT_TYPE_TYPE WTT ON WTT.WORK_EFFORT_TYPE_ID_ROOT = WA.WORK_EFFORT_TYPE_ID AND WTT.SEQUENCE_NUM &gt; 1
+        INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_TYPE_ID = WTT.WORK_EFFORT_TYPE_ID_FROM
+        INNER JOIN PARTY P ON P.PARTY_ID = WE.ORG_UNIT_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = P.PARTY_ID AND PPR.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+        WHERE WA.WORK_EFFORT_ANALYSIS_ID = #{analysisId} AND WE.WORK_EFFORT_ID = #{workEffortId}
+    </select>
+
+    <select id="getWorkEffortAnalysisTargetSummary" resultMap="workEffortAnalysisTypeTypeExt"  parameterType="java.util.Map">
+        select
+
+        <include refid="columnNameWithAliasWorkEffortTypeType"><property name="alias" value="wtt"/></include>,
+        <include refid="columnNameWithAliasWorkEffortAnalysis"><property name="alias" value="wa"/></include>,
+        <include refid="columnNameWithAliasWorkEffort"><property name="alias" value="we"/></include>
+
+        from WORK_EFFORT_ANALYSIS wa
+        inner join WORK_EFFORT_TYPE_TYPE wtt on wtt.WORK_EFFORT_TYPE_ID_ROOT = wa.WORK_EFFORT_TYPE_ID
+                                              and wtt.SEQUENCE_NUM = 1
+        inner join WORK_EFFORT we on we.WORK_EFFORT_TYPE_ID = wtt.WORK_EFFORT_TYPE_ID_FROM and we.WORK_EFFORT_REVISION_ID is null
+        inner join WORK_EFFORT_TYPE wt on wt.WORK_EFFORT_TYPE_ID = we.WORK_EFFORT_TYPE_ID
+        inner join WORK_EFFORT ra on ra.WORK_EFFORT_ID = we.WORK_EFFORT_PARENT_ID
+        inner join WORK_EFFORT_TYPE rat on rat.WORK_EFFORT_TYPE_ID = ra.WORK_EFFORT_TYPE_ID
+        inner join CUSTOM_TIME_PERIOD tp on tp.PERIOD_TYPE_ID = rat.PERIOD_TYPE_ID
+                                          and tp.FROM_DATE &lt;= wa.REFERENCE_DATE and tp.THRU_DATE &gt;= wa.REFERENCE_DATE
+        inner join USER_LOGIN ul on ul.PARTY_ID = ul.PARTY_ID
+        inner join USER_LOGIN_SECURITY_GROUP ulsg on ul.USER_LOGIN_ID = ulsg.USER_LOGIN_ID
+        inner join SECURITY_GROUP_PERMISSION spv on spv.GROUP_ID = ulsg.GROUP_ID
+        left join PARTY_RELATIONSHIP pro on pro.PARTY_ID_FROM = we.ORG_UNIT_ID
+                                          and pro.PARTY_RELATIONSHIP_TYPE_ID in ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+                                          and (pro.THRU_DATE is null or pro.THRU_DATE &gt;= wa.REFERENCE_DATE)
+                                          and spv.PERMISSION_ID like concat(#{permission}, 'ORG_ADMIN')
+                                          and pro.PARTY_ID_TO = ul.PARTY_ID
+        where wa.WORK_EFFORT_ANALYSIS_ID = #{analysisId}
+        and we.ORGANIZATION_ID = #{organizationId}
+          and (
+            wa.EXCLUDE_VALIDITY = 'Y'
+            or wa.EXCLUDE_VALIDITY = 'N'
+            and (
+              we.ESTIMATED_START_DATE &lt;= wa.REFERENCE_DATE
+              and we.ESTIMATED_COMPLETION_DATE &gt;= tp.FROM_DATE
+            )
+            or wa.EXCLUDE_VALIDITY = 'A'
+            and (
+              we.ESTIMATED_START_DATE &lt;= tp.THRU_DATE
+              and we.ESTIMATED_COMPLETION_DATE &gt;= tp.FROM_DATE
+            )
+          )
+          and ulsg.USER_LOGIN_ID = #{userLoginId}
+          and (
+            spv.PERMISSION_ID like CONCAT(#{permission}, 'MGR_ADMIN')
+            or spv.PERMISSION_ID like CONCAT(#{permission}, 'ORG_ADMIN')
+            and pro.PARTY_ID_TO is not null
+            and pro.PARTY_ID_TO = ul.PARTY_ID
+          )
+    </select>
+
+    <select id="getPdoScore" resultMap="score" parameterType="java.util.Map">
+        select
+        CTP.CUSTOM_TIME_PERIOD_CODE as CTP_CUSTOM_TIME_PERIOD_CODE,
+        CTP.CUSTOM_TIME_PERIOD_CODE_LANG as CTP_CUSTOM_TIME_PERIOD_CODE_LANG,
+        ATE.AMOUNT as ATE_AMOUNT,
+        GFT.DESCRIPTION as GFT_DESCRIPTION,
+        GFT.DESCRIPTION_LANG as GFT_DESCRIPTION_LANG
+        from WORK_EFFORT WE
+        inner join WORK_EFFORT_TYPE WET on WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+        inner join WORK_EFFORT_MEASURE WEM on WEM.WORK_EFFORT_ID = WE.WORK_EFFORT_ID
+        inner join ACCTG_TRANS_ENTRY ATE on ATE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID
+                                                        and ATE.GL_ACCOUNT_ID = 'SCORE'
+        inner join GL_FISCAL_TYPE GFT on GFT.GL_FISCAL_TYPE_ID = ATE.GL_FISCAL_TYPE_ID
+        inner join ACCTG_TRANS AT on AT.ACCTG_TRANS_ID = ATE.ACCTG_TRANS_ID
+                                            and AT.WORK_EFFORT_REVISION_ID is null
+        inner join CUSTOM_TIME_PERIOD CTP on CTP.PERIOD_TYPE_ID = WET.PERIOD_TYPE_ID
+                                            and CTP.THRU_DATE = AT.TRANSACTION_DATE
+        where WE.WORK_EFFORT_ID = #{workEffortId}
+        order by CTP.FROM_DATE asc
+    </select>
+
+    <select id="getKPIscore" resultMap="score" parameterType="java.util.Map">
+        select
+        GA.ACCOUNT_NAME as GA_ACCOUNT_NAME,
+        GA.ACCOUNT_NAME_LANG as GA_ACCOUNT_NAME_LANG,
+        ATE.AMOUNT as ATE_AMOUNT,
+        GFT.DESCRIPTION as GFT_DESCRIPTION,
+        GFT.DESCRIPTION_LANG as GFT_DESCRIPTION_LANG
+        from WORK_EFFORT WE
+        inner join WORK_EFFORT_TYPE WET on WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+        inner join WORK_EFFORT_MEASURE WEM on WEM.WORK_EFFORT_ID = WE.WORK_EFFORT_ID
+        inner join ACCTG_TRANS_ENTRY ATE on ATE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID
+                                          and ATE.GL_ACCOUNT_ID = 'SCOREKPI'
+        inner join GL_FISCAL_TYPE GFT on GFT.GL_FISCAL_TYPE_ID = ATE.GL_FISCAL_TYPE_ID
+        inner join ACCTG_TRANS AT on AT.ACCTG_TRANS_ID = ATE.ACCTG_TRANS_ID and AT.WORK_EFFORT_REVISION_ID is null
+        inner join GL_ACCOUNT GA on GA.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+        where WE.WORK_EFFORT_ID = #{workEffortId} and AT.TRANSACTION_DATE = #{analysisRefDate}
+        order by GA.FROM_DATE asc
+    </select>
+
+    <select id="getDetailPdoScore" resultMap="score" parameterType="java.util.Map">
+        select
+        CTP.CUSTOM_TIME_PERIOD_CODE as CTP_CUSTOM_TIME_PERIOD_CODE,
+        CTP.CUSTOM_TIME_PERIOD_CODE_LANG as CTP_CUSTOM_TIME_PERIOD_CODE_LANG,
+        ATE.AMOUNT as ATE_AMOUNT,
+        GA.ACCOUNT_NAME as GA_ACCOUNT_NAME,
+        GA.ACCOUNT_NAME_LANG as GA_ACCOUNT_NAME_LANG
+        from WORK_EFFORT WE
+        inner join WORK_EFFORT_TYPE WET on WET.WORK_EFFORT_TYPE_ID = WE.WORK_EFFORT_TYPE_ID
+        inner join WORK_EFFORT_MEASURE WEM on WEM.WORK_EFFORT_ID = WE.WORK_EFFORT_ID
+        inner join ACCTG_TRANS_ENTRY ATE on ATE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID and ATE.GL_ACCOUNT_ID = 'SCOREKPI'
+        inner join GL_ACCOUNT GA on GA.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+        inner join ACCTG_TRANS AT on AT.ACCTG_TRANS_ID = ATE.ACCTG_TRANS_ID and AT.WORK_EFFORT_REVISION_ID is null
+        inner join CUSTOM_TIME_PERIOD CTP on CTP.PERIOD_TYPE_ID = WET.PERIOD_TYPE_ID and CTP.THRU_DATE = AT.TRANSACTION_DATE
+        where WE.WORK_EFFORT_ID = #{workEffortId} and ATE.GL_FISCAL_TYPE_ID = #{glFiscalTypeId}
+        order by CTP.FROM_DATE asc
+    </select>
+
+    <select id="getPdoAccount" resultMap="score" parameterType="java.util.Map">
+        select
+        CTP.CUSTOM_TIME_PERIOD_CODE as CTP_CUSTOM_TIME_PERIOD_CODE,
+        CTP.CUSTOM_TIME_PERIOD_CODE_LANG as CTP_CUSTOM_TIME_PERIOD_CODE_LANG,
+        ATE.AMOUNT as ATE_AMOUNT,
+        GFT.DESCRIPTION as GFT_DESCRIPTION,
+        GFT.DESCRIPTION_LANG as GFT_DESCRIPTION_LANG
+        from GL_ACCOUNT GA
+        inner join ACCTG_TRANS_ENTRY ATE on ATE.GL_ACCOUNT_ID = GA.GL_ACCOUNT_ID
+        inner join GL_FISCAL_TYPE GFT on GFT.GL_FISCAL_TYPE_ID = ATE.GL_FISCAL_TYPE_ID
+        inner join ACCTG_TRANS AT on AT.ACCTG_TRANS_ID = ATE.ACCTG_TRANS_ID and AT.WORK_EFFORT_REVISION_ID is null
+        inner join CUSTOM_TIME_PERIOD CTP on CTP.PERIOD_TYPE_ID = GA.PERIOD_TYPE_ID and CTP.THRU_DATE = AT.TRANSACTION_DATE
+        where GA.GL_ACCOUNT_ID = #{glAccountId}
+        <if test="orgUnitId">
+          and AT.ROLE_TYPE_ID = #{orgUnitRoleTypeId} and AT.PARTY_ID = #{orgUnitId}
+        </if>
+        <if test="workEffortMeasureId">
+            and ATE.VOUCHER_REF = #{workEffortMeasureId}
+        </if>
+        order by CTP.FROM_DATE asc
+    </select>
+
+    <select id="getPdoScorekpi" resultMap="score" parameterType="java.util.Map">
+        select
+        CTP.CUSTOM_TIME_PERIOD_CODE as CTP_CUSTOM_TIME_PERIOD_CODE,
+        CTP.CUSTOM_TIME_PERIOD_CODE_LANG as CTP_CUSTOM_TIME_PERIOD_CODE_LANG,
+        ATE.AMOUNT as ATE_AMOUNT,
+        GFT.DESCRIPTION as GFT_DESCRIPTION,
+        GFT.DESCRIPTION_LANG as GFT_DESCRIPTION_LANG
+        from WORK_EFFORT_MEASURE WEM
+        inner join GL_ACCOUNT GA on GL.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+        inner join ACCTG_TRANS_ENTRY ATE on ATE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID and ATE.GL_ACCOUNT_ID = 'SCOREKPI'
+        inner join GL_FISCAL_TYPE GFT on GFT.GL_FISCAL_TYPE_ID = ATE.GL_FISCAL_TYPE_ID
+        inner join ACCTG_TRANS AT on AT.ACCTG_TRANS_ID = ATE.ACCTG_TRANS_ID and AT.WORK_EFFORT_REVISION_ID is null
+        inner join CUSTOM_TIME_PERIOD CTP on CTP.PERIOD_TYPE_ID = GA.PERIOD_TYPE_ID and CTP.THRU_DATE = AT.TRANSACTION_DATE
+        where WEM.WORK_EFFORT_MEASURE_ID = #{workEffortMeasureId}
+        order by CTP.FROM_DATE asc
+    </select>
+
+
+    <resultMap id="workEffortAnalysisEx" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortAnalysisEx">
+        <id property="workEffortAnalysisId" column="work_effort_analysis_id" jdbcType="VARCHAR" />
+        <result property="description" column="description" jdbcType="VARCHAR" />
+        <result property="workEffortTypeId" column="work_effort_type_id" jdbcType="VARCHAR" />
+        <result property="workEffortId" column="work_effort_id" jdbcType="VARCHAR" />
+        <result property="dataVisibility" column="data_visibility" jdbcType="VARCHAR" />
+        <result property="referenceDate" column="reference_date" jdbcType="TIMESTAMP" />
+        <result property="isMonitor" column="is_monitor" jdbcType="CHAR" />
+        <result property="yearPrev" column="year_prev" jdbcType="TIMESTAMP" />
+        <result property="yearM1Prev" column="year_m1_prev" jdbcType="TIMESTAMP" />
+        <result property="yearM2Prev" column="year_m2_prev" jdbcType="TIMESTAMP" />
+        <result property="yearM3Prev" column="year_m3_prev" jdbcType="TIMESTAMP" />
+        <result property="yearM4Prev" column="year_m4_prev" jdbcType="TIMESTAMP" />
+        <result property="yearP1Prev" column="year_p1_prev" jdbcType="TIMESTAMP" />
+        <result property="yearP2Prev" column="year_p2_prev" jdbcType="TIMESTAMP" />
+        <result property="yearP3Prev" column="year_p3_prev" jdbcType="TIMESTAMP" />
+        <result property="yearP4Prev" column="year_p4_prev" jdbcType="TIMESTAMP" />
+        <result property="yearReal" column="year_real" jdbcType="TIMESTAMP" />
+        <result property="yearM1Real" column="year_m1_real" jdbcType="TIMESTAMP" />
+        <result property="yearM2Real" column="year_m2_real" jdbcType="TIMESTAMP" />
+        <result property="yearM3Real" column="year_m3_real" jdbcType="TIMESTAMP" />
+        <result property="yearM4Real" column="year_m4_real" jdbcType="TIMESTAMP" />
+        <result property="yearP1Real" column="year_p1_real" jdbcType="TIMESTAMP" />
+        <result property="yearP2Real" column="year_p2_real" jdbcType="TIMESTAMP" />
+        <result property="yearP3Real" column="year_p3_real" jdbcType="TIMESTAMP" />
+        <result property="yearP4Real" column="year_p4_real" jdbcType="TIMESTAMP" />
+        <result property="labelPrev" column="label_prev" jdbcType="VARCHAR" />
+        <result property="labelM1Prev" column="label_m1_prev" jdbcType="VARCHAR" />
+        <result property="labelM2Prev" column="label_m2_prev" jdbcType="VARCHAR" />
+        <result property="labelM3Prev" column="label_m3_prev" jdbcType="VARCHAR" />
+        <result property="labelM4Prev" column="label_m4_prev" jdbcType="VARCHAR" />
+        <result property="labelP1Prev" column="label_p1_prev" jdbcType="VARCHAR" />
+        <result property="labelP2Prev" column="label_p2_prev" jdbcType="VARCHAR" />
+        <result property="labelP3Prev" column="label_p3_prev" jdbcType="VARCHAR" />
+        <result property="labelP4Prev" column="label_p4_prev" jdbcType="VARCHAR" />
+        <result property="labelReal" column="label_real" jdbcType="VARCHAR" />
+        <result property="labelM1Real" column="label_m1_real" jdbcType="VARCHAR" />
+        <result property="labelM2Real" column="label_m2_real" jdbcType="VARCHAR" />
+        <result property="labelM3Real" column="label_m3_real" jdbcType="VARCHAR" />
+        <result property="labelM4Real" column="label_m4_real" jdbcType="VARCHAR" />
+        <result property="labelP1Real" column="label_p1_real" jdbcType="VARCHAR" />
+        <result property="labelP2Real" column="label_p2_real" jdbcType="VARCHAR" />
+        <result property="labelP3Real" column="label_p3_real" jdbcType="VARCHAR" />
+        <result property="labelP4Real" column="label_p4_real" jdbcType="VARCHAR" />
+        <result property="availabilityId" column="availability_id" jdbcType="VARCHAR" />
+        <result property="reportId" column="report_id" jdbcType="VARCHAR" />
+        <result property="workEffortPurposeTypeId" column="work_effort_purpose_type_id" jdbcType="VARCHAR" />
+        <result property="workEffortTypeIdSez1" column="work_effort_type_id_sez1" jdbcType="VARCHAR" />
+        <result property="workEffortTypeIdSez2" column="work_effort_type_id_sez2" jdbcType="VARCHAR" />
+        <result property="workEffortTypeIdSez3" column="work_effort_type_id_sez3" jdbcType="VARCHAR" />
+        <result property="workEffortTypeIdSez4" column="work_effort_type_id_sez4" jdbcType="VARCHAR" />
+        <result property="workEffortTypeIdSez5" column="work_effort_type_id_sez5" jdbcType="VARCHAR" />
+        <result property="workEffortTypeIdSez6" column="work_effort_type_id_sez6" jdbcType="VARCHAR" />
+        <result property="typeBalanceScoreConId" column="type_balance_score_con_id" jdbcType="VARCHAR" />
+        <result property="typeBalanceScoreTarId" column="type_balance_score_tar_id" jdbcType="VARCHAR" />
+        <result property="typeBalanceTarIndId" column="type_balance_tar_ind_id" jdbcType="VARCHAR" />
+        <result property="typeBalanceConsIndId" column="type_balance_cons_ind_id" jdbcType="VARCHAR" />
+        <result property="description1" column="description1" jdbcType="VARCHAR" />
+        <result property="description2" column="description2" jdbcType="VARCHAR" />
+        <result property="description3" column="description3" jdbcType="VARCHAR" />
+        <result property="description4" column="description4" jdbcType="VARCHAR" />
+        <result property="description5" column="description5" jdbcType="VARCHAR" />
+        <result property="excludeValidity" column="exclude_validity" jdbcType="CHAR" />
+        <result property="lastUpdatedStamp" column="last_updated_stamp" jdbcType="TIMESTAMP" />
+        <result property="lastUpdatedTxStamp" column="last_updated_tx_stamp" jdbcType="TIMESTAMP" />
+        <result property="createdStamp" column="created_stamp" jdbcType="TIMESTAMP" />
+        <result property="createdTxStamp" column="created_tx_stamp" jdbcType="TIMESTAMP" />
+        <result property="descriptionLang" column="description_lang" jdbcType="VARCHAR" />
+        <association property="workEffortType" columnPrefix="WET_">
+            <id property="workEffortTypeId" column="work_effort_type_id" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="descriptionLang" column="description_lang" jdbcType="VARCHAR" />
+        </association>
+
+        <association property="parentWorkEffortType" columnPrefix="WET2_">
+            <id property="workEffortTypeId" column="work_effort_type_id" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="descriptionLang" column="description_lang" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+
+    <select id="getWorkEffortAnalysisEx" resultMap="workEffortAnalysisEx">
+        select wea.*,
+        wet.work_effort_type_id as WET_work_effort_type_id,
+        wet.description as WET_description,
+        wet.description_lang as WET_description_lang,
+        wet2.work_effort_type_id as WET2_work_effort_type_id,
+        wet2.description as WET2_description,
+        wet2.description_lang as WET2_description_lang
+
+        from work_effort_analysis wea
+        join work_effort_type wet on wet.work_effort_type_id = wea.work_effort_type_id
+        join work_effort_type wet2 on wet2.work_effort_type_id = wet.parent_type_id
+        <if test="context != 'CTX_WE'">
+            where wet.parent_type_id = #{context,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="getWorkEffortAnalysisExById" resultMap="workEffortAnalysisEx">
+         select wea.*,
+        wet.work_effort_type_id as WET_work_effort_type_id,
+        wet.description as WET_description,
+        wet.description_lang as WET_description_lang,
+        wet2.work_effort_type_id as WET2_work_effort_type_id,
+        wet2.description as WET2_description,
+        wet2.description_lang as WET2_description_lang
+
+        from work_effort_analysis wea
+        join work_effort_type wet on wet.work_effort_type_id = wea.work_effort_type_id
+        join work_effort_type wet2 on wet2.work_effort_type_id = wet.parent_type_id
+        where wea.work_effort_analysis_id = #{workEffortAnalysisId}
+    </select>
+
+
+
+
+
+    <resultMap id="score" type="it.mapsgroup.gzoom.mybatis.dto.Score">
+        <association property="customTimePeriod" resultMap="customTimePeriod"/>
+        <association property="glAccount" resultMap="glAccount"/>
+        <association property="acctgTransEntry" resultMap="acctgTransEntry"/>
+        <association property="glFiscalType" resultMap="glFiscalType"/>
+    </resultMap>
+    <resultMap id="customTimePeriod" type="it.mapsgroup.gzoom.mybatis.dto.CustomTimePeriod">
+            <id property="customTimePeriodId" column="ctp_custom_time_period_id" jdbcType="VARCHAR"/>
+            <result property="parentPeriodId" column="ctp_parent_period_id" jdbcType="VARCHAR"/>
+            <result property="periodTypeId" column="ctp_period_type_id" jdbcType="VARCHAR"/>
+            <result property="periodNum" column="ctp_period_num" jdbcType="NUMERIC"/>
+            <result property="periodName" column="ctp_period_name" jdbcType="VARCHAR"/>
+            <result property="fromDate" column="ctp_from_date" jdbcType="TIMESTAMP"/>
+            <result property="thruDate" column="ctp_thru_date" jdbcType="TIMESTAMP"/>
+            <result property="isClosed" column="ctp_is_closed" jdbcType="CHAR"/>
+            <result property="lastUpdatedStamp" column="ctp_last_updated_stamp" jdbcType="TIMESTAMP"/>
+            <result property="lastUpdatedTxStamp" column="ctp_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+            <result property="createdStamp" column="ctp_created_stamp" jdbcType="TIMESTAMP"/>
+            <result property="createdTxStamp" column="ctp_created_tx_stamp" jdbcType="TIMESTAMP"/>
+            <result property="customTimePeriodCode" column="ctp_custom_time_period_code" jdbcType="VARCHAR"/>
+            <result property="customTimePeriodCodeLang" column="ctp_custom_time_period_code_lang" jdbcType="VARCHAR"/>
+            <result property="periodNameLang" column="ctp_period_name_lang" jdbcType="VARCHAR"/>
+            <result property="lastModifiedByUserLogin" column="ctp_last_modified_by_user_login" jdbcType="VARCHAR"/>
+            <result property="createdByUserLogin" column="ctp_created_by_user_login" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="glAccount" type="it.mapsgroup.gzoom.mybatis.dto.GlAccount">
+            <id property="glAccountId" column="ga_gl_account_id" jdbcType="VARCHAR"/>
+            <result property="glAccountTypeId" column="ga_gl_account_type_id" jdbcType="VARCHAR"/>
+            <result property="glAccountClassId" column="ga_gl_account_class_id" jdbcType="VARCHAR"/>
+            <result property="glResourceTypeId" column="ga_gl_resource_type_id" jdbcType="VARCHAR"/>
+            <result property="glXbrlClassId" column="ga_gl_xbrl_class_id" jdbcType="VARCHAR"/>
+            <result property="parentGlAccountId" column="ga_parent_gl_account_id" jdbcType="VARCHAR"/>
+            <result property="accountCode" column="ga_account_code" jdbcType="VARCHAR"/>
+            <result property="accountName" column="ga_account_name" jdbcType="VARCHAR"/>
+            <result property="description" column="ga_description" jdbcType="VARCHAR"/>
+            <result property="productId" column="ga_product_id" jdbcType="VARCHAR"/>
+            <result property="externalId" column="ga_external_id" jdbcType="VARCHAR"/>
+            <result property="postedBalance" column="ga_posted_balance" jdbcType="NUMERIC"/>
+            <result property="lastUpdatedStamp" column="ga_last_updated_stamp" jdbcType="TIMESTAMP"/>
+            <result property="lastUpdatedTxStamp" column="ga_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+            <result property="createdStamp" column="ga_created_stamp" jdbcType="TIMESTAMP"/>
+            <result property="createdTxStamp" column="ga_created_tx_stamp" jdbcType="TIMESTAMP"/>
+            <result property="debitCreditDefault" column="ga_debit_credit_default" jdbcType="VARCHAR"/>
+            <result property="defaultUomId" column="ga_default_uom_id" jdbcType="VARCHAR"/>
+            <result property="periodicalAbsoluteEnumId" column="ga_periodical_absolute_enum_id" jdbcType="VARCHAR"/>
+            <result property="referencedAccountId" column="ga_referenced_account_id" jdbcType="VARCHAR"/>
+            <result property="accountTypeEnumId" column="ga_account_type_enum_id" jdbcType="VARCHAR"/>
+            <result property="localNameContentId" column="ga_local_name_content_id" jdbcType="VARCHAR"/>
+            <result property="childFolderFile" column="ga_child_folder_file" jdbcType="VARCHAR"/>
+            <result property="hasCompetence" column="ga_has_competence" jdbcType="CHAR"/>
+            <result property="detectOrgUnitIdFlag" column="ga_detect_org_unit_id_flag" jdbcType="CHAR"/>
+            <result property="currentStatusId" column="ga_current_status_id" jdbcType="VARCHAR"/>
+            <result property="inputEnumId" column="ga_input_enum_id" jdbcType="VARCHAR"/>
+            <result property="periodTypeId" column="ga_period_type_id" jdbcType="VARCHAR"/>
+            <result property="fromDate" column="ga_from_date" jdbcType="TIMESTAMP"/>
+            <result property="thruDate" column="ga_thru_date" jdbcType="TIMESTAMP"/>
+            <result property="dataSourceId" column="ga_data_source_id" jdbcType="VARCHAR"/>
+            <result property="detailEnumId" column="ga_detail_enum_id" jdbcType="VARCHAR"/>
+            <result property="calcCustomMethodId" column="ga_calc_custom_method_id" jdbcType="VARCHAR"/>
+            <result property="prioCalc" column="ga_prio_calc" jdbcType="NUMERIC"/>
+            <result property="weMeasureTypeEnumId" column="ga_we_measure_type_enum_id" jdbcType="VARCHAR"/>
+            <result property="weScoreRangeEnumId" column="ga_we_score_range_enum_id" jdbcType="VARCHAR"/>
+            <result property="weScoreConvEnumId" column="ga_we_score_conv_enum_id" jdbcType="VARCHAR"/>
+            <result property="weAlertRuleEnumId" column="ga_we_alert_rule_enum_id" jdbcType="VARCHAR"/>
+            <result property="uomRangeId" column="ga_uom_range_id" jdbcType="VARCHAR"/>
+            <result property="weWithoutPerf" column="ga_we_without_perf" jdbcType="VARCHAR"/>
+            <result property="source" column="ga_source" jdbcType="VARCHAR"/>
+            <result property="trendEnumId" column="ga_trend_enum_id" jdbcType="VARCHAR"/>
+            <result property="respCenterId" column="ga_resp_center_id" jdbcType="VARCHAR"/>
+            <result property="respCenterRoleTypeId" column="ga_resp_center_role_type_id" jdbcType="VARCHAR"/>
+            <result property="emplPositionTypeId" column="ga_empl_position_type_id" jdbcType="VARCHAR"/>
+            <result property="accountNameLang" column="ga_account_name_lang" jdbcType="VARCHAR"/>
+            <result property="descriptionLang" column="ga_description_lang" jdbcType="VARCHAR"/>
+            <result property="sourceLang" column="ga_source_lang" jdbcType="VARCHAR"/>
+            <result property="roleTypeId" column="ga_role_type_id" jdbcType="VARCHAR"/>
+            <result property="sequenceId" column="ga_sequence_id" jdbcType="NUMERIC"/>
+            <result property="targetPeriodEnumId" column="ga_target_period_enum_id" jdbcType="VARCHAR"/>
+            <result property="weWithoutTarget" column="ga_we_without_target" jdbcType="VARCHAR"/>
+            <result property="lastModifiedByUserLogin" column="ga_last_modified_by_user_login" jdbcType="VARCHAR"/>
+            <result property="createdByUserLogin" column="ga_created_by_user_login" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="acctgTransEntry" type="it.mapsgroup.gzoom.mybatis.dto.AcctgTransEntry">
+            <id property="acctgTransId" column="ate_acctg_trans_id" jdbcType="VARCHAR"/>
+            <id property="acctgTransEntrySeqId" column="ate_acctg_trans_entry_seq_id" jdbcType="VARCHAR"/>
+            <result property="acctgTransEntryTypeId" column="ate_acctg_trans_entry_type_id" jdbcType="VARCHAR"/>
+            <result property="description" column="ate_description" jdbcType="VARCHAR"/>
+            <result property="voucherRef" column="ate_voucher_ref" jdbcType="VARCHAR"/>
+            <result property="partyId" column="ate_party_id" jdbcType="VARCHAR"/>
+            <result property="roleTypeId" column="ate_role_type_id" jdbcType="VARCHAR"/>
+            <result property="theirPartyId" column="ate_their_party_id" jdbcType="VARCHAR"/>
+            <result property="productId" column="ate_product_id" jdbcType="VARCHAR"/>
+            <result property="theirProductId" column="ate_their_product_id" jdbcType="VARCHAR"/>
+            <result property="inventoryItemId" column="ate_inventory_item_id" jdbcType="VARCHAR"/>
+            <result property="glAccountTypeId" column="ate_gl_account_type_id" jdbcType="VARCHAR"/>
+            <result property="glAccountId" column="ate_gl_account_id" jdbcType="VARCHAR"/>
+            <result property="organizationPartyId" column="ate_organization_party_id" jdbcType="VARCHAR"/>
+            <result property="amount" column="ate_amount" jdbcType="DOUBLE"/>
+            <result property="currencyUomId" column="ate_currency_uom_id" jdbcType="VARCHAR"/>
+            <result property="origAmount" column="ate_orig_amount" jdbcType="DOUBLE"/>
+            <result property="origCurrencyUomId" column="ate_orig_currency_uom_id" jdbcType="VARCHAR"/>
+            <result property="debitCreditFlag" column="ate_debit_credit_flag" jdbcType="CHAR"/>
+            <result property="dueDate" column="ate_due_date" jdbcType="DATE"/>
+            <result property="groupId" column="ate_group_id" jdbcType="VARCHAR"/>
+            <result property="taxId" column="ate_tax_id" jdbcType="VARCHAR"/>
+            <result property="reconcileStatusId" column="ate_reconcile_status_id" jdbcType="VARCHAR"/>
+            <result property="settlementTermId" column="ate_settlement_term_id" jdbcType="VARCHAR"/>
+            <result property="isSummary" column="ate_is_summary" jdbcType="CHAR"/>
+            <result property="lastUpdatedStamp" column="ate_last_updated_stamp" jdbcType="TIMESTAMP"/>
+            <result property="lastUpdatedTxStamp" column="ate_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+            <result property="createdStamp" column="ate_created_stamp" jdbcType="TIMESTAMP"/>
+            <result property="createdTxStamp" column="ate_created_tx_stamp" jdbcType="TIMESTAMP"/>
+            <result property="perfAmountCalc" column="ate_perf_amount_calc" jdbcType="DOUBLE"/>
+            <result property="amountLocked" column="ate_amount_locked" jdbcType="CHAR"/>
+            <result property="workEffortSnapshotId" column="ate_work_effort_snapshot_id" jdbcType="VARCHAR"/>
+            <result property="snapshotDate" column="ate_snapshot_date" jdbcType="TIMESTAMP"/>
+            <result property="workEffortRevisionId" column="ate_work_effort_revision_id" jdbcType="VARCHAR"/>
+            <result property="descriptionLang" column="ate_description_lang" jdbcType="VARCHAR"/>
+            <result property="lastModifiedByUserLogin" column="ate_last_modified_by_user_login" jdbcType="VARCHAR"/>
+            <result property="createdByUserLogin" column="ate_created_by_user_login" jdbcType="VARCHAR"/>
+            <result property="glFiscalTypeId" column="ate_gl_fiscal_type_id" jdbcType="VARCHAR"/>
+            <result property="fromDateCompetence" column="ate_from_date_competence" jdbcType="TIMESTAMP"/>
+            <result property="toDateCompetence" column="ate_to_date_competence" jdbcType="TIMESTAMP"/>
+            <result property="glAccountFinId" column="ate_gl_account_fin_id" jdbcType="VARCHAR"/>
+            <result property="emplPositionTypeId" column="ate_empl_position_type_id" jdbcType="VARCHAR"/>
+            <result property="hasScoreAlert" column="ate_has_score_alert" jdbcType="CHAR"/>
+            <result property="perfAmountTarget" column="ate_perf_amount_target" jdbcType="DOUBLE"/>
+            <result property="perfAmountActual" column="ate_perf_amount_actual" jdbcType="DOUBLE"/>
+            <result property="perfAmountMin" column="ate_perf_amount_min" jdbcType="DOUBLE"/>
+            <result property="perfAmountMax" column="ate_perf_amount_max" jdbcType="DOUBLE"/>
+            <result property="checkAmount1" column="ate_check_amount1" jdbcType="CHAR"/>
+            <result property="checkAmount2" column="ate_check_amount2" jdbcType="CHAR"/>
+            <result property="checkAmount3" column="ate_check_amount3" jdbcType="CHAR"/>
+            <result property="textValue1" column="ate_text_value1" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="glFiscalType" type="it.mapsgroup.gzoom.mybatis.dto.GlFiscalType">
+            <id property="glFiscalTypeId" column="gft_gl_fiscal_type_id" jdbcType="VARCHAR"/>
+            <result property="description" column="gft_description" jdbcType="VARCHAR"/>
+            <result property="lastUpdatedStamp" column="gft_last_updated_stamp" jdbcType="TIMESTAMP"/>
+            <result property="lastUpdatedTxStamp" column="gft_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+            <result property="createdStamp" column="gft_created_stamp" jdbcType="TIMESTAMP"/>
+            <result property="createdTxStamp" column="gft_created_tx_stamp" jdbcType="TIMESTAMP"/>
+            <result property="periodicalAbsoluteEnumId" column="gft_periodical_absolute_enum_id" jdbcType="VARCHAR"/>
+            <result property="glFiscalTypeEnumId" column="gft_gl_fiscal_type_enum_id" jdbcType="VARCHAR"/>
+            <result property="isFinancialUsed" column="gft_is_financial_used" jdbcType="CHAR"/>
+            <result property="isAccountUsed" column="gft_is_account_used" jdbcType="CHAR"/>
+            <result property="isIndicatorUsed" column="gft_is_indicator_used" jdbcType="CHAR"/>
+            <result property="descriptionLang" column="gft_description_lang" jdbcType="VARCHAR"/>
+            <result property="lastModifiedByUserLogin" column="gft_last_modified_by_user_login" jdbcType="VARCHAR"/>
+            <result property="createdByUserLogin" column="gft_created_by_user_login" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <sql id="columnNameWithAliasWorkEffortAnalysisTypeTypeExt">
+        <include refid="columnNameWithAliasWorkEffortTypeType"><property name="alias" value="${aliasWorkEffortTypeType}"/></include>,
+        <include refid="columnNameWithAliasWorkEffortAnalysis"><property name="alias" value="${aliasWorkEffortAnalysis}"/></include>,
+        <include refid="columnNameWithAliasWorkEffort"><property name="alias" value="${aliasWorkEffort}"/></include>,
+        <include refid="columnNameWithAliasParty"><property name="alias" value="${aliasParty}"/></include>,
+        <include refid="columnNameWithAliasPartyParentRole"><property name="alias" value="${aliasPartyParentRole}"/></include>
+    </sql>
+
+    <resultMap id="workEffortAnalysisTypeTypeExt" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortAnalysisTypeTypeExt">
+        <id property="workEffortTypeIdRoot" column="wtt_work_effort_type_id_root" jdbcType="VARCHAR"/>
+        <id property="workEffortTypeIdFrom" column="wtt_work_effort_type_id_from" jdbcType="VARCHAR"/>
+        <id property="workEffortTypeIdTo" column="wtt_work_effort_type_id_to" jdbcType="VARCHAR"/>
+        <id property="workEffortAnalysis.workEffortAnalysisId" column="wa_work_effort_analysis_id" jdbcType="VARCHAR"/>
+        <id property="workEffort.workEffortId" column="we_work_effort_id" jdbcType="VARCHAR"/>
+        <result property="sequenceNum" column="wtt_sequence_num" jdbcType="NUMERIC"/>
+        <result property="comments" column="wtt_comments" jdbcType="VARCHAR"/>
+        <result property="lastModifiedByUserLogin" column="wtt_last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="wtt_created_by_user_login" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="wtt_last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="wtt_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="wtt_created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="wtt_created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <association property="workEffortAnalysis" resultMap="workEffortAnalysisResultMap"/>
+        <association property="workEffort" resultMap="workEffort"/>
+        <association property="partyParentRole" resultMap="partyParentRole"/>
+        <association property="party" resultMap="party"/>
+    </resultMap>
+    <sql id="columnNameWithAliasWorkEffortTypeType">
+        <!-- WorkEffortTypeType -->
+        ${alias}.work_effort_type_id_root AS ${alias}_work_effort_type_id_root,
+        ${alias}.work_effort_type_id_from AS ${alias}_work_effort_type_id_from,
+        ${alias}.work_effort_type_id_to AS ${alias}_work_effort_type_id_to,
+        ${alias}.sequence_num AS ${alias}_sequence_num,
+        ${alias}.comments AS ${alias}_comments,
+        ${alias}.last_modified_by_user_login AS ${alias}_last_modified_by_user_login,
+        ${alias}.created_by_user_login AS ${alias}_created_by_user_login,
+        ${alias}.last_updated_stamp AS ${alias}_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS ${alias}_last_updated_tx_stamp,
+        ${alias}.created_stamp AS ${alias}_created_stamp,
+        ${alias}.created_tx_stamp AS ${alias}_created_tx_stamp
+    </sql>
+
+    <resultMap id="workEffortAnalysisResultMap" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortAnalysis">
+        <id property="workEffortAnalysisId" column="wa_work_effort_analysis_id" jdbcType="VARCHAR"/>
+        <result property="description" column="wa_description" jdbcType="VARCHAR"/>
+        <result property="workEffortTypeId" column="wa_work_effort_type_id" jdbcType="VARCHAR"/>
+        <result property="workEffortId" column="wa_work_effort_id" jdbcType="VARCHAR"/>
+        <result property="dataVisibility" column="wa_data_visibility" jdbcType="VARCHAR"/>
+        <result property="referenceDate" column="wa_reference_date" jdbcType="TIMESTAMP"/>
+        <result property="isMonitor" column="wa_is_monitor" jdbcType="CHAR"/>
+        <result property="yearPrev" column="wa_year_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearM1Prev" column="wa_year_m1_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearM2Prev" column="wa_year_m2_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearM3Prev" column="wa_year_m3_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearM4Prev" column="wa_year_m4_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearP1Prev" column="wa_year_p1_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearP2Prev" column="wa_year_p2_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearP3Prev" column="wa_year_p3_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearP4Prev" column="wa_year_p4_prev" jdbcType="TIMESTAMP"/>
+        <result property="yearReal" column="wa_year_real" jdbcType="TIMESTAMP"/>
+        <result property="yearM1Real" column="wa_year_m1_real" jdbcType="TIMESTAMP"/>
+        <result property="yearM2Real" column="wa_year_m2_real" jdbcType="TIMESTAMP"/>
+        <result property="yearM3Real" column="wa_year_m3_real" jdbcType="TIMESTAMP"/>
+        <result property="yearM4Real" column="wa_year_m4_real" jdbcType="TIMESTAMP"/>
+        <result property="yearP1Real" column="wa_year_p1_real" jdbcType="TIMESTAMP"/>
+        <result property="yearP2Real" column="wa_year_p2_real" jdbcType="TIMESTAMP"/>
+        <result property="yearP3Real" column="wa_year_p3_real" jdbcType="TIMESTAMP"/>
+        <result property="yearP4Real" column="wa_year_p4_real" jdbcType="TIMESTAMP"/>
+        <result property="labelPrev" column="wa_label_prev" jdbcType="VARCHAR"/>
+        <result property="labelM1Prev" column="wa_label_m1_prev" jdbcType="VARCHAR"/>
+        <result property="labelM2Prev" column="wa_label_m2_prev" jdbcType="VARCHAR"/>
+        <result property="labelM3Prev" column="wa_label_m3_prev" jdbcType="VARCHAR"/>
+        <result property="labelM4Prev" column="wa_label_m4_prev" jdbcType="VARCHAR"/>
+        <result property="labelP1Prev" column="wa_label_p1_prev" jdbcType="VARCHAR"/>
+        <result property="labelP2Prev" column="wa_label_p2_prev" jdbcType="VARCHAR"/>
+        <result property="labelP3Prev" column="wa_label_p3_prev" jdbcType="VARCHAR"/>
+        <result property="labelP4Prev" column="wa_label_p4_prev" jdbcType="VARCHAR"/>
+        <result property="labelReal" column="wa_label_real" jdbcType="VARCHAR"/>
+        <result property="labelM1Real" column="wa_label_m1_real" jdbcType="VARCHAR"/>
+        <result property="labelM2Real" column="wa_label_m2_real" jdbcType="VARCHAR"/>
+        <result property="labelM3Real" column="wa_label_m3_real" jdbcType="VARCHAR"/>
+        <result property="labelM4Real" column="wa_label_m4_real" jdbcType="VARCHAR"/>
+        <result property="labelP1Real" column="wa_label_p1_real" jdbcType="VARCHAR"/>
+        <result property="labelP2Real" column="wa_label_p2_real" jdbcType="VARCHAR"/>
+        <result property="labelP3Real" column="wa_label_p3_real" jdbcType="VARCHAR"/>
+        <result property="labelP4Real" column="wa_label_p4_real" jdbcType="VARCHAR"/>
+        <result property="availabilityId" column="wa_availability_id" jdbcType="VARCHAR"/>
+        <result property="reportId" column="wa_report_id" jdbcType="VARCHAR"/>
+        <result property="workEffortPurposeTypeId" column="wa_work_effort_purpose_type_id" jdbcType="VARCHAR"/>
+        <result property="workEffortTypeIdSez1" column="wa_work_effort_type_id_sez1" jdbcType="VARCHAR"/>
+        <result property="workEffortTypeIdSez2" column="wa_work_effort_type_id_sez2" jdbcType="VARCHAR"/>
+        <result property="workEffortTypeIdSez3" column="wa_work_effort_type_id_sez3" jdbcType="VARCHAR"/>
+        <result property="workEffortTypeIdSez4" column="wa_work_effort_type_id_sez4" jdbcType="VARCHAR"/>
+        <result property="workEffortTypeIdSez5" column="wa_work_effort_type_id_sez5" jdbcType="VARCHAR"/>
+        <result property="workEffortTypeIdSez6" column="wa_work_effort_type_id_sez6" jdbcType="VARCHAR"/>
+        <result property="typeBalanceScoreConId" column="wa_type_balance_score_con_id" jdbcType="VARCHAR"/>
+        <result property="typeBalanceScoreTarId" column="wa_type_balance_score_tar_id" jdbcType="VARCHAR"/>
+        <result property="typeBalanceTarIndId" column="wa_type_balance_tar_ind_id" jdbcType="VARCHAR"/>
+        <result property="typeBalanceConsIndId" column="wa_type_balance_cons_ind_id" jdbcType="VARCHAR"/>
+        <result property="description1" column="wa_description1" jdbcType="VARCHAR"/>
+        <result property="description2" column="wa_description2" jdbcType="VARCHAR"/>
+        <result property="description3" column="wa_description3" jdbcType="VARCHAR"/>
+        <result property="description4" column="wa_description4" jdbcType="VARCHAR"/>
+        <result property="description5" column="wa_description5" jdbcType="VARCHAR"/>
+        <result property="excludeValidity" column="wa_exclude_validity" jdbcType="CHAR"/>
+        <result property="lastUpdatedStamp" column="wa_last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="wa_created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="descriptionLang" column="wa_description_lang" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="columnNameWithAliasWorkEffortAnalysis">
+        <!-- WorkEffortAnalysis -->
+        ${alias}.work_effort_analysis_id AS wa_work_effort_analysis_id,
+        ${alias}.description AS wa_description,
+        ${alias}.work_effort_type_id AS wa_work_effort_type_id,
+        ${alias}.work_effort_id AS wa_work_effort_id,
+        ${alias}.data_visibility AS wa_data_visibility,
+        ${alias}.reference_date AS wa_reference_date,
+        ${alias}.is_monitor AS wa_is_monitor,
+        ${alias}.year_prev AS wa_year_prev,
+        ${alias}.year_m1_prev AS wa_year_m1_prev,
+        ${alias}.year_m2_prev AS wa_year_m2_prev,
+        ${alias}.year_m3_prev AS wa_year_m3_prev,
+        ${alias}.year_m4_prev AS wa_year_m4_prev,
+        ${alias}.year_p1_prev AS wa_year_p1_prev,
+        ${alias}.year_p2_prev AS wa_year_p2_prev,
+        ${alias}.year_p3_prev AS wa_year_p3_prev,
+        ${alias}.year_p4_prev AS wa_year_p4_prev,
+        ${alias}.year_real AS wa_year_real,
+        ${alias}.year_m1_real AS wa_year_m1_real,
+        ${alias}.year_m2_real AS wa_year_m2_real,
+        ${alias}.year_m3_real AS wa_year_m3_real,
+        ${alias}.year_m4_real AS wa_year_m4_real,
+        ${alias}.year_p1_real AS wa_year_p1_real,
+        ${alias}.year_p2_real AS wa_year_p2_real,
+        ${alias}.year_p3_real AS wa_year_p3_real,
+        ${alias}.year_p4_real AS wa_year_p4_real,
+        ${alias}.label_prev AS wa_label_prev,
+        ${alias}.label_m1_prev AS wa_label_m1_prev,
+        ${alias}.label_m2_prev AS wa_label_m2_prev,
+        ${alias}.label_m3_prev AS wa_label_m3_prev,
+        ${alias}.label_m4_prev AS wa_label_m4_prev,
+        ${alias}.label_p1_prev AS wa_label_p1_prev,
+        ${alias}.label_p2_prev AS wa_label_p2_prev,
+        ${alias}.label_p3_prev AS wa_label_p3_prev,
+        ${alias}.label_p4_prev AS wa_label_p4_prev,
+        ${alias}.label_real AS wa_label_real,
+        ${alias}.label_m1_real AS wa_label_m1_real,
+        ${alias}.label_m2_real AS wa_label_m2_real,
+        ${alias}.label_m3_real AS wa_label_m3_real,
+        ${alias}.label_m4_real AS wa_label_m4_real,
+        ${alias}.label_p1_real AS wa_label_p1_real,
+        ${alias}.label_p2_real AS wa_label_p2_real,
+        ${alias}.label_p3_real AS wa_label_p3_real,
+        ${alias}.label_p4_real AS wa_label_p4_real,
+        ${alias}.availability_id AS wa_availability_id,
+        ${alias}.report_id AS wa_report_id,
+        ${alias}.work_effort_purpose_type_id AS wa_work_effort_purpose_type_id,
+        ${alias}.work_effort_type_id_sez1 AS wa_work_effort_type_id_sez1,
+        ${alias}.work_effort_type_id_sez2 AS wa_work_effort_type_id_sez2,
+        ${alias}.work_effort_type_id_sez3 AS wa_work_effort_type_id_sez3,
+        ${alias}.work_effort_type_id_sez4 AS wa_work_effort_type_id_sez4,
+        ${alias}.work_effort_type_id_sez5 AS wa_work_effort_type_id_sez5,
+        ${alias}.work_effort_type_id_sez6 AS wa_work_effort_type_id_sez6,
+        ${alias}.type_balance_score_con_id AS wa_type_balance_score_con_id,
+        ${alias}.type_balance_score_tar_id AS wa_type_balance_score_tar_id,
+        ${alias}.type_balance_tar_ind_id AS wa_type_balance_tar_ind_id,
+        ${alias}.type_balance_cons_ind_id AS wa_type_balance_cons_ind_id,
+        ${alias}.description1 AS wa_description1,
+        ${alias}.description2 AS wa_description2,
+        ${alias}.description3 AS wa_description3,
+        ${alias}.description4 AS wa_description4,
+        ${alias}.description5 AS wa_description5,
+        ${alias}.exclude_validity AS wa_exclude_validity,
+        ${alias}.last_updated_stamp AS wa_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS wa_last_updated_tx_stamp,
+        ${alias}.created_stamp AS wa_created_stamp,
+        ${alias}.created_tx_stamp AS wa_created_tx_stamp,
+        ${alias}.description_lang AS wa_description_lang
+    </sql>
+
+
+    <resultMap id="workEffort" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffort">
+        <id column="we_work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="we_work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+        <result column="we_current_status_id" property="currentStatusId" jdbcType="VARCHAR"/>
+        <result column="we_last_status_update" property="lastStatusUpdate" jdbcType="TIMESTAMP"/>
+        <result column="we_work_effort_purpose_type_id" property="workEffortPurposeTypeId" jdbcType="VARCHAR"/>
+        <result column="we_work_effort_parent_id" property="workEffortParentId" jdbcType="VARCHAR"/>
+        <result column="we_scope_enum_id" property="scopeEnumId" jdbcType="VARCHAR"/>
+        <result column="we_priority" property="priority" jdbcType="NUMERIC"/>
+        <result column="we_percent_complete" property="percentComplete" jdbcType="NUMERIC"/>
+        <result column="we_work_effort_name" property="workEffortName" jdbcType="VARCHAR"/>
+        <result column="we_show_as_enum_id" property="showAsEnumId" jdbcType="VARCHAR"/>
+        <result column="we_send_notification_email" property="sendNotificationEmail" jdbcType="CHAR"/>
+        <result column="we_description" property="description" jdbcType="VARCHAR"/>
+        <result column="we_location_desc" property="locationDesc" jdbcType="VARCHAR"/>
+        <result column="we_estimated_start_date" property="estimatedStartDate" jdbcType="TIMESTAMP"/>
+        <result column="we_estimated_completion_date" property="estimatedCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="we_actual_start_date" property="actualStartDate" jdbcType="TIMESTAMP"/>
+        <result column="we_actual_completion_date" property="actualCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="we_estimated_milli_seconds" property="estimatedMilliSeconds" jdbcType="DOUBLE"/>
+        <result column="we_estimated_setup_millis" property="estimatedSetupMillis" jdbcType="DOUBLE"/>
+        <result column="we_estimate_calc_method" property="estimateCalcMethod" jdbcType="VARCHAR"/>
+        <result column="we_actual_milli_seconds" property="actualMilliSeconds" jdbcType="DOUBLE"/>
+        <result column="we_actual_setup_millis" property="actualSetupMillis" jdbcType="DOUBLE"/>
+        <result column="we_total_milli_seconds_allowed" property="totalMilliSecondsAllowed" jdbcType="DOUBLE"/>
+        <result column="we_total_money_allowed" property="totalMoneyAllowed" jdbcType="NUMERIC"/>
+        <result column="we_money_uom_id" property="moneyUomId" jdbcType="VARCHAR"/>
+        <result column="we_special_terms" property="specialTerms" jdbcType="VARCHAR"/>
+        <result column="we_time_transparency" property="timeTransparency" jdbcType="NUMERIC"/>
+        <result column="we_universal_id" property="universalId" jdbcType="VARCHAR"/>
+        <result column="we_source_reference_id" property="sourceReferenceId" jdbcType="VARCHAR"/>
+        <result column="we_fixed_asset_id" property="fixedAssetId" jdbcType="VARCHAR"/>
+        <result column="we_facility_id" property="facilityId" jdbcType="VARCHAR"/>
+        <result column="we_info_url" property="infoUrl" jdbcType="VARCHAR"/>
+        <result column="we_recurrence_info_id" property="recurrenceInfoId" jdbcType="VARCHAR"/>
+        <result column="we_temp_expr_id" property="tempExprId" jdbcType="VARCHAR"/>
+        <result column="we_runtime_data_id" property="runtimeDataId" jdbcType="VARCHAR"/>
+        <result column="we_note_id" property="noteId" jdbcType="VARCHAR"/>
+        <result column="we_service_loader_name" property="serviceLoaderName" jdbcType="VARCHAR"/>
+        <result column="we_quantity_to_produce" property="quantityToProduce" jdbcType="DOUBLE"/>
+        <result column="we_quantity_produced" property="quantityProduced" jdbcType="DOUBLE"/>
+        <result column="we_quantity_rejected" property="quantityRejected" jdbcType="DOUBLE"/>
+        <result column="we_reserv_persons" property="reservPersons" jdbcType="DOUBLE"/>
+        <result column="we_reserv2nd_p_p_perc" property="reserv2ndPPPerc" jdbcType="DOUBLE"/>
+        <result column="we_reserv_nth_p_p_perc" property="reservNthPPPerc" jdbcType="DOUBLE"/>
+        <result column="we_accommodation_map_id" property="accommodationMapId" jdbcType="VARCHAR"/>
+        <result column="we_accommodation_spot_id" property="accommodationSpotId" jdbcType="VARCHAR"/>
+        <result column="we_revision_number" property="revisionNumber" jdbcType="NUMERIC"/>
+        <result column="we_created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="we_created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="we_last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="we_last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="we_last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="we_last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="we_created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="we_created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="we_sequence_num" property="sequenceNum" jdbcType="NUMERIC"/>
+        <result column="we_organization_id" property="organizationId" jdbcType="VARCHAR"/>
+        <result column="we_effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="we_product_id" property="productId" jdbcType="VARCHAR"/>
+        <result column="we_empl_position_type_id" property="emplPositionTypeId" jdbcType="VARCHAR"/>
+        <result column="we_local_name_content_id" property="localNameContentId" jdbcType="VARCHAR"/>
+        <result column="we_estimated_total_effort" property="estimatedTotalEffort" jdbcType="DOUBLE"/>
+        <result column="we_weight_kpi" property="weightKpi" jdbcType="DOUBLE"/>
+        <result column="we_weight_review" property="weightReview" jdbcType="DOUBLE"/>
+        <result column="we_weight_sons" property="weightSons" jdbcType="DOUBLE"/>
+        <result column="we_org_unit_role_type_id" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="we_org_unit_id" property="orgUnitId" jdbcType="VARCHAR"/>
+        <result column="we_weight_assoc_work_effort" property="weightAssocWorkEffort" jdbcType="DOUBLE"/>
+        <result column="we_work_effort_assoc_type_id" property="workEffortAssocTypeId" jdbcType="VARCHAR"/>
+        <result column="we_last_correct_score_date" property="lastCorrectScoreDate" jdbcType="TIMESTAMP"/>
+        <result column="we_total_enum_id_kpi" property="totalEnumIdKpi" jdbcType="VARCHAR"/>
+        <result column="we_total_enum_id_sons" property="totalEnumIdSons" jdbcType="VARCHAR"/>
+        <result column="we_total_enum_id_assoc" property="totalEnumIdAssoc" jdbcType="VARCHAR"/>
+        <result column="we_process_id" property="processId" jdbcType="VARCHAR"/>
+        <result column="we_is_posted" property="isPosted" jdbcType="CHAR"/>
+        <result column="we_etch" property="etch" jdbcType="VARCHAR"/>
+        <result column="we_work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="we_snap_shot_date" property="snapShotDate" jdbcType="TIMESTAMP"/>
+        <result column="we_snap_shot_description" property="snapShotDescription" jdbcType="VARCHAR"/>
+        <result column="we_work_effort_snapshot_id" property="workEffortSnapshotId" jdbcType="VARCHAR"/>
+        <result column="we_uom_range_score_id" property="uomRangeScoreId" jdbcType="VARCHAR"/>
+        <result column="we_work_effort_revision_id" property="workEffortRevisionId" jdbcType="VARCHAR"/>
+        <result column="we_scheduled_start_date" property="scheduledStartDate" jdbcType="TIMESTAMP"/>
+        <result column="we_scheduled_completion_date" property="scheduledCompletionDate" jdbcType="TIMESTAMP"/>
+        <result column="we_work_effort_name_lang" property="workEffortNameLang" jdbcType="VARCHAR"/>
+        <result column="we_description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="we_data_soll" property="dataSoll" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="columnNameWithAliasWorkEffort">
+        <!-- WorkEffort -->
+        ${alias}.work_effort_id AS we_work_effort_id,
+        ${alias}.work_effort_type_id AS we_work_effort_type_id,
+        ${alias}.current_status_id AS we_current_status_id,
+        ${alias}.last_status_update AS we_last_status_update,
+        ${alias}.work_effort_purpose_type_id AS we_work_effort_purpose_type_id,
+        ${alias}.work_effort_parent_id AS we_work_effort_parent_id,
+        ${alias}.scope_enum_id AS we_scope_enum_id,
+        ${alias}.priority AS we_priority,
+        ${alias}.percent_complete AS we_percent_complete,
+        ${alias}.work_effort_name AS we_work_effort_name,
+        ${alias}.show_as_enum_id AS we_show_as_enum_id,
+        ${alias}.send_notification_email AS we_send_notification_email,
+        ${alias}.description AS we_description,
+        ${alias}.location_desc AS we_location_desc,
+        ${alias}.estimated_start_date AS we_estimated_start_date,
+        ${alias}.estimated_completion_date AS we_estimated_completion_date,
+        ${alias}.actual_start_date AS we_actual_start_date,
+        ${alias}.actual_completion_date AS we_actual_completion_date,
+        ${alias}.estimated_milli_seconds AS we_estimated_milli_seconds,
+        ${alias}.estimated_setup_millis AS we_estimated_setup_millis,
+        ${alias}.estimate_calc_method AS we_estimate_calc_method,
+        ${alias}.actual_milli_seconds AS we_actual_milli_seconds,
+        ${alias}.actual_setup_millis AS we_actual_setup_millis,
+        ${alias}.total_milli_seconds_allowed AS we_total_milli_seconds_allowed,
+        ${alias}.total_money_allowed AS we_total_money_allowed,
+        ${alias}.money_uom_id AS we_money_uom_id,
+        ${alias}.special_terms AS we_special_terms,
+        ${alias}.time_transparency AS we_time_transparency,
+        ${alias}.universal_id AS we_universal_id,
+        ${alias}.source_reference_id AS we_source_reference_id,
+        ${alias}.fixed_asset_id AS we_fixed_asset_id,
+        ${alias}.facility_id AS we_facility_id,
+        ${alias}.info_url AS we_info_url,
+        ${alias}.recurrence_info_id AS we_recurrence_info_id,
+        ${alias}.temp_expr_id AS we_temp_expr_id,
+        ${alias}.runtime_data_id AS we_runtime_data_id,
+        ${alias}.note_id AS we_note_id,
+        ${alias}.service_loader_name AS we_service_loader_name,
+        ${alias}.quantity_to_produce AS we_quantity_to_produce,
+        ${alias}.quantity_produced AS we_quantity_produced,
+        ${alias}.quantity_rejected AS we_quantity_rejected,
+        ${alias}.reserv_persons AS we_reserv_persons,
+        ${alias}.reserv2nd_p_p_perc AS we_reserv2nd_p_p_perc,
+        ${alias}.reserv_nth_p_p_perc AS we_reserv_nth_p_p_perc,
+        ${alias}.accommodation_map_id AS we_accommodation_map_id,
+        ${alias}.accommodation_spot_id AS we_accommodation_spot_id,
+        ${alias}.revision_number AS we_revision_number,
+        ${alias}.created_date AS we_created_date,
+        ${alias}.created_by_user_login AS we_created_by_user_login,
+        ${alias}.last_modified_date AS we_last_modified_date,
+        ${alias}.last_modified_by_user_login AS we_last_modified_by_user_login,
+        ${alias}.last_updated_stamp AS we_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS we_last_updated_tx_stamp,
+        ${alias}.created_stamp AS we_created_stamp,
+        ${alias}.created_tx_stamp AS we_created_tx_stamp,
+        ${alias}.sequence_num AS we_sequence_num,
+        ${alias}.organization_id AS we_organization_id,
+        ${alias}.effort_uom_id AS we_effort_uom_id,
+        ${alias}.product_id AS we_product_id,
+        ${alias}.empl_position_type_id AS we_empl_position_type_id,
+        ${alias}.local_name_content_id AS we_local_name_content_id,
+        ${alias}.estimated_total_effort AS we_estimated_total_effort,
+        ${alias}.weight_kpi AS we_weight_kpi,
+        ${alias}.weight_review AS we_weight_review,
+        ${alias}.weight_sons AS we_weight_sons,
+        ${alias}.org_unit_role_type_id AS we_org_unit_role_type_id,
+        ${alias}.org_unit_id AS we_org_unit_id,
+        ${alias}.weight_assoc_work_effort AS we_weight_assoc_work_effort,
+        ${alias}.work_effort_assoc_type_id AS we_work_effort_assoc_type_id,
+        ${alias}.last_correct_score_date AS we_last_correct_score_date,
+        ${alias}.total_enum_id_kpi AS we_total_enum_id_kpi,
+        ${alias}.total_enum_id_sons AS we_total_enum_id_sons,
+        ${alias}.total_enum_id_assoc AS we_total_enum_id_assoc,
+        ${alias}.process_id AS we_process_id,
+        ${alias}.is_posted AS we_is_posted,
+        ${alias}.etch AS we_etch,
+        ${alias}.work_effort_type_period_id AS we_work_effort_type_period_id,
+        ${alias}.snap_shot_date AS we_snap_shot_date,
+        ${alias}.snap_shot_description AS we_snap_shot_description,
+        ${alias}.work_effort_snapshot_id AS we_work_effort_snapshot_id,
+        ${alias}.uom_range_score_id AS we_uom_range_score_id,
+        ${alias}.work_effort_revision_id AS we_work_effort_revision_id,
+        ${alias}.scheduled_start_date AS we_scheduled_start_date,
+        ${alias}.scheduled_completion_date AS we_scheduled_completion_date,
+        ${alias}.work_effort_name_lang AS we_work_effort_name_lang,
+        ${alias}.description_lang AS we_description_lang,
+        ${alias}.data_soll AS we_data_soll
+    </sql>
+
+
+    <resultMap id="partyParentRole" type="it.mapsgroup.gzoom.mybatis.dto.PartyParentRole">
+        <id property="partyId" column="ppr_party_id" jdbcType="VARCHAR"/>
+        <id property="roleTypeId" column="ppr_role_type_id" jdbcType="VARCHAR"/>
+        <result property="parentRoleCode" column="ppr_parent_role_code" jdbcType="VARCHAR"/>
+        <result property="organizationId" column="ppr_organization_id" jdbcType="VARCHAR"/>
+        <result property="lastModifiedByUserLogin" column="ppr_last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="ppr_created_by_user_login" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="ppr_last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="ppr_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="ppr_created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="ppr_created_tx_stamp" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="columnNameWithAliasPartyParentRole">
+        <!-- PartyParentRole -->
+        ${alias}.party_id AS ppr_party_id,
+        ${alias}.role_type_id AS ppr_role_type_id,
+        ${alias}.parent_role_code AS ppr_parent_role_code,
+        ${alias}.organization_id AS ppr_organization_id,
+        ${alias}.last_modified_by_user_login AS ppr_last_modified_by_user_login,
+        ${alias}.created_by_user_login AS ppr_created_by_user_login,
+        ${alias}.last_updated_stamp AS ppr_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS ppr_last_updated_tx_stamp,
+        ${alias}.created_stamp AS ppr_created_stamp,
+        ${alias}.created_tx_stamp AS ppr_created_tx_stamp
+    </sql>
+
+    <resultMap id="party" type="it.mapsgroup.gzoom.mybatis.dto.Party">
+        <id property="partyId" column="p_party_id" jdbcType="VARCHAR"/>
+        <result property="partyTypeId" column="p_party_type_id" jdbcType="VARCHAR"/>
+        <result property="externalId" column="p_external_id" jdbcType="VARCHAR"/>
+        <result property="preferredCurrencyUomId" column="p_preferred_currency_uom_id" jdbcType="VARCHAR"/>
+        <result property="description" column="p_description" jdbcType="VARCHAR"/>
+        <result property="statusId" column="p_status_id" jdbcType="VARCHAR"/>
+        <result property="createdDate" column="p_created_date" jdbcType="TIMESTAMP"/>
+        <result property="createdByUserLogin" column="p_created_by_user_login" jdbcType="VARCHAR"/>
+        <result property="lastModifiedDate" column="p_last_modified_date" jdbcType="TIMESTAMP"/>
+        <result property="lastModifiedByUserLogin" column="p_last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="dataSourceId" column="p_data_source_id" jdbcType="VARCHAR"/>
+        <result property="isUnread" column="p_is_unread" jdbcType="CHAR"/>
+        <result property="lastUpdatedStamp" column="p_last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="p_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="p_created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="p_created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="fiscalCode" column="p_fiscal_code" jdbcType="VARCHAR"/>
+        <result property="vatCode" column="p_vat_code" jdbcType="VARCHAR"/>
+        <result property="partyName" column="p_party_name" jdbcType="VARCHAR"/>
+        <result property="descriptionLang" column="p_description_lang" jdbcType="VARCHAR"/>
+        <result property="endDate" column="p_end_date" jdbcType="TIMESTAMP"/>
+        <result property="partyNameLang" column="p_party_name_lang" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="columnNameWithAliasParty">
+        <!-- Party -->
+        ${alias}.party_id AS p_party_id,
+        ${alias}.party_type_id AS p_party_type_id,
+        ${alias}.external_id AS p_external_id,
+        ${alias}.preferred_currency_uom_id AS p_preferred_currency_uom_id,
+        ${alias}.description AS p_description,
+        ${alias}.status_id AS p_status_id,
+        ${alias}.created_date AS p_created_date,
+        ${alias}.created_by_user_login AS p_created_by_user_login,
+        ${alias}.last_modified_date AS p_last_modified_date,
+        ${alias}.last_modified_by_user_login AS p_last_modified_by_user_login,
+        ${alias}.data_source_id AS p_data_source_id,
+        ${alias}.is_unread AS p_is_unread,
+        ${alias}.last_updated_stamp AS p_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS p_last_updated_tx_stamp,
+        ${alias}.created_stamp AS p_created_stamp,
+        ${alias}.created_tx_stamp AS p_created_tx_stamp,
+        ${alias}.fiscal_code AS p_fiscal_code,
+        ${alias}.vat_code AS p_vat_code,
+        ${alias}.party_name AS p_party_name,
+        ${alias}.description_lang AS p_description_lang,
+        ${alias}.end_date AS p_end_date,
+        ${alias}.party_name_lang AS p_party_name_lang
+    </sql>
+
+
+
+</mapper>

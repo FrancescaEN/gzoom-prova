@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.ContentAssocMapper">
+    <select id="getMenuPath" resultMap="contentAssocMenu" parameterType="java.util.Map">
+        SELECT
+        CA.*,
+        <include refid="columnNameWithAliasContentAssoc">
+            <property name="alias" value="PRN"/>
+        </include>
+        FROM CONTENT_ASSOC CA
+        JOIN CONTENT_ASSOC PRN ON PRN.CONTENT_ID_TO = CA.CONTENT_ID_TO
+        WHERE CA.CONTENT_ID_TO = #{contentIdTo}
+        AND CA.CONTENT_ASSOC_TYPE_ID = 'TREE_CHILD'
+        AND (PRN.FROM_DATE IS NULL OR CURRENT_TIMESTAMP &gt;= PRN.FROM_DATE)
+        AND (PRN.THRU_DATE IS NULL OR CURRENT_TIMESTAMP &lt; PRN.THRU_DATE)
+    </select>
+
+    <resultMap id="contentAssocMenu" type="it.mapsgroup.gzoom.mybatis.dto.ContentAssocMenu" extends="contentAssoc">
+        <association property="parent" columnPrefix="PRN_" resultMap="contentAssoc"/>
+        <association property="child" columnPrefix="CLD_" resultMap="contentAssoc"/>
+    </resultMap>
+
+    <sql id="columnNameWithAliasContentAssoc">
+       ${alias}.CONTENT_ID AS ${alias}_CONTENT_ID,
+        ${alias}.CONTENT_ID_TO AS ${alias}_CONTENT_ID_TO,
+        ${alias}.CONTENT_ASSOC_TYPE_ID AS ${alias}_CONTENT_ASSOC_TYPE_ID,
+        ${alias}.FROM_DATE AS ${alias}_FROM_DATE,
+        ${alias}.THRU_DATE AS ${alias}_THRU_DATE,
+        ${alias}.CONTENT_ASSOC_PREDICATE_ID AS ${alias}_CONTENT_ASSOC_PREDICATE_ID,
+        ${alias}.DATA_SOURCE_ID AS ${alias}_DATA_SOURCE_ID,
+        ${alias}.SEQUENCE_NUM AS ${alias}_SEQUENCE_NUM,
+        ${alias}.MAP_KEY AS ${alias}_MAP_KEY,
+        ${alias}.UPPER_COORDINATE AS ${alias}_UPPER_COORDINATE,
+        ${alias}.LEFT_COORDINATE AS ${alias}_LEFT_COORDINATE,
+        ${alias}.CREATED_DATE AS ${alias}_CREATED_DATE,
+        ${alias}.CREATED_BY_USER_LOGIN AS ${alias}_CREATED_BY_USER_LOGIN,
+        ${alias}.LAST_MODIFIED_DATE AS ${alias}_LAST_MODIFIED_DATE,
+        ${alias}.LAST_MODIFIED_BY_USER_LOGIN AS ${alias}_LAST_MODIFIED_BY_USER_LOGIN,
+        ${alias}.LAST_UPDATED_STAMP AS ${alias}_LAST_UPDATED_STAMP,
+        ${alias}.LAST_UPDATED_TX_STAMP AS ${alias}_LAST_UPDATED_TX_STAMP,
+        ${alias}.CREATED_STAMP AS ${alias}_CREATED_STAMP,
+        ${alias}.CREATED_TX_STAMP AS ${alias}_CREATED_TX_STAMP
+    </sql>
+
+</mapper>

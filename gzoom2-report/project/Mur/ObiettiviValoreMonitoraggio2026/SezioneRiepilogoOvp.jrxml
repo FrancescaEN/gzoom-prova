@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SezioneRiepilogoOvp" pageWidth="1191" pageHeight="842" orientation="Landscape" columnWidth="1191" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="22c2ae8e-c01d-48c4-90cf-a6c01511a2f1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgres_gzoom_mur"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="190"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="805"/>
+	<style name="Default" isDefault="true" fontSize="10" pdfEncoding="Cp1252" isPdfEmbedded="false">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<parameter name="areaId" class="java.lang.String"/>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3112sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="YEAR" class="java.lang.Integer"/>
+	<parameter name="YEARM2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{YEAR}-2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEARM1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{YEAR}-1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEARP1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{YEAR}+1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEARP2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{YEAR}+2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idOvp" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	ovp.work_effort_id as "Id Obiettivo valore pubblico",
+	nd.note_info as "Testata Analisi",
+	contesto.lista as "Analisi di contesto",
+	impatti.lista as "Impatti attesi",
+	subsez.work_effort_id as "Id Valore Pubblico",
+	score.baseline, score.monitoraggio,score.consuntivo_m2, score.preconsuntivo_m1, score.consuntivo,score.target, score.target_p1, score.target_p2
+from work_effort ovp
+/* SEZIONE PIAO */
+join work_effort_assoc wea on wea.work_effort_id_from = ovp.work_effort_id and wea.work_effort_assoc_type_id = '23R4'
+join work_effort sez on sez.work_effort_id = wea.work_effort_id_to
+	and sez.work_effort_type_id = '26R42SEZ' and sez.work_effort_revision_id is null
+/* SOTTOSEZIONE VALORE PUBBLICO */
+join work_effort_assoc wea2 on wea2.work_effort_id_from = sez.work_effort_id and wea2.work_effort_assoc_type_id = '23R4'
+join work_effort subsez on subsez.work_effort_id = wea2.work_effort_id_to
+	and subsez.work_effort_type_id = '26R44S21' and subsez.work_effort_revision_id is null
+join work_effort_note wen on wen.work_effort_id = subsez.work_effort_id and wen.sequence_id = 200
+join note_data nd on nd.note_id = wen.note_id
+/* ANALISI DI CONTESTO AGGREGATA */
+LEFT JOIN (
+  SELECT
+    wea3.work_effort_id_from,
+    string_agg(note_info, E'\n' ORDER BY etch) AS lista
+  FROM work_effort_assoc wea3
+  JOIN (
+    SELECT DISTINCT
+      strat.work_effort_id,
+      nd.note_info,
+      strat.etch
+    FROM work_effort strat
+    JOIN work_effort_note wen
+      ON wen.work_effort_id = strat.work_effort_id
+     AND wen.sequence_id = 200
+    JOIN note_data nd
+      ON nd.note_id = wen.note_id
+    WHERE strat.work_effort_type_id = '26R80OBS'
+  ) strat ON strat.work_effort_id = wea3.work_effort_id_to
+  WHERE wea3.work_effort_assoc_type_id = '23R4'
+  GROUP BY wea3.work_effort_id_from
+) contesto ON contesto.work_effort_id_from = subsez.work_effort_id
+/* IMPATTI ATTESI AGGREGATI */
+LEFT JOIN (
+  SELECT
+    wea3.work_effort_id_from,
+    string_agg(note_info, E'\n' ORDER BY etch) AS lista
+  FROM work_effort_assoc wea3
+  JOIN (
+    SELECT DISTINCT
+      strat.work_effort_id,
+      nd.note_info,
+      strat.etch
+    FROM work_effort strat
+    JOIN work_effort_note wen
+      ON wen.work_effort_id = strat.work_effort_id
+     AND wen.sequence_id = 210
+    JOIN note_data nd
+      ON nd.note_id = wen.note_id
+    WHERE strat.work_effort_type_id = '26R80OBS'
+  ) strat ON strat.work_effort_id = wea3.work_effort_id_to
+  WHERE wea3.work_effort_assoc_type_id = '23R4'
+  GROUP BY wea3.work_effort_id_from
+) impatti ON impatti.work_effort_id_from = subsez.work_effort_id
+/* PUNTEGGI */
+left join (
+	select
+		wem.work_effort_id,
+		max(case when extract(year from act.transaction_date) = 2022 and ate.gl_fiscal_type_id = 'BASELINE' then ate.amount else null end) as baseline,
+		max(case when extract(year from act.transaction_date) = $P{YEAR} and ate.gl_fiscal_type_id = 'MONINT' then ate.amount else null end) as monitoraggio,
+		max(case when extract(year from act.transaction_date) = $P{YEARM2} and ate.gl_fiscal_type_id = 'ACTUAL' then ate.amount else null end) as consuntivo_m2,
+		max(case when extract(year from act.transaction_date) = $P{YEARM1} and ate.gl_fiscal_type_id = 'ACTUAL' then ate.amount else null end) as preconsuntivo_m1,
+		max(case when extract(year from act.transaction_date) = $P{YEAR} and ate.gl_fiscal_type_id = 'ACTUAL' then ate.amount else null end) as consuntivo,
+		max(case when extract(year from act.transaction_date) = $P{YEAR} and ate.gl_fiscal_type_id = 'BUDGET' then ate.amount else null end) as target,
+		max(case when extract(year from act.transaction_date) = $P{YEARP1} and ate.gl_fiscal_type_id = 'BUDGET' then ate.amount else null end) as target_p1,
+		max(case when extract(year from act.transaction_date) = $P{YEARP2} and ate.gl_fiscal_type_id = 'BUDGET' then ate.amount else null end) as target_p2
+	from work_effort_measure wem
+	join acctg_trans act on act.voucher_ref = wem.work_effort_measure_id
+	join acctg_trans_entry ate on ate.acctg_trans_id = act.acctg_trans_id and ate.gl_account_id = 'SCORE'
+	where wem.gl_account_id = 'SCORE'
+	group by
+		wem.work_effort_id
+) score on score.work_effort_id = subsez.work_effort_id
+where ovp.work_effort_type_id = '26R40PIAO' and ovp.work_effort_revision_id is null and ovp.work_effort_id =  $P{idOvp} /* PASSATO DALLA QUERY SOPRA */]]>
+	</queryString>
+	<field name="Id Obiettivo valore pubblico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Id Obiettivo valore pubblico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Id Obiettivo valore pubblico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="Testata Analisi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Testata Analisi"/>
+		<property name="com.jaspersoft.studio.field.label" value="Testata Analisi"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="note_data"/>
+	</field>
+	<field name="Analisi di contesto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Analisi di contesto"/>
+		<property name="com.jaspersoft.studio.field.label" value="Analisi di contesto"/>
+	</field>
+	<field name="Impatti attesi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Impatti attesi"/>
+		<property name="com.jaspersoft.studio.field.label" value="Impatti attesi"/>
+	</field>
+	<field name="Id Valore Pubblico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Id Valore Pubblico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Id Valore Pubblico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="baseline" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="baseline"/>
+		<property name="com.jaspersoft.studio.field.label" value="baseline"/>
+	</field>
+	<field name="monitoraggio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="monitoraggio"/>
+		<property name="com.jaspersoft.studio.field.label" value="monitoraggio"/>
+	</field>
+	<field name="consuntivo_m2" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="consuntivo_m2"/>
+		<property name="com.jaspersoft.studio.field.label" value="consuntivo_m2"/>
+	</field>
+	<field name="preconsuntivo_m1" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="preconsuntivo_m1"/>
+		<property name="com.jaspersoft.studio.field.label" value="preconsuntivo_m1"/>
+	</field>
+	<field name="consuntivo" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="consuntivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="consuntivo"/>
+	</field>
+	<field name="target" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="target"/>
+		<property name="com.jaspersoft.studio.field.label" value="target"/>
+	</field>
+	<field name="target_p1" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="target_p1"/>
+		<property name="com.jaspersoft.studio.field.label" value="target_p1"/>
+	</field>
+	<field name="target_p2" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="target_p2"/>
+		<property name="com.jaspersoft.studio.field.label" value="target_p2"/>
+	</field>
+	<group name="GruppoIdObiettivoValPub">
+		<groupExpression><![CDATA[$F{Id Obiettivo valore pubblico}]]></groupExpression>
+		<groupHeader>
+			<band height="78" splitType="Stretch">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<frame>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="1151" height="15" isRemoveLineWhenBlank="true" uuid="32d5b5fd-4046-4dc9-9108-16b02943793b"/>
+					<textField textAdjust="StretchHeight">
+						<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="90" height="15" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#2D65AE" uuid="6a97f8ee-d7f9-4a7c-86f4-e34ec67cfdb1">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement verticalAlignment="Top">
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Analisi di contesto (criticità e opportunità del contesto specifico) "]]></textFieldExpression>
+					</textField>
+					<subreport>
+						<reportElement x="90" y="0" width="1061" height="15" uuid="edb60eed-bdd3-40fb-922c-fa60113b2f97"/>
+						<subreportParameter name="idValorePubblico">
+							<subreportParameterExpression><![CDATA[$F{Id Valore Pubblico}]]></subreportParameterExpression>
+						</subreportParameter>
+						<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+							<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+						</subreportParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						<subreportExpression><![CDATA["SezioneAnalisiContesto.jasper"]]></subreportExpression>
+					</subreport>
+				</frame>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="1151" height="15" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#2D65AE" uuid="6decf6a4-07f5-42d8-92d2-95dd0156ef38">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<pen lineWidth="0.5" lineColor="#CACCCA"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#CACCCA"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#CACCCA"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#CACCCA"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#CACCCA"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA["VALORE PUBBLICO atteso (risposte alle criticità/opportunità del contesto e specifici Valori Pubblici attesi)"]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement positionType="Float" x="0" y="30" width="1151" height="30" uuid="c893c50f-2a8a-4c94-a3cd-73f8c41882c3"/>
+					<subreport>
+						<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="629" height="30" uuid="181cddf4-28d8-41d0-8a9a-5704325b8c27"/>
+						<subreportParameter name="idValorePubblico">
+							<subreportParameterExpression><![CDATA[$F{Id Valore Pubblico}]]></subreportParameterExpression>
+						</subreportParameter>
+						<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+							<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+						</subreportParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						<subreportExpression><![CDATA["SezioneImpattiAttesi.jasper"]]></subreportExpression>
+					</subreport>
+					<textField textAdjust="StretchHeight">
+						<reportElement positionType="Float" mode="Opaque" x="839" y="0" width="104" height="15" forecolor="#FFFFFF" backcolor="#2D65AE" uuid="34d9d26f-75d6-4601-9fbd-ba143752c373">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Top">
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Valore Pubblico Consuntivo\n"+ $P{YEARM1}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight">
+						<reportElement positionType="Float" mode="Opaque" x="943" y="0" width="104" height="15" forecolor="#FFFFFF" backcolor="#2D65AE" uuid="309a8bcf-09cc-4605-9643-8e9ea1c35ca0">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Top">
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Valore Pubblico \natteso\n"+ $P{YEAR}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement positionType="Float" stretchType="ElementGroupBottom" mode="Opaque" x="839" y="15" width="104" height="15" forecolor="#FFFF00" backcolor="#2D65AE" uuid="abbf1a1f-14dc-45b5-8e1e-5a684ce4a2f0">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="14" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{preconsuntivo_m1}.intValue()+"%"]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight">
+						<reportElement positionType="Float" mode="Opaque" x="1047" y="0" width="104" height="15" forecolor="#FFFFFF" backcolor="#2D65AE" uuid="9fb857a2-470c-4560-9059-c2f91a6734a7">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Top">
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Valore Pubblico Monitoraggio\n"+ $P{YEAR}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement positionType="Float" stretchType="ElementGroupBottom" mode="Opaque" x="734" y="15" width="105" height="15" forecolor="#FFFF00" backcolor="#2D65AE" uuid="4518f9a4-c2e6-413b-b793-fbfb14e1ec6a">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="14" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{consuntivo_m2}.intValue()+"%"]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight">
+						<reportElement positionType="Float" mode="Opaque" x="629" y="0" width="105" height="15" forecolor="#FFFFFF" backcolor="#2D65AE" uuid="2a7f6599-1e28-41b5-9333-7f3d60a4cee2">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Top">
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Valore Pubblico  di partenza\n2022"]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement positionType="Float" stretchType="ElementGroupBottom" mode="Opaque" x="1047" y="15" width="104" height="15" forecolor="#FFFF00" backcolor="#2D65AE" uuid="bb54f9dc-17f5-4637-aa5d-6315982bfcf0">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="14" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{monitoraggio}.intValue()+"%"]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight">
+						<reportElement positionType="Float" mode="Opaque" x="734" y="0" width="105" height="15" forecolor="#FFFFFF" backcolor="#2D65AE" uuid="f4e936f6-2822-481a-8c41-4ac9cee94c9e">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Top">
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Valore Pubblico Consuntivo\n"+$P{YEARM2}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement positionType="Float" stretchType="ElementGroupBottom" mode="Opaque" x="943" y="15" width="104" height="15" forecolor="#FFFF00" backcolor="#2D65AE" uuid="bafbb35e-5d23-4e01-8675-4f654cdaf829">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="14" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{target}.intValue()+"%"]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement positionType="Float" stretchType="ElementGroupBottom" mode="Opaque" x="629" y="15" width="105" height="15" forecolor="#FFFF00" backcolor="#2D65AE" uuid="2ad5c334-2040-4d4b-9f46-336d8cf4e08c">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<box leftPadding="2" rightPadding="2">
+							<pen lineWidth="0.5" lineColor="#CACCCA"/>
+							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CACCCA"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="14" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{baseline}.intValue()+"%"]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+			<band height="20" splitType="Prevent">
+				<frame>
+					<reportElement positionType="Float" x="0" y="0" width="1151" height="20" uuid="93a8838e-9aa4-4d05-b8a1-a1e97598030b"/>
+					<subreport>
+						<reportElement stretchType="ContainerHeight" x="0" y="0" width="629" height="20" uuid="66622203-8d5d-4c96-9c28-a78741334753">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<subreportParameter name="idOvp">
+							<subreportParameterExpression><![CDATA[$F{Id Obiettivo valore pubblico}]]></subreportParameterExpression>
+						</subreportParameter>
+						<subreportParameter name="YEAR">
+							<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+						</subreportParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						<subreportExpression><![CDATA["SezioneRiepilogoStrategieOvp.jasper"]]></subreportExpression>
+					</subreport>
+					<subreport>
+						<reportElement stretchType="ContainerHeight" x="629" y="0" width="522" height="20" uuid="08c0fef2-d29d-4dc2-bda4-e9bcb0baadb4"/>
+						<subreportParameter name="YEAR">
+							<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+						</subreportParameter>
+						<subreportParameter name="idOvp">
+							<subreportParameterExpression><![CDATA[$F{Id Obiettivo valore pubblico}]]></subreportParameterExpression>
+						</subreportParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						<subreportExpression><![CDATA["SezioneTabellaStrategieOvp.jasper"]]></subreportExpression>
+					</subreport>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="15">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="1151" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#2D65AE" uuid="0c410f0a-f8f9-4108-b694-d3a7bb15c000">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sottosezione 'Valore Pubblico'"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

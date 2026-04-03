@@ -1,0 +1,65 @@
+<form [formGroup]="form">
+  <div [class]="layout"> <!--Wrapper to handle the entire form style (single or multicolumn)-->
+    @for (col of columns; track index; let idx = $index) {
+      @if (idx === (col - 1)) {
+        <div class="single_col" [ngClass]="{ 'single_col_vertical_spacer': idx > 0 }"> <!--Wrapper to handle the column style-->
+          @for (group of formFieldGroups; track $index) {
+            @if (layout === 'single_col' || col === group.groupColumnPosition) {
+              <div> <!--Wrapper to handle the group-->
+                @if (group.label) {
+                  <label [style]="group.labelStyle">{{group.label}}</label>
+                }
+                <div [class]="group.groupClass" [style]="group.style"> <!--Wrapper to handle the group style-->
+                  @for (field of group.fields; track $index) {
+                    @if (field.visibility) {
+                      <ng-container [ngTemplateOutlet]="fieldGenerator" [ngTemplateOutletContext]="{form: form, field: field}">
+                      </ng-container>
+                    }
+                  }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+    }
+  </div>
+</form>
+
+<ng-template #fieldGenerator let-field="field" let-form="form">
+  @if (field.name !=='id') {
+    <div style="margin-bottom: 1rem; margin-right: 10px"> <!--Wrapper of single fields style="display: flex; flex-direction: row; gap: 5px;"-->
+
+      @switch (field.type) {
+<!--        @case (fieldTypes.TEXT) {-->
+<!--          <gzoom-dynamic-input-text [field]="field" [form]="form" [style]="field.style ?? {}">-->
+<!--          </gzoom-dynamic-input-text>-->
+<!--        }-->
+<!--        @case (fieldTypes.NUMBER) {-->
+<!--          <gzoom-dynamic-input-number [field]="field" [form]="form" [style]="field.style ?? {}">-->
+<!--          </gzoom-dynamic-input-number>-->
+<!--        }-->
+<!--        @case (fieldTypes.DROPDOWN) {-->
+<!--          <gzoom-dynamic-input-dropdown [field]="field" [form]="form" [style]="field.style ?? {}">-->
+<!--          </gzoom-dynamic-input-dropdown>-->
+<!--        }-->
+<!--        @case (fieldTypes.MULTISELECT) {-->
+<!--          <gzoom-dynamic-input-dropdown [field]="field" [form]="form" [style]="field.style ?? {}">-->
+<!--          </gzoom-dynamic-input-dropdown>-->
+<!--        }-->
+<!--        @case (fieldTypes.DATE) {-->
+<!--          <gzoom-dynamic-input-date [field]="field" [form]="form" [style]="field.style ?? {}">-->
+<!--          </gzoom-dynamic-input-date>-->
+<!--        }-->
+        @case (FieldType.TEXTAREA) {
+          <gzoom-textarea [field]="field" [form]="form" [style]="field.style ?? {}" />
+        }
+<!--        @case (fieldTypes.RADIO) {-->
+<!--          <gzoom-dynamic-input-radio [field]="field" [form]="form" [style]="field.style ?? {}">-->
+<!--          </gzoom-dynamic-input-radio>-->
+<!--        }-->
+      }
+
+    </div>
+  }
+</ng-template>

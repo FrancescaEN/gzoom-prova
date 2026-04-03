@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <form name="WorkEffortViewManagementForm" extends="WorkEffortViewManagementForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+	                <or>
+	                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+	                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+	                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+	                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+	                </or>
+                </and>
+            </not>
+        </read-only>
+        <field name="workEffortTypeId" required-field="true">
+            <drop-down type="drop-list" maxlength="255" size="100" local-autocompleter="false" drop-list-key-field="workEffortTypeId" drop-list-display-field="description">
+                <entity-options entity-name="WorkEffortTypeParentRelView" key-field-name="workEffortTypeId" description="${description}">
+                    <select-field field-name="frameEnumId" display="hidden"/>
+                    <select-field field-name="parentRelTypeId" display="hidden"/>                    
+                    <select-field field-name="parentRelTypeIdRef" display="hidden"/>                    
+                    <select-field field-name="parentRelTypeDesc" display="hidden"/> 
+                    <select-field field-name="parentRelTypeDescLang" display="hidden"/>               
+                    <select-field field-name="description" display="true"/>
+                    <select-field field-name="workEffortTypeId"/>
+                    
+                    <entity-constraint name="parentTypeId" value="CTX_PA"/>
+                    <entity-order-by field-name="workEffortTypeId"/>
+                </entity-options>
+            </drop-down>
+        </field>        
+    </form>
+    
+    <form name="WorkEffortViewRootManagementForm" extends="WorkEffortViewRootManagementForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+    	<actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkWefldOthersScoreParams.groovy"/>
+        </actions>
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+                    <if-compare field="isPosted" operator="not-equals" value="Y"/>
+                    <if-compare field="crudEnumId" operator="not-equals" value="NONE"/>
+	                <or>
+	                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+	                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+	                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+	                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+	                </or>
+                </and>
+            </not>
+        </read-only>
+    </form>
+    
+    <form name="WorkEffortViewRootManagementFormTree" extends="WorkEffortViewRootManagementForm">
+        <actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkWefldOthersScoreParams.groovy"/>
+        </actions>
+        <field name="currentStatusIdEmpty" use-when="${bsh: ! &quot;Y&quot;.equals(context.get(&quot;showNotWeight&quot;))}">
+        	<hidden/>
+        </field>
+        <field name="currentStatusId" required-field="true" use-when="${bsh: &quot;Y&quot;.equals(context.get(&quot;showNotWeight&quot;))}">
+            <drop-down type="drop-list" size="50" maxlength="255" local-autocompleter="false" drop-list-key-field="statusId" drop-list-display-field="description" read-only="true">
+                <entity-options entity-name="StatusItemAndTypeView" key-field-name="statusId" description="${description}">
+                    <select-field field-name="statusTypeDesc" display="true"/>
+                    <select-field field-name="description" display="true"/>
+                    <select-field field-name="statusId"/>
+                    <entity-constraint name="parentTypeId" value="PERFORMANCE_STATUS"/>
+                    <entity-order-by field-name="statusTypeId"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+    </form>
+    
+    <!-- ********************************************************************** -->
+    <!-- WorkEffortStatus -->
+    <!-- ********************************************************************** -->
+    <form name="WorkEffortStatusManagementMultiForm" id="WESMM001_WorkEffortStatus" extends="WorkEffortStatusManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+	                <if-compare operator="not-equals" field="crudEnumId" value="NONE"/>
+	                <or>
+	                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+	                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+	                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+	                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+	                </or>
+                </and>
+            </not>
+        </read-only>
+    </form>
+
+    <!-- ********************************************************************** -->
+    <!-- WorkEffortAttribute -->
+    <!-- ********************************************************************** -->
+
+    <form name="WorkEffortAttributeManagementMultiForm" id="WEAMM001_WorkEffortAttribute" extends="WorkEffortAttributeManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+                    <if-compare operator="not-equals" field="isPosted" value="Y"/>
+                    <if-compare operator="not-equals" field="crudEnumId" value="NONE"/>
+                    <or>
+                        <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                        <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+                        <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+                </and>
+            </not>
+        </read-only>
+    </form>
+
+    <!-- ********************************************************************** -->
+    <!-- WorkEffortNoteAndData -->
+    <!-- ********************************************************************** -->
+
+    <form name="WorkEffortNoteAndDataManagementForm" id="WENADM001_WorkEffortNoteAndData_${parameters.noteContentId}" extends="WorkEffortNoteAndDataManagementForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/setWorkEffortNoteAndDataFormDefaultFields.groovy"/>
+            <set field="customTimePeriodDisplayField" value="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? &quot;customTimePeriodCodeLang&quot; : &quot;customTimePeriodCode&quot;}"/>
+    	</actions>
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+                    <if-compare field="isPosted" operator="not-equals" value="Y"/>
+                    <if-compare field="crudEnumId" operator="not-equals" value="NONE"/>
+                    <or>
+                        <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                        <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+                        <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+                </and>
+            </not>
+        </read-only>
+    </form>
+    <form name="WorkEffortNoteAndDataManagementMultiForm" id="WENADML001_WorkEffortNoteAndData_${parameters.noteContentId}" extends="WorkEffortNoteAndDataManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+                    <if-compare operator="not-equals" field="isPosted" value="Y"/>
+                    <if-compare operator="not-equals" field="crudEnumId" value="NONE"/>
+                    <or>
+                        <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                        <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+                        <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+                </and>
+            </not>
+        </read-only>
+    </form>
+
+    <!-- ********************************************************************** -->
+    <!-- WorkEffortAssignmentView -->
+    <!-- ********************************************************************** -->
+
+    <form name="WorkEffortAssignmentViewManagementMultiForm" id="WEAVMM001_WorkEffortAssignmentView" extends="WorkEffortAssignmentViewManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+                    <if-compare operator="not-equals" field="isPosted" value="Y"/>
+                    <if-compare operator="not-equals" field="crudEnumId" value="NONE"/>
+                    <or>
+                        <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                        <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+                        <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+               </and>
+            </not>
+        </read-only>
+    </form>
+
+    <form name="WorkEffortAssignmentViewManagementForm" id="WEAVM001_WorkEffortAssignmentView" extends="WorkEffortAssignmentViewManagementForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+        </actions>
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" value="true" field="isReadOnly"/>
+                    <if-compare field="isPosted" operator="not-equals" value="Y"/>
+                    <if-compare field="crudEnumId" operator="not-equals" value="NONE"/>
+                    <or>
+                        <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                        <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+                        <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+                </and>
+            </not>
+        </read-only>
+    </form>
+    
+    <!-- Form che nel read-only contiene i permessi corretti, quindi viene sovrascritta da tutte le altre WorkEffortAssignmentView -->
+    <form name="WorkEffortAssignmentViewManagementFormExtends" id="WEAVM001_WorkEffortAssignmentView" extends="WorkEffortAssignmentViewManagementFormExtends" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" value="true" field="isReadOnly"/>
+                    <or>
+                        <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                        <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+                        <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+                </and>
+            </not>
+        </read-only>
+    </form>
+
+    <!-- WorkEffortAssignmentRoleView -->
+
+    <form name="WorkEffortAssignmentRoleViewManagementMultiForm" id="WEAVMM002_WorkEffortAssignmentView" extends="WorkEffortAssignmentViewManagementMultiForm">
+        <actions>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>        	
+            <set field="weTypeRoleWeTypeId" value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;workEffortTypeId&quot;)) ? context.get(&quot;workEffortTypeId&quot;) : parameters.get(&quot;workEffortTypeId&quot;)}"/>
+            <set field="weTypeRoleParentTypeId" value="EMPLOYEE"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortTypeRoleList.groovy"/>            
+        </actions>
+        <field name="checkPartyRole">
+        	<hidden value="Y"/>
+        </field>         
+        <field name="roleTypeId" use-when="${bsh: &quot;Y&quot;.equals(context.get(&quot;showRoleType&quot;))}" title="${uiLabelMap.WorkEffortAssignment_roleTypeId}" required-field="true">
+            <drop-down type="drop-list" read-only="!isInsertMode" maxlength="255" size="30" local-autocompleter="true" drop-list-key-field="roleTypeId" drop-list-display-field="${roleTypeDisplayField}">
+                <list-options key-name="roleTypeId" list-name="workEffortTypeAndRoleList" description="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? descriptionLang : description}"/>
+            </drop-down>
+        </field>
+        <field name="roleTypeId" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;showRoleType&quot;))}" widget-style="roleTypeId">
+        	<hidden/>
+        </field>        
+        <field name="partyId" title="${PartyTitleValue}" required-field="true">
+            <drop-down type="drop-list" read-only="!isInsertMode || isReadOnly" maxlength="255" size="30" local-autocompleter="false" drop-list-key-field="partyId" drop-list-display-field="partyName">
+                <entity-options entity-name="PartyRoleView" key-field-name="partyId" description="${partyName}">
+                    <select-field field-name="partyId" display="hidden"/>
+                    <select-field field-name="roleTypeId" display="hidden"/>
+                    <select-field field-name="partyName" display="true"/>
+                    <entity-constraint name="roleTypeId" operator="in" env-name="workEffortTypeRoleList"/>
+                    <entity-constraint name="roleTypeId" env-name="roleTypeId" lookup-for-field-name="roleTypeId"/>
+                    <entity-constraint name="organizationId" value="${defaultOrganizationPartyId}"/>
+                    <entity-constraint name="statusId" value="PARTY_ENABLED"/>
+                    <entity-order-by field-name="partyName"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="fromDate" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;showDates&quot;))}">
+            <hidden value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;fromDate&quot;)) ? context.get(&quot;fromDate&quot;) : we.get(&quot;estimatedStartDate&quot;)}"/>
+        </field>
+        <field name="thruDate" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;showDates&quot;))}">
+            <hidden value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;thruDate&quot;)) ? context.get(&quot;thruDate&quot;) : we.get(&quot;estimatedCompletionDate&quot;)}"/>
+        </field>      
+        <field name="roleTypeWeight" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;showRoleTypeWeight&quot;))}">
+            <hidden value="100"/>
+        </field>        
+    </form>
+
+    <form name="WorkEffortAssignmentRoleViewManagementForm" extends="WorkEffortAssignmentViewManagementForm">
+        <actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+            <set field="weTypeRoleWeTypeId" from-field="parameters.workEffortTypeId"/>
+            <set field="weTypeRoleParentTypeId" value="EMPLOYEE"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortTypeRoleList.groovy"/>            
+        </actions>  
+        <field name="checkPartyRole">
+        	<hidden value="Y"/>
+        </field>           
+        <field name="roleTypeId" title="${uiLabelMap.WorkEffortAssignment_roleTypeId}" required-field="true">
+            <drop-down type="drop-list" read-only="isReadOnly || !isInsertMode" maxlength="255" size="50" local-autocompleter="true" drop-list-key-field="roleTypeId" drop-list-display-field="${roleTypeDisplayField}">
+                <list-options key-name="roleTypeId" list-name="workEffortTypeAndRoleList" description="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? descriptionLang : description}"/>
+            </drop-down>
+        </field>
+        <field name="partyId" title="${uiLabelMap.BaseParty}" required-field="true">
+            <drop-down type="drop-list" read-only="!isInsertMode" maxlength="255" size="50" local-autocompleter="false" drop-list-key-field="partyId" drop-list-display-field="partyName">
+                <entity-options entity-name="PartyRoleView" key-field-name="partyId" description="${partyName}">
+                    <select-field field-name="partyId" display="hidden"/>
+                    <select-field field-name="partyName" display="true"/>
+                    <entity-constraint name="roleTypeId" operator="in" env-name="workEffortTypeRoleList"/>
+                    <entity-constraint name="roleTypeId" env-name="roleTypeId" lookup-for-field-name="roleTypeId"/>
+                    <entity-constraint name="statusId" value="PARTY_ENABLED"/>
+                    <entity-order-by field-name="partyName"/>
+                </entity-options>
+            </drop-down>
+        </field>        
+    </form>
+
+    <!-- WorkEffortAssignmentGoalView -->
+
+    <form name="WorkEffortAssignmentGoalViewManagementMultiForm" id="WEAVMM003_WorkEffortAssignmentView" extends="WorkEffortAssignmentViewManagementMultiForm">
+        <actions>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+            <set field="weTypeRoleWeTypeId" value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;workEffortTypeId&quot;)) ? context.get(&quot;workEffortTypeId&quot;) : parameters.get(&quot;workEffortTypeId&quot;)}"/>
+            <set field="weTypeRoleParentTypeId" value="GOAL%"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortTypeRoleList.groovy"/>            
+        </actions>
+        <field name="checkPartyRole">
+        	<hidden value="Y"/>
+        </field>         
+        <field name="roleTypeId" use-when="${bsh: &quot;Y&quot;.equals(context.get(&quot;showRoleType&quot;))}" title="${uiLabelMap.WorkEffortAssignment_roleTypeId}" required-field="true">
+            <drop-down type="drop-list" read-only="!isInsertMode" maxlength="255" size="30" local-autocompleter="true" drop-list-key-field="roleTypeId" drop-list-display-field="${roleTypeDisplayField}">
+                <list-options key-name="roleTypeId" list-name="workEffortTypeAndRoleList" description="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? descriptionLang : description}"/>
+            </drop-down>
+        </field>
+        <field name="roleTypeId" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;showRoleType&quot;))}" widget-style="roleTypeId">
+        	<hidden/>
+        </field>        
+        <field name="partyId" title="${PartyTitleValue}" required-field="true" use-when="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;))}">
+            <drop-down type="drop-list" read-only="!isInsertMode || isReadOnly" maxlength="255" size="30" local-autocompleter="false" drop-list-key-field="partyId" drop-list-display-field="partyNameLang">
+                <entity-options entity-name="PartyRoleView" key-field-name="partyId" description="${parentRoleCode} - ${partyNameLang}">
+                    <select-field field-name="partyId" display="hidden"/>
+                    <select-field field-name="roleTypeId" display="hidden"/>
+                    <select-field field-name="parentRoleCode"/>
+                    <select-field field-name="partyNameLang" display="true" description="@{parentRoleCode} - @{partyNameLang}"/>
+                    <entity-constraint name="roleTypeId" operator="in" env-name="workEffortTypeRoleList"/>
+                    <entity-constraint name="roleTypeId" env-name="roleTypeId" lookup-for-field-name="roleTypeId"/>
+                    <entity-constraint name="statusId" value="PARTY_ENABLED"/>
+                    <entity-order-by field-name="parentRoleCode"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="partyId" title="${PartyTitleValue}" required-field="true" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;))}">
+            <drop-down type="drop-list" read-only="!isInsertMode || isReadOnly" maxlength="255" size="30" local-autocompleter="false" drop-list-key-field="partyId" drop-list-display-field="partyName">
+                <entity-options entity-name="PartyRoleView" key-field-name="partyId" description="${parentRoleCode} - ${partyName}">
+                    <select-field field-name="partyId" display="hidden"/>
+                    <select-field field-name="roleTypeId" display="hidden"/>
+                    <select-field field-name="parentRoleCode"/>
+                    <select-field field-name="partyName" display="true" description="@{parentRoleCode} - @{partyName}"/>
+                    <entity-constraint name="roleTypeId" operator="in" env-name="workEffortTypeRoleList"/>
+                    <entity-constraint name="roleTypeId" env-name="roleTypeId" lookup-for-field-name="roleTypeId"/>
+                    <entity-constraint name="statusId" value="PARTY_ENABLED"/>
+                    <entity-order-by field-name="parentRoleCode"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="fromDate" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;showDates&quot;))}">
+            <hidden value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;fromDate&quot;)) ? context.get(&quot;fromDate&quot;) : we.get(&quot;estimatedStartDate&quot;)}"/>
+        </field>
+        <field name="thruDate" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;showDates&quot;))}">
+            <hidden value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;thruDate&quot;)) ? context.get(&quot;thruDate&quot;) : we.get(&quot;estimatedCompletionDate&quot;)}"/>
+        </field>
+        <field name="roleTypeWeight" use-when="${bsh: !&quot;Y&quot;.equals(context.get(&quot;showRoleTypeWeight&quot;))}">
+            <hidden value="100"/>
+        </field>
+    </form>
+
+    <form name="WorkEffortAssignmentGoalViewManagementForm" extends="WorkEffortAssignmentViewManagementForm">
+        <actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+            <set field="weTypeRoleWeTypeId" from-field="parameters.workEffortTypeId"/>
+            <set field="weTypeRoleParentTypeId" value="GOAL%"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortTypeRoleList.groovy"/>             
+        </actions> 
+        <field name="checkPartyRole">
+        	<hidden value="Y"/>
+        </field>           
+        <field name="roleTypeId" title="${uiLabelMap.WorkEffortAssignment_roleTypeId}" required-field="true">
+            <drop-down type="drop-list" read-only="isReadOnly || !isInsertMode" maxlength="255" size="50" local-autocompleter="true" drop-list-key-field="roleTypeId" drop-list-display-field="${roleTypeDisplayField}">
+                <list-options key-name="roleTypeId" list-name="workEffortTypeAndRoleList" description="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? descriptionLang : description}"/>
+            </drop-down>
+        </field>
+        <field name="partyId" title="${uiLabelMap.BaseParty}" required-field="true">
+            <drop-down type="drop-list" read-only="!isInsertMode" maxlength="255" size="50" local-autocompleter="false" drop-list-key-field="partyId" drop-list-display-field="${partyDisplayField}">
+                <entity-options entity-name="PartyRoleView" key-field-name="partyId" description="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? partyNameLang : partyName}">
+                    <select-field field-name="partyId" display="hidden"/>
+                    <select-field field-name="${partyDisplayField}" display="true"/>
+                    <entity-constraint name="roleTypeId" operator="in" env-name="workEffortTypeRoleList"/>
+                    <entity-constraint name="roleTypeId" env-name="roleTypeId" lookup-for-field-name="roleTypeId"/>
+                    <entity-constraint name="statusId" value="PARTY_ENABLED"/>
+                    <entity-order-by field-name="partyName"/>
+                </entity-options>
+            </drop-down>
+        </field>        
+    </form>
+
+    <!-- WorkEffortAssignmentAssignmentView -->
+	<!-- Risorse Umane -->
+    <!-- id gestisce se e' attivo o meno il js per la ricerca della disponibilita (avability) -->
+    <form name="WorkEffortAssignmentAssignmentViewManagementMultiForm" id="WEAVMM004_${bsh: return (&quot;Assignment&quot; == typeEmployment ? &quot;AS_&quot; : &quot;&quot; )}WorkEffortAssignmentView" extends="WorkEffortAssignmentAssignmentViewManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <actions>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkRoleTypeWeightEditability.groovy"/>
+        </actions>  
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+                    <if-compare operator="not-equals" field="isPosted" value="Y"/>
+                    <if-compare operator="not-equals" field="crudEnumId" value="NONE"/>
+                    <or>
+                        <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                        <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+                        <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+               </and>
+            </not>
+        </read-only>              
+        <row-actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/setWorkEffortAssignmentAssignmentViewDefaultFields.groovy"/> 
+        </row-actions>
+        <sort-order>
+            <sort-field name="partyId"/>
+            <sort-field name="personEmployment"/>
+            <sort-field name="category"/>
+            <sort-field name="categoryLang"/>
+            <sort-field name="fromDate"/>
+            <sort-field name="thruDate"/>
+            <sort-field name="periodFromDate"/>
+            <sort-field name="periodThruDate"/>            
+            <sort-field name="profile"/>
+            <sort-field name="profileLang"/>
+            <sort-field name="employmentAmount"/>
+            <sort-field name="roleTypeWeight"/>
+            <sort-field name="roleTypeWeightActual"/>
+            <sort-field name="availability"/>
+            <sort-field name="isEvaluable"/>
+            <sort-field name="wepaRoleTypeWeight"/>
+            <sort-field name="endDate"/>
+            <sort-field name="endCauseEnumId"/>
+            <sort-field name="endReplacementEnumId"/>
+            <sort-field name="endWorkEffortId"/>            
+        </sort-order>
+    </form>
+
+    <form name="WorkEffortAssignmentAssignmentViewManagementForm" extends="WorkEffortAssignmentAssignmentViewManagementForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <actions>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkRoleTypeWeightEditability.groovy"/>
+        </actions>
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" value="true" field="isReadOnly"/>
+                    <if-compare field="isPosted" operator="not-equals" value="Y"/>
+                    <if-compare field="crudEnumId" operator="not-equals" value="NONE"/>
+                    <or>
+                        <if-has-permission permission="PARTPERFMGR_ADMIN"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                        <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                        <if-has-permission permission="PARTPERFORG_ADMIN"/>
+                        <if-has-permission permission="PARTPERFROLE_ADMIN"/>
+                    </or>
+                </and>
+            </not>
+        </read-only>
+        <sort-order>
+        	<sort-field name="workEffortId"/>
+        	<sort-field name="roleTypeId"/>
+        	<sort-field name="partyId"/>
+        	<sort-field name="category"/>
+        	<sort-field name="profile"/>
+        	<sort-field name="employmentAmount"/>
+        	<sort-field name="fromDate"/>
+            <sort-field name="thruDate"/>
+            <sort-field name="comments"/>
+            <sort-field name="commentsLang"/>
+            <sort-field name="roleTypeWeight"/>
+            <sort-field name="roleTypeWeightActual"/>
+            <sort-field name="workEffortMeasureId"/>
+            <sort-field name="availability"/>
+            <sort-field name="isEvaluable"/>
+            <sort-field name="wepaRoleTypeWeight"/>
+            <sort-field name="wepaFromDateFrom"/>
+            <sort-field name="wepaWorkEffortName"/>
+            <sort-field name="isPosted"/>
+            <sort-field name="endDate"/>
+            <sort-field name="endCauseEnumId"/>
+            <sort-field name="endReplacementEnumId"/>
+            <sort-field name="endWorkEffortId"/>            
+        </sort-order>
+    </form>
+
+    <!-- WorkEffortAssignmentOrgUnitView -->
+
+    <form name="WorkEffortAssignmentOrgUnitViewManagementMultiForm" id="WEAVMM005_WorkEffortAssignmentView" extends="WorkEffortAssignmentOrgUnitViewManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <actions>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortOrgUnit.groovy"/>
+            <set field="weTypeRoleWeTypeId" value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;workEffortTypeId&quot;)) ? context.get(&quot;workEffortTypeId&quot;) : parameters.get(&quot;workEffortTypeId&quot;)}"/>
+            <set field="weTypeRoleParentTypeId" value="ORGANIZATION_UNIT"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortTypeRoleList.groovy"/> 
+            <set field="weContextId" value="CTX_PA"/>
+            <set field="fromAssOrgUnit" value="Y"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/setWorkEffortAssignmentViewFormPartyIdFields.groovy"/>                        
+        </actions>           
+    </form>
+    
+    <form name="WorkEffortRelatedAssignmentManagementListForm" id="RAVMM001_WorkEffortRelatedAssignment" extends="WorkEffortRelatedAssignmentManagementListForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+    </form>
+
+    <form name="WorkEffortAssignmentOrgUnitViewManagementForm" extends="WorkEffortAssignmentViewManagementForm">
+        <actions>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortOrgUnit.groovy"/>
+            <set field="weTypeRoleWeTypeId" from-field="parameters.workEffortTypeId"/>
+            <set field="weTypeRoleParentTypeId" value="ORGANIZATION_UNIT"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortTypeRoleList.groovy"/>        	
+        </actions> 
+        <field name="partyIdOld">
+            <hidden value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;partyIdOld&quot;)) ? context.get(&quot;partyIdOld&quot;) : context.get(&quot;partyId&quot;)}"/>
+        </field>
+        <field name="checkPartyRole">
+        	<hidden value="Y"/>
+        </field>           
+        <field name="roleTypeId" title="${uiLabelMap.WorkEffortAssignment_roleTypeId}" required-field="true">
+            <drop-down type="drop-list" read-only="isReadOnly || !isInsertMode" maxlength="255" size="50" local-autocompleter="true" drop-list-key-field="roleTypeId" drop-list-display-field="${roleTypeDisplayField}">
+                <list-options key-name="roleTypeId" list-name="workEffortTypeAndRoleList" description="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? descriptionLang : description}"/>
+            </drop-down>
+        </field>
+        <field name="partyId" title="${uiLabelMap.BaseParty}" required-field="true">
+            <drop-down type="drop-list" read-only="isReadOnly" maxlength="255" size="50" local-autocompleter="false" drop-list-key-field="partyId" drop-list-display-field="${partyDisplayField}">
+                <entity-options distinct="true" entity-name="PartyRole${entityNameExtended}View" key-field-name="partyId" description="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? partyNameLang : partyName}">
+                    <select-field field-name="partyId" display="hidden"/>
+                    <select-field field-name="${partyDisplayField}" display="true"/>
+                    <entity-constraint name="parentOrgUnitId" env-name="parentOrgUnitId" lookup-for-field-name="parentOrgUnitId"/>
+                    <entity-constraint name="parentOrgUnitRoleTypeId" env-name="parentOrgUnitRoleTypeId" lookup-for-field-name="parentOrgUnitRoleTypeId"/>    
+                    <entity-constraint name="roleTypeId" operator="in" env-name="workEffortTypeRoleList"/>                
+                    <entity-constraint name="roleTypeId" env-name="roleTypeId" lookup-for-field-name="roleTypeId"/>
+                    <entity-constraint name="statusId" value="PARTY_ENABLED"/>
+                    <entity-constraint name="treeLevel" operator="in" env-name="treeLevelList"/>
+                    <entity-order-by field-name="partyId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+    </form>
+
+    <!-- ********************************************************************** -->
+
+
+    <form name="WorkEffortRoleAssignmentManagementMultiForm" id="WETAMM001_WorkEffortRoleAssignement" extends="WorkEffortRoleAssignmentManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <read-only>
+            <or>
+                <if-compare operator="equals" value="ACTSTATUS_CLOSED" field="weActivation"/>
+                <if-compare operator="equals" value="ACTSTATUS_REPLACED" field="weActivation"/>
+                <not>
+                    <and>
+	                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+	                    <if-compare operator="not-equals" field="isPosted" value="Y"/>
+	                    <if-compare operator="not-equals" field="crudEnumId" value="NONE"/>
+                        <or>
+                            <if-has-permission permission="PARTPERFMGR_ADMIN"/>
+                            <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                            <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                            <if-has-permission permission="PARTPERFORG_ADMIN"/>
+                            <if-has-permission permission="PARTPERFROLE_ADMIN"/>
+                        </or>
+                    </and>
+                </not>
+            </or>
+        </read-only>
+    </form>
+    
+    <form name="WorkEffortTimeEntryManagementListForm" id="TETARMM001_WorkEffortTimeEntry" extends="WorkEffortTimeEntryManagementListForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+    </form>
+    
+    
+    <!-- WorkEffortTransactionView -->
+    
+    <form name="WorkEffortTransactionViewManagementForm" id="WETVM001_WorkEffortTransactionView" extends="WorkEffortTransactionViewManagementForm" extends-resource="component://workeffortext/widget/forms/WorkEffortMeasureForms.xml">
+        <read-only>
+            <not>
+            	<and>
+            		<if-compare operator="not-equals" field="isReadOnly" value="true"/>
+	                <or>
+	                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+	                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+	                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+	                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+	                </or>
+				</and>	                
+            </not>
+        </read-only>
+    </form>
+    
+    <form name="GlAccountManagementForm" extends="GlAccountManagementForm" extends-resource="component://accountingext/widget/forms/GlAccountForms.xml">
+        <read-only>
+            <not>
+                <or>
+                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                </or>
+            </not>
+        </read-only>
+    </form>
+    
+    <form name="WorkEffortAssocExtFromViewManagementMultiForm" extends="WorkEffortAssocExtFromViewManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortAssocExtViewForms.xml">
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+                    <if-compare operator="not-equals" field="isPosted" value="Y"/>
+                    <if-compare operator="not-equals" field="crudEnumId" value="NONE"/>
+	                <or>
+	                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+	                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+	                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+	                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+	                </or>
+	              </and>
+            </not>
+        </read-only>
+    </form>
+    
+    <form name="WorkEffortAssocExtToViewManagementMultiForm" extends="WorkEffortAssocExtToViewManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortAssocExtViewForms.xml">
+        <read-only>
+            <not>
+                <and>
+                    <if-compare operator="not-equals" field="isReadOnly" value="true"/>
+                    <if-compare operator="not-equals" field="isPosted" value="Y"/>
+                    <if-compare operator="not-equals" field="crudEnumId" value="NONE"/>
+                    <or>
+	                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+	                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+	                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+	                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                	</or>
+               	</and>
+            </not>
+        </read-only>
+    </form>
+    
+    <form paginate-size="10" name="WorkEffortAssocExtFromViewEvalManagementMultiForm" id="WEAEVMM002_WorkEffortAssocExtView_${parameters.contentId}" extends="WorkEffortAssocExtFromViewManagementMultiForm">        
+        <actions>
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkPersonFilterAndEvalEnumAndAdminUser.groovy"/>       	
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+        </actions>
+    	<read-only>
+    		<or>
+    			<if-compare operator="equals" value="NONE" field="crudEnumId"/>
+    			<and>
+    				<if-compare operator="equals" value="INSERT" field="crudEnumId"/>
+    				<if-compare operator="not-equals" value="Y" field="insertMode"/>
+    			</and>
+    		</or>
+    	</read-only>        
+        <row-actions>
+            <entity-one entity-name="WorkEffortAssoc"/>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkWorkEffortAssocActivationStatus.groovy"/>
+        
+    		<set field="workEffortIdForScore" from-field="workEffortIdTo"/>
+    		<set field="wefromWetoEnumId" value="WETAFROM"/>
+    		<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getScoreValue.groovy"/>
+    		<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortParent.groovy"/>
+    		<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getWorkEffortTypeListAssoc.groovy"/>
+    		<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getOrgUnitIdList.groovy"/>
+    		<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/getMaxScore.groovy"/>
+    		
+			<set field="workEffortLevel4" value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;assA3&quot;)) ? context.get(&quot;workEffortIdTo&quot;) : &quot;&quot; }" />
+        	<set field="workEffortLevelA3" value="${bsh: import org.ofbiz.base.util.UtilValidate; UtilValidate.isNotEmpty(context.get(&quot;assB2&quot;)) || UtilValidate.isNotEmpty(context.get(&quot;assB1&quot;)) ? context.get(&quot;workEffortIdTo&quot;) : &quot;&quot; }" />
+        	<script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/setWorEffortAssocExtPeriodFields.groovy"/>
+            <set field="customTimePeriodDisplayField" value="${bsh: &quot;Y&quot;.equals(context.get(&quot;localeSecondarySet&quot;)) ? &quot;customTimePeriodCodeLang&quot; : &quot;customTimePeriodCode&quot;}"/>        	   		
+    	</row-actions>         
+    </form>
+    
+    <form name="WorkEffortRootCopyManagementForm" id="WERCMF001_WorkEffortRootCopy" extends="WorkEffortRootCopyManagementForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <read-only>
+            <not>
+                <if-has-permission permission="PARTPERFMGR" action="_ADMIN"/>
+            </not>
+        </read-only>
+    </form>
+    
+    <!-- Form contesto per il lancio della stampa -->
+    <form name="WorkEffortRootViewBirtListManagementForm" extends="BaseContextMultiExtendedManagementForm" extends-resource="component://base/widget/BaseForms.xml">
+        <actions>
+            <entity-one entity-name="WorkEffort" value-field="workEffortRoot" auto-field-map="false">
+                <field-map field-name="workEffortId" from-field="parameters.workEffortIdRoot"/>
+            </entity-one>
+        </actions>       
+        <field name="saveView">
+            <hidden value="N"/>
+        </field>        
+		<!-- stampa scheda -->
+        <field name="printBirtButton" widget-style="buttontext management-print-birt-button" title=" " position="2">
+            <hyperlink link-type="anchor" description="${uiLabelMap.CommonPrint}" target="popupWorkEffortLoadPrintBirt?repContextContentId=WE_PRINT&amp;workEffortTypeId=${workEffortRoot.workEffortTypeId}&amp;workEffortId=${parameters.workEffortIdRoot}&amp;workEffortIdChild=${parameters.workEffortIdRoot}&amp;weHierarchyTypeId=${parameters.weHierarchyTypeId}&amp;monitoringDate=${parameters.searchDate}&amp;workEffortRevisionId=${parameters.workEffortRevisionId}&amp;saveView=N" target-window="_blank" also-hidden="false"/>
+        </field>        
+    </form>
+    
+    <!-- Scala misure -->
+    <form name="WorkEffortMeasureManagementParentForm" extends="WorkEffortMeasureManagementParentForm" extends-resource="component://workeffortext/widget/forms/WorkEffortMeasureForms.xml">
+    </form>
+    
+    <form name="WorkEffortMeasRatScManagementMultiForm" extends="WorkEffortMeasRatScManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortMeasureForms.xml">
+        <read-only>
+            <not>
+                <if-has-permission permission="PARTPERFMGR" action="_ADMIN"/>
+            </not>
+        </read-only>        
+    </form>
+    
+    <form name="WorkEffortContentViewManagementMultiForm" extends="WorkEffortContentViewManagementMultiForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/checkStatusCrudEnum.groovy"/>
+        </actions>
+        <read-only>
+            <or>
+                <if-compare operator="equals" field="crudEnumId" value="NONE"/>
+                <if-compare operator="equals" value="INSERT" field="crudEnumId"/>
+                <if-compare operator="equals" value="true" field="isReadOnly"/>
+                <not>
+                    <or>
+	                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+	                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+	                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+	                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+            	</not>
+            </or>
+        </read-only>
+    </form>
+    
+    <form name="WorkEffortContentViewManagementForm" extends="WorkEffortContentViewManagementForm" target="uploadWorkEffortContent" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml">
+        <actions>
+            <script location="component://workeffortext/webapp/workeffortext/WEB-INF/actions/setWorkEffortContentFromDate.groovy"/>
+        </actions>
+        <read-only>
+            <or>
+                <if-compare operator="equals" field="crudEnumId" value="NONE"/>
+                <not>
+                    <or>
+	                    <if-has-permission permission="PARTPERFMGR" action="_CREATE"/>
+	                    <if-has-permission permission="PARTPERFMGR" action="_UPDATE"/>
+	                    <if-has-permission permission="PARTPERFORG" action="_ADMIN"/>
+	                    <if-has-permission permission="PARTPERFROLE" action="_ADMIN"/>
+                    </or>
+            	</not>
+            	<if-compare operator="not-equals" value="Y" field="parameters.insertMode"/>
+            </or>
+        </read-only>
+    </form>
+    
+    <form name="QueryConfigViewSearchForm" extends="QueryConfigViewSpecializedSearchForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml" append-field="false">     
+        <actions>
+        	<set field="orderBy" value="queryCode"/>                      
+        </actions>
+        <field name="queryCtx">
+            <hidden value="CTX_PA"/>
+        </field>
+    </form>  
+    
+   <form name="QueryConfigViewSearchResultListForm" extends="QueryConfigViewSpecializedSearchResultListForm" extends-resource="component://workeffortext/widget/forms/WorkEffortViewForms.xml" append-field="false">     
+   </form>     
+</forms>

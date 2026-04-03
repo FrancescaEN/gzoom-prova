@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.SecurityPermissionMapper">
+
+    <select id="getPermission" resultMap="securityPermissionResultMap" parameterType="java.util.Map">
+        SELECT sp.*
+        FROM security_group_permission sgp
+        INNER JOIN user_login_security_group ulsg ON sgp.group_id = ulsg.group_id and ulsg.thru_date IS NULL
+        INNER JOIN security_permission sp ON sgp.permission_id = sp.permission_id
+        WHERE ulsg.user_login_id = #{userLoginId} AND sp.enabled = 'Y'
+    </select>
+
+</mapper>

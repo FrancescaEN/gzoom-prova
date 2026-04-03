@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortContentMapper">
+
+    <resultMap id="workEffortContentEx" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortContentEx">
+        <id column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <id column="content_id" property="contentId" jdbcType="VARCHAR"/>
+        <id column="work_effort_content_type_id" property="workEffortContentTypeId" jdbcType="VARCHAR"/>
+        <id column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+
+        <result column="c_content_id" property="content.contentId" jdbcType="VARCHAR"/>
+        <result column="c_content_type_id" property="content.contentTypeId" jdbcType="VARCHAR"/>
+        <result column="c_owner_content_id" property="content.ownerContentId" jdbcType="VARCHAR"/>
+        <result column="c_decorator_content_id" property="content.decoratorContentId" jdbcType="VARCHAR"/>
+        <result column="c_instance_of_content_id" property="content.instanceOfContentId" jdbcType="VARCHAR"/>
+        <result column="c_data_resource_id" property="content.dataResourceId" jdbcType="VARCHAR"/>
+        <result column="c_template_data_resource_id" property="content.templateDataResourceId" jdbcType="VARCHAR"/>
+        <result column="c_data_source_id" property="content.dataSourceId" jdbcType="VARCHAR"/>
+        <result column="c_status_id" property="content.statusId" jdbcType="VARCHAR"/>
+        <result column="c_privilege_enum_id" property="content.privilegeEnumId" jdbcType="VARCHAR"/>
+        <result column="c_service_name" property="content.serviceName" jdbcType="VARCHAR"/>
+        <result column="c_content_name" property="content.contentName" jdbcType="VARCHAR"/>
+        <result column="c_description" property="content.description" jdbcType="VARCHAR"/>
+        <result column="c_locale_string" property="content.localeString" jdbcType="VARCHAR"/>
+        <result column="c_mime_type_id" property="content.mimeTypeId" jdbcType="VARCHAR"/>
+        <result column="c_character_set_id" property="content.characterSetId" jdbcType="VARCHAR"/>
+        <result column="c_child_leaf_count" property="content.childLeafCount" jdbcType="NUMERIC"/>
+        <result column="c_child_branch_count" property="content.childBranchCount" jdbcType="NUMERIC"/>
+        <result column="c_created_date" property="content.createdDate" jdbcType="TIMESTAMP"/>
+        <result column="c_created_by_user_login" property="content.createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="c_last_modified_date" property="content.lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="c_last_modified_by_user_login" property="content.lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="c_last_updated_stamp" property="content.lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="c_last_updated_tx_stamp" property="content.lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="c_created_stamp" property="content.createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="c_created_tx_stamp" property="content.createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="c_description_lang" property="content.descriptionLang" jdbcType="VARCHAR"/>
+
+        <result column="dr_data_resource_id" property="dataResource.dataResourceId" jdbcType="VARCHAR"/>
+        <result column="dr_data_resource_type_id" property="dataResource.dataResourceTypeId" jdbcType="VARCHAR"/>
+        <result column="dr_data_template_type_id" property="dataResource.dataTemplateTypeId" jdbcType="VARCHAR"/>
+        <result column="dr_data_category_id" property="dataResource.dataCategoryId" jdbcType="VARCHAR"/>
+        <result column="dr_data_source_id" property="dataResource.dataSourceId" jdbcType="VARCHAR"/>
+        <result column="dr_status_id" property="dataResource.statusId" jdbcType="VARCHAR"/>
+        <result column="dr_data_resource_name" property="dataResource.dataResourceName" jdbcType="VARCHAR"/>
+        <result column="dr_locale_string" property="dataResource.localeString" jdbcType="VARCHAR"/>
+        <result column="dr_mime_type_id" property="dataResource.mimeTypeId" jdbcType="VARCHAR"/>
+        <result column="dr_character_set_id" property="dataResource.characterSetId" jdbcType="VARCHAR"/>
+        <result column="dr_object_info" property="dataResource.objectInfo" jdbcType="VARCHAR"/>
+        <result column="dr_survey_id" property="dataResource.surveyId" jdbcType="VARCHAR"/>
+        <result column="dr_survey_response_id" property="dataResource.surveyResponseId" jdbcType="VARCHAR"/>
+        <result column="dr_related_detail_id" property="dataResource.relatedDetailId" jdbcType="VARCHAR"/>
+        <result column="dr_is_public" property="dataResource.isPublic" jdbcType="CHAR"/>
+        <result column="dr_created_date" property="dataResource.createdDate" jdbcType="TIMESTAMP"/>
+        <result column="dr_created_by_user_login" property="dataResource.createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="dr_last_modified_date" property="dataResource.lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="dr_last_modified_by_user_login" property="dataResource.lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="dr_last_updated_stamp" property="dataResource.lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="dr_last_updated_tx_stamp" property="dataResource.lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="dr_created_stamp" property="dataResource.createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="dr_created_tx_stamp" property="dataResource.createdTxStamp" jdbcType="TIMESTAMP"/>
+
+
+        <result column="wect_work_effort_content_type_id" property="workEffortContentType.workEffortContentTypeId" jdbcType="VARCHAR"/>
+        <result column="wect_parent_type_id" property="workEffortContentType.parentTypeId" jdbcType="VARCHAR"/>
+        <result column="wect_description" property="workEffortContentType.description" jdbcType="VARCHAR"/>
+        <result column="wect_last_updated_stamp" property="workEffortContentType.lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="wect_last_updated_tx_stamp" property="workEffortContentType.lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="wect_created_stamp" property="workEffortContentType.createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="wect_created_tx_stamp" property="workEffortContentType.createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="wect_content_type_id" property="workEffortContentType.contentTypeId" jdbcType="VARCHAR"/>
+        <result column="wect_in_inquiry" property="workEffortContentType.inInquiry" jdbcType="CHAR"/>
+        <result column="wect_description_lang" property="workEffortContentType.descriptionLang" jdbcType="VARCHAR"/>
+        <result column="wect_last_modified_by_user_login" property="workEffortContentType.lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="wect_created_by_user_login" property="workEffortContentType.createdByUserLogin" jdbcType="VARCHAR"/>
+
+        <result column="WEV_WORK_EFFORT_NAME" property="workEffortView.workEffortName" jdbcType="VARCHAR"/>
+        <result column="WEV_WORK_EFFORT_NAME_LANG" property="workEffortView.workEffortNameLang" jdbcType="VARCHAR"/>
+        <result column="WEV_ETCH" property="workEffortView.etch" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="selectWorkEffortContentEx">
+        SELECT WEC.*,
+        C.CHARACTER_SET_ID AS C_CHARACTER_SET_ID, C.CHILD_BRANCH_COUNT AS C_CHILD_BRANCH_COUNT, C.CHILD_LEAF_COUNT AS C_CHILD_LEAF_COUNT, C.CONTENT_ID AS C_CONTENT_ID, C.CONTENT_NAME AS C_CONTENT_NAME, C.CONTENT_TYPE_ID AS C_CONTENT_TYPE_ID, C.CREATED_BY_USER_LOGIN AS C_CREATED_BY_USER_LOGIN, C.CREATED_DATE AS C_CREATED_DATE, C.CREATED_STAMP AS C_CREATED_STAMP, C.CREATED_TX_STAMP AS C_CREATED_TX_STAMP, C.DATA_RESOURCE_ID AS C_DATA_RESOURCE_ID, C.DATA_SOURCE_ID AS C_DATA_SOURCE_ID, C.DECORATOR_CONTENT_ID AS C_DECORATOR_CONTENT_ID, C.DESCRIPTION AS C_DESCRIPTION, C.DESCRIPTION_LANG AS C_DESCRIPTION_LANG, C.INSTANCE_OF_CONTENT_ID AS C_INSTANCE_OF_CONTENT_ID, C.LAST_MODIFIED_BY_USER_LOGIN AS C_LAST_MODIFIED_BY_USER_LOGIN, C.LAST_MODIFIED_DATE AS C_LAST_MODIFIED_DATE, C.LAST_UPDATED_STAMP AS C_LAST_UPDATED_STAMP, C.LAST_UPDATED_TX_STAMP AS C_LAST_UPDATED_TX_STAMP, C.LOCALE_STRING AS C_LOCALE_STRING, C.MIME_TYPE_ID AS C_MIME_TYPE_ID, C.OWNER_CONTENT_ID AS C_OWNER_CONTENT_ID, C.PRIVILEGE_ENUM_ID AS C_PRIVILEGE_ENUM_ID, C.SERVICE_NAME AS C_SERVICE_NAME, C.STATUS_ID AS C_STATUS_ID, C.TEMPLATE_DATA_RESOURCE_ID AS C_TEMPLATE_DATA_RESOURCE_ID,
+        DR.CHARACTER_SET_ID AS DR_CHARACTER_SET_ID, DR.CREATED_BY_USER_LOGIN AS DR_CREATED_BY_USER_LOGIN, DR.CREATED_DATE AS DR_CREATED_DATE, DR.CREATED_STAMP AS DR_CREATED_STAMP, DR.CREATED_TX_STAMP AS DR_CREATED_TX_STAMP, DR.DATA_CATEGORY_ID AS DR_DATA_CATEGORY_ID, DR.DATA_RESOURCE_ID AS DR_DATA_RESOURCE_ID, DR.DATA_RESOURCE_NAME AS DR_DATA_RESOURCE_NAME, DR.DATA_RESOURCE_TYPE_ID AS DR_DATA_RESOURCE_TYPE_ID, DR.DATA_SOURCE_ID AS DR_DATA_SOURCE_ID, DR.DATA_TEMPLATE_TYPE_ID AS DR_DATA_TEMPLATE_TYPE_ID, DR.IS_PUBLIC AS DR_IS_PUBLIC, DR.LAST_MODIFIED_BY_USER_LOGIN AS DR_LAST_MODIFIED_BY_USER_LOGIN, DR.LAST_MODIFIED_DATE AS DR_LAST_MODIFIED_DATE, DR.LAST_UPDATED_STAMP AS DR_LAST_UPDATED_STAMP, DR.LAST_UPDATED_TX_STAMP AS DR_LAST_UPDATED_TX_STAMP, DR.LOCALE_STRING AS DR_LOCALE_STRING, DR.MIME_TYPE_ID AS DR_MIME_TYPE_ID, DR.OBJECT_INFO AS DR_OBJECT_INFO, DR.RELATED_DETAIL_ID AS DR_RELATED_DETAIL_ID, DR.STATUS_ID AS DR_STATUS_ID, DR.SURVEY_ID AS DR_SURVEY_ID, DR.SURVEY_RESPONSE_ID AS DR_SURVEY_RESPONSE_ID,
+        WECT.CONTENT_TYPE_ID AS WECT_CONTENT_TYPE_ID, WECT.CREATED_BY_USER_LOGIN AS WECT_CREATED_BY_USER_LOGIN, WECT.CREATED_STAMP AS WECT_CREATED_STAMP, WECT.CREATED_TX_STAMP AS WECT_CREATED_TX_STAMP, WECT.DESCRIPTION AS WECT_DESCRIPTION, WECT.DESCRIPTION_LANG AS WECT_DESCRIPTION_LANG, WECT.IN_INQUIRY AS WECT_IN_INQUIRY, WECT.LAST_MODIFIED_BY_USER_LOGIN AS WECT_LAST_MODIFIED_BY_USER_LOGIN, WECT.LAST_UPDATED_STAMP AS WECT_LAST_UPDATED_STAMP, WECT.LAST_UPDATED_TX_STAMP AS WECT_LAST_UPDATED_TX_STAMP, WECT.PARENT_TYPE_ID AS WECT_PARENT_TYPE_ID, WECT.WORK_EFFORT_CONTENT_TYPE_ID AS WECT_WORK_EFFORT_CONTENT_TYPE_ID, WEV.WORK_EFFORT_NAME AS WEV_WORK_EFFORT_NAME, WEV.WORK_EFFORT_NAME_LANG AS WEV_WORK_EFFORT_NAME_LANG,  WEV.ETCH AS WEV_ETCH
+        FROM WORK_EFFORT_CONTENT WEC
+        INNER JOIN CONTENT C
+        ON WEC.CONTENT_ID = C.CONTENT_ID
+        INNER JOIN WORK_EFFORT_CONTENT_TYPE WECT
+        ON WECT.WORK_EFFORT_CONTENT_TYPE_ID = WEC.WORK_EFFORT_CONTENT_TYPE_ID
+        INNER JOIN DATA_RESOURCE DR
+        ON DR.DATA_RESOURCE_ID = C.DATA_RESOURCE_ID
+        INNER JOIN WORK_EFFORT_VIEW WEV
+        ON WEV.WORK_EFFORT_ID = WEC.WORK_EFFORT_ID
+
+    </sql>
+
+    <select id="getWorkEffortContentEx" resultMap="workEffortContentEx" parameterType="java.util.Map">
+        <include refid="selectWorkEffortContentEx"/>
+        where DR.DATA_RESOURCE_ID = #{dataResourceId}
+    </select>
+
+    <select id="getWorkEffortContentExList" resultMap="workEffortContentEx" parameterType="java.util.Map">
+        <include refid="selectWorkEffortContentEx"/>
+    </select>
+
+    <select id="getWorkEffortContentExListFilter" resultMap="workEffortContentEx" parameterType="java.util.Map">
+        <include refid="selectWorkEffortContentEx"/>
+
+        <include refid="filterMatch"></include>
+        <if test='filters != null '>
+            AND (
+        </if>
+        <include refid="filter"></include>
+        <if test='filters != null '>
+            )
+        </if>
+    </select>
+
+
+    <sql id="filter" >
+        <if test='filters != null and filters.length > 0'>
+            <foreach collection='filters' item="item" index="index" open=" " close="" separator=" AND ">
+                <choose>
+                    <when test='item.field == "workEffortIdDesc" and item.value != null'>
+                            WEV.WORK_EFFORT_ID = #{item.value}
+                    </when>
+                    <when test='item.field == "workEffortContentTypeId" and item.value != null' >
+                            WECT.work_effort_content_type_id = #{item.value}
+                    </when>
+
+                </choose>
+            </foreach>
+        </if>
+    </sql>
+
+
+    <sql id="filterMatch" >
+        <if test='filterGenericLabel != null and filterGenericLabel.length > 0'>
+            WHERE (
+            <foreach collection='filterGenericLabel' item="item" index="index" open="  " close=""
+                     separator=" OR ">
+                <choose>
+                    <when test='item.field == "workEffortIdMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WEV.WORK_EFFORT_NAME_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WEV.WORK_EFFORT_NAME"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                    <when test='item.field == "workEffortContentTypeIdMatch" and item.value != null'>
+                        <if test='SECONDARYLANGUAGE == true'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WECT.DESCRIPTION_LANG"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                            <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.searchConditions">
+                                <property name="columnName" value="WECT.DESCRIPTION"/>
+                                <property name="text" value="#{item.value}"/>
+                                <property name="matchMode" value="matchModeSearch"/>
+                            </include>
+                        </if>
+                    </when>
+                </choose>
+            </foreach>
+            )
+        </if>
+    </sql>
+
+
+</mapper>

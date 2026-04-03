@@ -1,0 +1,304 @@
+<p-toast></p-toast>
+<p-messages key="error"></p-messages>
+<div class="d-flex flex-row flex-wrap justify-content-between">
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    <gzoom-button
+      icon="pi pi-plus"
+      [label]="'Add value' | i18n"
+      (onClick)="newValue()"
+      [disabled]="!disableSave"
+    ></gzoom-button>
+    <gzoom-button-outlined
+      icon="pi pi-trash"
+      [label]="'Delete values selected' | i18n"
+      [disabled]="!(this.selectedItems.length > 0)"
+      (onClick)="delete()"
+    ></gzoom-button-outlined>
+  </div>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    <gzoom-button-outlined
+      icon="pi pi-refresh"
+      [label]="'Reset' | i18n"
+      (onClick)="reset()"
+      [disabled]="disableSave"
+    ></gzoom-button-outlined>
+
+    <gzoom-button
+      icon="pi pi-save"
+      [disabled]="disableSave"
+      [label]="'Save' | i18n"
+      (onClick)="save()"
+    ></gzoom-button>
+  </div>
+</div>
+
+<p-table
+  #dt
+  [value]="glAccountMeasRatScView"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [tableStyle]="{ 'min-width': '20rem' }"
+  id="table-card"
+  [(selection)]="selectedItems"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  scrollHeight="50vh"
+  [scrollable]="scrollable | async"
+  [loading]="loading"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        class="table-head-th"
+        style="width: 1rem; padding-right: 5px !important"
+      >
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Measurement scale" | i18n }}*
+          <p-sortIcon
+            pSortableColumn="uomRatingValueDescription"
+            field="uomRatingValueDescription"
+          />
+          <p-columnFilter
+            type="text"
+            field="uomRatingValueDescription"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Code" | i18n }}*
+
+          <gzoom-icon-flag [flag]="0" />
+
+          <p-sortIcon pSortableColumn="uomCode" field="uomCode" />
+          <p-columnFilter
+            type="text"
+            field="uomCode"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th
+        *ngIf="'BILING' | i18nLangType"
+        class="table-head-th padding-small-row-th"
+      >
+        <div class="d-flex align-items-center">
+          {{ "Code" | i18n }}*
+
+          <gzoom-icon-flag [flag]="1" style="margin-bottom: 5px" />
+          <p-sortIcon pSortableColumn="uomCodeLang" field="uomCodeLang" />
+          <p-columnFilter
+            type="text"
+            field="uomCodeLang"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Description" | i18n }}*
+
+          <gzoom-icon-flag [flag]="0" />
+
+          <p-sortIcon pSortableColumn="uomDescr" field="uomDescr" />
+          <p-columnFilter
+            type="text"
+            field="uomDescr"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th
+        *ngIf="'BILING' | i18nLangType"
+        class="table-head-th padding-small-row-th"
+      >
+        <div class="d-flex align-items-center">
+          {{ "Description" | i18n }}*
+
+          <gzoom-icon-flag [flag]="1" />
+
+          <p-sortIcon pSortableColumn="uomDescrLang" field="uomDescrLang" />
+          <p-columnFilter
+            type="text"
+            field="uomDescrLang"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-glAccountMeasRatSc
+    let-columns="columns"
+    let-editing="editing"
+  >
+    <tr class="small-row">
+      <td>
+        <p-tableCheckbox [value]="glAccountMeasRatSc"></p-tableCheckbox>
+      </td>
+
+      <td style="padding-left: 0px !important">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Measurement scale" | i18n }}*</b></span
+        >{{ glAccountMeasRatSc.uomRatingValueDescription }}
+      </td>
+      <td
+        style="padding-left: 0px !important"
+        [pEditableColumn]="glAccountMeasRatSc.uomCode"
+        pEditableColumnField="uomCode"
+      >
+        <span class="p-column-title" style="padding-right: 10px"
+        ><b>{{ "Code" | i18n }}*</b>
+          <gzoom-icon-flag [flag]="0" />
+        </span>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="glAccountMeasRatSc.uomCode"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="changeValue(glAccountMeasRatSc)"
+              required="true"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ glAccountMeasRatSc.uomCode }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td
+        *ngIf="this.BILING"
+        style="padding-left: 0px !important"
+        [pEditableColumn]="glAccountMeasRatSc.uomCodeLang"
+        pEditableColumnField="uomCodeLang"
+      >
+        <span class="p-column-title" style="padding-right: 10px"
+        ><b>{{ "Code" | i18n }}*</b>
+          <gzoom-icon-flag [flag]="1" />
+        </span>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="glAccountMeasRatSc.uomCodeLang"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="changeValue(glAccountMeasRatSc)"
+              [required]="this.BILING"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ glAccountMeasRatSc.uomCodeLang }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td
+        style="padding-left: 0px !important"
+        [pEditableColumn]="glAccountMeasRatSc.uomDescr"
+        pEditableColumnField="uomDescr"
+      >
+        <span class="p-column-title" style="padding-right: 10px"
+        ><b>{{ "Description" | i18n }}*</b>
+          <gzoom-icon-flag [flag]="0" />
+        </span>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <textarea
+              rows="3"
+              cols="30"
+              pInputTextarea
+              [(ngModel)]="glAccountMeasRatSc.uomDescr"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="changeValue(glAccountMeasRatSc)"
+              required="true"
+            ></textarea>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ glAccountMeasRatSc.uomDescr }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td
+        *ngIf="this.BILING"
+        style="padding-left: 0px !important"
+        [pEditableColumn]="glAccountMeasRatSc.uomDescrLang"
+        pEditableColumnField="uomDescrLang"
+      >
+        <span class="p-column-title" style="padding-right: 10px"
+        ><b>{{ "Description" | i18n }}*</b>
+          <gzoom-icon-flag [flag]="1" />
+        </span>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <textarea
+              rows="3"
+              cols="30"
+              pInputTextarea
+              [(ngModel)]="glAccountMeasRatSc.uomDescrLang"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="changeValue(glAccountMeasRatSc)"
+              [required]="this.BILING"
+            ></textarea>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ glAccountMeasRatSc.uomDescrLang }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"></ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-confirmDialog></p-confirmDialog>

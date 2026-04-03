@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TableOfContentsReport" pageWidth="595" pageHeight="842" sectionType="Part" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="e52780b9-8f01-4b16-86fe-712163e5aadc">
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.report.1" value="*"/>
+	<property name="net.sf.jasperreports.export.xlsx.exclude.origin.keep.first.band.1" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.xlsx.exclude.origin.keep.first.report.1" value="*"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postres_regione_siciliana"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="monitoringDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="langLocale" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String"/>
+	<parameter name="onlyFirstChildLevel" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exposePaginator" class="java.lang.String"/>
+	<parameter name="roleTypeId" class="java.lang.String"/>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposeIndex" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select count(*) as "dummy" FROM USER_LOGIN]]>
+	</queryString>
+	<field name="dummy" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="dummy"/>
+		<property name="com.jaspersoft.studio.field.label" value="dummy"/>
+	</field>
+	<group name="Toc">
+		<groupExpression><![CDATA[1]]></groupExpression>
+		<groupHeader>
+			<part evaluationTime="Report" uuid="1fadcc2f-31c1-49be-bd52-f8b69e38cd83">
+				<property name="net.sf.jasperreports.bookmarks.data.source.parameter" value="REPORT_DATA_SOURCE"/>
+				<printWhenExpression><![CDATA[$P{workEffortId} == "" && $P{exposeIndex}.equals("Y")]]></printWhenExpression>
+				<partNameExpression><![CDATA["Indice"]]></partNameExpression>
+				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd" usingCache="true">
+					<subreportParameter name="REPORT_CONNECTION">
+						<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="ReportTitle">
+						<subreportParameterExpression><![CDATA[$P{ReportTitle}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="userLoginId">
+						<subreportParameterExpression><![CDATA[$P{userLoginId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="workEffortTypeId">
+						<subreportParameterExpression><![CDATA[$P{workEffortTypeId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="langLocale">
+						<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="reportContentId">
+						<subreportParameterExpression><![CDATA[$P{reportContentId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="monitoringDate">
+						<subreportParameterExpression><![CDATA[$P{monitoringDate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="exposePaginator">
+						<subreportParameterExpression><![CDATA[$P{exposePaginator}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="workEffortId">
+						<subreportParameterExpression><![CDATA[$P{workEffortId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="orgUnitId">
+						<subreportParameterExpression><![CDATA[$P{orgUnitId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression><![CDATA["PerformanceIndividualeDirigentiTocPart.jasper"]]></subreportExpression>
+				</p:subreportPart>
+			</part>
+		</groupHeader>
+	</group>
+	<detail>
+		<part uuid="3f63c482-39b2-43f1-a623-15fb046605a5">
+			<partNameExpression><![CDATA["Corpo"]]></partNameExpression>
+			<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd" usingCache="true">
+				<subreportParameter name="REPORT_CONNECTION">
+					<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ReportTitle">
+					<subreportParameterExpression><![CDATA[$P{ReportTitle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orgUnitId">
+					<subreportParameterExpression><![CDATA[$P{orgUnitId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="userLoginId">
+					<subreportParameterExpression><![CDATA[$P{userLoginId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monitoringDate">
+					<subreportParameterExpression><![CDATA[$P{monitoringDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="workEffortTypeId">
+					<subreportParameterExpression><![CDATA[$P{workEffortTypeId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="reportContentId">
+					<subreportParameterExpression><![CDATA[$P{reportContentId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="personId">
+					<subreportParameterExpression><![CDATA[$P{personId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="workEffortId">
+					<subreportParameterExpression><![CDATA[$P{workEffortId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="onlyFirstChildLevel">
+					<subreportParameterExpression><![CDATA[$P{onlyFirstChildLevel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="exposePaginator">
+					<subreportParameterExpression><![CDATA[$P{exposePaginator}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="roleTypeId">
+					<subreportParameterExpression><![CDATA[$P{roleTypeId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="localDispatcherName">
+					<subreportParameterExpression><![CDATA[$P{localDispatcherName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA["PerformanceIndividualeDirigentiTablePart.jasper"]]></subreportExpression>
+			</p:subreportPart>
+		</part>
+	</detail>
+</jasperReport>

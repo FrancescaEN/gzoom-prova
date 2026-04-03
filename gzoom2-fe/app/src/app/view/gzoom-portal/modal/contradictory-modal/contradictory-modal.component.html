@@ -1,0 +1,48 @@
+<gzoom-modal [loadingModal]="loading">
+  <gzoom-modal-header>
+    <h1>Contraddittorio</h1>
+  </gzoom-modal-header>
+
+  <gzoom-modal-body>
+    <gzoom-form>
+      <div class="input-group" style="flex-grow: 2;">
+        @if (editEnabled) {
+          <label for="employeeComment">{{ employeeComment?.name }}</label>
+          <textarea pInputTextarea [(ngModel)]="employeeCommentText" id="employeeComment" name="employeeComment"
+                    maxlength="{{textMaxLength}}"
+                    style="height: 200px;"
+                    placeholder="Inserisci commento valutato qui"></textarea>
+          <p class="text-length">{{ employeeCommentText ? employeeCommentText.length : 0 }}/{{ textMaxLength }}
+            caratteri</p>
+        } @else {
+          <span class="label">{{ employeeComment?.name }}</span>
+          <span id="employeeComment">
+            {{ StringUtils.notEmpty(employeeCommentText) ? employeeCommentText : '-' }}
+          </span>
+        }
+      </div>
+
+      <div class="input-group">
+        <span class="label">{{ evaluatorComment?.name }}</span>
+        <span id="evaluatorComment">
+          {{ StringUtils.notEmpty(evaluatorComment?.info) ? evaluatorComment.info : '-' }}
+        </span>
+      </div>
+
+      <div class="input-group">
+        <span class="label">{{ outcome?.accountName ? outcome?.accountName : 'Esito contraddittorio' }}</span>
+        <span id="contradictoryOutcome">
+          {{ StringUtils.notEmpty(outcomeValue) ? outcomeValue : '-' }}
+        </span>
+      </div>
+    </gzoom-form>
+  </gzoom-modal-body>
+
+  <gzoom-modal-footer>
+    <gzoom-button [label]="editEnabled? 'Annulla' : 'Chiudi'"
+                  (onClick)="closeModal()" [outlined]=true />
+    @if (editEnabled) {
+      <gzoom-button label="Salva" (onClick)="save()" />
+    }
+  </gzoom-modal-footer>
+</gzoom-modal>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.EnumerationMapper">
+
+    <select id="getEnumerationFilter" resultMap="enumeration">
+        select * from enumeration
+        where enum_type_id = #{enumTypeId}
+        <if test="!enumTypeId.isEmpty()">
+            <if test="secondaryLanguage">
+                and LOWER(DESCRIPTION_LANG) like LOWER(concat('%', concat(#{val}, '%')))
+            </if>
+            <if test="!secondaryLanguage">
+                and LOWER(DESCRIPTION) like LOWER(concat('%', concat(#{val}, '%')))
+            </if>
+        </if>
+        order by sequence_id
+    </select>
+
+</mapper>

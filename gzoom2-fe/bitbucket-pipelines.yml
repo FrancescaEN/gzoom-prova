@@ -1,0 +1,170 @@
+definitions:
+
+  services:
+    docker:
+      memory: 4096
+
+  steps:
+    #
+    # Build
+    #
+    - step: &build-and-publish
+        name: Build and publish
+        image: node:18-bookworm-slim
+        cache:
+          - node
+        script:
+          # Remove rc from version field inside package.json file
+          - |
+            sed -i -e 's/\(.*"version"\): *"\([0-9\.-]*\)-rc.*",/\1: "\2"/g' ./app/package.json
+          # Remove rc from version field inside app.module.ts file
+          - |
+            sed -i -e 's/\([0-9.]*\)\(-rc[0-9]*\)/\1/g' ./app/src/app/app.module.ts
+          - git add . && git commit -m "[SKIP CI] Remove 'rcxxx' suffix from the fields version" && git pull && git push
+          - apt-get update && apt-get install -y curl
+          - npm install -g @angular/cli@17.3.5
+          - git checkout tags/${version}
+          - if [ "$?" -gt "0" ]; then
+          -   echo "Error during checkout of tags ${version}${nomeCliente}"
+          -   exit 1
+          - fi
+          - cd app && npm version ${version} && npm install
+          - ng build --base-href /gzoom2/ --configuration production
+          - cp package.json dist/ && tar -czf gzoom2-frontend.tgz -C dist .
+          - curl -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/auth/jfrog > /root/.npmrc
+          - npm publish gzoom2-frontend.tgz --registry https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/
+
+    - step: &build-and-publish-tag
+        name: Build and publish
+        image: node:18-bookworm-slim
+        cache:
+          - node
+        script:
+          - apt-get update && apt-get install -y curl
+          - npm install -g @angular/cli@17.3.5
+          - git checkout tags/${version}
+          - if [ "$?" -gt "0" ]; then
+          -   echo "Error during checkout of tags ${version}${nomeCliente}"
+          -   exit 1
+          - fi
+          - cd app && npm version ${version} && npm install
+          - ng build --base-href /gzoom2/ --configuration production
+          - cp package.json dist/ && tar -czf gzoom2-frontend.tgz -C dist .
+          - curl -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/auth/jfrog > /root/.npmrc
+          - npm publish gzoom2-frontend.tgz --registry https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/
+
+    - step: &build-and-publish-tag
+        name: Build and publish
+        image: node:18-bookworm-slim
+        cache:
+          - node
+        script:
+          - apt-get update && apt-get install -y curl
+          - npm install -g @angular/cli@17.3.5
+          - cd app && npm version ${BITBUCKET_TAG} && npm install
+          - ng build --base-href /gzoom2/ --configuration production
+          - cp package.json dist/ && tar -czf gzoom2-frontend.tgz -C dist .
+          - curl -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/auth/jfrog > /root/.npmrc
+          - npm publish gzoom2-frontend.tgz --registry https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/
+
+
+    - step: &update-version
+        name: Update the version from the tag
+        image: node:18-bookworm-slim
+        cache:
+          - node
+        script:
+          - apt-get update && apt-get install -y git-core
+          - git fetch --tags
+          - git checkout tags/${version}
+          - if [ "$?" -gt "0" ]; then
+          -   echo "Error during checkout of tags ${version}"
+          -   exit 1
+          - fi        
+          - apt-get update && apt-get install -y curl
+          - npm install -g @angular/cli@17.3.5
+          - cd app && npm version ${version}
+        artifacts:
+          - app/package.json
+          - app/src/assets/version.json
+
+    - step: &update-version-from-tag
+        name: Update the version from the tag
+        image: node:18-bookworm-slim
+        cache:
+          - node
+        script:
+          - apt-get update && apt-get install -y curl
+          - npm install -g @angular/cli@17.3.5
+          - cd app && npm version ${BITBUCKET_TAG}
+        artifacts:
+          - app/package.json
+          - app/src/assets/version.json
+        
+    - step: &buildDockerFromTagAndPush
+        name: Build Docker images and push
+        image: amazon/aws-cli:2.15.43
+        size: 2x
+        script:
+          - yum install git -y
+          - git fetch --tags
+          - git checkout tags/${version}
+          - if [ "$?" -gt "0" ]; then
+          -   echo "Error during checkout of tags ${version}"
+          -   exit 1
+          - fi          
+          - export APP_VERSION=${version}
+          - export APP_NAME="gzoomfe2"
+          #- grep "\"version\"" app/package.json
+          - aws s3 cp  s3://esg-ops-share/docker-push.sh .
+          - /bin/bash ./docker-push.sh --docker-build --dockerfile ./docker/Dockerfile
+        services:
+          - docker
+        caches:
+          - docker
+
+    - step: &buildDockerImageAndPush
+        name: Build Docker images and push
+        image: amazon/aws-cli:2.15.43
+        size: 2x
+        script:
+          - export APP_VERSION=${BITBUCKET_TAG}
+          - export APP_NAME="gzoomfe2"
+          - aws s3 cp  s3://esg-ops-share/docker-push.sh .
+          - /bin/bash ./docker-push.sh --docker-build --dockerfile ./docker/Dockerfile
+        services:
+          - docker
+        caches:
+          - docker
+
+pipelines:
+  custom:
+    PackManually:
+      - variables:
+        - name: version
+          description: Versione
+      - step:
+          <<: *build-and-publish
+    CreateDockerFromTagAndPush:
+      - variables:
+        - name: version
+          description: Versione
+      - step:
+          <<: *update-version
+      - step:
+          <<: *buildDockerFromTagAndPush
+  tags:
+    '*':
+      - step:
+          <<: *build-and-publish-tag
+      - step:
+          <<: *update-version-from-tag
+      - step:
+          <<: *buildDockerImageAndPush
+  #branches:
+  #  master:
+  #    - step:
+  #        <<: *build-and-publish
+  #  qa:
+  #    - step:
+  #        <<: *build-and-publish

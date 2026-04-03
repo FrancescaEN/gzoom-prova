@@ -1,0 +1,83 @@
+{
+  "services": [
+    {
+      "key": "SaveQueryConfigToPathJob",
+      "name": "Save query extract to folder",
+      "className": "it.mapsgroup.gzoom.quartz.scheduler.jobs.SaveQueryConfigToPathJob",
+      "parameters": [
+        {
+          "key": "outputPath",
+          "name": "Output path",
+          "type": "String",
+          "required": true
+        },
+        {
+          "key": "queryId",
+          "name": "Query Id",
+          "type": "String",
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "DistQueryConfigToPathJob",
+      "name": "Estrazione Query - Distribuzione file system",
+      "className": "it.mapsgroup.gzoom.quartz.scheduler.jobs.DistQueryConfigToPathJob",
+      "parameters": [
+        {
+          "key": "distributionQueryId",
+          "name": "Query Id Distribution",
+          "type": "String",
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "DistQueryConfigToEmailLegacyJob",
+      "name": "Estrazione Query - Distribuzione email",
+      "className": "it.mapsgroup.gzoom.quartz.scheduler.jobs.DistQueryConfigToEmailLegacyJob",
+      "parameters": [
+        {
+          "key": "distributionQueryId",
+          "name": "Query Id Distribution",
+          "type": "String",
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "AnonymizeSubjectsJob",
+      "name": "Anonimizzazione Soggetti",
+      "className": "it.mapsgroup.gzoom.quartz.scheduler.jobs.AnonymizeSubjectsJob",
+      "description": "Servizio per l'anonimizzazione dei Soggetti",
+      "cronExpression": "0 0 0 * * ? *",
+      "required": true,
+      "parameters": [
+        {
+          "key": "minusYears",
+          "name": "Dopo quanti anni anonimizzare i soggetti?",
+          "type": "int",
+          "defaultValue": 10,
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "DeleteLog",
+      "name": "Rimozione Log vecchi di un anno",
+      "className": "it.mapsgroup.gzoom.quartz.scheduler.jobs.RemoveOldJob",
+      "description": "Servizio rimozione log vecchi di un anno",
+      "cronExpression": "0 0 0 * * ? *",
+      "required": true,
+      "parameters": [
+        {
+          "key": "minusYears",
+          "name": "Dopo quanti anni eliminare i log?",
+          "type": "int",
+          "defaultValue": 1,
+          "required": true
+        }
+      ]
+    }
+  ]
+}

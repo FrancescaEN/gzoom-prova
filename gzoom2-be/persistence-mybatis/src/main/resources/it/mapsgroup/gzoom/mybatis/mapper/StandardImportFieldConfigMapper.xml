@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.StandardImportFieldConfigMapper">
+
+
+
+
+    <resultMap id="StandardImportFieldConfigExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.StandardImportFieldConfigEx">
+        <id property="dataSourceId" column="data_source_id" jdbcType="VARCHAR"/>
+        <id property="standardInterface" column="standard_interface" jdbcType="VARCHAR"/>
+        <id property="internalFieldName" column="internal_field_name" jdbcType="VARCHAR"/>
+        <id property="interfaceSeq" column="interface_seq" jdbcType="NUMERIC"/>
+        <result column="external_field_name" property="externalFieldName" jdbcType="VARCHAR"/>
+        <result column="default_value" property="defaultValue" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+
+        <result column="E_DESCRIPTION" property="enumeration.description" jdbcType="VARCHAR"/>
+        <result column="E_DESCRIPTION_LANG" property="enumeration.descriptionLang" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getStandardImportFieldConfigEx" resultMap="StandardImportFieldConfigExResultMap" parameterType="java.util.Map">
+        SELECT SIFC.*,
+        E.DESCRIPTION AS "E_DESCRIPTION",
+        E.DESCRIPTION_LANG AS "E_DESCRIPTION_LANG"
+        FROM STANDARD_IMPORT_FIELD_CONFIG SIFC
+        JOIN ENUMERATION E ON E.ENUM_CODE = SIFC.STANDARD_INTERFACE
+        WHERE  E.ENUM_TYPE_ID  = 'STD_INT' AND SIFC.DATA_SOURCE_ID = #{dataSourceId}
+   </select>
+
+</mapper>

@@ -1,0 +1,2773 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StampaPEGStraordinarioSottoreport_ObiettiviPEG" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoPages" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="StampaPEGStraordinario" uuid="93240845-43d2-46f9-811c-950789017682">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="277"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="716"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgres_gzoom_maps"/>
+	<style name="Default" isDefault="true" fontName="DejaVu Sans" fontSize="10" pdfEncoding="Cp1252" isPdfEmbedded="false">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<style name="Table_TH" mode="Transparent" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Transparent" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TH" mode="Transparent" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Transparent" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Transparent" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="DatasetAnagrafiche" uuid="6f572f0c-56e7-4ddd-b3cf-3564d2333462">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="227"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="767"/>
+		<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{monitoringDate}, $P{odaDialect});]]></defaultValueExpression>
+		</parameter>
+		<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+		</parameter>
+		<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0101sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="langLocale" class="java.lang.String">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[select * from PEG_STR_ANAG_VIEW ANAG
+where ANAG.ID_SCHEDA = $P{workEffortId}
+and ANAG.DATA_INIZIO_ASSEGNAZIONE <= CAST($P{monitoringDateString} AS TIMESTAMP) 
+and (ANAG.DATA_FINE_ASSEGNAZIONE >= CAST($P{monitoringDateString} AS TIMESTAMP) or ANAG.DATA_FINE_ASSEGNAZIONE is null) 
+and (ANAG.ID_PROFILO_PROFESSIONALE is null or 
+	(ANAG.DATA_INIZIO_PROFILO_PROFESSIONALE <= CAST($P{monitoringDateString} AS TIMESTAMP)
+		and (ANAG.DATA_FINE_PROFILO_PROFESSIONALE >=  CAST($P{monitoringDateString} AS TIMESTAMP) or ANAG.DATA_FINE_PROFILO_PROFESSIONALE is null)))
+order by ANAG.NOME_SOGGETTO, ANAG.CODICE_SOGGETTO]]>
+		</queryString>
+		<field name="id_scheda" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="id_scheda"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_scheda"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="id_soggetto" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="id_soggetto"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_soggetto"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="codice_soggetto" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="codice_soggetto"/>
+			<property name="com.jaspersoft.studio.field.label" value="codice_soggetto"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="nome_soggetto" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome_soggetto"/>
+			<property name="com.jaspersoft.studio.field.label" value="nome_soggetto"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="data_inizio_assegnazione" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_inizio_assegnazione"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_inizio_assegnazione"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="data_fine_assegnazione" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_fine_assegnazione"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_fine_assegnazione"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="categoria" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="categoria"/>
+			<property name="com.jaspersoft.studio.field.label" value="categoria"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="id_profilo_professionale" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="id_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="codice_profilo_professionale" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="codice_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.label" value="codice_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="nome_profilo_professionale" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.label" value="nome_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="data_inizio_profilo_professionale" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_inizio_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_inizio_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+		<field name="data_fine_profilo_professionale" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_fine_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_fine_profilo_professionale"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_ord_anag_view"/>
+		</field>
+	</subDataset>
+	<subDataset name="DatasetBilancio" uuid="6f3a59f0-6ba6-400f-a94a-0a5e805d8050">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="227"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="767"/>
+		<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{monitoringDate}, $P{odaDialect});]]></defaultValueExpression>
+		</parameter>
+		<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+		</parameter>
+		<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0101sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="DimensioneEtch" class="java.lang.String"/>
+		<parameter name="DimensioneNome" class="java.lang.String"/>
+		<parameter name="SottodimensioneEtch" class="java.lang.String"/>
+		<parameter name="SottodimensioneNome" class="java.lang.String"/>
+		<parameter name="ArticolazioneEtch" class="java.lang.String"/>
+		<parameter name="ArticolazioneNome" class="java.lang.String"/>
+		<parameter name="Dimensione_COUNT" class="java.lang.Integer"/>
+		<parameter name="Sottodimensione_COUNT" class="java.lang.Integer"/>
+		<parameter name="Articolazione_COUNT" class="java.lang.Integer"/>
+		<parameter name="langLocale" class="java.lang.String">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="FORMAT" class="java.lang.String"/>
+		<parameter name="YEAR" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[YEAR($P{monitoringDate})]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[select * 
+from PEG_STR_CAP_VIEW CAP
+where CAP.ID_SCHEDA = $P{workEffortId}
+and (extract(YEAR from CAP.ANNO_STANZIATO) = $P{YEAR} or CAP.ANNO_STANZIATO is null)
+order by CAP.TIPOLOGIA_CAPITOLO, CAP.CODICE_CAPITOLO]]>
+		</queryString>
+		<field name="id_scheda" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="id_scheda"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_scheda"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_cap_view"/>
+		</field>
+		<field name="id_capitolo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="id_capitolo"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_capitolo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_cap_view"/>
+		</field>
+		<field name="nome_capitolo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome_capitolo"/>
+			<property name="com.jaspersoft.studio.field.label" value="nome_capitolo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_cap_view"/>
+		</field>
+		<field name="codice_capitolo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="codice_capitolo"/>
+			<property name="com.jaspersoft.studio.field.label" value="codice_capitolo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_cap_view"/>
+		</field>
+		<field name="tipologia_capitolo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="tipologia_capitolo"/>
+			<property name="com.jaspersoft.studio.field.label" value="tipologia_capitolo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_cap_view"/>
+		</field>
+		<field name="stanziato_su_obiettivo" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="stanziato_su_obiettivo"/>
+			<property name="com.jaspersoft.studio.field.label" value="stanziato_su_obiettivo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_cap_view"/>
+		</field>
+		<field name="anno_stanziato" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="anno_stanziato"/>
+			<property name="com.jaspersoft.studio.field.label" value="anno_stanziato"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_cap_view"/>
+		</field>
+		<variable name="Record_Count" class="java.lang.Integer" calculation="Count">
+			<variableExpression><![CDATA[$F{id_scheda}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<subDataset name="DatasetFasi" uuid="dc210642-de8a-4487-9ef5-17539a5de5e4">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="227"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="767"/>
+		<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{monitoringDate}, $P{odaDialect});]]></defaultValueExpression>
+		</parameter>
+		<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+		</parameter>
+		<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0101sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="ObiettivoEtch" class="java.lang.String"/>
+		<parameter name="ObiettivoNome" class="java.lang.String"/>
+		<parameter name="langLocale" class="java.lang.String">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="YEAR" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[YEAR($P{monitoringDate})]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3101" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3101sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="dateEnd02" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("2",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0102" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("2",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0103" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("3",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0104" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("4",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0105" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("5",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0106" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("6",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0107" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("7",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0108" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("8",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0109" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("9",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0110" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("10",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0111" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("11",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0112" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3103" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("3",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3004" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("4",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3105" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("5",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3006" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("6",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3107" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("7",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3108" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("8",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3009" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("9",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3110" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("10",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3011" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("11",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3004sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3004}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3103sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3103}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3105sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3105}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3006sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3006}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3107sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3107}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3108sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3108}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3009sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3009}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3110sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3110}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3011sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3011}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="dateEnd02sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{dateEnd02}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[select * 
+from PEG_STR_FASI_VIEW FASI 
+where FASI.ID_SCHEDA = $P{workEffortId}
+and FASI.DATA_INIZIO_FASE <= CAST($P{date3112sql} AS TIMESTAMP)
+and FASI.DATA_FINE_FASE >= CAST($P{date0101sql} AS TIMESTAMP)
+and (FASI.DATA_PUNTEGGIO = CAST($P{date3112sql} AS TIMESTAMP) or FASI.data_punteggio is null)
+order by FASI.CODICE_FASE,FASI.DATA_INIZIO_FASE,FASI.DATA_FINE_FASE, FASI.NOME_FASE]]>
+		</queryString>
+		<field name="id_scheda" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="id_scheda"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_scheda"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="data_inizio_associativa" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_inizio_associativa"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_inizio_associativa"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="data_fine_associativa" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_fine_associativa"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_fine_associativa"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="nome_fase" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome_fase"/>
+			<property name="com.jaspersoft.studio.field.label" value="nome_fase"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="codice_fase" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="codice_fase"/>
+			<property name="com.jaspersoft.studio.field.label" value="codice_fase"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="etch_fase" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="etch_fase"/>
+			<property name="com.jaspersoft.studio.field.label" value="etch_fase"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="data_inizio_fase" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_inizio_fase"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_inizio_fase"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="data_fine_fase" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_fine_fase"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_fine_fase"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="data_inizio_fase_eff" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_inizio_fase_eff"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_inizio_fase_eff"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="data_fine_fase_eff" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="data_fine_fase_eff"/>
+			<property name="com.jaspersoft.studio.field.label" value="data_fine_fase_eff"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="descrizione_fase" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="descrizione_fase"/>
+			<property name="com.jaspersoft.studio.field.label" value="descrizione_fase"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="atti" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="atti"/>
+			<property name="com.jaspersoft.studio.field.label" value="atti"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="motivazione_scostamento" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="motivazione_scostamento"/>
+			<property name="com.jaspersoft.studio.field.label" value="motivazione_scostamento"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<field name="punteggio_fase" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="punteggio_fase"/>
+			<property name="com.jaspersoft.studio.field.label" value="punteggio_fase"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_fasi_view"/>
+		</field>
+		<filterExpression><![CDATA[$F{nome_fase}!=null && $F{nome_fase}!=""]]></filterExpression>
+	</subDataset>
+	<subDataset name="DatasetIndicatori" uuid="09e39305-ce0d-4aa5-a1ab-dae045f51cfc">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="195"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="799"/>
+		<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+		<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{monitoringDate}, $P{odaDialect});]]></defaultValueExpression>
+		</parameter>
+		<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+		</parameter>
+		<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112P1" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate})+1, $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112P2" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate})+2, $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112M2" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),(YEAR($P{monitoringDate})-2), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112P1sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112P1}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112P2sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112P2}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date3112M2sql" class="java.lang.String">
+			<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112M2}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="langLocale" class="java.lang.String">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="date0101sql" class="java.lang.String"/>
+		<parameter name="FROMAT" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT 
+		INDIC.ID_SCHEDA,
+		INDIC.NOME_INDICATORE$P!{langLocale} as NOME_INDICATORE,
+		INDIC.CODICE_INDICATORE,
+		INDIC.UDM$P!{langLocale} as UDM,
+		INDIC.TIPO_UDM,			
+		
+      MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE  = 'BUDGET' AND INDIC.DATA_VALORE = CAST($P{date3112sql} AS TIMESTAMP) THEN INDIC.VALORE_NUMERO ELSE NULL END)  BUDGET_VALORE_NUMERICO,
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'BUDGET' AND INDIC.DATA_VALORE = CAST($P{date3112sql} AS TIMESTAMP) THEN INDIC.VALORE_STRINGA ELSE NULL END)  BUDGET_VALORE_STRINGA,
+	  
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'ACTUAL' AND INDIC.DATA_VALORE = CAST($P{date3112sql} AS TIMESTAMP) THEN INDIC.VALORE_NUMERO ELSE NULL END)  ACTUAL_VALORE_NUMERICO,
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'ACTUAL' AND INDIC.DATA_VALORE = CAST($P{date3112sql} AS TIMESTAMP) THEN INDIC.VALORE_STRINGA ELSE NULL END)  ACTUAL_VALORE_STRINGA,	  	   
+	  	  
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE  = 'BUDGET' AND INDIC.DATA_VALORE = CAST($P{date3112P1sql} AS TIMESTAMP) THEN INDIC.VALORE_NUMERO ELSE NULL END) BUDGET_VALORE_NUMERICO_P1,
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'BUDGET' AND INDIC.DATA_VALORE = CAST($P{date3112P1sql} AS TIMESTAMP) THEN INDIC.VALORE_STRINGA ELSE NULL END)  BUDGET_VALORE_STRINGA_P1,
+
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'ACTUAL' AND INDIC.DATA_VALORE = CAST($P{date3112P1sql} AS TIMESTAMP) THEN INDIC.VALORE_NUMERO ELSE NULL END)  ACTUAL_VALORE_NUMERICO_P1,
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'ACTUAL' AND INDIC.DATA_VALORE = CAST($P{date3112P1sql} AS TIMESTAMP) THEN INDIC.VALORE_STRINGA ELSE NULL END)  ACTUAL_VALORE_STRINGA_P1,
+
+	   
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE  = 'BUDGET' AND INDIC.DATA_VALORE = CAST($P{date3112P2sql} AS TIMESTAMP) THEN INDIC.VALORE_NUMERO ELSE NULL END) BUDGET_VALORE_NUMERICO_P2,
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'BUDGET' AND INDIC.DATA_VALORE = CAST($P{date3112P2sql} AS TIMESTAMP) THEN INDIC.VALORE_STRINGA ELSE NULL END)  BUDGET_VALORE_STRINGA_P2,
+
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'ACTUAL' AND INDIC.DATA_VALORE = CAST($P{date3112P2sql} AS TIMESTAMP) THEN INDIC.VALORE_NUMERO ELSE NULL END)  ACTUAL_VALORE_NUMERICO_P2,
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'ACTUAL' AND INDIC.DATA_VALORE = CAST($P{date3112P2sql} AS TIMESTAMP) THEN INDIC.VALORE_STRINGA ELSE NULL END)  ACTUAL_VALORE_STRINGA_P2,
+	  
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE  = 'BUDGET' AND INDIC.DATA_VALORE = CAST($P{date3112M2sql} AS TIMESTAMP) THEN INDIC.VALORE_NUMERO ELSE NULL END) BUDGET_VALORE_NUMERICO_M2,
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'BUDGET' AND INDIC.DATA_VALORE = CAST($P{date3112M2sql} AS TIMESTAMP) THEN INDIC.VALORE_STRINGA ELSE NULL END)  BUDGET_VALORE_STRINGA_M2,
+
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'ACTUAL' AND INDIC.DATA_VALORE = CAST($P{date3112M2sql} AS TIMESTAMP) THEN INDIC.VALORE_NUMERO ELSE NULL END)  ACTUAL_VALORE_NUMERICO_M2,
+	  MAX(CASE WHEN INDIC.TIPO_RILEVAZIONE_VALORE = 'ACTUAL' AND INDIC.DATA_VALORE = CAST($P{date3112M2sql} AS TIMESTAMP) THEN INDIC.VALORE_STRINGA ELSE NULL END)  ACTUAL_VALORE_STRINGA_M2
+
+FROM PEG_STR_INDIC_VIEW INDIC
+where ID_SCHEDA = $P{workEffortId}
+ GROUP BY          	
+		INDIC.ID_SCHEDA,
+		INDIC.NOME_INDICATORE$P!{langLocale},
+		INDIC.CODICE_INDICATORE,
+		INDIC.UDM$P!{langLocale},
+		INDIC.TIPO_UDM
+order by INDIC.CODICE_INDICATORE, INDIC.NOME_INDICATORE]]>
+		</queryString>
+		<field name="id_scheda" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="id_scheda"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_scheda"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_indic_view"/>
+		</field>
+		<field name="nome_indicatore" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome_indicatore"/>
+			<property name="com.jaspersoft.studio.field.label" value="nome_indicatore"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_indic_view"/>
+		</field>
+		<field name="codice_indicatore" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="codice_indicatore"/>
+			<property name="com.jaspersoft.studio.field.label" value="codice_indicatore"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_indic_view"/>
+		</field>
+		<field name="udm" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="udm"/>
+			<property name="com.jaspersoft.studio.field.label" value="udm"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_indic_view"/>
+		</field>
+		<field name="tipo_udm" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="tipo_udm"/>
+			<property name="com.jaspersoft.studio.field.label" value="tipo_udm"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="peg_str_indic_view"/>
+		</field>
+		<field name="budget_valore_numerico" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="budget_valore_numerico"/>
+			<property name="com.jaspersoft.studio.field.label" value="budget_valore_numerico"/>
+		</field>
+		<field name="budget_valore_stringa" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="budget_valore_stringa"/>
+			<property name="com.jaspersoft.studio.field.label" value="budget_valore_stringa"/>
+		</field>
+		<field name="actual_valore_numerico" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="actual_valore_numerico"/>
+			<property name="com.jaspersoft.studio.field.label" value="actual_valore_numerico"/>
+		</field>
+		<field name="actual_valore_stringa" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="actual_valore_stringa"/>
+			<property name="com.jaspersoft.studio.field.label" value="actual_valore_stringa"/>
+		</field>
+		<field name="budget_valore_numerico_p1" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="budget_valore_numerico_p1"/>
+			<property name="com.jaspersoft.studio.field.label" value="budget_valore_numerico_p1"/>
+		</field>
+		<field name="budget_valore_stringa_p1" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="budget_valore_stringa_p1"/>
+			<property name="com.jaspersoft.studio.field.label" value="budget_valore_stringa_p1"/>
+		</field>
+		<field name="actual_valore_numerico_p1" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="actual_valore_numerico_p1"/>
+			<property name="com.jaspersoft.studio.field.label" value="actual_valore_numerico_p1"/>
+		</field>
+		<field name="actual_valore_stringa_p1" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="actual_valore_stringa_p1"/>
+			<property name="com.jaspersoft.studio.field.label" value="actual_valore_stringa_p1"/>
+		</field>
+		<field name="budget_valore_numerico_p2" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="budget_valore_numerico_p2"/>
+			<property name="com.jaspersoft.studio.field.label" value="budget_valore_numerico_p2"/>
+		</field>
+		<field name="budget_valore_stringa_p2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="budget_valore_stringa_p2"/>
+			<property name="com.jaspersoft.studio.field.label" value="budget_valore_stringa_p2"/>
+		</field>
+		<field name="actual_valore_numerico_p2" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="actual_valore_numerico_p2"/>
+			<property name="com.jaspersoft.studio.field.label" value="actual_valore_numerico_p2"/>
+		</field>
+		<field name="actual_valore_stringa_p2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="actual_valore_stringa_p2"/>
+			<property name="com.jaspersoft.studio.field.label" value="actual_valore_stringa_p2"/>
+		</field>
+		<field name="budget_valore_numerico_m2" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="budget_valore_numerico_m2"/>
+			<property name="com.jaspersoft.studio.field.label" value="budget_valore_numerico_m2"/>
+		</field>
+		<field name="budget_valore_stringa_m2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="budget_valore_stringa_m2"/>
+			<property name="com.jaspersoft.studio.field.label" value="budget_valore_stringa_m2"/>
+		</field>
+		<field name="actual_valore_numerico_m2" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="actual_valore_numerico_m2"/>
+			<property name="com.jaspersoft.studio.field.label" value="actual_valore_numerico_m2"/>
+		</field>
+		<field name="actual_valore_stringa_m2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="actual_valore_stringa_m2"/>
+			<property name="com.jaspersoft.studio.field.label" value="actual_valore_stringa_m2"/>
+		</field>
+	</subDataset>
+	<parameter name="ReportTitle" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String"/>
+	<parameter name="monitoringDate" class="java.util.Date"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.util.Date"/>
+	<parameter name="date3112sql" class="java.lang.String"/>
+	<parameter name="odaDialect" class="java.lang.String"/>
+	<parameter name="date0101" class="java.util.Date"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String"/>
+	<parameter name="ReportSmallPath" class="java.lang.String"/>
+	<parameter name="IconNavPath" class="java.lang.String"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String"/>
+	<parameter name="filterWhereString" class="java.lang.String"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String"/>
+	<parameter name="personId" class="java.lang.String"/>
+	<parameter name="workEffortId" class="java.lang.String"/>
+	<parameter name="date3009" class="java.util.Date"/>
+	<parameter name="date3009sql" class="java.lang.String"/>
+	<parameter name="workEffortIdObiettiviIndividuali" class="java.lang.String"/>
+	<parameter name="workEffortIdFrom" class="java.lang.String"/>
+	<parameter name="workEffortAssocTypeId" class="java.lang.String"/>
+	<parameter name="titoloObiettivo" class="java.lang.String"/>
+	<parameter name="FORMAT" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilNumber.getFormatPattern(2, "Num")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposeIndicator" class="java.lang.String"/>
+	<parameter name="exposeFinancial" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId}  != null && $P{orgUnitId}  != "" && LEN($P{orgUnitId}) != 0  ? " AND (FIL_W.org_unit_id = '"+ $P{orgUnitId} + "')" : " AND FIL_W.org_unit_id like '%%'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEAR" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[YEAR($P{monitoringDate})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idStruttura" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortRevision" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortRevisionString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{workEffortRevision}  != null && $P{workEffortRevision}  != "" && LEN($P{workEffortRevision}) != 0  ? " AND peg.work_effort_revision_id = '"+ $P{workEffortRevision} + "'" : " AND peg.work_effort_revision_id is null"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select peg.work_effort_id as ID_OBIETTIVO,
+	peg.work_effort_name as NOME_OBIETTIVO,
+	peg.source_reference_id as CODICE_OBIETTIVO,
+	peg.etch as ETICHETTA_OBIETTIVO,
+	strutt.org_unit_id as ID_STRUTTURA_OBIETTIVO,
+	peg.estimated_start_date as DATA_INIZIO_OBIETTIVO,
+	peg.estimated_completion_date as DATA_FINE_OBIETTIVO,
+	peg.weight_kpi as PESO_INDICATORI,
+	peg.weight_sons as PESO_FASI,
+	obs.source_reference_id as CODICE_OBIETTIVO_DUP,
+	obs.etch as ETICHETTA_OBIETTIVO_DUP,
+	obs.work_effort_name as NOME_OBIETTIVO_DUP,
+	obo.source_reference_id as CODICE_OBIETTIVO_OP_DUP,
+	obo.etch as ETICHETTA_OBIETTIVO_OP_DUP,
+	obo.work_effort_name as NOME_OBIETTIVO_OP_DUP,
+	descr.note_info as DESCRIZIONE,
+	mon.note_info as NOTE_MONITORAGGIO,
+	val.amount as VALUTAZIONE_OBIETTIVO,
+	score.amount as PUNTEGGIO
+from work_effort_assoc wea2 
+join work_effort peg on peg.work_effort_id = wea2.work_effort_id_to and peg.work_effort_type_id = '20P44ASM'
+ $P!{workEffortRevisionString} 
+/* SCHEDA DI STRUTTURA */
+join work_effort strutt on strutt.work_effort_id = wea2.work_effort_id_from and wea2.work_effort_assoc_type_id = $P{workEffortAssocTypeId}
+/* OBIETTIVO OPERATIVO DUP */
+left join work_effort_assoc wea3 on wea3.work_effort_id_to = peg.work_effort_id and wea3.work_effort_assoc_type_id = '20D6OC'
+ and wea3.work_effort_revision_id is null
+left join work_effort obo on obo.work_effort_id = wea3.work_effort_id_from and obo.work_effort_revision_id is null
+/* OBIETTIVO STRATEGICO DUP */
+left join work_effort_assoc wea4 on wea4.work_effort_id_to = wea3.work_effort_id_from and wea4.work_effort_assoc_type_id = '20D6C'
+ and wea4.work_effort_revision_id is null
+left join work_effort obs on obs.work_effort_id = wea4.work_effort_id_from and obs.work_effort_revision_id is null
+/* NOTE */
+left join (
+	select
+			wen.work_effort_id,
+			nd.note_info
+		from work_effort_note wen
+		join note_data nd on nd.note_id = wen.note_id
+		where wen.sequence_id = '100' 
+		and nd.note_date_time = least(
+		(
+		    select max(note_date_time)
+		    from note_data nd2
+		    join work_effort_note wen2 on wen2.note_id = nd2.note_id
+		    where wen2.work_effort_id = wen.work_effort_id and wen2.sequence_id = '100'
+		),
+		(
+		    select max(note_date_time)
+		    from note_data nd2
+		    join work_effort_note wen2 on wen2.note_id = nd2.note_id
+		    where wen2.work_effort_id = wen.work_effort_id and wen2.sequence_id = '100'
+		    	and EXTRACT(YEAR from nd2.note_date_time) = $P{YEAR}
+		))
+) descr on descr.work_effort_id = peg.work_effort_id
+/* MONITORAGGIO */
+left join (
+	select 
+		wen.work_effort_id,
+		nd.note_info
+	from work_effort_note wen
+	join note_data nd on nd.note_id = wen.note_id and EXTRACT(YEAR from nd.note_date_time) = $P{YEAR}
+	where wen.sequence_id = '300'
+) mon on mon.work_effort_id = peg.work_effort_id
+ /* VALUTAZIONE OBIETTIVO */
+left join (
+	select 
+		wem.work_effort_id,
+		ate.amount
+	from work_effort_measure wem
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id and ate.gl_account_id = '10522'
+) val on val.work_effort_id = peg.work_effort_id  
+ /* PUNTEGGIO */
+left join (
+	select 
+		wem.work_effort_id,
+		ate.amount
+	from work_effort_measure wem
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id and ate.gl_account_id = 'SCORE'
+	 join acctg_trans act on act.acctg_trans_id = ate.acctg_trans_id and act.transaction_date = CAST($P{date3112sql} AS TIMESTAMP)
+) score on score.work_effort_id = peg.work_effort_id  
+where  wea2.work_effort_id_from = $P{workEffortIdFrom}
+and wea2.work_effort_assoc_type_id = $P{workEffortAssocTypeId}
+and wea2.from_date <= CAST($P{monitoringDateString} AS TIMESTAMP) and wea2.thru_date >= CAST($P{monitoringDateString} AS TIMESTAMP)
+and peg.estimated_start_date <= CAST($P{monitoringDateString} AS TIMESTAMP) and peg.estimated_completion_date >= CAST($P{monitoringDateString} AS TIMESTAMP)
+and strutt.org_unit_id = $P{idStruttura}]]>
+	</queryString>
+	<field name="id_obiettivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="nome_obiettivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="codice_obiettivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codice_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="codice_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="etichetta_obiettivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="etichetta_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="etichetta_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="id_struttura_obiettivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id_struttura_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_struttura_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="data_inizio_obiettivo" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="data_inizio_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_inizio_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="data_fine_obiettivo" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="data_fine_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_fine_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="peso_indicatori" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="peso_indicatori"/>
+		<property name="com.jaspersoft.studio.field.label" value="peso_indicatori"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="peso_fasi" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="peso_fasi"/>
+		<property name="com.jaspersoft.studio.field.label" value="peso_fasi"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="codice_obiettivo_dup" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codice_obiettivo_dup"/>
+		<property name="com.jaspersoft.studio.field.label" value="codice_obiettivo_dup"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="etichetta_obiettivo_dup" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="etichetta_obiettivo_dup"/>
+		<property name="com.jaspersoft.studio.field.label" value="etichetta_obiettivo_dup"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="nome_obiettivo_dup" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome_obiettivo_dup"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome_obiettivo_dup"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="codice_obiettivo_op_dup" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codice_obiettivo_op_dup"/>
+		<property name="com.jaspersoft.studio.field.label" value="codice_obiettivo_op_dup"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="etichetta_obiettivo_op_dup" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="etichetta_obiettivo_op_dup"/>
+		<property name="com.jaspersoft.studio.field.label" value="etichetta_obiettivo_op_dup"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="nome_obiettivo_op_dup" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome_obiettivo_op_dup"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome_obiettivo_op_dup"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="descrizione" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descrizione"/>
+		<property name="com.jaspersoft.studio.field.label" value="descrizione"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="note_data"/>
+	</field>
+	<field name="note_monitoraggio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="note_monitoraggio"/>
+		<property name="com.jaspersoft.studio.field.label" value="note_monitoraggio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="note_data"/>
+	</field>
+	<field name="valutazione_obiettivo" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="valutazione_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="valutazione_obiettivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acctg_trans_entry"/>
+	</field>
+	<field name="punteggio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="punteggio"/>
+		<property name="com.jaspersoft.studio.field.label" value="punteggio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acctg_trans_entry"/>
+	</field>
+	<detail>
+		<band height="113" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="18" isRemoveLineWhenBlank="true" backcolor="#EBEBEB" uuid="07487fbb-da1d-4c40-a71b-3f9077f4b2b3">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Frame Titolo"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="170" height="18" forecolor="#767171" backcolor="#EBEBEB" uuid="e4622a59-eb31-4b92-aab0-9b209d021fbc">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Obiettivo"]]></textFieldExpression>
+					<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" mode="Opaque" x="170" y="0" width="632" height="18" forecolor="#000000" backcolor="#EBEBEB" uuid="9a8ae33d-d2df-40c7-a653-533f620f8444">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nome_obiettivo}]]></textFieldExpression>
+					<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="48" width="802" height="15" isRemoveLineWhenBlank="true" uuid="4a7a9492-8e86-4352-a029-7517b91b1f2c">
+					<property name="com.jaspersoft.studio.element.name" value="Frame Descrizione"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#767171" uuid="fec72f35-726c-4d95-9b80-67797d940d27">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Descrizione"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="170" y="0" width="632" height="15" forecolor="#000000" uuid="42fc9168-95b0-4ba6-b664-2347e09f3e37">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descrizione}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="63" width="802" height="15" isRemoveLineWhenBlank="true" uuid="ccde8e40-09a5-478e-a859-0921fca996d1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Frame Obiettivo Strategico"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" forecolor="#767171" uuid="de014997-dbf0-4a55-941e-22d7ae25dddf">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Obiettivo strategico"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="170" y="0" width="632" height="15" forecolor="#000000" uuid="a2a99fc7-f44c-48ed-a38b-c733555a39b7">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{etichetta_obiettivo_dup}!=null && $F{etichetta_obiettivo_dup}!="" && $F{etichetta_obiettivo_dup}!=null && $F{nome_obiettivo_dup}!="") ? ($F{etichetta_obiettivo_dup} + " - " + $F{nome_obiettivo_dup}) :  ""]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="78" width="802" height="15" isRemoveLineWhenBlank="true" uuid="f771eb59-cc3b-47c2-a761-edfd12617cf6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Frame Obiettivo Operativo"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" forecolor="#767171" uuid="a478cfd4-8569-4b06-84b5-17c060656b5c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Obiettivo operativo"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="170" y="0" width="632" height="15" forecolor="#000000" uuid="aad2e772-3507-42cd-b115-9ba02bf214ed">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{etichetta_obiettivo_op_dup}!=null && $F{etichetta_obiettivo_op_dup}!="" && $F{etichetta_obiettivo_op_dup}!=null && $F{nome_obiettivo_op_dup}!="") ? ($F{etichetta_obiettivo_op_dup}+ " - " + $F{nome_obiettivo_op_dup}) :  ""]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="33" width="802" height="15" isRemoveLineWhenBlank="true" uuid="80126f96-5e72-4d73-9fc8-65d929557a35">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Frame Fattori Risultato"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[!MID($P{monitoringDateString},7,5).equals("12-31")]]></printWhenExpression>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#767171" uuid="bfcf8a80-1731-491c-a560-9cd7967ea021">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Valutazione obiettivo"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="170" y="0" width="632" height="15" forecolor="#000000" uuid="49f58752-5d44-4fe9-b844-baef1bf050a3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{valutazione_obiettivo}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="93" width="802" height="15" isRemoveLineWhenBlank="true" uuid="de5e6251-5878-4628-af35-00811fc5150c">
+					<printWhenExpression><![CDATA[MID($P{monitoringDateString},7,5).equals("12-31") && $F{note_monitoraggio}!=null && $F{note_monitoraggio}!=""]]></printWhenExpression>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" forecolor="#767171" uuid="9bc3ccc4-d3ac-4526-864b-b22a86d4d365">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Note di monitoraggio"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="170" y="0" width="632" height="15" forecolor="#000000" uuid="9c792a5b-a33d-409d-ac6d-d5509f4ee37a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{note_monitoraggio}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="18" width="802" height="15" isRemoveLineWhenBlank="true" uuid="05bf76a7-2df9-4a4d-8a0e-ca6d844c0f97">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Frame Fattori Risultato"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[MID($P{monitoringDateString},7,5).equals("12-31")]]></printWhenExpression>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#767171" uuid="0e0b958b-d581-46b9-8e05-0940e68b63ec">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Valutazione obiettivo"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="170" y="0" width="222" height="15" forecolor="#000000" uuid="ac5034d4-904c-4a16-ae8e-1facb8b9b6ae">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{valutazione_obiettivo}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="392" y="0" width="170" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#767171" uuid="08ad9ea4-865a-4f58-b0a4-4d4922c968de">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Punteggio"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="562" y="0" width="240" height="15" forecolor="#000000" uuid="074904cc-6400-4b66-a84c-071367d92443">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{punteggio}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+		<band height="35">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="ca240f6d-798e-4fef-804c-84e07b79c2fb">
+					<property name="com.jaspersoft.studio.element.name" value="Frame Anagrafiche"/>
+				</reportElement>
+				<componentElement>
+					<reportElement x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="f38594a5-a25a-4afa-a2e2-042f3b2a1f0a">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+						<property name="com.jaspersoft.studio.element.name" value="Anagrafiche"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetAnagrafiche" uuid="8db34f32-94e3-4a5f-b0ba-b6124a4e57f3">
+							<datasetParameter name="workEffortId">
+								<datasetParameterExpression><![CDATA[$F{id_obiettivo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date3112sql">
+								<datasetParameterExpression><![CDATA[$P{date3112sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date0101sql">
+								<datasetParameterExpression><![CDATA[$P{date0101sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDateString">
+								<datasetParameterExpression><![CDATA[$P{monitoringDateString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="170" uuid="de2b63f7-da91-4281-8587-720c834ac89c">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+							<jr:tableHeader style="Table 1_TH" height="0">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:columnHeader style="Table 1_CH" height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="170" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="f5793310-7cda-4359-9bc1-d1ee492bbb91"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Persona]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:columnFooter>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" uuid="c4b43c63-72c5-43f8-aa16-c6afa8874814"/>
+									<textFieldExpression><![CDATA[$F{nome_soggetto}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="222" uuid="1050ecfb-dede-4a6d-949f-d40104624cd0">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+							<jr:tableHeader style="Table 1_TH" height="0"/>
+							<jr:tableFooter style="Table 1_TH" height="0"/>
+							<jr:columnHeader style="Table 1_CH" height="15">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="222" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="7e35dbec-03c1-4da4-9371-e75dae93d5fb"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Categoria]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="222" height="15" uuid="3dffde97-add8-442d-a50e-c4b0b0124de7"/>
+									<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="202" uuid="1fe798b7-6b87-4599-b45a-bbada3e1418c">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader style="Table 1_TH" height="0"/>
+							<jr:tableFooter style="Table 1_TH" height="0"/>
+							<jr:columnHeader style="Table 1_CH" height="15">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="202" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="820db275-04f3-4a3e-b44c-d6ec4e5d96c0"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Ruolo]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="202" height="15" uuid="d7c4e8e4-b4db-4597-bb38-eb67c621f9f7"/>
+									<textFieldExpression><![CDATA[$F{nome_profilo_professionale}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="104" uuid="d60db1bc-22f9-4cde-801e-fe098c28f730">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader style="Table 1_TH" height="0"/>
+							<jr:tableFooter style="Table 1_TH" height="0"/>
+							<jr:columnHeader style="Table 1_CH" height="15">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="104" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="62c63d98-b12e-4dc2-805f-2a3cc237c975"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Inizio]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="104" height="15" uuid="c44add59-d601-4395-a4fb-82a21c7a4823"/>
+									<textFieldExpression><![CDATA[$F{data_inizio_assegnazione}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="104" uuid="9527ed95-6371-4d51-ac01-3066ec99abd9">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna4"/>
+							<jr:tableHeader style="Table 1_TH" height="0"/>
+							<jr:tableFooter style="Table 1_TH" height="0"/>
+							<jr:columnHeader style="Table 1_CH" height="15">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="104" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="3adb5b24-4643-47cf-8d24-47680c27eb97"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Fine]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="104" height="15" uuid="a71683d9-150b-44f5-ba9a-8fab4a06cd87"/>
+									<textFieldExpression><![CDATA[$F{data_fine_assegnazione}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</frame>
+		</band>
+		<band height="35">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$P{exposeFinancial}.equals("Y")]]></printWhenExpression>
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="b7e01091-dc19-4935-b428-ac8c4b0e5952">
+					<property name="com.jaspersoft.studio.element.name" value="Frame Capitoli di Bilancio"/>
+				</reportElement>
+				<componentElement>
+					<reportElement x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="946bdea1-310c-488e-bf70-3c4348c33fb0">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+						<property name="com.jaspersoft.studio.element.name" value="Capitoli di Bilancio"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetBilancio" uuid="62370e05-d297-4f82-841d-f8ed0d76ddf1">
+							<datasetParameter name="workEffortId">
+								<datasetParameterExpression><![CDATA[$F{id_obiettivo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date3112sql">
+								<datasetParameterExpression><![CDATA[$P{date3112sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date0101sql">
+								<datasetParameterExpression><![CDATA[$P{date0101sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDateString">
+								<datasetParameterExpression><![CDATA[$P{monitoringDateString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="FORMAT">
+								<datasetParameterExpression><![CDATA[$P{FORMAT}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="170" uuid="f169bb03-0801-4673-9f40-cfc15fb9d982">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="170" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="a7b68269-102f-4a9c-874e-0091487ec656"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{TipologiaCapitolo}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:columnFooter>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" uuid="05073f0e-4d42-4a4f-8bfa-fc5239abc8dd"/>
+									<textFieldExpression><![CDATA[$F{tipologia_capitolo}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="424" uuid="d82c0990-7788-4f2f-be4a-f6cedeb90be4">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="424" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="4bf097e7-d622-4cb9-8dc2-a4d9395b9311"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{NomeCapitolo}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="424" height="15" uuid="a10abbc6-9aad-4d10-92ea-615cd887aee0"/>
+									<textFieldExpression><![CDATA[$F{nome_capitolo}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="208" uuid="551709da-df5f-4f9d-89dd-3e25002ccfb9">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="208" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="b6517432-cdb0-4ec8-92db-f0529f8be628"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{RisorseObiettivo}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="208" height="15" uuid="24ac763a-089d-4c86-85ae-2c836e95e461"/>
+									<textFieldExpression><![CDATA[com.mapsengineering.base.birt.util.UtilNumber.getValueFormatted($F{stanziato_su_obiettivo}.toString(), $P{FORMAT})]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</frame>
+		</band>
+		<band height="35">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="45927202-8e6c-49df-8a6d-6b311fc941fb">
+					<property name="com.jaspersoft.studio.element.name" value="Frame Fasi"/>
+				</reportElement>
+				<componentElement>
+					<reportElement x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="58c5021c-d9b4-4bda-8d10-9031bb7ce8cd">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+						<property name="com.jaspersoft.studio.element.name" value="Fasi"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetFasi" uuid="20cefa3f-c6b9-46d7-8f37-9b672a233365">
+							<datasetParameter name="workEffortId">
+								<datasetParameterExpression><![CDATA[$F{id_obiettivo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date3112sql">
+								<datasetParameterExpression><![CDATA[$P{date3112sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date0101sql">
+								<datasetParameterExpression><![CDATA[$P{date0101sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDateString">
+								<datasetParameterExpression><![CDATA[$P{monitoringDateString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="170" uuid="0ae57f5d-44e4-435a-bd14-16064467595e">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<box>
+									<pen lineWidth="0.1"/>
+									<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="170" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="873edefa-a213-4ee2-ad23-96fef040c7c3"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Fase]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:columnFooter>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" uuid="143c800a-49a9-44ff-9b3f-e9547e5c0258"/>
+									<textFieldExpression><![CDATA[$F{nome_fase}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="424" uuid="6ec7fbc2-300f-4f58-a35d-ba072e2ca19a">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<box>
+									<pen lineWidth="0.1"/>
+									<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="424" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="09a173ba-2e14-4852-9b62-85eb267e1768"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Descrizione fase]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="424" height="15" uuid="940f4777-d677-4f55-a1a1-c4f68c580cdd"/>
+									<textFieldExpression><![CDATA[$F{descrizione_fase}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="104" uuid="f8d9a5a3-6a67-4d25-a7e9-4742767d306f">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="104" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="a65e3372-b9f2-476c-b588-a23d5f5ad9b4"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Inizio]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="104" height="15" uuid="61f03d8a-fdf6-4bab-98cb-494a97a24ffc"/>
+									<textFieldExpression><![CDATA[$F{data_inizio_fase}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="104" uuid="ea45b8d8-1cd8-4e81-9d09-5a68257ca593">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna4"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="104" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="6c4b1ae6-f43a-4f7a-b2a9-cffe1cc247a0"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Fine]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="104" height="15" uuid="cd966b0a-2775-47d3-aef4-2af615284f78"/>
+									<textFieldExpression><![CDATA[$F{data_fine_fase}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</frame>
+		</band>
+		<band height="35">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[MID($P{monitoringDateString},7,5).equals("12-31")]]></printWhenExpression>
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="1113a7c3-5611-4e14-bd3b-091962d051c2">
+					<property name="com.jaspersoft.studio.element.name" value="Frame Fasi"/>
+				</reportElement>
+				<componentElement>
+					<reportElement x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="d257c896-6088-4f51-9166-2b5950331ced">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+						<property name="com.jaspersoft.studio.element.name" value="Fasi"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetFasi" uuid="43986a58-06a4-4631-825e-96f82b426663">
+							<datasetParameter name="workEffortId">
+								<datasetParameterExpression><![CDATA[$F{id_obiettivo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date3112sql">
+								<datasetParameterExpression><![CDATA[$P{date3112sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date0101sql">
+								<datasetParameterExpression><![CDATA[$P{date0101sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDateString">
+								<datasetParameterExpression><![CDATA[$P{monitoringDateString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="170" uuid="41c10078-0888-4058-a8a5-8ce246f61ad3">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+							<jr:tableHeader style="Table 1_TH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="170" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="352c3211-00dc-4fc3-bdcc-e96bbd08a732"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Monitoraggio fase]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:columnHeader style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<box>
+									<pen lineWidth="0.1"/>
+									<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:columnFooter>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="15" uuid="33d4cb67-fc46-407d-af40-d079d10e7e9f"/>
+									<textFieldExpression><![CDATA[$F{nome_fase}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="110" uuid="beeace28-985f-4ba3-a6f5-c4e00b3ab44d">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+							<jr:tableHeader style="Table 1_TH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="110" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="f70c9139-037a-4962-8ca0-1ddad0c6426c"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Punteggio]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<box>
+									<pen lineWidth="0.1"/>
+									<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="110" height="15" uuid="56505e19-b32f-4f47-92f1-ee4ac026b66b"/>
+									<textFieldExpression><![CDATA[$F{punteggio_fase}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="240" uuid="c5c666be-6b4f-43ec-aac5-66d6135436c9">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader style="Table 1_TH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="240" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="1ecc339a-30e8-42c4-bf13-938ed4bf8b5f"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Rif. Atti]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="240" height="15" uuid="52046b2c-d19b-4ac4-b28c-61b143ae99de"/>
+									<textFieldExpression><![CDATA[$F{atti}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="282" uuid="abfa0d0a-df0b-467f-9bac-cc7c9af53a8f">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna4"/>
+							<jr:tableHeader style="Table 1_TH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<staticText>
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="282" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="8f57b366-6adf-4ea9-802a-d92b1617bd95"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Motivazioni scostamenti]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="282" height="15" uuid="b3edb39f-c9a8-467a-a32e-85d02f878266"/>
+									<textFieldExpression><![CDATA[$F{motivazione_scostamento}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</frame>
+		</band>
+		<band height="50">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="45" isRemoveLineWhenBlank="true" uuid="fe204047-f354-42b7-a98e-6bbd02af672b">
+					<property name="com.jaspersoft.studio.element.name" value="Frame Fasi Cronoprogramma"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<componentElement>
+					<reportElement x="0" y="0" width="802" height="45" isRemoveLineWhenBlank="true" uuid="6aaa4562-a739-453c-bd55-f67bd5e8fea7">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+						<property name="com.jaspersoft.studio.element.name" value="Fasi Cronoprogramma"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetFasi" uuid="95715ec9-9382-43a3-ada4-e6a525292e3b">
+							<datasetParameter name="workEffortId">
+								<datasetParameterExpression><![CDATA[$F{id_obiettivo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date3112sql">
+								<datasetParameterExpression><![CDATA[$P{date3112sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date0101sql">
+								<datasetParameterExpression><![CDATA[$P{date0101sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDateString">
+								<datasetParameterExpression><![CDATA[$P{monitoringDateString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date0101">
+								<datasetParameterExpression><![CDATA[$P{date0101}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date3112">
+								<datasetParameterExpression><![CDATA[$P{date3112}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDate">
+								<datasetParameterExpression><![CDATA[$P{monitoringDate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="odaDialect">
+								<datasetParameterExpression><![CDATA[$P{odaDialect}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:columnGroup width="478" uuid="42c0f71a-d071-4d85-bf4e-d718b36305f3">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonne [2]"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="478" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="fee7d5e2-da5a-4045-9bc0-c91f7bb3fb39"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Cronoprogramma}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:column width="418" uuid="9eef8664-0679-4fd9-8738-f2024cc12413">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+								<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</jr:tableHeader>
+								<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</jr:tableFooter>
+								<jr:columnHeader style="Table 1_CH" height="0" rowSpan="1">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<box>
+										<pen lineWidth="0.1"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+								</jr:columnHeader>
+								<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</jr:columnFooter>
+								<jr:detailCell style="Table 1_TD" height="30">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+										<reportElement stretchType="ContainerHeight" x="0" y="0" width="418" height="30" uuid="96e5157d-bcd0-47b5-85f5-8c5e3b06b730"/>
+										<textElement>
+											<font size="8"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{nome_fase}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="60" uuid="e8184e3d-46cc-46cf-b071-f327e910a94d">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+								<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+								<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+								<jr:columnHeader style="Table 1_CH" height="0" rowSpan="1">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<box>
+										<pen lineWidth="0.1"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+								</jr:columnHeader>
+								<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+								<jr:detailCell style="Table 1_TD" height="30">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+										<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="60" height="15" uuid="dfc114a8-4f81-40a9-b9f9-62fe453b2114"/>
+										<box>
+											<pen lineWidth="0.1" lineColor="#767171"/>
+											<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textFieldExpression><![CDATA[$R{Previsto}]]></textFieldExpression>
+									</textField>
+									<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+										<reportElement positionType="Float" x="0" y="15" width="60" height="15" isPrintWhenDetailOverflows="true" uuid="04eba74b-a7a8-4426-be53-d0a5474cddfa"/>
+										<box>
+											<pen lineWidth="0.1" lineColor="#767171"/>
+											<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										</box>
+										<textFieldExpression><![CDATA[$R{Consuntivo}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+						</jr:columnGroup>
+						<jr:column width="27" uuid="946b6e74-fd55-4584-bfea-fb9d46641c01">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="b7b4d8a0-d779-49c7-9603-5f16caedce7c"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Gen}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="97c3dcbb-88eb-450a-bfbf-e4799a84de7d">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3101}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+	($F{data_fine_fase} !=null && $F{data_fine_fase}.compareTo( $P{date3101}) != -1 ) || ($F{data_fine_fase} == null && $P{monitoringDate}.compareTo( $P{date3101}) != -1)	
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" isPrintWhenDetailOverflows="true" backcolor="#A8A5A5" uuid="1dfccea9-6102-4118-a395-b02996c05a61">
+										<printWhenExpression><![CDATA[$P{date3101}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+	($F{data_fine_fase_eff} !=null && $F{data_fine_fase_eff}.compareTo( $P{date3101}) != -1 ) || ($F{data_fine_fase_eff} == null && $P{monitoringDate}.compareTo( $P{date3101}) != -1)	
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="5da239c5-400a-43ef-ad3c-e0e9b0a41af1">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna4"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="0e3c2434-8f5a-4299-a00a-dfe264592597"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Feb}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="32ec0fe8-55b7-4b95-a9aa-5011208025b3">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{dateEnd02}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+	($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3101}) || $F{data_fine_fase}.toString().contains($P{dateEnd02sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{dateEnd02}) || $P{monitoringDateString}.contains($P{dateEnd02sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" isPrintWhenDetailOverflows="true" backcolor="#A8A5A5" uuid="a4fb10b8-575c-4397-bd97-6160fdac25db">
+										<printWhenExpression><![CDATA[$P{dateEnd02}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+	($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3101}) || $F{data_fine_fase_eff}.toString().contains($P{dateEnd02sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{dateEnd02}) || $P{monitoringDateString}.contains($P{dateEnd02sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="92f71d58-dadd-49a4-8b51-2aaa315ceb16">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna5"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="506e1328-a081-4c33-ae72-8f99a1e03a1c"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Mar}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="cefe0f7d-a139-4502-a9bf-e82793ea8621">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3103}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+	($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{dateEnd02}) || $F{data_fine_fase}.toString().contains($P{date3103sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3103}) || $P{monitoringDateString}.contains($P{date3103sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" isPrintWhenDetailOverflows="true" backcolor="#A8A5A5" uuid="468956f3-c411-483b-b740-c8b28bacaa10">
+										<printWhenExpression><![CDATA[$P{date3103}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+	($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{dateEnd02}) || $F{data_fine_fase_eff}.toString().contains($P{date3103sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3103}) || $P{monitoringDateString}.contains($P{date3103sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="480c0813-fa84-49ff-8c4d-db2b732921c6">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna6"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="a4968ba2-b65c-4bcd-9798-26ad166a2c54"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Apr}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="114e84b5-3550-45f4-9460-f01ff3eac1ce">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3004}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+		($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3103}) || $F{data_fine_fase}.toString().contains($P{date3004sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3004}) || $P{monitoringDateString}.contains($P{date3004sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="bc66fad7-f82b-46f2-b942-62e7a9c072ec">
+										<printWhenExpression><![CDATA[$P{date3004}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+		($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3103}) || $F{data_fine_fase_eff}.toString().contains($P{date3004sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3004}) || $P{monitoringDateString}.contains($P{date3004sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="ec08c831-614c-4803-adcb-8a2b8e3f1bf0">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna7"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="90544813-510c-474c-ab6e-23204023a1ad"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Mag}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="ba279c08-13c8-470a-abe5-4e3927cec4a7">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3105}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+		($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3004}) || $F{data_fine_fase}.toString().contains($P{date3105sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3105}) || $P{monitoringDateString}.contains($P{date3105sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="b9d6293a-ec62-40bd-8d6d-5d92361790de">
+										<printWhenExpression><![CDATA[$P{date3105}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+		($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3004}) || $F{data_fine_fase_eff}.toString().contains($P{date3105sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3105}) || $P{monitoringDateString}.contains($P{date3105sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="19910eb3-6019-4133-a6ea-691b1e28fed3">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna8"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="2f99d79e-e085-49bc-9d51-41d8f84c7eba"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Giu}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="e5da9aac-1d09-49b4-9270-689e141b3641">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3006}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+		($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3105}) || $F{data_fine_fase}.toString().contains($P{date3006sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3006}) || $P{monitoringDateString}.contains($P{date3006sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="88f49368-3b57-4214-bb5d-5d9a080acd92">
+										<printWhenExpression><![CDATA[$P{date3006}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+		($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3105}) || $F{data_fine_fase_eff}.toString().contains($P{date3006sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3006}) || $P{monitoringDateString}.contains($P{date3006sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="11fb5dca-e150-4f3f-86bf-e5be1755c77b">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna9"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="fcbbcfac-7b27-42c8-bef5-bf7f4c5e6bb7"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Lug}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="9e92d6d0-274e-4ee3-84c0-f716c9df1971">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3107}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+		($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3006}) || $F{data_fine_fase}.toString().contains($P{date3107sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3107}) || $P{monitoringDateString}.contains($P{date3107sql}))	)
+	
+	)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="1365564c-8459-40c6-adff-3877c33326ae">
+										<printWhenExpression><![CDATA[$P{date3107}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+		($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3006}) || $F{data_fine_fase_eff}.toString().contains($P{date3107sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3107}) || $P{monitoringDateString}.contains($P{date3107sql}))	)
+	
+	)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="0cfaf6c3-cdbc-441b-ad65-276d665cbeda">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna10"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="e4e64f1d-3539-44dc-9e00-6c954569f4d3"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Ago}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="5188e73b-5d35-4e59-b633-4e561645efef">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3108}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+		($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3107}) || $F{data_fine_fase}.toString().contains($P{date3108sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3108}) || $P{monitoringDateString}.contains($P{date3108sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="37385287-cb47-4a4a-b89c-1284e40473b3">
+										<printWhenExpression><![CDATA[$P{date3108}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+		($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3107}) || $F{data_fine_fase_eff}.toString().contains($P{date3108sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3108}) || $P{monitoringDateString}.contains($P{date3108sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="227bb389-b955-4815-8c4d-bff80fa8ae20">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna11"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="a8bc9a2b-c001-4ec4-a2ce-b2767507d1b6"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Set}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="0bf5ee09-55f2-493a-99e3-3a26c3574827">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3009}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+		($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3108}) || $F{data_fine_fase}.toString().contains($P{date3009sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3009}) || $P{monitoringDateString}.contains($P{date3009sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="1760d022-9509-4dba-8fef-886ff92bb162">
+										<printWhenExpression><![CDATA[$P{date3009}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+		($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3108}) || $F{data_fine_fase_eff}.toString().contains($P{date3009sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3009}) || $P{monitoringDateString}.contains($P{date3009sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="d049cbbd-58e4-452c-8df7-e5d62a654102">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna12"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="cf18bfdc-6ee1-4a9c-868f-96466225b0ae"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Ott}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="259f4e0d-ffa1-484d-88ce-fc454f285902">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3110}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+	 ($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3009}) || $F{data_fine_fase}.toString().contains($P{date3110sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3110}) || $P{monitoringDateString}.contains($P{date3110sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="da28c95e-a43d-4730-b094-4977c4830202">
+										<printWhenExpression><![CDATA[$P{date3110}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+	 ($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3009}) || $F{data_fine_fase_eff}.toString().contains($P{date3110sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3110}) || $P{monitoringDateString}.contains($P{date3110sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="eed85f6a-6253-472c-9f7e-f723ad56e837">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna13"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="20503c32-0c1e-4fca-899c-919e96721ee9"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Nov}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="9083b3c9-4960-48c2-95ec-6bea9ed572b6">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3011}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+		($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3110}) || $F{data_fine_fase}.toString().contains($P{date3011sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3011}) || $P{monitoringDateString}.contains($P{date3011sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="449b7e6d-cad1-4931-8b21-d0ce4c535ea5">
+										<printWhenExpression><![CDATA[$P{date3011}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+		($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3110}) || $F{data_fine_fase_eff}.toString().contains($P{date3011sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3011}) || $P{monitoringDateString}.contains($P{date3011sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="27" uuid="1895cd22-c7bf-4569-83ad-70b6135e3b40">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna14"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="bd8fad45-4c0d-43c2-b777-a051553edecc"/>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Dic}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<staticText>
+									<reportElement positionType="Float" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="27" height="15" backcolor="#B8B8B8" uuid="5205a5d6-b7ce-430a-82be-79701924a508">
+										<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+										<printWhenExpression><![CDATA[$P{date3112}.compareTo( $F{data_inizio_fase} ) != -1 &&  
+(
+	($F{data_fine_fase} !=null && ($F{data_fine_fase}.after($P{date3011}) || $F{data_fine_fase}.toString().contains($P{date3112sql})) ) || 
+	($F{data_fine_fase} == null && ($P{monitoringDate}.after( $P{date3112}) || $P{monitoringDateString}.contains($P{date3112sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.1" lineColor="#767171"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+								<staticText>
+									<reportElement positionType="Float" mode="Opaque" x="0" y="15" width="27" height="15" backcolor="#A8A5A5" uuid="e4d03ab7-49bd-4d7b-aadb-14aadd0e0214">
+										<printWhenExpression><![CDATA[$P{date3112}.compareTo( $F{data_inizio_fase_eff} ) != -1 &&  
+(
+	($F{data_fine_fase_eff} !=null && ($F{data_fine_fase_eff}.after($P{date3011}) || $F{data_fine_fase_eff}.toString().contains($P{date3112sql})) ) || 
+	($F{data_fine_fase_eff} == null && ($P{monitoringDate}.after( $P{date3112}) || $P{monitoringDateString}.contains($P{date3112sql}))	)
+)]]></printWhenExpression>
+									</reportElement>
+									<text><![CDATA[ ]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</frame>
+		</band>
+		<band height="60">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[! MID($P{monitoringDateString},7,5).equals("12-31") && $P{exposeIndicator}.equals("Y")]]></printWhenExpression>
+			<frame>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" backcolor="#FF110D" uuid="2fb40df8-f285-47bf-beef-e6aa92e9fbca">
+					<property name="com.jaspersoft.studio.element.name" value="Frame Indicatori"/>
+				</reportElement>
+				<componentElement>
+					<reportElement x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="0c998237-5dde-4d6c-9e63-3141d5942974">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+						<property name="com.jaspersoft.studio.element.name" value="Indicatori"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetIndicatori" uuid="b1fea940-2536-4691-ab52-574d3437ea29">
+							<datasetParameter name="workEffortId">
+								<datasetParameterExpression><![CDATA[$F{id_obiettivo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date3112sql">
+								<datasetParameterExpression><![CDATA[$P{date3112sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date0101sql">
+								<datasetParameterExpression><![CDATA[$P{date0101sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDateString">
+								<datasetParameterExpression><![CDATA[$P{monitoringDateString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDate">
+								<datasetParameterExpression><![CDATA[$P{monitoringDate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="FROMAT">
+								<datasetParameterExpression><![CDATA[$P{FORMAT}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="556" uuid="e4f3b4cf-3bd8-4c7b-9825-856d9c97a4cb">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="556" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="5d5d9d6b-a98d-4152-8317-80a38e4dbd6b"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Indicatore}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:columnFooter>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="556" height="15" uuid="a955b229-4730-4b27-9be6-63191877b3b9"/>
+									<textFieldExpression><![CDATA[$F{nome_indicatore}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="38" uuid="520a413b-cdaa-4b93-89e3-4fd3389983e2">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="38" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="ac094bb5-dd93-4536-8ee7-e91ac67cd71e"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Udm}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="38" height="15" uuid="b8ef45b4-c5b3-404c-aabd-117d2df4da2a"/>
+									<textFieldExpression><![CDATA[$F{udm}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="208" uuid="7e2ebbcc-be3f-4bad-9ee8-319cfdce7d52">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="208" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="fa59c0d4-e658-42bb-80e6-5273b610792c"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Atteso} + " " + YEAR($P{monitoringDate})]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="208" height="15" uuid="a05e2972-7dfc-4a8a-97c8-ad40d9606b32"/>
+									<textFieldExpression><![CDATA[($F{tipo_udm}.equals("DATE_MEASURE")) ? com.mapsengineering.base.birt.util.UtilDateTime.numberConvertToDate($F{budget_valore_numerico}, $P{REPORT_LOCALE}.getDefault()) : 
+( ($F{tipo_udm}.equals("RATING_SCALE")) ? $F{budget_valore_stringa}:
+(String.format("%.2f", (double)$F{budget_valore_numerico}))
+)]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</frame>
+		</band>
+		<band height="60">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[MID($P{monitoringDateString},7,5).equals("12-31") && $P{exposeIndicator}.equals("Y")]]></printWhenExpression>
+			<frame>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" backcolor="#18F52F" uuid="95cdf97f-d323-47ac-a4e1-36b07c67ef50">
+					<property name="com.jaspersoft.studio.element.name" value="Frame Indicatori 31_12"/>
+				</reportElement>
+				<componentElement>
+					<reportElement x="0" y="0" width="802" height="30" isRemoveLineWhenBlank="true" uuid="85c73303-e882-4ccd-8d1d-25b5fd1d8225">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+						<property name="com.jaspersoft.studio.element.name" value="Indicatori 31_12"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="DatasetIndicatori" uuid="bc54eaf0-3039-4fdc-96b5-72cafb85e178">
+							<datasetParameter name="workEffortId">
+								<datasetParameterExpression><![CDATA[$F{id_obiettivo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date3112sql">
+								<datasetParameterExpression><![CDATA[$P{date3112sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="date0101sql">
+								<datasetParameterExpression><![CDATA[$P{date0101sql}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDateString">
+								<datasetParameterExpression><![CDATA[$P{monitoringDateString}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="monitoringDate">
+								<datasetParameterExpression><![CDATA[$P{monitoringDate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="FROMAT">
+								<datasetParameterExpression><![CDATA[$P{FORMAT}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="556" uuid="776eb2be-0d5e-45b1-96d6-29430a739a2c">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna1"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableHeader>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:tableFooter>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="556" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="916fc3d2-e964-44a6-9726-73a574c0daa1"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Indicatore}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</jr:columnFooter>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="556" height="15" uuid="4b8cd438-ce2f-42a8-94b3-a777aa3dd8ae"/>
+									<textFieldExpression><![CDATA[$F{nome_indicatore}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="38" uuid="3647b1dc-a29a-4345-8f82-f61cc0860a5c">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna2"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="38" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="e2ac383e-6470-4423-a3c7-bd9ffa0f88e2"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Udm}]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="38" height="15" uuid="f0ab162c-222b-4502-9e08-d4c81f301b7c"/>
+									<textFieldExpression><![CDATA[$F{udm}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="104" uuid="70112de8-f9b8-4357-a6dd-b1885d0a64f5">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna3"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="104" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="23ea5bc9-f1b3-4690-9fbb-8c712f7647a4"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Atteso} + " " + YEAR($P{monitoringDate})]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="104" height="15" uuid="7baba5aa-7c48-4759-9e9b-2eda5e419362"/>
+									<textFieldExpression><![CDATA[($F{tipo_udm}.equals("DATE_MEASURE")) ? com.mapsengineering.base.birt.util.UtilDateTime.numberConvertToDate($F{budget_valore_numerico}, $P{REPORT_LOCALE}.getDefault()) : 
+( ($F{tipo_udm}.equals("RATING_SCALE")) ? $F{budget_valore_stringa}:
+(String.format("%.2f", (double)$F{budget_valore_numerico}))
+)]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="104" uuid="535fe81f-7c77-4d9d-a28e-a8338b7848f1">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Colonna4"/>
+							<jr:tableHeader style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:tableFooter style="Table 1_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="Table 1_CH" height="15" rowSpan="1">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="104" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="94bcc84b-e000-4970-bdcb-819f6363e26e"/>
+									<textElement>
+										<font isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$R{Consuntivo}+ " " + YEAR($P{monitoringDate})]]></textFieldExpression>
+								</textField>
+							</jr:columnHeader>
+							<jr:columnFooter style="Table 1_CH" height="0" rowSpan="1"/>
+							<jr:detailCell style="Table 1_TD" height="15">
+								<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="104" height="15" uuid="6bc47ce8-bc43-49d3-845b-81f3e9a1e852"/>
+									<textFieldExpression><![CDATA[($F{tipo_udm}.equals("DATE_MEASURE")) ? com.mapsengineering.base.birt.util.UtilDateTime.numberConvertToDate($F{actual_valore_numerico}, $P{REPORT_LOCALE}.getDefault()) : 
+( ($F{tipo_udm}.equals("RATING_SCALE")) ? $F{actual_valore_stringa}:
+(String.format("%.2f", (double)$F{actual_valore_numerico}))
+)]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,30 @@
+<div *ngIf="visibleDialogDisable" class="d-flex" style="width: 90%; flex-direction: row;  justify-content: center;">
+  <div style="width: 40%; display:flex; justify-content: center;">
+    <i class="pi pi-shield" style="font-size: 80px; color: red; position: absolute; top: 40%;"></i>
+  </div>
+  <div style="width: 60%">
+    <h3>Two Factory Authentication Abilitata</h3>
+    <h5>Sei sicuro di volerla disabilitare?</h5>
+    <div class="mt-4 d-flex " style="gap: 5px;">
+      <gzoom-button label="{{ 'Disable' | i18n }}" (click)="disable()"></gzoom-button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="visibleDialogDisableConfirm" class="d-flex"
+     style="width: 90%; flex-direction: row;  justify-content: center;">
+  <div style="width: 30%; display:flex; justify-content: center;">
+    <i class="pi pi-shield" style="font-size: 80px; color: red; position: absolute; top: 40%;"></i>
+  </div>
+  <div style="width: 70%">
+    <h3>Two Factory Authentication Disabilitata</h3>
+    <div class="mt-4 d-flex " style="gap: 5px;">
+      <gzoom-button label="{{ 'Closed' | i18n }}" (click)="close()"></gzoom-button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="error" style="width: 100%" class="alert alert-danger" role="alert">
+  {{ error | i18n }}
+</div>

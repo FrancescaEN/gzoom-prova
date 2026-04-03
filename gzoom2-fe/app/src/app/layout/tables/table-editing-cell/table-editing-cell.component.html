@@ -1,0 +1,1082 @@
+<p-table
+  #dtec
+  [value]="gridArray"
+  responsiveLayout="scroll"
+  [rowHover]="true"
+  [paginator]="true"
+  [rows]="50"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [sortOrder]="1"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  dataKey="variableGridArray.id"
+  editMode="row"
+  [filterDelay]="0"
+  ariaLabel="Table"
+  [globalFilterFields]="filterArray"
+  role="table"
+  [selection]="selectedItem"
+  [selectionMode]="selectionMode"
+  (selectionChange)="onSelectionChange($event)"
+  [selectAll]="selectAll"
+  [totalRecords]="totalRecords"
+  (onRowSelect)="onRowSelect($event)"
+  (onRowUnselect)="onRowUnselect($event)"
+  (sortFunction)="customSort($event)"
+  [customSort]="true"
+  (selectAllChange)="onSelectAllChange($event)"
+  [scrollable]="true"
+  [scrollHeight]="scrollHeight"
+  [loading]="loading"
+  stateStorage="session"
+  [stateKey]="stateKey()"
+  (onFilter)="onFilter($event)"
+>
+  <!--Header of the table-->
+  <ng-template pTemplate="header">
+    <!--First header of th table-->
+    <tr class="header-title">
+      <!--Empty Cell for Checkbox Style-->
+      <th *ngIf="selectedOn" style="width: 3vw"></th>
+
+      <!--Title of specific column-->
+      <th
+        *ngFor="let head of headArray"
+        [ngStyle]="{
+          display: head.display,
+          height: '3em',
+          'min-width': head.width,
+        }"
+        pSortableColumn="{{ head.fieldName }}"
+        attr.aria-label="{{ head.fieldName | i18n }}"
+        role="columnheader"
+      >
+        <div class="header-title-container" role="figure">
+          <!--Icon flag for multiple language-->
+          <app-icon-custom
+            *ngIf="flag && head.flag"
+            [path]="head.pathIconFlag"
+          ></app-icon-custom>
+
+          <!--Name of column-->
+          <p class="header-title-label" pTooltip="{{ head.tooltip }}">
+            {{ (head.head | i18n) + (head.required ? "*" : "") }}
+          </p>
+
+          <!--Icon sort-->
+          <p-sortIcon
+            *ngIf="head.head !== '' && head.sortIcon != false"
+            field="{{ head.fieldName }}"
+          ></p-sortIcon>
+        </div>
+      </th>
+    </tr>
+
+    <!--Second header of th table-->
+    <tr class="header-filter" [ngStyle]="{ display: headDisplay }">
+      <!--Checkbox for select all records-->
+      <th
+        *ngIf="selectedOn"
+        class="d-flex justify-content-center"
+        style="height: 4em"
+      >
+        <p-tableHeaderCheckbox
+          class="checkBoxTableCellHeader"
+        ></p-tableHeaderCheckbox>
+      </th>
+
+      <!--Filter-->
+      <th
+        *ngFor="let head of headArray; trackBy: index"
+        [ngStyle]="{
+          display: head.display,
+          height: '4em',
+          'min-width': head.width,
+          'max-width': head.width,
+          width: head.width,
+        }"
+        ariaLabel="Filter"
+        attr.aria-label="{{ 'Filter' | i18n }}"
+        role="columnheader"
+      >
+        <!--Dropdown filter with auto-populated array-->
+        <div
+          *ngIf="head.filter == headFilter.dropdownFilter"
+          attr.aria-label="{{ 'Dropdown filter' | i18n }}"
+        >
+          <p-columnFilter
+            field="{{ head.fieldName }}"
+            [matchMode]="'isNull'"
+            [showMenu]="false"
+          >
+            <ng-template
+              let-filterValue
+              pTemplate="filter"
+              let-filter="filterCallback"
+            >
+              <p-dropdown
+                [(ngModel)]="filterValue"
+                [options]="typeDropdownFilterArray.get(head.fieldName)"
+                [disabled]="head.dropdown.disabled"
+                (onChange)="filter($event.value)"
+                (onShow)="reloadDropdown(head.fieldName, item)"
+                placeholder="{{ 'Any' | i18n }}"
+                [style]="{ maxWidth: '100%' }"
+                [showClear]="true"
+                [filter]="true"
+              >
+                <ng-template let-option pTemplate="item">
+                  <span>{{ option.label }}</span>
+                </ng-template>
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </div>
+
+        <!--Dropdown filter with custom populated array-->
+        <div
+          *ngIf="head.filter == headFilter.dropdownFilterCustom"
+          attr.aria-label="{{ 'Dropdown filter' | i18n }}"
+        >
+          <p-columnFilter
+            field="{{ head.fieldName }}"
+            [matchMode]="equals"
+            [showMenu]="false"
+          >
+            <ng-template
+              let-filterValue
+              pTemplate="filter"
+              let-filter="filterCallback"
+            >
+              <p-dropdown
+                appendTo="body"
+                [(ngModel)]="filterValue"
+                [options]="typeDropdownInputArray.get(head.fieldName)"
+                (onChange)="filter($event.value)"
+                [showClear]="true"
+              >
+                <ng-template let-option pTemplate="item">
+                  <span>{{ option.label }}</span>
+                </ng-template>
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </div>
+
+        <!--Dropdown filter with custom populated array whit head.dropdown-->
+        <div
+          *ngIf="head.dropdown && !head.filter"
+          attr.aria-label="{{ 'Dropdown filter' | i18n }}"
+        >
+          <p-columnFilter
+            field="{{ head.fieldName }}"
+            [matchMode]="equals"
+            [showMenu]="false"
+          >
+            <ng-template
+              let-filterValue
+              pTemplate="filter"
+              let-filter="filterCallback"
+            >
+              <p-dropdown
+                appendTo="body"
+                optionLabel="label"
+                optionValue="id"
+                [(ngModel)]="filterValue"
+                [options]="head.dropdown.item"
+                [filter]="true"
+                (onChange)="filter($event.value)"
+                (onShow)="reloadDropdown(head.fieldName, item)"
+                [showClear]="true"
+                [style]="{ maxWidth: '100%' }"
+                placeholder="{{ 'Any' | i18n }}"
+              >
+                <ng-template let-option pTemplate="item">
+                  <span>{{ option.label }}</span>
+                </ng-template>
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </div>
+
+        <!-- Date filter -->
+        <div
+          *ngIf="head.filter == headFilter.dateFilter"
+          attr.aria-label="{{ 'Date Filter' | i18n }}"
+          ariaLabel="text filter"
+          style="width: 100%"
+          class="d-flex align-items-center"
+        >
+          <p-columnFilter
+            type="date"
+            [matchMode]="'equals'"
+            field="{{ head.fieldName }}"
+            [showMenu]="false"
+            [showClear]="true"
+            placeholder="{{ 'Search' | i18n }}"
+            style="width: 100%"
+          >
+          </p-columnFilter>
+        </div>
+
+        <!--Text filter-->
+        <div
+          *ngIf="head.filter == headFilter.textFilter"
+          attr.aria-label="{{ 'Text Filter' | i18n }}"
+          ariaLabel="text filter"
+        >
+          <p-columnFilter
+            type="text"
+            field="{{ head.fieldName }}"
+            placeholder="{{ 'Search' | i18n }}"
+            [matchMode]="'contains'"
+          >
+          </p-columnFilter>
+        </div>
+
+        <!--Pop-up filter-->
+        <div
+          class="d-flex justify-content-center"
+          *ngIf="head.filter == headFilter.popUpFilter"
+          attr.aria-label="{{ 'Pop Up Filter' | i18n }}"
+          ariaLabel="popup filter"
+          style="display: flex; align-items: center"
+        >
+          <p-button icon="pi pi-filter" (click)="op.toggle($event)"></p-button>
+
+          <p-overlayPanel
+            #op
+            [showCloseIcon]="true"
+            [style]="{ width: head.dropdown ? '200px' : '300px' }"
+          >
+            <ng-container *ngIf="!head.dropdown">
+              <ng-template pTemplate>
+                <p-columnFilter
+                  type="text"
+                  field="{{ head.fieldName }}"
+                  placeholder="{{ 'Search' | i18n }}"
+                >
+                </p-columnFilter>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngIf="head.dropdown">
+              <p-columnFilter
+                field="{{ head.fieldName }}"
+                [matchMode]="equals"
+                [showMenu]="false"
+              >
+                <ng-template pTemplate="filter" let-filter="filterCallback">
+                  <p-dropdown
+                    appendTo="body"
+                    optionValue="label"
+                    [options]="head.dropdown.item"
+                    [filter]="true"
+                    (onChange)="filter($event.value)"
+                    [showClear]="true"
+                    placeholder="{{ 'Any' | i18n }}"
+                  >
+                    <ng-template let-option pTemplate="item">
+                      <span>{{ option.label }}</span>
+                    </ng-template>
+                  </p-dropdown>
+                </ng-template>
+              </p-columnFilter>
+            </ng-container>
+          </p-overlayPanel>
+        </div>
+
+        <!--Global text search filter-->
+        <div
+          *ngIf="head.filter == headFilter.globalFilter"
+          attr.aria-label="{{ 'Search everywhere' | i18n }}"
+          ariaLabel="global filter"
+        >
+          <span class="p-input-icon-left p-ml-auto">
+            <input
+              style="height: 3em; margin-left: 0.5em; margin-right: 0.5em"
+              pInputText
+              type="text"
+              placeholder="{{ 'Search everywhere' | i18n }}"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+            />
+          </span>
+        </div>
+
+        <!--Empty cell-->
+        <div
+          *ngIf="head.filter == headFilter.null"
+          attr.aria-label="{{ 'Empty cell' | i18n }}"
+        ></div>
+      </th>
+    </tr>
+  </ng-template>
+
+  <!--Body of the table-->
+  <ng-template
+    pTemplate="body"
+    let-item
+    let-riRow="rowIndex"
+    let-editing="editing"
+  >
+    <tr class="body-row" style="min-height: 4rem" [pEditableRow]="item">
+      <!--Checkbox to select a single record-->
+      <td *ngIf="selectedOn" style="height: 4em">
+        <p-tableCheckbox
+          class="checkBoxTableCell"
+          [value]="item"
+          attr.aria-label="{{ 'Checkbox' | i18n }}"
+          role="checkbox"
+        ></p-tableCheckbox>
+      </td>
+
+      <!--The cell type changes based on what is set in the headArray-->
+      <td
+        *ngFor="let head of headArray; let index = index"
+        (dblclick)="dblclickRow(item)"
+        [ngStyle]="{
+          display: head.display,
+          width: head.width,
+          'justify-content': head.content,
+          'text-align': head.content,
+          maxWidth: head.width,
+        }"
+        role="cell"
+        style="text-overflow: ellipsis; overflow: hidden"
+        [pEditableColumn]="head.fieldName"
+        pEditableColumnField="{{ head.fieldName }}"
+      >
+        <div *ngIf="head.actionInput == actionInput.null">
+          <!--Output cell for text value-->
+          <div
+            *ngIf="head.actionOutput == actionOutput.outputLabelData"
+            style="margin-left: 0.5em; margin-right: 0.5em"
+            attr.aria-label="{{ 'Record of column' | i18n }}"
+          >
+            <label title="{{ item[head.fieldName] }}">
+              {{ item[head.fieldName] }}
+            </label>
+          </div>
+
+          <!--Output cell for numeric value-->
+          <div
+            *ngIf="
+              head.actionOutput == actionOutput.outputLabelNumber &&
+              item[head.fieldName] != null &&
+              item[head.fieldName] != undefined
+            "
+            style="margin-left: 0.5em; margin-right: 0.5em; text-align: center"
+            attr.aria-label="{{ 'Record of column' | i18n }}"
+          >
+            {{ item[head.fieldName] | formatNumberIT }}
+          </div>
+
+           <!--Output cell for percent numeric value-->
+           <div
+           *ngIf="
+             head.actionOutput == actionOutput.outputLabelPercentNumber &&
+             item[head.fieldName] != null &&
+             item[head.fieldName] != undefined
+           "
+           style="margin-left: 0.5em; margin-right: 0.5em; text-align: center"
+           attr.aria-label="{{ 'Record of column' | i18n }}"
+         >
+           {{ item[head.fieldName] | formatPercentNumberStyle }}
+         </div>
+
+          <!--Cell that show icon-->
+          <div
+            *ngIf="head.actionOutput == actionOutput.icon"
+            style="text-align: center; justify-content: center; display: flex"
+          >
+            <i class="{{ item.variableGridArray.icon.icon }}"></i>
+          </div>
+          <div
+            *ngIf="
+              head.actionOutput == actionOutput.tag &&
+              item.variableGridArray.stateValue
+            "
+          >
+            <p-tag
+              severity="{{ item.variableGridArray.stateSeverity }}"
+              value="{{ item.variableGridArray.stateValue }}"
+            ></p-tag>
+          </div>
+
+          <!--Button for open detail of a specific row-->
+          <div
+            *ngIf="
+              head.actionOutput == actionOutput.actionDetails &&
+              item.variableGridArray.buttonDetails
+            "
+            role="button"
+            attr.aria-label="{{ 'Open details action row' | i18n }}"
+          >
+            <gzoom-button-outlined
+              (click)="onClickButtonDetails(item)"
+              [rounded]="false"
+              [icon]="head.iconDetail ?? 'pi pi-angle-right'"
+            >
+            </gzoom-button-outlined>
+          </div>
+
+          <!--Button for open details menu of a specific row-->
+          <div
+            *ngIf="
+              head.actionOutput == actionOutput.actionDetails &&
+              item.variableGridArray.buttonMultipleDetails
+            "
+            (click)="onClickShareItemEvent(item)"
+            attr.aria-label="{{ 'Open details action row' | i18n }}"
+            style="text-align: center; display: grid; gap: 5px"
+            role="button"
+          >
+            <app-button-slide-menu
+              *ngIf="
+                itemsButtonSlideMenu.length > 0 ||
+                item.variableGridArray.itemsDetail.length > 0
+              "
+              [items]="
+                itemsButtonSlideMenu.length > 0
+                  ? itemsButtonSlideMenu
+                  : item.variableGridArray.itemsDetail
+              "
+            >
+            </app-button-slide-menu>
+
+            <app-button-slide-menu
+              *ngIf="itemsButtonLinkMenu.length > 0"
+              [items]="itemsButtonLinkMenu"
+              icon="pi pi-sitemap"
+            >
+            </app-button-slide-menu>
+          </div>
+
+          <!--Button for upload a file-->
+          <div
+            *ngIf="
+              head.actionOutput == actionOutput.fileUpload &&
+              item.variableGridArray.upload
+            "
+          >
+            <app-upload
+              [auto]="true"
+              [chooseIcon]="'pi pi-upload'"
+              (myUpload)="myUploader($event, item)"
+              [multiple]="true"
+            >
+            </app-upload>
+          </div>
+          <!--Button for select a file-->
+          <div
+            *ngIf="
+              head.actionOutput == actionOutput.selectFile &&
+              item.variableGridArray.selectFile
+            "
+          >
+            <app-dialog-grid-image
+              [selectFile]="selectFile"
+              [header]="'Select image' | i18n"
+              (clickOnShow)="selectFileOpen($event)"
+              (selectedImage)="selectedImageFun($event, item)"
+            ></app-dialog-grid-image>
+          </div>
+        </div>
+
+        <div *ngIf="head.actionInput != actionInput.null" style="width: 100%">
+          <p-cellEditor>
+            <!--Input-->
+            <ng-template pTemplate="input">
+              <!--Dropdown input column-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.dropdownData &&
+                  head.dropdown &&
+                  !(
+                    (head.unique || head.readonly) &&
+                    !item.variableGridArray.id.includes('new')
+                  )
+                "
+              >
+                <p-dropdown
+                  *ngIf="item.variableGridArray.dropdownData"
+                  appendTo="body"
+                  [dropdownIcon]="
+                    head.dropdown.loading
+                      ? 'pi pi-spinner pi-spin'
+                      : 'pi pi-chevron-down'
+                  "
+                  [autofocus]="index == firstIndexInput"
+                  [filter]="true"
+                  [style]="{ minWidth: '100%', maxWidth: '100%' }"
+                  optionLabel="label"
+                  optionValue="id"
+                  [options]="head.dropdown.item"
+                  [(ngModel)]="item[head.dropdown.key]"
+                  placeholder="{{ 'Select' | i18n }}"
+                  [required]="head.required"
+                  [showClear]="head.dropdown.clear"
+                  (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                  (onChange)="
+                    dropdownChanges(head.fieldName, item.variableGridArray.id)
+                  "
+                  [disabled]="
+                    head.dropdown.disableDropdownCommand
+                      ? head.dropdown.disableDropdownCommand(item)
+                      : false
+                  "
+                  (onShow)="reloadDropdown(head.fieldName, item)"
+                  attr.aria-label="{{ 'Select this record' | i18n }}"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                  [virtualScrollItemSize]="head.dropdown.virtualScrollItemSize"
+                  [virtualScroll]="head.dropdown.virtualScroll"
+                >
+                  <ng-template pTemplate="item" let-option>
+                    <span>{{ option.label || "&nbsp;" }}</span>
+                  </ng-template>
+                </p-dropdown>
+                <div
+                  *ngIf="!item.variableGridArray.dropdownData"
+                  style="margin-right: 0.5em"
+                  attr.aria-label="{{ 'Record of column' | i18n }}"
+                >
+                  {{ item[head.fieldName] }}
+                </div>
+              </div>
+
+              <!--Autocomplete Dropdown input column-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.autoCompleteDropdown &&
+                  head.dropdown &&
+                  !(
+                    (head.unique || head.readonly) &&
+                    !item.variableGridArray.id.includes('new')
+                  )
+                "
+              >
+                <p-autoComplete
+                  [(ngModel)]="item[head.dropdown.key]"
+                  [virtualScroll]="true"
+                  appendTo="body"
+                  placeholder="{{ 'minThreeCharsRequired' | i18n }}"
+                  [suggestions]="head.dropdown.item"
+                  [virtualScrollItemSize]="34"
+                  [required]="head.required"
+                  (completeMethod)="
+                    reloadDropdownAutoComplete(head.fieldName, item, $event)
+                  "
+                  [autofocus]="index == firstIndexInput"
+                  field="label"
+                  dataKey="id"
+                  lazy="true"
+                  inputId="id"
+                  showEmptyMessage="true"
+                  [inputStyle]="{
+                    'min-width': head.inputWidth,
+                    position: 'relative',
+                  }"
+                  showClear="item[head.dropdown.key].length > 0"
+                  (ngModelChange)="
+                    autoCompleteDropdownChanges(
+                      head.fieldName,
+                      item.variableGridArray.id
+                    )
+                  "
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                >
+                </p-autoComplete>
+              </div>
+
+              <!--Calendar input column-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.inputDate &&
+                  !(
+                    (head.unique || head.readonly) &&
+                    !item.variableGridArray.id.includes('new')
+                  )
+                "
+              >
+                <p-calendar
+                  #calendar
+                  [ngModel]="item[head.fieldName] | date: dateFormatLabel"
+                  (ngModelChange)="item[head.fieldName] = $event"
+                  [appendTo]="'body'"
+                  placeholder="{{
+                    item[head.fieldName] | date: dateFormatLabel
+                  }}"
+                  [autofocus]="index == firstIndexInput"
+                  [dateFormat]="dateFormat"
+                  (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                  [required]="head.required"
+                  [showClear]="head.clearCalendar"
+                  attr.aria-label="{{ 'Select Date' | i18n }}"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                ></p-calendar>
+              </div>
+
+              <!--Dropdown input-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.dropdownData &&
+                  !head.dropdown &&
+                  !(
+                    (head.unique || head.readonly) &&
+                    !item.variableGridArray.id.includes('new')
+                  )
+                "
+              >
+                <p-dropdown
+                  *ngIf="item.variableGridArray.dropdownData"
+                  appendTo="body"
+                  [autofocus]="index == firstIndexInput"
+                  [dropdownIcon]="
+                    item.dropdown[head.fieldName].loading
+                      ? 'pi pi-spinner pi-spin'
+                      : 'pi pi-chevron-down'
+                  "
+                  [filter]="true"
+                  optionLabel="label"
+                  optionValue="id"
+                  [style]="{ minWidth: '100%', maxWidth: '100%' }"
+                  [options]="item.dropdown[head.fieldName].item"
+                  [(ngModel)]="item[item.dropdown[head.fieldName].key]"
+                  placeholder="{{ 'Select' | i18n }}"
+                  [required]="head.required"
+                  [showClear]="item.dropdown[head.fieldName].clear"
+                  (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                  (onChange)="
+                    dropdownChangesRow(
+                      head.fieldName,
+                      item.variableGridArray.id
+                    )
+                  "
+                  (onShow)="reloadDropdownRow(head.fieldName, item)"
+                  attr.aria-label="{{ 'Select this record' | i18n }}"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                >
+                  <ng-template pTemplate="item" let-option>
+                    <span>{{ option.label || "&nbsp;" }}</span>
+                  </ng-template>
+                </p-dropdown>
+                <div
+                  *ngIf="!item.variableGridArray.dropdownData"
+                  style="margin-right: 0.5em"
+                  attr.aria-label="{{ 'Record of column' | i18n }}"
+                >
+                  {{ item[head.fieldName] }}
+                </div>
+              </div>
+
+              <!--Label text input-->
+              <div
+                *ngIf="
+                  ((head.actionInput == actionInput.inputLabeldata &&
+                    item.variableGridArray.inputLabeldata) ||
+                    (item.variableGridArray.inputNew &&
+                      head.actionInput == actionInput.outputData)) &&
+                  !(
+                    (head.unique || head.readonly) &&
+                    !item.variableGridArray.id.includes('new')
+                  )
+                "
+                class="d-flex"
+              >
+                <input
+                  pInputText
+                  pAutoFocus
+                  [autofocus]="index === firstIndexInput"
+                  type="text"
+                  maxlength="{{ head.textLength }}"
+                  style="width: 100%"
+                  [(ngModel)]="item[head.fieldName]"
+                  (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                  attr.aria-label="{{ 'Input data here' | i18n }}"
+                  [required]="head.required"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                />
+                <div
+                  *ngIf="!item.variableGridArray.inputLabeldata"
+                  style="margin-right: 0.5em"
+                  attr.aria-label="{{ 'Record of column' | i18n }}"
+                >
+                  {{ item[head.fieldName] }}
+                </div>
+              </div>
+
+              <!--HTML text editor input-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.inputHTML &&
+                  item.variableGridArray.isHtml
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                class="d-flex"
+              >
+                <app-text-editor
+                  [text]="item[head.fieldName]"
+                  (shareText)="
+                    item[head.fieldName] = $event;
+                    onTimeChange(item.variableGridArray.id)
+                  "
+                  [settings]="'standard'"
+                  [readonly]="false"
+                  [showOnlyText]="false"
+                  [width]="head.width"
+                  [required]="head.required"
+                ></app-text-editor>
+              </div>
+
+              <!--Label number input-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.inputLabelNumber &&
+                  item.variableGridArray.inputLabelNumber
+                "
+                style="
+                  margin-left: 0.5em;
+                  margin-right: 0.5em;
+                  text-align: center;
+                  width: 100%;
+                  display: table-row;
+                "
+              >
+                <p-inputNumber
+                  pInputNumber
+                  [autofocus]="index == firstIndexInput"
+                  [(ngModel)]="item[head.fieldName]"
+                  [ngStyle]="{ width: '100%' }"
+                  (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                  (onInput)="onTimeChange(item.variableGridArray.id)"
+                  type="number"
+                  size="2"
+                  pInputMask="9*"
+                  [required]="head.required"
+                  attr.aria-label="{{ 'Input data here' | i18n }}"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                ></p-inputNumber>
+              </div>
+
+              <!--Label decimal number input-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.inputLabelDecimalNumber &&
+                  item.variableGridArray.inputLabelDecimalNumber
+                "
+                style="
+                  text-align: center;
+                  margin-left: 0.5em;
+                  margin-right: 0.5em;
+                "
+              >
+                <p-inputNumber
+                  pInputNumber
+                  [(ngModel)]="item[head.fieldName]"
+                  [autofocus]="index == firstIndexInput"
+                  (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                  (onInput)="onTimeChange(item.variableGridArray.id)"
+                  [inputStyle]="{
+                    width: '100%',
+                  }"
+                  mode="decimal"
+                  [minFractionDigits]="item.variableGridArray.minFractionDigits"
+                  [maxFractionDigits]="item.variableGridArray.maxFractionDigits"
+                  [required]="head.required"
+                  attr.aria-label="{{ 'Input data here' | i18n }}"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                ></p-inputNumber>
+              </div>
+
+              <!--Label percent decimal number input-->
+              <div
+                *ngIf="
+                  head.actionInput == actionInput.inputLabelPercentDecimalNumber &&
+                  item.variableGridArray.inputLabelPercentDecimalNumber
+                "
+                style="
+                  text-align: center;
+                  margin-left: 0.5em;
+                  margin-right: 0.5em;
+                "
+              >
+                <p-inputNumber
+                  pInputNumber
+                  [(ngModel)]="item[head.fieldName]"
+                  [autofocus]="index == firstIndexInput"
+                  (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                  (onInput)="onTimeChange(item.variableGridArray.id)"
+                  [inputStyle]="{
+                    width: '100%',
+                  }"
+                  mode="decimal"
+                  inputId="percent"
+                  suffix=" %"
+                  [minFractionDigits]="item.variableGridArray.minFractionDigits"
+                  [maxFractionDigits]="item.variableGridArray.maxFractionDigits"
+                  [required]="head.required"
+                  attr.aria-label="{{ 'Input data here' | i18n }}"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                ></p-inputNumber>
+              </div>
+
+              <div
+                *ngIf="head.actionInput == actionInput.outputList"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                <ul>
+                  <li *ngFor="let item of item[head.fieldName]">{{ item }}</li>
+                </ul>
+              </div>
+
+              <!--Notes input-->
+              <div
+                *ngIf="
+                  (head.actionInput == actionInput.inputNotes &&
+                    item.variableGridArray.inputNotes) ||
+                  (head.actionInput == actionInput.inputHTML &&
+                    !item.variableGridArray.isHtml)
+                "
+                class="d-flex justify-content-center w-full"
+              >
+                <textarea
+                  style="width: 100%"
+                  maxlength="{{ head.textLength }}"
+                  pInputTextarea
+                  pAutoFocus
+                  [autofocus]="index == firstIndexInput"
+                  autoResize="autoResize"
+                  attr.aria-label="{{ 'Input data here' | i18n }}"
+                  [(ngModel)]="item[head.fieldName]"
+                  (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                  (onInput)="onTimeChange(item.variableGridArray.id)"
+                  [required]="head.required"
+                  (keydown.ArrowRight)="doNothing($event)"
+                  (keydown.ArrowLeft)="doNothing($event)"
+                  (keydown.ArrowDown)="doNothing($event)"
+                  (keydown.ArrowUp)="doNothing($event)"
+                ></textarea>
+              </div>
+
+              <!--To show an uneditable value when the row goes into editing mode-->
+              <div
+                *ngIf="
+                  (head.actionInput == actionInput.outputData &&
+                    item.variableGridArray.outputData) ||
+                  ((head.unique || head.readonly) &&
+                    !item.variableGridArray.id.includes('new'))
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                @if (head.actionOutput == actionOutput.outputDate) {
+                  {{
+                    item[head.fieldName]
+                      | date
+                        : (item.variableGridArray.dateFormat
+                            ? item.variableGridArray.dateFormat
+                            : dateFormatLabel)
+                  }}
+                } @else if (
+                  head.actionOutput == actionOutput.outputDialogNote
+                ) {
+                  {{
+                    item[head.fieldName].substring(0, head.textLength) +
+                      (item[head.fieldName].length > head.textLength
+                        ? "..."
+                        : "")
+                  }}
+                } @else if (
+                  head.actionOutput == actionOutput.outputLabelPercentNumber){
+                  {{ item[head.fieldName] | formatPercentNumberStyle }}
+                } @else {
+                  {{ item[head.fieldName] }}
+                }
+              </div>
+            </ng-template>
+
+            <!--Output-->
+            <ng-template pTemplate="output">
+              <!--Output cell for text value-->
+              <div
+                *ngIf="head.actionOutput == actionOutput.outputLabelData"
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                <label
+                  title="{{ item[head.fieldName] }}"
+                  pTooltip="{{ item[head.fieldName] }}"
+                >
+                  {{ item[head.fieldName] }}
+                </label>
+              </div>
+
+              <!--Output cell for HTML value-->
+              @if (
+                head.actionOutput === actionOutput.outputHTML &&
+                item.variableGridArray.isHtml
+              ) {
+                <div
+                  style="margin-left: 0.5em; margin-right: 0.5em"
+                  attr.aria-label="{{ 'Record of column' | i18n }}"
+                >
+                  <app-text-editor
+                    [text]="item[head.fieldName]"
+                    [settings]="'standard'"
+                    [readonly]="true"
+                    [showOnlyText]="true"
+                    [width]="head.width"
+                    (keydown.ArrowRight)="doNothing($event)"
+                    (keydown.ArrowLeft)="doNothing($event)"
+                    (keydown.ArrowDown)="doNothing($event)"
+                    (keydown.ArrowUp)="doNothing($event)"
+                  ></app-text-editor>
+                </div>
+              } @else if (
+                head.actionOutput === actionOutput.outputHTML &&
+                !item.variableGridArray.isHtml
+              ) {
+                <div attr.aria-label="{{ 'Record of column' | i18n }}">
+                  {{ item[head.fieldName] }}
+                </div>
+              }
+
+              <!--Output cell for Text Area-->
+              <div
+                *ngIf="
+                  head.actionOutput == actionOutput.outputDialogNote &&
+                  item[head.fieldName] != null &&
+                  item[head.fieldName] != undefined
+                "
+                style="
+                  margin-left: 0.5em;
+                  margin-right: 0.5em;
+                  display: flex;
+                  gap: 5px;
+                  justify-content: space-between;
+                "
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                {{
+                  item[head.fieldName].substring(0, head.textLength) +
+                    (item[head.fieldName].length > head.textLength ? "..." : "")
+                }}
+                @if (item[head.fieldName].length > head.textLength) {
+                  <gzoom-button-link
+                    icon="pi pi-eye"
+                    (onClick)="
+                      openOutputDialog(item[head.fieldName], head.head)
+                    "
+                  ></gzoom-button-link>
+                }
+              </div>
+
+              <!--Output cell for numeric value-->
+              <div
+                *ngIf="
+                  head.actionOutput == actionOutput.outputLabelNumber &&
+                  item[head.fieldName] != null &&
+                  item[head.fieldName] != undefined
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                {{ item[head.fieldName] | formatNumberIT }}
+              </div>
+
+              <!--Output cell for percent numeric value-->
+              <div
+                *ngIf="
+                  head.actionOutput == actionOutput.outputLabelPercentNumber &&
+                  item[head.fieldName] != null &&
+                  item[head.fieldName] != undefined
+                "
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                {{ item[head.fieldName] | formatPercentNumberStyle }}
+              </div>
+
+              <!--Output cell for big text value-->
+              <div
+                *ngIf="head.actionOutput == actionOutput.outputNotes"
+                style="white-space: pre-wrap"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                {{ item[head.fieldName] }}
+              </div>
+              <div
+                *ngIf="head.actionOutput == actionOutput.outputList"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                <ul>
+                  <li *ngFor="let item of item[head.fieldName]">{{ item }}</li>
+                </ul>
+              </div>
+
+              <!--Output cell for Date value-->
+              <div
+                *ngIf="head.actionOutput == actionOutput.outputDate"
+                style="margin-left: 0.5em; margin-right: 0.5em"
+                attr.aria-label="{{ 'Record of column' | i18n }}"
+              >
+                <label title="{{ item[head.fieldName] }}">
+                  {{
+                    item[head.fieldName]
+                      | date
+                        : (item.variableGridArray.dateFormat
+                            ? item.variableGridArray.dateFormat
+                            : dateFormatLabel)
+                  }}
+                </label>
+              </div>
+            </ng-template>
+          </p-cellEditor>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <!--Message that appears when the table is empty-->
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell" style="justify-content: center">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  [header]="titleOutputDialog"
+  [modal]="true"
+  [(visible)]="textOutputDialog && titleOutputDialog"
+  [style]="{ width: '40rem', margin: '5rem' }"
+>
+  <p>{{ textOutputDialog }}</p>
+</p-dialog>

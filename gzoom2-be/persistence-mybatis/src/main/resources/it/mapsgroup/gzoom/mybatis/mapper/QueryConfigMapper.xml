@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.QueryConfigMapper">
+    <select id="selectByActiveTrueOrderByQueryCode" resultMap="queryConfig" parameterType="java.util.Map">
+        SELECT * FROM QUERY_CONFIG
+        WHERE QUERY_ACTIVE = 'Y'
+        <if test="queryType">
+            AND ( QUERY_TYPE = #{queryType}
+            <if test='queryType == "E"'>
+                <!--Condition added to extract print
+                type extractions from menu items that
+                extract extraction type extractions (GN-6472)-->
+                OR QUERY_TYPE = 'T'
+            </if>
+                  )
+        </if>
+
+        <if test="parentTypeId != null">
+            AND QUERY_CTX = #{parentTypeId}
+            <if test="filter.isOrgMgr or filter.isSup or filter.isTop or !(filter.isFullAdmin or filter.isView)">
+                AND QUERY_PUBLIC = 'Y'
+            </if>
+        </if>
+        ORDER BY QUERY_CODE
+    </select>
+</mapper>

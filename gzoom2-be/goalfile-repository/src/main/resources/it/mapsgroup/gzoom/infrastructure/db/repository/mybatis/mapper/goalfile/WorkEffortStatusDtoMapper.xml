@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.mapper.goalfile.WorkEffortStatusDtoMapper">
+    <resultMap id="StatusItemDto" type="it.mapsgroup.gzoom.infrastructure.goalfile.dto.StatusItemDto">
+        <id column="status_id" property="statusId"/>
+
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="sequence_id" property="sequenceId" jdbcType="VARCHAR" />
+
+        <association property="statusType" javaType="it.mapsgroup.gzoom.infrastructure.goalfile.dto.StatusTypeDto">
+            <result column="status_type_id" property="statusTypeId"/>
+            <result column="parent_type_id" property="parentTypeId"/>
+            <result column="type_description" property="description" />
+            <result column="phase_st_enum_id" property="phaseStEnumId" />
+            <result column="phase_st_enum_code" property="phaseStEnumCode" />
+        </association>
+    </resultMap>
+
+    <resultMap id="StatusItemChangeDto" type="it.mapsgroup.gzoom.infrastructure.goalfile.dto.StatusItemChangeDto">
+        <id column="from_status_id" property="statusItemFrom.statusId"/>
+        <id column="status_id" property="statusItemTo.statusId"/>
+        <id column="direction_code" property="directionCode"/>
+        <association property="statusItemFrom" resultMap="StatusItemDto" columnPrefix="from_"/>
+        <association property="statusItemTo" resultMap="StatusItemDto"/>
+    </resultMap>
+
+    <select id="selectStatusById" resultMap="StatusItemDto">
+        SELECT SI.STATUS_ID,
+               SI.DESCRIPTION,
+               SI.DESCRIPTION_LANG,
+               ST.DESCRIPTION AS TYPE_DESCRIPTION,
+               ST.PARENT_TYPE_ID,
+               ST.STATUS_TYPE_ID,
+<!--               ST.PHASE_ST_ENUM_ID,-->
+<!--               EN.ENUM_CODE,-->
+               SI.SEQUENCE_ID
+        FROM
+            STATUS_ITEM SI
+                INNER JOIN STATUS_TYPE ST
+                           ON ST.STATUS_TYPE_ID = SI.STATUS_TYPE_ID
+<!--                LEFT OUTER JOIN ENUMERATION EN ON EN.ENUM_ID = ST.PHASE_ST_ENUM_ID-->
+        WHERE SI.STATUS_ID = #{id, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAvailableGoalStatus" resultMap="StatusItemChangeDto">
+        SELECT
+            STATUS_ID_FROM as FROM_STATUS_ID,
+            STATUS_ID,
+            DESCRIPTION,
+            DESCRIPTION_LANG,
+            STATUS_TYPE_ID,
+            TYPE_DESCRIPTION,
+<!--            PHASE_ST_ENUM_ID,-->
+            SEQUENCE_ID,
+            DIRECTION_CODE,
+            ORD
+        from
+            (
+                SELECT
+                    SVC.STATUS_ID_TO as STATUS_ID_FROM,
+                    SI.STATUS_ID,
+                    SI.DESCRIPTION,
+                    SI.DESCRIPTION_LANG,
+                    ST.STATUS_TYPE_ID,
+                    ST.DESCRIPTION as TYPE_DESCRIPTION,
+<!--                    ST.PHASE_ST_ENUM_ID,-->
+                    SI.SEQUENCE_ID,
+                    'B' AS DIRECTION_CODE,
+                    1 AS ORD
+                FROM
+                    STATUS_VALID_CHANGE SVC
+                    INNER JOIN STATUS_ITEM SI ON SI.STATUS_ID = SVC.STATUS_ID
+                    INNER JOIN STATUS_TYPE ST ON ST.STATUS_TYPE_ID = SI.STATUS_TYPE_ID
+                    INNER JOIN WORK_EFFORT_STATUS WES ON WES.STATUS_ID = SI.STATUS_ID
+                WHERE
+                    SVC.STATUS_ID_TO = #{statusId, jdbcType=VARCHAR}
+                    AND WES.WORK_EFFORT_ID = #{workEffortId, jdbcType=VARCHAR}
+                ORDER BY
+                    WES.STATUS_DATETIME DESC
+            ) t1
+        UNION all
+        select
+            STATUS_ID_FROM as FROM_STATUS_ID,
+            STATUS_ID,
+            DESCRIPTION,
+            DESCRIPTION_LANG,
+            STATUS_TYPE_ID,
+            TYPE_DESCRIPTION,
+<!--            PHASE_ST_ENUM_ID,-->
+            SEQUENCE_ID,
+            DIRECTION_CODE,
+            ORD
+        from
+            (
+                SELECT
+                    SVC.STATUS_ID as STATUS_ID_FROM,
+                    SVC.STATUS_ID_TO as STATUS_ID,
+                    SI.DESCRIPTION,
+                    SI.DESCRIPTION_LANG,
+                    ST.STATUS_TYPE_ID,
+                    ST.DESCRIPTION as TYPE_DESCRIPTION,
+<!--                    ST.PHASE_ST_ENUM_ID,-->
+                    SI.SEQUENCE_ID,
+                    'F' AS DIRECTION_CODE,
+                    2 AS ORD
+                FROM
+                    STATUS_VALID_CHANGE SVC
+                    INNER JOIN STATUS_ITEM SI ON SI.STATUS_ID = SVC.STATUS_ID_TO
+                    INNER JOIN STATUS_TYPE ST ON ST.STATUS_TYPE_ID = SI.STATUS_TYPE_ID
+                    INNER JOIN WORK_EFFORT_TYPE_STATUS WTS ON WTS.CURRENT_STATUS_ID = SVC.STATUS_ID
+                    INNER JOIN WORK_EFFORT WE ON WE.WORK_EFFORT_TYPE_ID = WTS.WORK_EFFORT_TYPE_ROOT_ID
+                WHERE
+                    SVC.STATUS_ID = #{statusId, jdbcType=VARCHAR}
+                    AND WE.WORK_EFFORT_ID = #{workEffortId, jdbcType=VARCHAR}
+            ) t2
+        ORDER BY ORD, STATUS_TYPE_ID, SEQUENCE_ID;
+    </select>
+
+    <insert id="createWorkEffortStatus">
+        INSERT INTO WORK_EFFORT_STATUS (
+            WORK_EFFORT_ID,
+            STATUS_ID,
+            STATUS_DATETIME,
+            REASON,
+            SET_BY_USER_LOGIN,
+            CREATED_STAMP,
+            CREATED_TX_STAMP,
+            CREATED_BY_USER_LOGIN
+        ) VALUES (
+            #{workEffortStatusDto.workEffortId, jdbcType=VARCHAR},
+            #{workEffortStatusDto.statusId, jdbcType=VARCHAR},
+            #{workEffortStatusDto.statusDateTime, jdbcType=TIMESTAMP},
+            #{workEffortStatusDto.reason, jdbcType=VARCHAR},
+            #{userLoginId, jdbcType=VARCHAR},
+            #{instant, jdbcType=VARCHAR},
+            #{instant, jdbcType=VARCHAR},
+            #{userLoginId, jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>

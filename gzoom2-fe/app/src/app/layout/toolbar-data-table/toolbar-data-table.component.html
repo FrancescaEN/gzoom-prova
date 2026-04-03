@@ -1,0 +1,87 @@
+<div>
+  <p-toolbar styleClass="p-mb-4" role="toolbar">
+    <ng-template pTemplate="left">
+      <gzoom-button
+        id="btn_new"
+        *ngIf="buttonBack"
+        [disabled]="isEditing"
+        label="{{ 'Back' | i18n }}"
+        icon="pi pi-arrow-left"
+        (onClick)="back()"
+        rounded="true"
+        class="margin-left"
+      >
+      </gzoom-button>
+
+      <gzoom-button
+        *ngIf="buttonNew"
+        id="btn_new"
+        [disabled]="isEditing || disableNew$ | async"
+        label="{{ 'New' | i18n }}"
+        icon="pi pi-plus"
+        rounded="true"
+        (onClick)="openNewRow()"
+        class="margin-left"
+      >
+      </gzoom-button>
+
+      <gzoom-button-outlined
+        *ngIf="buttonDelete"
+        id="btn_new"
+        [disabled]="isEditing || disableDelete$ | async"
+        label="{{ 'Delete' | i18n }}"
+        icon="pi pi-trash"
+        (onClick)="deleteRow()"
+        rounded="true"
+        attr.aria-label="{{ 'Delete' | i18n }}"
+        class="margin-left"
+      >
+      </gzoom-button-outlined>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <gzoom-button-outlined
+        *ngIf="buttonReset"
+        id="btn_new"
+        [disabled]="isEditing || disableSave$ | async"
+        label="{{ 'Reset' | i18n }}"
+        icon="pi pi-refresh"
+        rounded="true"
+        (onClick)="resetAllAction()"
+        class="margin-right"
+      >
+      </gzoom-button-outlined>
+
+      <gzoom-button
+        class="margin-right"
+        *ngIf="buttonSave"
+        [disabled]="this.isEditing || disableSave$ | async"
+        label="{{ 'Save' | i18n }}"
+        (onClick)="save()"
+        icon="pi pi-save"
+        rounded="true"
+      >
+      </gzoom-button>
+
+      <gzoom-button-outlined
+        class="margin-right"
+        *ngIf="bldx && bldx.booleanShow"
+        [label]="bldx.titleLabel | i18n"
+        (onClick)="blDxEvent()"
+        [icon]="bldx.icon"
+        rounded="true"
+      >
+      </gzoom-button-outlined>
+
+      <gzoom-button
+        class="margin-right"
+        *ngIf="bldx2 && bldx2.booleanShow"
+        [label]="bldx2.titleLabel | i18n"
+        (onClick)="blDx2Event()"
+        [icon]="bldx2.icon"
+        rounded="true"
+      >
+      </gzoom-button>
+    </ng-template>
+  </p-toolbar>
+</div>

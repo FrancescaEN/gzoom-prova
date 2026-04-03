@@ -1,0 +1,2870 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.8.0.v201806261756</property>
+    <simple-property-list name="includeResource">
+        <value>custom/SchedaDirigenti22/SchedaDirigenti22_it_IT</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[importPackage(Packages.java.util);
+importPackage(Packages.java.lang);
+importPackage(Packages.javolution.util);
+importPackage(Packages.org.ofbiz.base.util);
+importPackage(Packages.com.mapsengineering.base.appheader);
+importPackage(Packages.it.mapsgroup.gzoom);
+importPackage(Packages.com.mapsengineering.base.birt.util);
+
+var vectorPageNumber = new Vector();
+reportContext.setGlobalVariable("vectorPageNumber", vectorPageNumber);
+reportContext.setGlobalVariable("nPagina", 1);]]></method>
+    <method name="beforeFactory"><![CDATA[
+]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">hot-deploy/workeffortext/webapp/workeffortext/birt/report/LibreriaSchedeStruttura.rptlibrary</property>
+            <property name="namespace">LibreriaSchedeStruttura</property>
+        </structure>
+        <structure>
+            <property name="fileName">hot-deploy/base/webapp/resources/report/birt/base_structure_JDBC.rptlibrary</property>
+            <property name="namespace">base_structure_JDBC</property>
+        </structure>
+        <structure>
+            <property name="fileName">hot-deploy/workeffortext/webapp/workeffortext/birt/report/LiberiaSchede_Struttura.rptlibrary</property>
+            <property name="namespace">LiberiaSchede_Struttura</property>
+        </structure>
+    </list-property>
+    <list-property name="cssStyleSheets">
+        <structure>
+            <property name="fileName">hot-deploy/base/webapp/resources/report/birt/base_simplemasterpage_css.css</property>
+            <property name="useExternalCss">false</property>
+        </structure>
+        <structure>
+            <property name="fileName">hot-deploy/base/webapp/resources/report/birt/base_simpleMasterPage_Refactor.css</property>
+            <property name="useExternalCss">false</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="monitoringDate" id="41188" extends="LiberiaSchede_Struttura.monitoringDate">
+            <property name="valueType">static</property>
+            <property name="dataType">dateTime</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="workEffortId" id="19031">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="workEffortAnalysisId" id="51415">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="GeneralDataSource" id="7"
+ extends="LibreriaSchedeStruttura.GeneralDataSource">
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/gzoom_ulsspedemontana</property>
+            <property name="odaUser">postgres</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">TWFwc0d6b29tMDE=</encrypted-property>
+        </oda-data-source>
+        <script-data-source name="ScriptedIndex" id="45798" extends="base_structure_JDBC.ScriptedIndex"/>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="IndexDS" id="48308">
+            <list-property name="columnHints"/>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">monitoringDate</property>
+                    <property name="paramName">monitoringDate</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">dateTime</property>
+                    <property name="nativeDataType">0</property>
+                    <property name="position">1</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">WORK_EFFORT_ID</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">DATA_STAMPA</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">INTESTAZIONE_1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">INTESTAZIONE_2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">INTESTAZIONE_3</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">NOMINATIVO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">INCARICO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">ANNO_RIFERIMENTO</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">VALUTAZIONE_CONCLUSIVA</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">OSSERVAZIONI_DIPENDENTE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">VALUTATORE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">OBIETTIVO_ANNO_PRECEDENTE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">ETCH_OBIETTIVO_ANNO_PRECEDENTE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">DATA_VALUTAZIONE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">FIRMA_VALUTATORE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">FIRMA_PV_VALUTAZIONE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">FIRMA_PV_OBIETTIVO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">OBIETTIVO_ANNO_CORSO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">ETCH_OBIETTIVO_ANNO_CORSO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[//this.queryText = this.queryText.replace("@workEffortId",  "AND W.WORK_EFFORT_ID = '23147'" );
+
+var workEffortIdStr = "";
+if (params["workEffortId"].value != null &amp;&amp; params["workEffortId"].value != "") {
+    workEffortIdStr = "AND W.WORK_EFFORT_ID = '" +params["workEffortId"].value + "'";
+}
+this.queryText = this.queryText.replace("@workEffortId", workEffortIdStr);
+
+//ReportLog.info("IndexDS:  "+this.queryText);]]></method>
+            <property name="dataSource">GeneralDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">WORK_EFFORT_ID</property>
+                    <property name="nativeName">WORK_EFFORT_ID</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">DATA_STAMPA</property>
+                    <property name="nativeName">DATA_STAMPA</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">INTESTAZIONE_1</property>
+                    <property name="nativeName">INTESTAZIONE_1</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">INTESTAZIONE_2</property>
+                    <property name="nativeName">INTESTAZIONE_2</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">INTESTAZIONE_3</property>
+                    <property name="nativeName">INTESTAZIONE_3</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">NOMINATIVO</property>
+                    <property name="nativeName">NOMINATIVO</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">INCARICO</property>
+                    <property name="nativeName">INCARICO</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">ANNO_RIFERIMENTO</property>
+                    <property name="nativeName">ANNO_RIFERIMENTO</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">VALUTAZIONE_CONCLUSIVA</property>
+                    <property name="nativeName">VALUTAZIONE_CONCLUSIVA</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">OSSERVAZIONI_DIPENDENTE</property>
+                    <property name="nativeName">OSSERVAZIONI_DIPENDENTE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">VALUTATORE</property>
+                    <property name="nativeName">VALUTATORE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">OBIETTIVO_ANNO_PRECEDENTE</property>
+                    <property name="nativeName">OBIETTIVO_ANNO_PRECEDENTE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">ETCH_OBIETTIVO_ANNO_PRECEDENTE</property>
+                    <property name="nativeName">ETCH_OBIETTIVO_ANNO_PRECEDENTE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">DATA_VALUTAZIONE</property>
+                    <property name="nativeName">DATA_VALUTAZIONE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">FIRMA_VALUTATORE</property>
+                    <property name="nativeName">FIRMA_VALUTATORE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">FIRMA_PV_VALUTAZIONE</property>
+                    <property name="nativeName">FIRMA_PV_VALUTAZIONE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">FIRMA_PV_OBIETTIVO</property>
+                    <property name="nativeName">FIRMA_PV_OBIETTIVO</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">OBIETTIVO_ANNO_CORSO</property>
+                    <property name="nativeName">OBIETTIVO_ANNO_CORSO</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">ETCH_OBIETTIVO_ANNO_CORSO</property>
+                    <property name="nativeName">ETCH_OBIETTIVO_ANNO_CORSO</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT
+  w.work_effort_id as "WORK_EFFORT_ID",
+  w.data_stampa as "DATA_STAMPA",
+  w.intestazione_1 as "INTESTAZIONE_1",
+  w.intestazione_2 as "INTESTAZIONE_2",
+  w.intestazione_3 as "INTESTAZIONE_3",
+  w.nominativo as "NOMINATIVO",
+  w.incarico as "INCARICO",
+  w.anno_riferimento as "ANNO_RIFERIMENTO",
+  w.valutazione_conclusiva as "VALUTAZIONE_CONCLUSIVA",
+  w.osservazioni_dipendente as "OSSERVAZIONI_DIPENDENTE",
+  w.valutatore as "VALUTATORE",
+  w.obiettivo_anno_precedente as "OBIETTIVO_ANNO_PRECEDENTE",
+  w.etch_obiettivo_anno_precedente as "ETCH_OBIETTIVO_ANNO_PRECEDENTE",
+  w.data_valutazione as "DATA_VALUTAZIONE",
+  w.firma_valutatore as "FIRMA_VALUTATORE",
+  w.firma_pv_valutazione as "FIRMA_PV_VALUTAZIONE",
+  w.firma_pv_obiettivo as "FIRMA_PV_OBIETTIVO",
+  w.obiettivo_anno_corso as "OBIETTIVO_ANNO_CORSO",
+  w.etch_obiettivo_anno_corso as "ETCH_OBIETTIVO_ANNO_CORSO"
+from rep_19dirig w
+where w.data_stampa = ?
+@workEffortId]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="IndicatoriDS" id="48309">
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">COUNT</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNT</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">WORK_EFFORT_ID</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">WORK_EFFORT_ID</text-property>
+                    <text-property name="heading">WORK_EFFORT_ID</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">DATA_STAMPA</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">DATA_STAMPA</text-property>
+                    <text-property name="heading">DATA_STAMPA</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ID_CATEGORIA</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">ID_CATEGORIA</text-property>
+                    <text-property name="heading">ID_CATEGORIA</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">CATEGORIA</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">CATEGORIA</text-property>
+                    <text-property name="heading">CATEGORIA</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">OGGETTO</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">OGGETTO</text-property>
+                    <text-property name="heading">OGGETTO</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">seq_indicatore</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">seq_indicatore</text-property>
+                    <text-property name="heading">seq_indicatore</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">INDICATORE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">INDICATORE</text-property>
+                    <text-property name="heading">INDICATORE</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ID_INDICATORE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">ID_INDICATORE</text-property>
+                    <text-property name="heading">ID_INDICATORE</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ESITO</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">ESITO</text-property>
+                    <text-property name="heading">ESITO</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">workEffortId</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">monitoringDate</property>
+                    <property name="paramName">monitoringDate</property>
+                    <property name="dataType">dateTime</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">WORK_EFFORT_ID</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">DATA_STAMPA</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">ID_CATEGORIA</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">CATEGORIA</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">OGGETTO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">seq_indicatore</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">INDICATORE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">ID_INDICATORE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">ESITO</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">COUNT</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[
+
+//ReportLog.info("IndicatoriDS:  "+this.queryText);]]></method>
+            <property name="dataSource">GeneralDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">WORK_EFFORT_ID</property>
+                    <property name="nativeName">WORK_EFFORT_ID</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">DATA_STAMPA</property>
+                    <property name="nativeName">DATA_STAMPA</property>
+                    <property name="dataType">date-time</property>
+                    <property name="nativeDataType">93</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">ID_CATEGORIA</property>
+                    <property name="nativeName">id_categoria</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">CATEGORIA</property>
+                    <property name="nativeName">categoria</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">OGGETTO</property>
+                    <property name="nativeName">oggetto</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">seq_indicatore</property>
+                    <property name="nativeName">seq_indicatore</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">INDICATORE</property>
+                    <property name="nativeName">indicatore</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">ID_INDICATORE</property>
+                    <property name="nativeName">id_indicatore</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">ESITO</property>
+                    <property name="nativeName">ESITO</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT
+  w.work_effort_id as "WORK_EFFORT_ID", 
+  w.data_stampa as "DATA_STAMPA",
+  w.id_categoria as "ID_CATEGORIA",
+  w.categoria as "CATEGORIA",
+  w.oggetto as "OGGETTO",
+  w.seq_indicatore as "SEQ_INDICATORE",
+  w.indicatore as "INDICATORE",
+  w.id_indicatore as "ID_INDICATORE",
+  w.esito as "ESITO"
+from rep_19dirig_indic w
+where w.work_effort_id = ?
+and w.data_stampa = ?
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>WORK_EFFORT_ID</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>WORK_EFFORT_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>WORK_EFFORT_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>DATA_STAMPA</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>93</design:nativeDataTypeCode>
+            <design:precision>23</design:precision>
+            <design:scale>3</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>DATA_STAMPA</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>DATA_STAMPA</design:label>
+            <design:formattingHints>
+              <design:displaySize>23</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ID_CATEGORIA</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ID_CATEGORIA</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ID_CATEGORIA</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>CATEGORIA</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CATEGORIA</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CATEGORIA</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>OGGETTO</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2000</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>OGGETTO</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>OGGETTO</design:label>
+            <design:formattingHints>
+              <design:displaySize>2000</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>SEQ_INDICATORE</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>SEQ_INDICATORE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>SEQ_INDICATORE</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>INDICATORE</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>INDICATORE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>INDICATORE</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ID_INDICATORE</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ID_INDICATORE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ID_INDICATORE</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="BaseSimpleMasterPageParametricFieldLS" id="48248" extends="base_structure_JDBC.BaseSimpleMasterPageParametricFieldLS">
+            <property name="orientation">portrait</property>
+            <overridden-values>
+                <ref-entry baseId="46237" name="headerGrid23" id="46237">
+                    <method name="onPrepare"><![CDATA[
+var logo_small = AppHeaderLogo.getReportContentUrl("REPORT_SMALL", params["defaultOrganizationPartyId"].value);
+var icon_nav = AppHeaderLogo.getReportContentUrl("ICON_NAV", params["defaultOrganizationPartyId"].value);
+
+reportContext.setPersistentGlobalVariable("logo_header", logo_small);
+reportContext.setPersistentGlobalVariable("logo_footer", icon_nav);]]></method>
+                </ref-entry>
+                <ref-entry baseId="46238" id="46238">
+                    <property name="width">35%</property>
+                </ref-entry>
+                <ref-entry baseId="46239" id="46239">
+                    <property name="width">30%</property>
+                </ref-entry>
+                <ref-entry baseId="46240" id="46240">
+                    <property name="width">35%</property>
+                </ref-entry>
+                <ref-entry baseId="46241" id="46241"/>
+                <ref-entry baseId="46242" id="46242"/>
+                <ref-entry baseId="46243" name="lblDefOrgParty13" id="46243"/>
+                <ref-entry baseId="46244" id="46244"/>
+                <ref-entry baseId="50620" name="NewImage111" id="50620"/>
+                <ref-entry baseId="46246" id="46246"/>
+                <ref-entry baseId="46282" name="NewData5" id="46282">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="46294" name="NewData6" id="46294">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="46248" name="footerGrid25" id="46248">
+                    <property name="fontSize">8pt</property>
+                </ref-entry>
+                <ref-entry baseId="46249" id="46249">
+                    <property name="width">25%</property>
+                </ref-entry>
+                <ref-entry baseId="46250" id="46250">
+                    <property name="width">55%</property>
+                </ref-entry>
+                <ref-entry baseId="46251" id="46251">
+                    <property name="width">20%</property>
+                </ref-entry>
+                <ref-entry baseId="46252" id="46252">
+                    <property name="fontSize">8pt</property>
+                </ref-entry>
+                <ref-entry baseId="46253" id="46253"/>
+                <ref-entry baseId="46254" name="NewGrid214" id="46254">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">params["exposeReleaseDate"].value == 'N'</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="46255" id="46255"/>
+                <ref-entry baseId="46256" id="46256"/>
+                <ref-entry baseId="46257" id="46257">
+                    <property name="fontSize">8pt</property>
+                </ref-entry>
+                <ref-entry baseId="46258" id="46258"/>
+                <ref-entry baseId="46259" name="lblPrintedDate4" id="46259"/>
+                <ref-entry baseId="46260" id="46260"/>
+                <ref-entry baseId="46261" name="NewData634" id="46261"/>
+                <ref-entry baseId="46262" id="46262"/>
+                <ref-entry baseId="50648" name="NewImage6114" id="50648"/>
+                <ref-entry baseId="46264" id="46264"/>
+                <ref-entry baseId="46265" name="NewGrid55" id="46265">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">params["exposePaginator"].value == 'N'</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="46266" id="46266"/>
+                <ref-entry baseId="46267" id="46267"/>
+                <ref-entry baseId="46268" id="46268"/>
+                <ref-entry baseId="46269" id="46269"/>
+                <ref-entry baseId="46270" id="46270"/>
+                <ref-entry baseId="46271" id="46271"/>
+                <ref-entry baseId="46272" id="46272"/>
+                <ref-entry baseId="46273" id="46273"/>
+                <ref-entry baseId="46274" name="lblPageNumber6" id="46274"/>
+                <ref-entry baseId="46275" id="46275"/>
+                <ref-entry baseId="46276" name="NewAutoText35" id="46276"/>
+                <ref-entry baseId="46277" id="46277"/>
+                <ref-entry baseId="46278" name="lblPageNumber15" id="46278"/>
+                <ref-entry baseId="46279" id="46279"/>
+                <ref-entry baseId="46280" name="NewAutoText25" id="46280"/>
+            </overridden-values>
+            <method name="onPageEnd"><![CDATA[
+var NPage = reportContext.getGlobalVariable("nPagina");
+NPage= parseInt(NPage) + 1;
+reportContext.setGlobalVariable("nPagina", NPage);
+]]></method>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table name="tbIndex" id="48310">
+            <property name="masterPage">BaseSimpleMasterPageParametricFieldLS</property>
+            <property name="pageBreakAfter">auto</property>
+            <property name="pageBreakBefore">auto</property>
+            <property name="dataSet">IndexDS</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">WORK_EFFORT_ID</property>
+                    <text-property name="displayName">WORK_EFFORT_ID</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["WORK_EFFORT_ID"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">DATA_STAMPA</property>
+                    <text-property name="displayName">DATA_STAMPA</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["DATA_STAMPA"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">INTESTAZIONE_1</property>
+                    <text-property name="displayName">INTESTAZIONE_1</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["INTESTAZIONE_1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">INTESTAZIONE_2</property>
+                    <text-property name="displayName">INTESTAZIONE_2</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["INTESTAZIONE_2"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">INTESTAZIONE_3</property>
+                    <text-property name="displayName">INTESTAZIONE_3</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["INTESTAZIONE_3"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">NOMINATIVO</property>
+                    <text-property name="displayName">NOMINATIVO</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["NOMINATIVO"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">INCARICO</property>
+                    <text-property name="displayName">INCARICO</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["INCARICO"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ANNO_RIFERIMENTO</property>
+                    <text-property name="displayName">ANNO_RIFERIMENTO</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ANNO_RIFERIMENTO"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">VALUTAZIONE_CONCLUSIVA</property>
+                    <text-property name="displayName">VALUTAZIONE_CONCLUSIVA</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["VALUTAZIONE_CONCLUSIVA"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">OSSERVAZIONI_DIPENDENTE</property>
+                    <text-property name="displayName">OSSERVAZIONI_DIPENDENTE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["OSSERVAZIONI_DIPENDENTE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">VALUTATORE</property>
+                    <text-property name="displayName">VALUTATORE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["VALUTATORE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">OBIETTIVO_ANNO_PRECEDENTE</property>
+                    <text-property name="displayName">OBIETTIVO_ANNO_PRECEDENTE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["OBIETTIVO_ANNO_PRECEDENTE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ETCH_OBIETTIVO_ANNO_PRECEDENTE</property>
+                    <text-property name="displayName">ETCH_OBIETTIVO_ANNO_PRECEDENTE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ETCH_OBIETTIVO_ANNO_PRECEDENTE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">DATA_VALUTAZIONE</property>
+                    <text-property name="displayName">DATA_VALUTAZIONE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["DATA_VALUTAZIONE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">FIRMA_VALUTATORE</property>
+                    <text-property name="displayName">FIRMA_VALUTATORE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["FIRMA_VALUTATORE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">FIRMA_PV_VALUTAZIONE</property>
+                    <text-property name="displayName">FIRMA_PV_VALUTAZIONE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["FIRMA_PV_VALUTAZIONE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">FIRMA_PV_OBIETTIVO</property>
+                    <text-property name="displayName">FIRMA_PV_OBIETTIVO</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["FIRMA_PV_OBIETTIVO"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">OBIETTIVO_ANNO_CORSO</property>
+                    <text-property name="displayName">OBIETTIVO_ANNO_CORSO</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["OBIETTIVO_ANNO_CORSO"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ETCH_OBIETTIVO_ANNO_CORSO</property>
+                    <text-property name="displayName">ETCH_OBIETTIVO_ANNO_CORSO</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ETCH_OBIETTIVO_ANNO_CORSO"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="48317"/>
+            <detail>
+                <row id="48313">
+                    <property name="pageBreakBefore">always</property>
+                    <cell id="48314">
+                        <grid id="48318">
+                            <column id="48319"/>
+                            <row id="48320">
+                                <cell id="48321">
+                                    <property name="textAlign">center</property>
+                                    <data id="48326">
+                                        <property name="fontSize">6pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="resultSetColumn">INTESTAZIONE_1</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="48322">
+                                <cell id="48323">
+                                    <property name="textAlign">center</property>
+                                    <data id="48327">
+                                        <property name="fontSize">12pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="resultSetColumn">INTESTAZIONE_2</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="48324">
+                                <cell id="48325">
+                                    <property name="textAlign">center</property>
+                                    <data id="48328">
+                                        <property name="fontSize">8pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="resultSetColumn">INTESTAZIONE_3</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="48329">
+                    <property name="height">20px</property>
+                    <cell id="48330"/>
+                </row>
+                <row id="48331">
+                    <cell id="48332">
+                        <grid id="48333">
+                            <column id="48334">
+                                <property name="width">20%</property>
+                            </column>
+                            <column id="48335"/>
+                            <row id="48336">
+                                <cell id="48337">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textLineThrough">none</property>
+                                    <property name="textUnderline">underline</property>
+                                    <label id="48339">
+                                        <property name="fontWeight">bold</property>
+                                        <property name="textUnderline">underline</property>
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="Nominativo"></text-property>
+                                    </label>
+                                    <text id="48340">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[:]]></text-property>
+                                    </text>
+                                </cell>
+                                <cell id="48338">
+                                    <property name="fontSize">8pt</property>
+                                    <data id="48341">
+                                        <property name="fontWeight">bold</property>
+                                        <property name="resultSetColumn">NOMINATIVO</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="48342">
+                    <property name="height">20px</property>
+                    <cell id="48343"/>
+                </row>
+                <row id="48344">
+                    <cell id="48345">
+                        <grid id="48346">
+                            <column id="48347">
+                                <property name="width">20%</property>
+                            </column>
+                            <column id="48348"/>
+                            <row id="48563">
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">row["INCARICO"] == null || row["INCARICO"] == ''</expression>
+                                    </structure>
+                                </list-property>
+                                <cell id="48564">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textUnderline">underline</property>
+                                    <label id="48567">
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="Valutatore"></text-property>
+                                    </label>
+                                    <text id="48568">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[:]]></text-property>
+                                    </text>
+                                </cell>
+                                <cell id="48565">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <data id="51504">
+                                        <property name="backgroundAttachment">scroll</property>
+                                        <property name="backgroundPositionX">0%</property>
+                                        <property name="backgroundPositionY">0%</property>
+                                        <property name="backgroundRepeat">repeat</property>
+                                        <property name="fontFamily">sans-serif</property>
+                                        <property name="fontSize">8pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="fontStyle">normal</property>
+                                        <property name="fontVariant">normal</property>
+                                        <property name="color">black</property>
+                                        <property name="textLineThrough">none</property>
+                                        <property name="textOverline">none</property>
+                                        <property name="textUnderline">none</property>
+                                        <property name="borderBottomColor">black</property>
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderBottomWidth">medium</property>
+                                        <property name="borderLeftColor">black</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderLeftWidth">medium</property>
+                                        <property name="borderRightColor">black</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderRightWidth">medium</property>
+                                        <property name="borderTopColor">black</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="borderTopWidth">medium</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="marginLeft">0pt</property>
+                                        <property name="marginBottom">0pt</property>
+                                        <property name="marginRight">0pt</property>
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <property name="letterSpacing">normal</property>
+                                        <property name="lineHeight">normal</property>
+                                        <property name="orphans">2</property>
+                                        <property name="textTransform">none</property>
+                                        <property name="whiteSpace">normal</property>
+                                        <property name="widows">2</property>
+                                        <property name="wordSpacing">normal</property>
+                                        <property name="display">block</property>
+                                        <property name="pageBreakAfter">auto</property>
+                                        <property name="pageBreakBefore">auto</property>
+                                        <property name="pageBreakInside">auto</property>
+                                        <property name="showIfBlank">false</property>
+                                        <property name="canShrink">false</property>
+                                        <property name="overflow">hidden</property>
+                                        <property name="resultSetColumn">VALUTATORE</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="48349">
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">row["INCARICO"] == null || row["INCARICO"] == ''</expression>
+                                    </structure>
+                                </list-property>
+                                <cell id="48350">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textUnderline">underline</property>
+                                    <label id="48358">
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="Incarico"></text-property>
+                                    </label>
+                                    <text id="48359">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[:]]></text-property>
+                                    </text>
+                                </cell>
+                                <cell id="48351">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <data id="48365">
+                                        <property name="resultSetColumn">INCARICO</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="48352">
+                                <cell id="48353">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textUnderline">underline</property>
+                                    <label id="48360">
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="TipologiaValutazione"></text-property>
+                                    </label>
+                                    <text id="48361">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[:]]></text-property>
+                                    </text>
+                                </cell>
+                                <cell id="48354">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <label id="48364">
+                                        <text-property name="text" key="ANNUALE"></text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="48355">
+                                <cell id="48356">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textUnderline">underline</property>
+                                    <label id="48362">
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="AnnoRiferimento"></text-property>
+                                    </label>
+                                    <text id="48363">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[:]]></text-property>
+                                    </text>
+                                </cell>
+                                <cell id="48357">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <data id="48366">
+                                        <property name="resultSetColumn">ANNO_RIFERIMENTO</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="48367">
+                    <property name="height">10px</property>
+                    <cell id="48368"/>
+                </row>
+                <row id="48369">
+                    <property name="pageBreakInside">auto</property>
+                    <cell id="48370">
+                        <table name="tbIndicatori" id="48371">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">solid</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">solid</property>
+                            <property name="borderLeftWidth">medium</property>
+                            <property name="borderRightColor">#000000</property>
+                            <property name="borderRightStyle">solid</property>
+                            <property name="borderRightWidth">medium</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">solid</property>
+                            <property name="borderTopWidth">medium</property>
+                            <property name="dataSet">IndicatoriDS</property>
+                            <list-property name="visibility">
+                                <structure>
+                                    <property name="format">all</property>
+                                    <expression name="valueExpr" type="javascript">row["COUNT"] &lt; 1</expression>
+                                </structure>
+                            </list-property>
+                            <list-property name="paramBindings">
+                                <structure>
+                                    <property name="paramName">workEffortId</property>
+                                    <simple-property-list name="expression">
+                                        <value type="javascript">row["WORK_EFFORT_ID"]</value>
+                                    </simple-property-list>
+                                </structure>
+                            </list-property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">WORK_EFFORT_ID</property>
+                                    <text-property name="displayName">WORK_EFFORT_ID</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["WORK_EFFORT_ID"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">DATA_STAMPA</property>
+                                    <text-property name="displayName">DATA_STAMPA</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["DATA_STAMPA"]</expression>
+                                    <property name="dataType">date-time</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ID_CATEGORIA</property>
+                                    <text-property name="displayName">ID_CATEGORIA</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ID_CATEGORIA"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">CATEGORIA</property>
+                                    <text-property name="displayName">CATEGORIA</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["CATEGORIA"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">OGGETTO</property>
+                                    <text-property name="displayName">OGGETTO</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["OGGETTO"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">SEQ_INDICATORE</property>
+                                    <text-property name="displayName">SEQ_INDICATORE</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["SEQ_INDICATORE"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">INDICATORE</property>
+                                    <text-property name="displayName">INDICATORE</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["INDICATORE"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ID_INDICATORE</property>
+                                    <text-property name="displayName">ID_INDICATORE</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ID_INDICATORE"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">COUNT</property>
+                                    <text-property name="displayName">COUNT</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["COUNT"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ESITO</property>
+                                    <text-property name="displayName">ESITO</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ESITO"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                            </list-property>
+                            <column id="48387">
+                                <property name="width">20%</property>
+                            </column>
+                            <column id="48388">
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">true</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="width">30%</property>
+                            </column>
+                            <column id="48389">
+                                <property name="width">30%</property>
+                            </column>
+                            <column id="48390">
+                                <property name="width">20%</property>
+                            </column>
+                            <header>
+                                <row id="48372">
+                                    <cell id="48373">
+                                        <property name="borderLeftColor">#C0C0C0</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderLeftWidth">thin</property>
+                                        <property name="borderRightColor">#C0C0C0</property>
+                                        <property name="borderRightStyle">solid</property>
+                                        <property name="borderRightWidth">thin</property>
+                                        <property name="borderTopColor">#C0C0C0</property>
+                                        <property name="borderTopStyle">solid</property>
+                                        <property name="borderTopWidth">thin</property>
+                                        <property name="verticalAlign">middle</property>
+                                        <label id="48391">
+                                            <property name="fontSize">8pt</property>
+                                            <property name="fontWeight">bold</property>
+                                            <text-property name="text" key="CATEGORIA"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="48374">
+                                        <property name="borderBottomColor">#C0C0C0</property>
+                                        <property name="borderBottomStyle">solid</property>
+                                        <property name="borderBottomWidth">thin</property>
+                                        <property name="borderRightColor">#C0C0C0</property>
+                                        <property name="borderRightStyle">solid</property>
+                                        <property name="borderRightWidth">thin</property>
+                                        <property name="borderTopColor">#C0C0C0</property>
+                                        <property name="borderTopStyle">solid</property>
+                                        <property name="borderTopWidth">thin</property>
+                                        <property name="verticalAlign">middle</property>
+                                        <label id="48392">
+                                            <property name="fontSize">8pt</property>
+                                            <property name="fontWeight">bold</property>
+                                            <text-property name="text" key="OggettoValutazione"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="48375">
+                                        <property name="borderBottomColor">#C0C0C0</property>
+                                        <property name="borderBottomStyle">solid</property>
+                                        <property name="borderBottomWidth">thin</property>
+                                        <property name="borderRightColor">#C0C0C0</property>
+                                        <property name="borderRightStyle">solid</property>
+                                        <property name="borderRightWidth">thin</property>
+                                        <property name="borderTopColor">#C0C0C0</property>
+                                        <property name="borderTopStyle">solid</property>
+                                        <property name="borderTopWidth">thin</property>
+                                        <property name="verticalAlign">middle</property>
+                                        <grid id="48398">
+                                            <column id="48399"/>
+                                            <row id="48400">
+                                                <cell id="48401">
+                                                    <label id="48393">
+                                                        <property name="fontSize">8pt</property>
+                                                        <property name="fontWeight">bold</property>
+                                                        <text-property name="text" key="IndicatoriVerifica"></text-property>
+                                                    </label>
+                                                </cell>
+                                            </row>
+                                            <row id="48402">
+                                                <cell id="48403">
+                                                    <text id="48395">
+                                                        <property name="fontWeight">bold</property>
+                                                        <property name="display">inline</property>
+                                                        <property name="contentType">auto</property>
+                                                        <text-property name="content"><![CDATA[(]]></text-property>
+                                                    </text>
+                                                    <label id="48394">
+                                                        <property name="fontSize">8pt</property>
+                                                        <property name="fontWeight">bold</property>
+                                                        <property name="display">inline</property>
+                                                        <text-property name="text" key="MassimoIndicatore"></text-property>
+                                                    </label>
+                                                    <text id="48396">
+                                                        <property name="fontWeight">bold</property>
+                                                        <property name="display">inline</property>
+                                                        <property name="contentType">auto</property>
+                                                        <text-property name="content"><![CDATA[)]]></text-property>
+                                                    </text>
+                                                </cell>
+                                            </row>
+                                        </grid>
+                                    </cell>
+                                    <cell id="48376">
+                                        <property name="borderBottomColor">#C0C0C0</property>
+                                        <property name="borderBottomStyle">solid</property>
+                                        <property name="borderBottomWidth">thin</property>
+                                        <property name="borderRightColor">#C0C0C0</property>
+                                        <property name="borderRightStyle">solid</property>
+                                        <property name="borderRightWidth">thin</property>
+                                        <property name="borderTopColor">#C0C0C0</property>
+                                        <property name="borderTopStyle">solid</property>
+                                        <property name="borderTopWidth">thin</property>
+                                        <grid id="48404">
+                                            <column id="48405"/>
+                                            <row id="48406">
+                                                <cell id="48407">
+                                                    <label id="48397">
+                                                        <property name="fontSize">8pt</property>
+                                                        <property name="fontWeight">bold</property>
+                                                        <text-property name="text" key="EsitoVerifica"></text-property>
+                                                    </label>
+                                                </cell>
+                                            </row>
+                                            <row id="48408">
+                                                <cell id="48409">
+                                                    <label id="48412">
+                                                        <property name="fontSize">8pt</property>
+                                                        <property name="fontWeight">bold</property>
+                                                        <text-property name="text" key="Punteggio02"></text-property>
+                                                    </label>
+                                                </cell>
+                                            </row>
+                                            <row id="48410">
+                                                <cell id="48411">
+                                                    <text id="48413">
+                                                        <property name="fontWeight">bold</property>
+                                                        <property name="display">inline</property>
+                                                        <property name="contentType">auto</property>
+                                                        <text-property name="content"><![CDATA[(]]></text-property>
+                                                    </text>
+                                                    <label id="48414">
+                                                        <property name="fontSize">8pt</property>
+                                                        <property name="fontWeight">bold</property>
+                                                        <property name="display">inline</property>
+                                                        <text-property name="text" key="012"></text-property>
+                                                    </label>
+                                                    <text id="48415">
+                                                        <property name="fontWeight">bold</property>
+                                                        <property name="display">inline</property>
+                                                        <property name="contentType">auto</property>
+                                                        <text-property name="content"><![CDATA[)]]></text-property>
+                                                    </text>
+                                                </cell>
+                                            </row>
+                                        </grid>
+                                    </cell>
+                                </row>
+                            </header>
+                            <group id="48416">
+                                <property name="groupName">ID_CATEGORIA</property>
+                                <expression name="keyExpr" type="javascript">row["ID_CATEGORIA"]</expression>
+                                <structure name="toc">
+                                    <expression name="expressionValue" type="javascript">row["ID_CATEGORIA"]</expression>
+                                </structure>
+                                <property name="hideDetail">false</property>
+                                <list-property name="sort">
+                                    <structure>
+                                        <expression name="key" type="javascript">row["SEQ_INDICATORE"]</expression>
+                                        <property name="direction">asc</property>
+                                        <property name="strength">-1</property>
+                                    </structure>
+                                </list-property>
+                                <header>
+                                    <row id="48417">
+                                        <cell id="48418">
+                                            <property name="drop">detail</property>
+                                            <property name="borderBottomColor">#C0C0C0</property>
+                                            <property name="borderBottomStyle">solid</property>
+                                            <property name="borderBottomWidth">thin</property>
+                                            <property name="borderLeftColor">#C0C0C0</property>
+                                            <property name="borderLeftStyle">solid</property>
+                                            <property name="borderLeftWidth">thin</property>
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                            <property name="borderTopColor">#C0C0C0</property>
+                                            <property name="borderTopStyle">solid</property>
+                                            <property name="borderTopWidth">thin</property>
+                                            <property name="verticalAlign">middle</property>
+                                            <data id="48428">
+                                                <property name="fontSize">8pt</property>
+                                                <property name="fontWeight">bold</property>
+                                                <property name="resultSetColumn">CATEGORIA</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="48419">
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                        </cell>
+                                        <cell id="48420">
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                        </cell>
+                                        <cell id="48421">
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                        </cell>
+                                    </row>
+                                </header>
+                            </group>
+                            <group id="48429">
+                                <property name="groupName">OGGETTO</property>
+                                <expression name="keyExpr" type="javascript">row["OGGETTO"]</expression>
+                                <structure name="toc">
+                                    <expression name="expressionValue" type="javascript">row["OGGETTO"]</expression>
+                                </structure>
+                                <property name="hideDetail">false</property>
+                                <list-property name="sort">
+                                    <structure>
+                                        <expression name="key" type="javascript">row["SEQ_INDICATORE"]</expression>
+                                        <property name="direction">asc</property>
+                                        <property name="strength">-1</property>
+                                    </structure>
+                                </list-property>
+                                <header>
+                                    <row id="48430">
+                                        <cell id="48431"/>
+                                        <cell id="48432">
+                                            <property name="drop">detail</property>
+                                            <property name="fontSize">8pt</property>
+                                            <property name="borderBottomColor">#C0C0C0</property>
+                                            <property name="borderBottomStyle">solid</property>
+                                            <property name="borderBottomWidth">thin</property>
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                            <property name="verticalAlign">middle</property>
+                                            <data id="48441">
+                                                <property name="resultSetColumn">OGGETTO</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="48433">
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                        </cell>
+                                        <cell id="48434">
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                        </cell>
+                                    </row>
+                                </header>
+                            </group>
+                            <group id="48442">
+                                <property name="groupName">INDICATORE1</property>
+                                <expression name="keyExpr" type="javascript">row["ID_INDICATORE"]</expression>
+                                <structure name="toc">
+                                    <expression name="expressionValue" type="javascript">row["ID_INDICATORE"]</expression>
+                                </structure>
+                                <property name="hideDetail">false</property>
+                                <list-property name="sort">
+                                    <structure>
+                                        <expression name="key" type="javascript">row["SEQ_INDICATORE"]</expression>
+                                        <property name="direction">asc</property>
+                                        <property name="strength">-1</property>
+                                    </structure>
+                                </list-property>
+                                <header>
+                                    <row id="48443">
+                                        <cell id="48444"/>
+                                        <cell id="48445"/>
+                                        <cell id="48446">
+                                            <property name="drop">detail</property>
+                                            <property name="fontSize">8pt</property>
+                                            <property name="borderBottomColor">#C0C0C0</property>
+                                            <property name="borderBottomStyle">solid</property>
+                                            <property name="borderBottomWidth">thin</property>
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                            <property name="verticalAlign">middle</property>
+                                            <data id="48454">
+                                                <property name="resultSetColumn">INDICATORE</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="48447">
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                        </cell>
+                                    </row>
+                                </header>
+                            </group>
+                            <group id="48455">
+                                <property name="groupName">INDICATORE2</property>
+                                <expression name="keyExpr" type="javascript">row["ID_INDICATORE"]</expression>
+                                <structure name="toc">
+                                    <expression name="expressionValue" type="javascript">row["ID_INDICATORE"]</expression>
+                                </structure>
+                                <property name="hideDetail">false</property>
+                                <list-property name="sort">
+                                    <structure>
+                                        <expression name="key" type="javascript">row["SEQ_INDICATORE"]</expression>
+                                        <property name="direction">asc</property>
+                                        <property name="strength">-1</property>
+                                    </structure>
+                                </list-property>
+                                <header>
+                                    <row id="48456">
+                                        <cell id="48457"/>
+                                        <cell id="48458"/>
+                                        <cell id="48459"/>
+                                        <cell id="48460">
+                                            <property name="drop">detail</property>
+                                            <property name="fontSize">8pt</property>
+                                            <property name="borderBottomColor">#C0C0C0</property>
+                                            <property name="borderBottomStyle">solid</property>
+                                            <property name="borderBottomWidth">thin</property>
+                                            <property name="borderRightColor">#C0C0C0</property>
+                                            <property name="borderRightStyle">solid</property>
+                                            <property name="borderRightWidth">thin</property>
+                                            <property name="textAlign">center</property>
+                                            <property name="verticalAlign">middle</property>
+                                            <data id="48467">
+                                                <property name="resultSetColumn">ESITO</property>
+                                            </data>
+                                        </cell>
+                                    </row>
+                                </header>
+                            </group>
+                        </table>
+                    </cell>
+                </row>
+                <row id="48483">
+                    <property name="height">30px</property>
+                    <cell id="48484">
+                        <text id="51411">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[ ]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+                <row id="50665">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">row["OBIETTIVO_ANNO_PRECEDENTE"]==null || row["OBIETTIVO_ANNO_PRECEDENTE"]==''</expression>
+                        </structure>
+                    </list-property>
+                    <cell id="50666">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <data id="50667">
+                            <property name="backgroundAttachment">scroll</property>
+                            <property name="backgroundPositionX">0%</property>
+                            <property name="backgroundPositionY">0%</property>
+                            <property name="backgroundRepeat">repeat</property>
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="fontStyle">normal</property>
+                            <property name="fontVariant">normal</property>
+                            <property name="color">black</property>
+                            <property name="textLineThrough">none</property>
+                            <property name="textOverline">none</property>
+                            <property name="textUnderline">none</property>
+                            <property name="borderBottomColor">black</property>
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="borderLeftColor">black</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderLeftWidth">medium</property>
+                            <property name="borderRightColor">black</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderRightWidth">medium</property>
+                            <property name="borderTopColor">black</property>
+                            <property name="borderTopStyle">none</property>
+                            <property name="borderTopWidth">medium</property>
+                            <property name="marginTop">0pt</property>
+                            <property name="marginLeft">0pt</property>
+                            <property name="marginBottom">0pt</property>
+                            <property name="marginRight">0pt</property>
+                            <property name="paddingTop">1pt</property>
+                            <property name="paddingLeft">1pt</property>
+                            <property name="paddingBottom">1pt</property>
+                            <property name="paddingRight">1pt</property>
+                            <property name="textAlign">center</property>
+                            <property name="letterSpacing">normal</property>
+                            <property name="lineHeight">normal</property>
+                            <property name="orphans">2</property>
+                            <property name="textTransform">none</property>
+                            <property name="whiteSpace">normal</property>
+                            <property name="widows">2</property>
+                            <property name="wordSpacing">normal</property>
+                            <property name="display">block</property>
+                            <property name="pageBreakAfter">auto</property>
+                            <property name="pageBreakBefore">auto</property>
+                            <property name="pageBreakInside">auto</property>
+                            <property name="showIfBlank">false</property>
+                            <property name="canShrink">false</property>
+                            <property name="overflow">hidden</property>
+                            <property name="resultSetColumn">ETCH_OBIETTIVO_ANNO_PRECEDENTE</property>
+                        </data>
+                        <data id="51489">
+                            <property name="backgroundAttachment">scroll</property>
+                            <property name="backgroundPositionX">0%</property>
+                            <property name="backgroundPositionY">0%</property>
+                            <property name="backgroundRepeat">repeat</property>
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontSize">8pt</property>
+                            <property name="fontWeight">normal</property>
+                            <property name="fontStyle">normal</property>
+                            <property name="fontVariant">normal</property>
+                            <property name="color">black</property>
+                            <property name="textLineThrough">none</property>
+                            <property name="textOverline">none</property>
+                            <property name="textUnderline">none</property>
+                            <property name="borderBottomColor">black</property>
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="borderLeftColor">black</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderLeftWidth">medium</property>
+                            <property name="borderRightColor">black</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderRightWidth">medium</property>
+                            <property name="borderTopColor">black</property>
+                            <property name="borderTopStyle">none</property>
+                            <property name="borderTopWidth">medium</property>
+                            <property name="marginTop">0pt</property>
+                            <property name="marginLeft">0pt</property>
+                            <property name="marginBottom">0pt</property>
+                            <property name="marginRight">0pt</property>
+                            <property name="paddingTop">1pt</property>
+                            <property name="paddingLeft">1pt</property>
+                            <property name="paddingBottom">1pt</property>
+                            <property name="paddingRight">1pt</property>
+                            <property name="textAlign">left</property>
+                            <property name="letterSpacing">normal</property>
+                            <property name="lineHeight">normal</property>
+                            <property name="orphans">2</property>
+                            <property name="textTransform">none</property>
+                            <property name="whiteSpace">normal</property>
+                            <property name="widows">2</property>
+                            <property name="wordSpacing">normal</property>
+                            <property name="display">inline</property>
+                            <property name="pageBreakAfter">auto</property>
+                            <property name="pageBreakBefore">auto</property>
+                            <property name="pageBreakInside">auto</property>
+                            <property name="showIfBlank">false</property>
+                            <property name="canShrink">false</property>
+                            <property name="overflow">hidden</property>
+                            <property name="resultSetColumn">OBIETTIVO_ANNO_PRECEDENTE</property>
+                        </data>
+                    </cell>
+                </row>
+                <row id="51346">
+                    <property name="height">30px</property>
+                    <cell id="51347">
+                        <text id="51348">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[ ]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+                <row id="50661">
+                    <cell id="50662">
+                        <grid id="51329">
+                            <column id="51330">
+                                <property name="width">60%</property>
+                            </column>
+                            <column id="51331">
+                                <property name="width">5%</property>
+                            </column>
+                            <column id="51332">
+                                <property name="width">15%</property>
+                            </column>
+                            <column id="51333"/>
+                            <row id="51334">
+                                <cell id="51335">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textUnderline">underline</property>
+                                    <label id="51336">
+                                        <property name="fontWeight">bold</property>
+                                        <property name="textUnderline">none</property>
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="ValutazioneConclusiva"></text-property>
+                                    </label>
+                                    <text id="51337">
+                                        <property name="textUnderline">none</property>
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[: ]]></text-property>
+                                    </text>
+                                    <data id="51338">
+                                        <property name="textUnderline">none</property>
+                                        <property name="display">inline</property>
+                                        <property name="resultSetColumn">VALUTAZIONE_CONCLUSIVA</property>
+                                    </data>
+                                </cell>
+                                <cell id="51339">
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textAlign">right</property>
+                                </cell>
+                                <cell id="51342">
+                                    <property name="colSpan">2</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="fontSize">8pt</property>
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <label id="51222">
+                                        <property name="fontSize">8pt</property>
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="DataDiValutazione"></text-property>
+                                    </label>
+                                    <text id="51223">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[:]]></text-property>
+                                    </text>
+                                    <data id="51350">
+                                        <property name="display">inline</property>
+                                        <property name="resultSetColumn">DATA_VALUTAZIONE</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="51412">
+                    <property name="height">30px</property>
+                    <cell id="51413">
+                        <text id="51414">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[ ]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+                <row id="51344">
+                    <cell id="51345">
+                        <grid id="51351">
+                            <column id="51352">
+                                <property name="width">50%</property>
+                            </column>
+                            <column id="51353"/>
+                            <row id="51354">
+                                <cell id="51355">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textUnderline">underline</property>
+                                    <property name="textAlign">center</property>
+                                    <label id="51356">
+                                        <property name="textUnderline">none</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="FirmaValutatore"></text-property>
+                                    </label>
+                                    <label id="51500">
+                                        <property name="textUnderline">none</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="LabelVuota"></text-property>
+                                    </label>
+                                    <label id="51501">
+                                        <property name="textUnderline">none</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="LabelVuota"></text-property>
+                                    </label>
+                                    <data id="51379">
+                                        <property name="textUnderline">none</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="resultSetColumn">FIRMA_VALUTATORE</property>
+                                    </data>
+                                    <label id="51380">
+                                        <property name="backgroundAttachment">scroll</property>
+                                        <property name="backgroundPositionX">0%</property>
+                                        <property name="backgroundPositionY">0%</property>
+                                        <property name="backgroundRepeat">repeat</property>
+                                        <property name="fontFamily">sans-serif</property>
+                                        <property name="fontSize">6pt</property>
+                                        <property name="fontWeight">normal</property>
+                                        <property name="fontStyle">normal</property>
+                                        <property name="fontVariant">normal</property>
+                                        <property name="color">gray</property>
+                                        <property name="textLineThrough">none</property>
+                                        <property name="textOverline">none</property>
+                                        <property name="textUnderline">none</property>
+                                        <property name="borderBottomColor">black</property>
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderBottomWidth">medium</property>
+                                        <property name="borderLeftColor">black</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderLeftWidth">medium</property>
+                                        <property name="borderRightColor">black</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderRightWidth">medium</property>
+                                        <property name="borderTopColor">black</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="borderTopWidth">medium</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="marginLeft">0pt</property>
+                                        <property name="marginBottom">0pt</property>
+                                        <property name="marginRight">0pt</property>
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="letterSpacing">normal</property>
+                                        <property name="lineHeight">normal</property>
+                                        <property name="orphans">2</property>
+                                        <property name="textTransform">none</property>
+                                        <property name="whiteSpace">normal</property>
+                                        <property name="widows">2</property>
+                                        <property name="wordSpacing">normal</property>
+                                        <property name="display">block</property>
+                                        <property name="pageBreakAfter">auto</property>
+                                        <property name="pageBreakBefore">auto</property>
+                                        <property name="pageBreakInside">auto</property>
+                                        <property name="showIfBlank">false</property>
+                                        <property name="canShrink">false</property>
+                                        <property name="overflow">hidden</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="FirmaElettronica"></text-property>
+                                    </label>
+                                </cell>
+                                <cell id="51358">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textAlign">center</property>
+                                    <label id="51378">
+                                        <property name="textUnderline">none</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_VALUTAZIONE"]==null || row["FIRMA_PV_VALUTAZIONE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="FirmaValutato"></text-property>
+                                    </label>
+                                    <text id="51391">
+                                        <property name="fontWeight">normal</property>
+                                        <property name="display">inline</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_VALUTAZIONE"]==null || row["FIRMA_PV_VALUTAZIONE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[(]]></text-property>
+                                    </text>
+                                    <label id="51392">
+                                        <property name="fontSize">8pt</property>
+                                        <property name="fontWeight">normal</property>
+                                        <property name="display">inline</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_VALUTAZIONE"]==null || row["FIRMA_PV_VALUTAZIONE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="PerPresaVisione"></text-property>
+                                    </label>
+                                    <text id="51393">
+                                        <property name="fontWeight">normal</property>
+                                        <property name="display">inline</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_VALUTAZIONE"]==null || row["FIRMA_PV_VALUTAZIONE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[)]]></text-property>
+                                    </text>
+                                    <text id="51493">
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_VALUTAZIONE"]==null || row["FIRMA_PV_VALUTAZIONE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[ ]]></text-property>
+                                    </text>
+                                    <data id="51397">
+                                        <property name="backgroundAttachment">scroll</property>
+                                        <property name="backgroundPositionX">0%</property>
+                                        <property name="backgroundPositionY">0%</property>
+                                        <property name="backgroundRepeat">repeat</property>
+                                        <property name="fontFamily">sans-serif</property>
+                                        <property name="fontSize">8pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="fontStyle">normal</property>
+                                        <property name="fontVariant">normal</property>
+                                        <property name="color">black</property>
+                                        <property name="textLineThrough">none</property>
+                                        <property name="textOverline">none</property>
+                                        <property name="textUnderline">none</property>
+                                        <property name="borderBottomColor">black</property>
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderBottomWidth">medium</property>
+                                        <property name="borderLeftColor">black</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderLeftWidth">medium</property>
+                                        <property name="borderRightColor">black</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderRightWidth">medium</property>
+                                        <property name="borderTopColor">black</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="borderTopWidth">medium</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="marginLeft">0pt</property>
+                                        <property name="marginBottom">0pt</property>
+                                        <property name="marginRight">0pt</property>
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="letterSpacing">normal</property>
+                                        <property name="lineHeight">normal</property>
+                                        <property name="orphans">2</property>
+                                        <property name="textTransform">none</property>
+                                        <property name="whiteSpace">normal</property>
+                                        <property name="widows">2</property>
+                                        <property name="wordSpacing">normal</property>
+                                        <property name="display">block</property>
+                                        <property name="pageBreakAfter">auto</property>
+                                        <property name="pageBreakBefore">auto</property>
+                                        <property name="pageBreakInside">auto</property>
+                                        <property name="showIfBlank">false</property>
+                                        <property name="canShrink">false</property>
+                                        <property name="overflow">hidden</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_VALUTAZIONE"]==null || row["FIRMA_PV_VALUTAZIONE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="resultSetColumn">FIRMA_PV_VALUTAZIONE</property>
+                                    </data>
+                                    <label id="51381">
+                                        <property name="backgroundAttachment">scroll</property>
+                                        <property name="backgroundPositionX">0%</property>
+                                        <property name="backgroundPositionY">0%</property>
+                                        <property name="backgroundRepeat">repeat</property>
+                                        <property name="fontFamily">sans-serif</property>
+                                        <property name="fontSize">6pt</property>
+                                        <property name="fontWeight">normal</property>
+                                        <property name="fontStyle">normal</property>
+                                        <property name="fontVariant">normal</property>
+                                        <property name="color">gray</property>
+                                        <property name="textLineThrough">none</property>
+                                        <property name="textOverline">none</property>
+                                        <property name="textUnderline">none</property>
+                                        <property name="borderBottomColor">black</property>
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderBottomWidth">medium</property>
+                                        <property name="borderLeftColor">black</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderLeftWidth">medium</property>
+                                        <property name="borderRightColor">black</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderRightWidth">medium</property>
+                                        <property name="borderTopColor">black</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="borderTopWidth">medium</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="marginLeft">0pt</property>
+                                        <property name="marginBottom">0pt</property>
+                                        <property name="marginRight">0pt</property>
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="letterSpacing">normal</property>
+                                        <property name="lineHeight">normal</property>
+                                        <property name="orphans">2</property>
+                                        <property name="textTransform">none</property>
+                                        <property name="whiteSpace">normal</property>
+                                        <property name="widows">2</property>
+                                        <property name="wordSpacing">normal</property>
+                                        <property name="display">block</property>
+                                        <property name="pageBreakAfter">auto</property>
+                                        <property name="pageBreakBefore">auto</property>
+                                        <property name="pageBreakInside">auto</property>
+                                        <property name="showIfBlank">false</property>
+                                        <property name="canShrink">false</property>
+                                        <property name="overflow">hidden</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_VALUTAZIONE"]==null || row["FIRMA_PV_VALUTAZIONE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="FirmaElettronica"></text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="51416">
+                    <property name="height">30px</property>
+                    <cell id="51417">
+                        <text id="51418">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[ ]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+                <row id="50659">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                    <cell id="50660">
+                        <grid id="51399">
+                            <property name="width">40%</property>
+                            <list-property name="visibility">
+                                <structure>
+                                    <property name="format">all</property>
+                                    <expression name="valueExpr" type="javascript">true</expression>
+                                </structure>
+                            </list-property>
+                            <column id="51400"/>
+                            <row id="51401">
+                                <cell id="51402">
+                                    <property name="fontSize">6pt</property>
+                                    <property name="textAlign">center</property>
+                                    <label id="51407">
+                                        <property name="fontWeight">bold</property>
+                                        <text-property name="text" key="DirettoreStrutturaTecnicoFunzionale"></text-property>
+                                    </label>
+                                    <text id="51410">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[( ]]></text-property>
+                                    </text>
+                                    <label id="51403">
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="PerPresaVisione"></text-property>
+                                    </label>
+                                    <text id="51404">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[ )]]></text-property>
+                                    </text>
+                                </cell>
+                            </row>
+                            <row id="51405">
+                                <property name="height">30px</property>
+                                <cell id="51406">
+                                    <property name="fontSize">6pt</property>
+                                    <text id="51487">
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[ ]]></text-property>
+                                    </text>
+                                </cell>
+                            </row>
+                            <row id="51408">
+                                <property name="height">20px</property>
+                                <cell id="51409">
+                                    <property name="borderBottomColor">#000000</property>
+                                    <property name="borderBottomStyle">dashed</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="50657">
+                    <property name="height">30px</property>
+                    <cell id="50658">
+                        <text id="51425">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[ ]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+                <row id="50655">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">row["OBIETTIVO_ANNO_CORSO"]==null || row["OBIETTIVO_ANNO_CORSO"]==''</expression>
+                        </structure>
+                    </list-property>
+                    <cell id="50656">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <data id="51483">
+                            <property name="backgroundAttachment">scroll</property>
+                            <property name="backgroundPositionX">0%</property>
+                            <property name="backgroundPositionY">0%</property>
+                            <property name="backgroundRepeat">repeat</property>
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="fontStyle">normal</property>
+                            <property name="fontVariant">normal</property>
+                            <property name="color">black</property>
+                            <property name="textLineThrough">none</property>
+                            <property name="textOverline">none</property>
+                            <property name="textUnderline">none</property>
+                            <property name="borderBottomColor">black</property>
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="borderLeftColor">black</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderLeftWidth">medium</property>
+                            <property name="borderRightColor">black</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderRightWidth">medium</property>
+                            <property name="borderTopColor">black</property>
+                            <property name="borderTopStyle">none</property>
+                            <property name="borderTopWidth">medium</property>
+                            <property name="marginTop">0pt</property>
+                            <property name="marginLeft">0pt</property>
+                            <property name="marginBottom">0pt</property>
+                            <property name="marginRight">0pt</property>
+                            <property name="paddingTop">1pt</property>
+                            <property name="paddingLeft">1pt</property>
+                            <property name="paddingBottom">1pt</property>
+                            <property name="paddingRight">1pt</property>
+                            <property name="textAlign">center</property>
+                            <property name="letterSpacing">normal</property>
+                            <property name="lineHeight">normal</property>
+                            <property name="orphans">2</property>
+                            <property name="textTransform">none</property>
+                            <property name="whiteSpace">normal</property>
+                            <property name="widows">2</property>
+                            <property name="wordSpacing">normal</property>
+                            <property name="display">block</property>
+                            <property name="pageBreakAfter">auto</property>
+                            <property name="pageBreakBefore">auto</property>
+                            <property name="pageBreakInside">auto</property>
+                            <property name="showIfBlank">false</property>
+                            <property name="canShrink">false</property>
+                            <property name="overflow">hidden</property>
+                            <property name="resultSetColumn">ETCH_OBIETTIVO_ANNO_CORSO</property>
+                        </data>
+                        <data id="51490">
+                            <property name="backgroundAttachment">scroll</property>
+                            <property name="backgroundPositionX">0%</property>
+                            <property name="backgroundPositionY">0%</property>
+                            <property name="backgroundRepeat">repeat</property>
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontSize">8pt</property>
+                            <property name="fontWeight">normal</property>
+                            <property name="fontStyle">normal</property>
+                            <property name="fontVariant">normal</property>
+                            <property name="color">black</property>
+                            <property name="textLineThrough">none</property>
+                            <property name="textOverline">none</property>
+                            <property name="textUnderline">none</property>
+                            <property name="borderBottomColor">black</property>
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="borderLeftColor">black</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderLeftWidth">medium</property>
+                            <property name="borderRightColor">black</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderRightWidth">medium</property>
+                            <property name="borderTopColor">black</property>
+                            <property name="borderTopStyle">none</property>
+                            <property name="borderTopWidth">medium</property>
+                            <property name="marginTop">0pt</property>
+                            <property name="marginLeft">0pt</property>
+                            <property name="marginBottom">0pt</property>
+                            <property name="marginRight">0pt</property>
+                            <property name="paddingTop">1pt</property>
+                            <property name="paddingLeft">1pt</property>
+                            <property name="paddingBottom">1pt</property>
+                            <property name="paddingRight">1pt</property>
+                            <property name="textAlign">left</property>
+                            <property name="letterSpacing">normal</property>
+                            <property name="lineHeight">normal</property>
+                            <property name="orphans">2</property>
+                            <property name="textTransform">none</property>
+                            <property name="whiteSpace">normal</property>
+                            <property name="widows">2</property>
+                            <property name="wordSpacing">normal</property>
+                            <property name="display">inline</property>
+                            <property name="pageBreakAfter">auto</property>
+                            <property name="pageBreakBefore">auto</property>
+                            <property name="pageBreakInside">auto</property>
+                            <property name="showIfBlank">false</property>
+                            <property name="canShrink">false</property>
+                            <property name="overflow">hidden</property>
+                            <property name="resultSetColumn">OBIETTIVO_ANNO_CORSO</property>
+                        </data>
+                    </cell>
+                </row>
+                <row id="50651">
+                    <property name="height">30px</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">row["OBIETTIVO_ANNO_CORSO"]==null || row["OBIETTIVO_ANNO_CORSO"]==''</expression>
+                        </structure>
+                    </list-property>
+                    <cell id="50652">
+                        <text id="51430">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[ ]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+                <row id="50653">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">row["OBIETTIVO_ANNO_CORSO"]==null || row["OBIETTIVO_ANNO_CORSO"]==''</expression>
+                        </structure>
+                    </list-property>
+                    <cell id="50654">
+                        <grid id="51447">
+                            <column id="51448">
+                                <property name="width">50%</property>
+                            </column>
+                            <column id="51449"/>
+                            <row id="51450">
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">row["INCARICO"] == null || row["INCARICO"] == ''</expression>
+                                    </structure>
+                                </list-property>
+                                <cell id="51451">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">4</property>
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textUnderline">underline</property>
+                                    <property name="textAlign">center</property>
+                                    <label id="51452">
+                                        <property name="textUnderline">none</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="FirmaValutatore"></text-property>
+                                    </label>
+                                    <label id="51502">
+                                        <property name="textUnderline">none</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="LabelVuota"></text-property>
+                                    </label>
+                                    <label id="51503">
+                                        <property name="textUnderline">none</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="LabelVuota"></text-property>
+                                    </label>
+                                    <data id="51457">
+                                        <property name="textUnderline">none</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="resultSetColumn">FIRMA_VALUTATORE</property>
+                                    </data>
+                                    <label id="51468">
+                                        <property name="backgroundAttachment">scroll</property>
+                                        <property name="backgroundPositionX">0%</property>
+                                        <property name="backgroundPositionY">0%</property>
+                                        <property name="backgroundRepeat">repeat</property>
+                                        <property name="fontFamily">sans-serif</property>
+                                        <property name="fontSize">6pt</property>
+                                        <property name="fontWeight">normal</property>
+                                        <property name="fontStyle">normal</property>
+                                        <property name="fontVariant">normal</property>
+                                        <property name="color">gray</property>
+                                        <property name="textLineThrough">none</property>
+                                        <property name="textOverline">none</property>
+                                        <property name="textUnderline">none</property>
+                                        <property name="borderBottomColor">black</property>
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderBottomWidth">medium</property>
+                                        <property name="borderLeftColor">black</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderLeftWidth">medium</property>
+                                        <property name="borderRightColor">black</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderRightWidth">medium</property>
+                                        <property name="borderTopColor">black</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="borderTopWidth">medium</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="marginLeft">0pt</property>
+                                        <property name="marginBottom">0pt</property>
+                                        <property name="marginRight">0pt</property>
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="letterSpacing">normal</property>
+                                        <property name="lineHeight">normal</property>
+                                        <property name="orphans">2</property>
+                                        <property name="textTransform">none</property>
+                                        <property name="whiteSpace">normal</property>
+                                        <property name="widows">2</property>
+                                        <property name="wordSpacing">normal</property>
+                                        <property name="display">block</property>
+                                        <property name="pageBreakAfter">auto</property>
+                                        <property name="pageBreakBefore">auto</property>
+                                        <property name="pageBreakInside">auto</property>
+                                        <property name="showIfBlank">false</property>
+                                        <property name="canShrink">false</property>
+                                        <property name="overflow">hidden</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_VALUTATORE"]==null || row["FIRMA_VALUTATORE"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="FirmaElettronica"></text-property>
+                                    </label>
+                                </cell>
+                                <cell id="51453">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">4</property>
+                                    <property name="fontSize">8pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="textAlign">center</property>
+                                    <label id="51454">
+                                        <property name="textUnderline">none</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="display">block</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_OBIETTIVO"]==null || row["FIRMA_PV_OBIETTIVO"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="FirmaValutato"></text-property>
+                                    </label>
+                                    <text id="51459">
+                                        <property name="fontWeight">normal</property>
+                                        <property name="display">inline</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_OBIETTIVO"]==null || row["FIRMA_PV_OBIETTIVO"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[(]]></text-property>
+                                    </text>
+                                    <label id="51460">
+                                        <property name="fontSize">8pt</property>
+                                        <property name="fontWeight">normal</property>
+                                        <property name="display">inline</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_OBIETTIVO"]==null || row["FIRMA_PV_OBIETTIVO"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="PerPresaVisione"></text-property>
+                                    </label>
+                                    <text id="51461">
+                                        <property name="fontWeight">normal</property>
+                                        <property name="display">inline</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_OBIETTIVO"]==null || row["FIRMA_PV_OBIETTIVO"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[)]]></text-property>
+                                    </text>
+                                    <text id="51496">
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_OBIETTIVO"]==null || row["FIRMA_PV_OBIETTIVO"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[ ]]></text-property>
+                                    </text>
+                                    <data id="51488">
+                                        <property name="backgroundAttachment">scroll</property>
+                                        <property name="backgroundPositionX">0%</property>
+                                        <property name="backgroundPositionY">0%</property>
+                                        <property name="backgroundRepeat">repeat</property>
+                                        <property name="fontFamily">sans-serif</property>
+                                        <property name="fontSize">8pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="fontStyle">normal</property>
+                                        <property name="fontVariant">normal</property>
+                                        <property name="color">black</property>
+                                        <property name="textLineThrough">none</property>
+                                        <property name="textOverline">none</property>
+                                        <property name="textUnderline">none</property>
+                                        <property name="borderBottomColor">black</property>
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderBottomWidth">medium</property>
+                                        <property name="borderLeftColor">black</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderLeftWidth">medium</property>
+                                        <property name="borderRightColor">black</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderRightWidth">medium</property>
+                                        <property name="borderTopColor">black</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="borderTopWidth">medium</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="marginLeft">0pt</property>
+                                        <property name="marginBottom">0pt</property>
+                                        <property name="marginRight">0pt</property>
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="letterSpacing">normal</property>
+                                        <property name="lineHeight">normal</property>
+                                        <property name="orphans">2</property>
+                                        <property name="textTransform">none</property>
+                                        <property name="whiteSpace">normal</property>
+                                        <property name="widows">2</property>
+                                        <property name="wordSpacing">normal</property>
+                                        <property name="display">block</property>
+                                        <property name="pageBreakAfter">auto</property>
+                                        <property name="pageBreakBefore">auto</property>
+                                        <property name="pageBreakInside">auto</property>
+                                        <property name="showIfBlank">false</property>
+                                        <property name="canShrink">false</property>
+                                        <property name="overflow">hidden</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_OBIETTIVO"]==null || row["FIRMA_PV_OBIETTIVO"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <property name="resultSetColumn">FIRMA_PV_OBIETTIVO</property>
+                                    </data>
+                                    <label id="51470">
+                                        <property name="backgroundAttachment">scroll</property>
+                                        <property name="backgroundPositionX">0%</property>
+                                        <property name="backgroundPositionY">0%</property>
+                                        <property name="backgroundRepeat">repeat</property>
+                                        <property name="fontFamily">sans-serif</property>
+                                        <property name="fontSize">6pt</property>
+                                        <property name="fontWeight">normal</property>
+                                        <property name="fontStyle">normal</property>
+                                        <property name="fontVariant">normal</property>
+                                        <property name="color">gray</property>
+                                        <property name="textLineThrough">none</property>
+                                        <property name="textOverline">none</property>
+                                        <property name="textUnderline">none</property>
+                                        <property name="borderBottomColor">black</property>
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderBottomWidth">medium</property>
+                                        <property name="borderLeftColor">black</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderLeftWidth">medium</property>
+                                        <property name="borderRightColor">black</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderRightWidth">medium</property>
+                                        <property name="borderTopColor">black</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="borderTopWidth">medium</property>
+                                        <property name="marginTop">0pt</property>
+                                        <property name="marginLeft">0pt</property>
+                                        <property name="marginBottom">0pt</property>
+                                        <property name="marginRight">0pt</property>
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="letterSpacing">normal</property>
+                                        <property name="lineHeight">normal</property>
+                                        <property name="orphans">2</property>
+                                        <property name="textTransform">none</property>
+                                        <property name="whiteSpace">normal</property>
+                                        <property name="widows">2</property>
+                                        <property name="wordSpacing">normal</property>
+                                        <property name="display">block</property>
+                                        <property name="pageBreakAfter">auto</property>
+                                        <property name="pageBreakBefore">auto</property>
+                                        <property name="pageBreakInside">auto</property>
+                                        <property name="showIfBlank">false</property>
+                                        <property name="canShrink">false</property>
+                                        <property name="overflow">hidden</property>
+                                        <list-property name="visibility">
+                                            <structure>
+                                                <property name="format">all</property>
+                                                <expression name="valueExpr" type="javascript">row["FIRMA_PV_OBIETTIVO"]==null || row["FIRMA_PV_OBIETTIVO"]==''</expression>
+                                            </structure>
+                                        </list-property>
+                                        <text-property name="text" key="FirmaElettronica"></text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="51455">
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">row["INCARICO"] == null || row["INCARICO"] == ''</expression>
+                                    </structure>
+                                </list-property>
+                            </row>
+                            <row id="51462">
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">row["INCARICO"] == null || row["INCARICO"] == ''</expression>
+                                    </structure>
+                                </list-property>
+                            </row>
+                            <row id="51466"/>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="51423">
+                    <property name="height">30px</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">row["OBIETTIVO_ANNO_CORSO"]==null || row["OBIETTIVO_ANNO_CORSO"]==''</expression>
+                        </structure>
+                    </list-property>
+                    <cell id="51424">
+                        <text id="51446">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[ ]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+                <row id="51421">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                    <cell id="51422">
+                        <grid id="51471">
+                            <property name="width">40%</property>
+                            <column id="51472"/>
+                            <row id="51473">
+                                <cell id="51474">
+                                    <property name="fontSize">6pt</property>
+                                    <property name="textAlign">center</property>
+                                    <label id="51475">
+                                        <property name="fontWeight">bold</property>
+                                        <text-property name="text" key="DirettoreStrutturaTecnicoFunzionale"></text-property>
+                                    </label>
+                                    <text id="51476">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[( ]]></text-property>
+                                    </text>
+                                    <label id="51477">
+                                        <property name="display">inline</property>
+                                        <text-property name="text" key="PerPresaVisione"></text-property>
+                                    </label>
+                                    <text id="51478">
+                                        <property name="display">inline</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[ )]]></text-property>
+                                    </text>
+                                </cell>
+                            </row>
+                            <row id="51479">
+                                <property name="height">30px</property>
+                                <cell id="51480">
+                                    <property name="fontSize">6pt</property>
+                                    <text id="51486">
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[ ]]></text-property>
+                                    </text>
+                                </cell>
+                            </row>
+                            <row id="51481">
+                                <property name="height">20px</property>
+                                <cell id="51482">
+                                    <property name="borderBottomColor">#000000</property>
+                                    <property name="borderBottomStyle">dashed</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="51419">
+                    <cell id="51420"/>
+                </row>
+                <row id="48545">
+                    <property name="height">10px</property>
+                    <cell id="48546"/>
+                </row>
+            </detail>
+        </table>
+    </body>
+</report>

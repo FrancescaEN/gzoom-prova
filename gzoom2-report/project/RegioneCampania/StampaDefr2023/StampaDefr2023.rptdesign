@@ -1,0 +1,2531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.8.0.v201806261756</property>
+    <simple-property-list name="includeResource">
+        <value>custom/StampaDefr2023/StampaDefr2023</value>
+        <value>project/RegioneCampania/StampaDefr2023/StampaDefr2023</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[importPackage(Packages.java.util);
+importPackage(Packages.java.lang);
+importPackage(Packages.javolution.util);
+importPackage(Packages.org.ofbiz.base.util);
+importPackage(Packages.com.mapsengineering.base.appheader);
+importPackage(Packages.it.mapsgroup.gzoom);
+importPackage(Packages.com.mapsengineering.base.birt.util);]]></method>
+    <method name="beforeFactory"><![CDATA[function dropElement(name) {
+	var element = reportContext.getDesignHandle().findElement(name);
+	element.drop();
+}
+/* */
+if (params["outputFormat"].value == 'xls') {	
+	dropElement("masterGrid");
+} else {
+	dropElement("masterTable");
+}
+]]></method>
+    <property name="theme">base_structure_JDBC.Base</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">hot-deploy/base/webapp/resources/report/birt/base_structure_JDBC.rptlibrary</property>
+            <property name="namespace">base_structure_JDBC</property>
+        </structure>
+        <structure>
+            <property name="fileName">hot-deploy/workeffortext/webapp/workeffortext/birt/report/LibreriaSchedeStruttura.rptlibrary</property>
+            <property name="namespace">LibreriaSchedeStruttura</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="workEffortId" id="16463" extends="LibreriaSchedeStruttura.workEffortId">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">''</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="monitoringDate" id="16724" extends="LibreriaSchedeStruttura.monitoringDate">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">dateTime</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date0101" id="40979">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">dateTime</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">new Date(BirtDateTime.year(params["monitoringDate"].value),00,01,0,0,0,0)</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3006" id="40960">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">dateTime</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">new Date(BirtDateTime.year(params["monitoringDate"].value),05,30,0,0,0,0)</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3112" id="45680">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">dateTime</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">new Date(BirtDateTime.year(params["monitoringDate"].value),11,31,0,0,0,0)</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="currentStatusName" id="49660">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="monitoringDateSql" id="50975">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["monitoringDate"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date3112Sql" id="55438">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date3112"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="defaultOrganizationPartyId" id="55487" extends="base_structure_JDBC.defaultOrganizationPartyId"/>
+        <scalar-parameter name="userLoginId" id="55489" extends="base_structure_JDBC.userLoginId"/>
+        <scalar-parameter name="reportContentId" id="55553">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="outputFormat" id="55554">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="date0101Sql" id="55555">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc(params["date0101"].value, params["odaDialect"].value);</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">true</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="GeneralDataSource" id="16144"
+ extends="base_structure_JDBC.GeneralDataSource">
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/gzoom_regione_campania</property>
+            <property name="odaUser">postgres</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">TWFwc0d6b29tMDE=</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="DatiDefrDS" id="55552">
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">COUNT</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNT</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints"/>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">LINEA_AZIONE_ID</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">LINEA_AZIONE_NUM</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">MISSIONE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">PROGRAMMA</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">OBIETTIVO_STRATEGICO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">POLITICA</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">STRUTTURA_VERTICE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">SOGGETTI_COINVOLTI</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">LINEA_AZIONE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">MODALITA_IMPLEMENTAZIONE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">MODALITA_ATTUAZIONE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">RISULTATI_121</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">RISULTATI_122</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">RISULTATI_123</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">BENEFICIARIO_PRINCIPALE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">ALTRO_BENEFICIARIO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">LINK_BANCHEDATI</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">RISULTATI_PRECEDENTI</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">OBIETTIVO_AGENDA</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">DOMINIO_BENESSERE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">INDICATORE_BENESSERE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">FONTI</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">COUNT</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[/**/
+this.queryText = this.queryText.replace("@date3112",  params["date3112Sql"].value);
+this.queryText = this.queryText.replace("@date0101",  params["date0101Sql"].value);
+/*this.queryText = this.queryText.replace("@date3112", "'2018-12-31 00:00:00.000'");
+this.queryText = this.queryText.replace("@date0101", "'2018-12-31 00:00:00.000'");
+*/
+var workEffortIdStr = '';
+if (params["workEffortId"].value != null &amp;&amp; params["workEffortId"].value != '') {
+    workEffortIdStr = "and li.work_effort_id = '" + params["workEffortId"].value + "'";
+}
+this.queryText = this.queryText.replace("@workEffortId", workEffortIdStr);
+
+//Debug.log("query = " +this.queryText);]]></method>
+            <property name="dataSource">GeneralDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">LINEA_AZIONE_ID</property>
+                    <property name="nativeName">LINEA_AZIONE_ID</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">LINEA_AZIONE_NUM</property>
+                    <property name="nativeName">LINEA_AZIONE_NUM</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">MISSIONE</property>
+                    <property name="nativeName">MISSIONE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">PROGRAMMA</property>
+                    <property name="nativeName">PROGRAMMA</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">OBIETTIVO_STRATEGICO</property>
+                    <property name="nativeName">OBIETTIVO_STRATEGICO</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">POLITICA</property>
+                    <property name="nativeName">POLITICA</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">STRUTTURA_VERTICE</property>
+                    <property name="nativeName">STRUTTURA_VERTICE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">SOGGETTI_COINVOLTI</property>
+                    <property name="nativeName">SOGGETTI_COINVOLTI</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">LINEA_AZIONE</property>
+                    <property name="nativeName">LINEA_AZIONE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">MODALITA_IMPLEMENTAZIONE</property>
+                    <property name="nativeName">MODALITA_IMPLEMENTAZIONE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">MODALITA_ATTUAZIONE</property>
+                    <property name="nativeName">MODALITA_ATTUAZIONE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">RISULTATI_121</property>
+                    <property name="nativeName">RISULTATI_121</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">RISULTATI_122</property>
+                    <property name="nativeName">RISULTATI_122</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">RISULTATI_123</property>
+                    <property name="nativeName">RISULTATI_123</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">BENEFICIARIO_PRINCIPALE</property>
+                    <property name="nativeName">BENEFICIARIO_PRINCIPALE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">ALTRO_BENEFICIARIO</property>
+                    <property name="nativeName">ALTRO_BENEFICIARIO</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">LINK_BANCHEDATI</property>
+                    <property name="nativeName">LINK_BANCHEDATI</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">RISULTATI_PRECEDENTI</property>
+                    <property name="nativeName">RISULTATI_PRECEDENTI</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">OBIETTIVO_AGENDA</property>
+                    <property name="nativeName">OBIETTIVO_AGENDA</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">DOMINIO_BENESSERE</property>
+                    <property name="nativeName">DOMINIO_BENESSERE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">INDICATORE_BENESSERE</property>
+                    <property name="nativeName">INDICATORE_BENESSERE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">FONTI</property>
+                    <property name="nativeName">FONTI</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select 
+li.work_effort_id as "LINEA_AZIONE_ID",
+li.etch as "LINEA_AZIONE_NUM",
+concat(mi.etch,' - ',mi.work_effort_name) as "MISSIONE",
+concat(substring(pr.etch, 3, 2),' - ',pr.work_effort_name) as "PROGRAMMA",
+os.work_effort_name as "OBIETTIVO_STRATEGICO",
+po.work_effort_name as "POLITICA",
+concat(uoc.parent_role_code,' - ', uo.party_name) as "STRUTTURA_VERTICE",
+nd109.note_info as "SOGGETTI_COINVOLTI",
+li.work_effort_name as "LINEA_AZIONE",
+nd111.note_info as "MODALITA_IMPLEMENTAZIONE",
+nd112.note_info as "MODALITA_ATTUAZIONE",
+nd121.note_info as "RISULTATI_121",
+nd122.note_info as "RISULTATI_122",
+nd123.note_info as "RISULTATI_123",
+sk1.work_effort_name as "BENEFICIARIO_PRINCIPALE",
+sk2.work_effort_name as "ALTRO_BENEFICIARIO",
+nd116.note_info as "LINK_BANCHEDATI",
+nd117.note_info as "RISULTATI_PRECEDENTI",
+fi.obiet as "OBIETTIVO_AGENDA",
+fi.dom as "DOMINIO_BENESSERE",
+fi.indic as "INDICATORE_BENESSERE",
+fi.fonti as "FONTI"
+from work_effort li
+inner join party uo on uo.party_id = li.org_unit_id
+inner join party_parent_role uoc on uoc.party_id = uo.party_id and uoc.role_type_id = 'ORGANIZATION_UNIT'
+left join work_effort_assoc poli on poli.work_effort_id_to = li.work_effort_id
+ and poli.work_effort_assoc_type_id = '19DEFDEFC'
+left join work_effort po on poli.work_effort_id_from is not null 
+ and po.work_effort_id = poli.work_effort_id_from
+left join work_effort_assoc prli on prli.work_effort_id_to = li.work_effort_id
+ and prli.work_effort_assoc_type_id = '18BILPROC'
+left join work_effort pr on prli.work_effort_id_from is not null 
+ and pr.work_effort_id = prli.work_effort_id_from
+left join work_effort_assoc mipr on pr.work_effort_id is not null
+ and mipr.work_effort_id_to = pr.work_effort_id
+ and mipr.work_effort_assoc_type_id = '18BILBIL'
+left join work_effort mi on mipr.work_effort_id_from is not null 
+ and mi.work_effort_id = mipr.work_effort_id_from
+left join work_effort_assoc osli on osli.work_effort_id_to = li.work_effort_id
+ and osli.work_effort_assoc_type_id = '19DEFSCHC'
+left join work_effort os on osli.work_effort_id_from is not null 
+ and os.work_effort_id = osli.work_effort_id_from
+inner join work_effort_note wn109 on wn109.work_effort_id = li.work_effort_id
+  and wn109.sequence_id = 109
+inner join note_data nd109 on nd109.note_id = wn109.note_id
+inner join work_effort_note wn111 on wn111.work_effort_id = li.work_effort_id
+  and wn111.sequence_id = 111
+inner join note_data nd111 on nd111.note_id = wn111.note_id
+inner join work_effort_note wn116 on wn116.work_effort_id = li.work_effort_id
+  and wn116.sequence_id = 116
+inner join note_data nd116 on nd116.note_id = wn116.note_id
+inner join work_effort_note wn112 on wn112.work_effort_id = li.work_effort_id
+  and wn112.sequence_id = 112
+inner join note_data nd112 on nd112.note_id = wn112.note_id
+left join work_effort_note wn121 on wn121.work_effort_id = li.work_effort_id
+  and wn121.sequence_id = 121
+left join note_data nd121 on nd121.note_id = wn121.note_id
+left join work_effort_note wn122 on wn122.work_effort_id = li.work_effort_id
+  and wn122.sequence_id = 122
+left join note_data nd122 on nd122.note_id = wn122.note_id
+inner join work_effort_note wn123 on wn123.work_effort_id = li.work_effort_id
+  and wn123.sequence_id = 123
+inner join note_data nd123 on nd123.note_id = wn123.note_id
+inner join work_effort_note wn117 on wn117.work_effort_id = li.work_effort_id
+  and wn117.sequence_id = 117
+inner join note_data nd117 on nd117.note_id = wn117.note_id
+left join work_effort_assoc sk1li on sk1li.work_effort_id_to = li.work_effort_id
+ and sk1li.work_effort_assoc_type_id = '19DEFSTKC'
+left join work_effort sk1 on sk1li.work_effort_id_from is not null 
+ and sk1.work_effort_id = sk1li.work_effort_id_from
+left join work_effort_assoc sk2li on sk2li.work_effort_id_to = li.work_effort_id
+ and sk2li.work_effort_assoc_type_id = '19DEFSTKC2'
+left join work_effort sk2 on sk2li.work_effort_id_from is not null 
+ and sk2.work_effort_id = sk2li.work_effort_id_from
+left join (
+	select wem.work_effort_id,
+	max(case when gl.gl_account_id = '10171' then gamrs.uom_descr else null end) as obiet,
+	max(case when gl.gl_account_id = '10180' then gamrs.uom_descr else null end) as dom,
+	max(case when gl.gl_account_id = '10181' then gamrs.uom_descr else null end) as indic,
+	max(case when gl.gl_account_id = '10120' then gamrs.uom_descr else null end) as fonti
+	from work_effort_measure wem
+	join gl_account gl on gl.gl_account_id = wem.gl_account_id
+	join work_effort_purpose_account wepa on wepa.gl_account_id = gl.gl_account_id and wepa.work_effort_purpose_type_id = 'DEFRFIN'
+	left join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id
+	left join gl_account_meas_rat_sc gamrs on gamrs.gl_account_id = ate.gl_account_id
+	and ate.amount = gamrs.uom_rating_value
+	group by
+	wem.work_effort_id
+) fi on fi.work_effort_id = li.work_effort_id 
+
+where li.work_effort_type_id = '19DEF3SCH'
+  and li.estimated_start_date <= @date3112
+  and li.estimated_completion_date >= @date0101
+  @workEffortId 
+order by li.etch]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>LINEA_AZIONE_NUM</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>LINEA_AZIONE_NUM</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LINEA_AZIONE_NUM</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>MISSIONE</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>MISSIONE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MISSIONE</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>PROGRAMMA</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>PROGRAMMA</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>PROGRAMMA</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>OBIETTIVO_STRATEGICO</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>OBIETTIVO_STRATEGICO</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>OBIETTIVO_STRATEGICO</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ASSESSORATO_RIFERIMENTO</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ASSESSORATO_RIFERIMENTO</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ASSESSORATO_RIFERIMENTO</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ASSESSORATO_COINVOLTO</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ASSESSORATO_COINVOLTO</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ASSESSORATO_COINVOLTO</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>POLITICA</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>POLITICA</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>POLITICA</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>STRUTTURA_VERTICE</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>STRUTTURA_VERTICE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>STRUTTURA_VERTICE</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>SOGGETTI_COINVOLTI</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>SOGGETTI_COINVOLTI</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>SOGGETTI_COINVOLTI</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>LINEA_AZIONE</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>LINEA_AZIONE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LINEA_AZIONE</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>MODALITA_IMPLEMENTAZIONE</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MODALITA_IMPLEMENTAZIONE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MODALITA_IMPLEMENTAZIONE</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>MODALITA_ATTUAZIONE</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MODALITA_ATTUAZIONE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MODALITA_ATTUAZIONE</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>FONTI_FINANZIARIE</design:name>
+              <design:position>13</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>FONTI_FINANZIARIE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>FONTI_FINANZIARIE</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>RISULTATI_ANNO</design:name>
+              <design:position>14</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>RISULTATI_ANNO</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>RISULTATI_ANNO</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>RISULTATI_ANNOPIU1</design:name>
+              <design:position>15</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>RISULTATI_ANNOPIU1</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>RISULTATI_ANNOPIU1</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>RISULTATI_ANNOPIU2</design:name>
+              <design:position>16</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>RISULTATI_ANNOPIU2</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>RISULTATI_ANNOPIU2</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>BENEFICIARIO_PRINCIPALE</design:name>
+              <design:position>17</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>BENEFICIARIO_PRINCIPALE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>BENEFICIARIO_PRINCIPALE</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ALTRO_BENEFICIARIO</design:name>
+              <design:position>18</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ALTRO_BENEFICIARIO</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ALTRO_BENEFICIARIO</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>LINK_BANCHEDATI</design:name>
+              <design:position>19</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>LINK_BANCHEDATI</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LINK_BANCHEDATI</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>RISULTATI_PRECEDENTI</design:name>
+              <design:position>20</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>RISULTATI_PRECEDENTI</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>RISULTATI_PRECEDENTI</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="AssessoratiRiferimentoDS" id="55846">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">party_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">party_name</text-property>
+                    <text-property name="heading">party_name</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">party_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">GeneralDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">party_name</property>
+                    <property name="nativeName">party_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[ select b.party_name from
+  work_effort_party_assignment a
+  inner join party b on b.party_id = a.party_id
+  where a.role_type_id = 'WEM_PART_IN_CHARGE'
+  and a.work_effort_id = ?
+  order by b.party_name]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>party_name</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>party_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>party_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="AssessoratiCoinvoltiDS" id="55847">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">party_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">party_name</text-property>
+                    <text-property name="heading">party_name</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">party_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">GeneralDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">party_name</property>
+                    <property name="nativeName">party_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[ select b.party_name from
+  work_effort_party_assignment a
+  inner join party b on b.party_id = a.party_id
+  where a.role_type_id = 'WEM_PART_MANAGER'
+  and a.work_effort_id = ?
+  order by b.party_name]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>party_name</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>party_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>party_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="BaseSimpleMasterPageLS_Postgres" id="55517" extends="base_structure_JDBC.BaseSimpleMasterPageLS_Postgres">
+            <property name="orientation">portrait</property>
+            <overridden-values>
+                <ref-entry baseId="50229" name="headerGrid24" id="50229"/>
+                <ref-entry baseId="50230" id="50230"/>
+                <ref-entry baseId="50231" id="50231"/>
+                <ref-entry baseId="50232" id="50232"/>
+                <ref-entry baseId="50233" id="50233"/>
+                <ref-entry baseId="50234" id="50234"/>
+                <ref-entry baseId="50235" name="lblDefOrgParty5111" id="50235"/>
+                <ref-entry baseId="50236" id="50236"/>
+                <ref-entry baseId="50635" name="NewImage114" id="50635"/>
+                <ref-entry baseId="50238" id="50238"/>
+                <ref-entry baseId="50239" name="NewTextData512" id="50239"/>
+                <ref-entry baseId="50240" name="footerGrid26" id="50240"/>
+                <ref-entry baseId="50241" id="50241">
+                    <property name="width">20%</property>
+                </ref-entry>
+                <ref-entry baseId="50242" id="50242"/>
+                <ref-entry baseId="50243" id="50243">
+                    <property name="width">18%</property>
+                </ref-entry>
+                <ref-entry baseId="50244" id="50244"/>
+                <ref-entry baseId="50245" id="50245"/>
+                <ref-entry baseId="50246" name="NewGrid215" id="50246"/>
+                <ref-entry baseId="50247" id="50247"/>
+                <ref-entry baseId="50248" id="50248"/>
+                <ref-entry baseId="50249" id="50249"/>
+                <ref-entry baseId="50250" id="50250"/>
+                <ref-entry baseId="50251" name="lblPrintedDate5" id="50251"/>
+                <ref-entry baseId="50252" id="50252"/>
+                <ref-entry baseId="50253" name="NewData635" id="50253"/>
+                <ref-entry baseId="50254" id="50254"/>
+                <ref-entry baseId="50662" name="NewImage6125" id="50662"/>
+                <ref-entry baseId="50256" id="50256"/>
+                <ref-entry baseId="50257" name="NewGrid56" id="50257"/>
+                <ref-entry baseId="50258" id="50258"/>
+                <ref-entry baseId="50259" id="50259"/>
+                <ref-entry baseId="50260" id="50260"/>
+                <ref-entry baseId="50261" id="50261"/>
+                <ref-entry baseId="50262" id="50262"/>
+                <ref-entry baseId="50263" id="50263"/>
+                <ref-entry baseId="50264" id="50264"/>
+                <ref-entry baseId="50265" id="50265"/>
+                <ref-entry baseId="50266" name="lblPageNumber7" id="50266"/>
+                <ref-entry baseId="50267" id="50267"/>
+                <ref-entry baseId="50268" name="NewAutoText36" id="50268"/>
+                <ref-entry baseId="50269" id="50269"/>
+                <ref-entry baseId="50270" name="lblPageNumber16" id="50270"/>
+                <ref-entry baseId="50271" id="50271"/>
+                <ref-entry baseId="50272" name="NewAutoText26" id="55518"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid name="masterGrid" id="55556">
+            <column id="55557"/>
+            <row id="55558">
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakInside">avoid</property>
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["outputFormat"].value=='doc'</expression>
+                    </structure>
+                </list-property>
+                <cell id="55559">
+                    <label id="55564">
+                        <property name="fontWeight">bold</property>
+                        <property name="fontStyle">italic</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text" key="RegioneCampania"></text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="55560">
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakInside">avoid</property>
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["outputFormat"].value=='doc'</expression>
+                    </structure>
+                </list-property>
+                <cell id="55561">
+                    <property name="textAlign">center</property>
+                    <label id="55565">
+                        <property name="fontWeight">bold</property>
+                        <property name="fontStyle">italic</property>
+                        <property name="display">inline</property>
+                        <text-property name="text" key="SchedaDefr"></text-property>
+                    </label>
+                    <text id="55566">
+                        <property name="fontSize">10pt</property>
+                        <property name="display">inline</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[ ]]></text-property>
+                    </text>
+                    <text-data id="55567">
+                        <property name="fontWeight">bold</property>
+                        <property name="fontStyle">italic</property>
+                        <property name="display">inline</property>
+                        <expression name="valueExpr">BirtDateTime.year(params["monitoringDate"].value)</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                    <text id="55886">
+                        <property name="display">inline</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[ - ]]></text-property>
+                    </text>
+                    <text-data id="55887">
+                        <property name="fontWeight">bold</property>
+                        <property name="fontStyle">italic</property>
+                        <property name="display">inline</property>
+                        <expression name="valueExpr">BirtDateTime.year(params["monitoringDate"].value) + 2</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="55924">
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakInside">avoid</property>
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["outputFormat"].value=='pdf'</expression>
+                    </structure>
+                </list-property>
+                <cell id="55925">
+                    <property name="textAlign">center</property>
+                    <label id="55926">
+                        <property name="fontWeight">bold</property>
+                        <property name="fontStyle">italic</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text" key="RegioneCampania"></text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="55936">
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakInside">avoid</property>
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["outputFormat"].value=='pdf'</expression>
+                    </structure>
+                </list-property>
+                <cell id="55937">
+                    <property name="textAlign">center</property>
+                    <text-data id="55938">
+                        <property name="fontWeight">bold</property>
+                        <property name="fontStyle">italic</property>
+                        <expression name="valueExpr">"Scheda Defr "+BirtDateTime.year(params["monitoringDate"].value)+"-"+(BirtDateTime.year(params["monitoringDate"].value) + 2)</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="55562">
+                <property name="textAlign">left</property>
+                <property name="pageBreakBefore">avoid</property>
+                <cell id="55563">
+                    <property name="textAlign">center</property>
+                    <table name="tbDefr" id="55568">
+                        <property name="dataSet">DatiDefrDS</property>
+                        <list-property name="visibility">
+                            <structure>
+                                <property name="format">all</property>
+                                <expression name="valueExpr" type="javascript">row["COUNT"] &lt; 1</expression>
+                            </structure>
+                        </list-property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">LINEA_AZIONE_ID</property>
+                                <text-property name="displayName">LINEA_AZIONE_ID</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["LINEA_AZIONE_ID"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">LINEA_AZIONE_NUM</property>
+                                <text-property name="displayName">LINEA_AZIONE_NUM</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["LINEA_AZIONE_NUM"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">MISSIONE</property>
+                                <text-property name="displayName">MISSIONE</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["MISSIONE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">PROGRAMMA</property>
+                                <text-property name="displayName">PROGRAMMA</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["PROGRAMMA"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">OBIETTIVO_STRATEGICO</property>
+                                <text-property name="displayName">OBIETTIVO_STRATEGICO</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["OBIETTIVO_STRATEGICO"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">POLITICA</property>
+                                <text-property name="displayName">POLITICA</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["POLITICA"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">STRUTTURA_VERTICE</property>
+                                <text-property name="displayName">STRUTTURA_VERTICE</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["STRUTTURA_VERTICE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">SOGGETTI_COINVOLTI</property>
+                                <text-property name="displayName">SOGGETTI_COINVOLTI</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["SOGGETTI_COINVOLTI"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">LINEA_AZIONE</property>
+                                <text-property name="displayName">LINEA_AZIONE</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["LINEA_AZIONE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">MODALITA_IMPLEMENTAZIONE</property>
+                                <text-property name="displayName">MODALITA_IMPLEMENTAZIONE</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["MODALITA_IMPLEMENTAZIONE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">MODALITA_ATTUAZIONE</property>
+                                <text-property name="displayName">MODALITA_ATTUAZIONE</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["MODALITA_ATTUAZIONE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">RISULTATI_121</property>
+                                <text-property name="displayName">RISULTATI_121</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["RISULTATI_121"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">RISULTATI_122</property>
+                                <text-property name="displayName">RISULTATI_122</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["RISULTATI_122"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">RISULTATI_123</property>
+                                <text-property name="displayName">RISULTATI_123</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["RISULTATI_123"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">BENEFICIARIO_PRINCIPALE</property>
+                                <text-property name="displayName">BENEFICIARIO_PRINCIPALE</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["BENEFICIARIO_PRINCIPALE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">ALTRO_BENEFICIARIO</property>
+                                <text-property name="displayName">ALTRO_BENEFICIARIO</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ALTRO_BENEFICIARIO"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">LINK_BANCHEDATI</property>
+                                <text-property name="displayName">LINK_BANCHEDATI</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["LINK_BANCHEDATI"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">RISULTATI_PRECEDENTI</property>
+                                <text-property name="displayName">RISULTATI_PRECEDENTI</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["RISULTATI_PRECEDENTI"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">OBIETTIVO_AGENDA</property>
+                                <text-property name="displayName">OBIETTIVO_AGENDA</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["OBIETTIVO_AGENDA"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">DOMINIO_BENESSERE</property>
+                                <text-property name="displayName">DOMINIO_BENESSERE</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["DOMINIO_BENESSERE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">INDICATORE_BENESSERE</property>
+                                <text-property name="displayName">INDICATORE_BENESSERE</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["INDICATORE_BENESSERE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">FONTI</property>
+                                <text-property name="displayName">FONTI</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["FONTI"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">COUNT</property>
+                                <text-property name="displayName">COUNT</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["COUNT"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Column Binding</property>
+                                <expression name="expression" type="javascript">params["outputFormat"].value</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                        </list-property>
+                        <column id="55575"/>
+                        <detail>
+                            <row id="55571">
+                                <property name="pageBreakAfter">always</property>
+                                <property name="pageBreakInside">auto</property>
+                                <cell id="55572">
+                                    <property name="textAlign">left</property>
+                                    <grid id="55576">
+                                        <column id="55577"/>
+                                        <row id="55578">
+                                            <cell id="55579">
+                                                <label id="55628">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="LineaAzioneNumPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55580">
+                                            <cell id="55581">
+                                                <data id="55629">
+                                                    <property name="resultSetColumn">LINEA_AZIONE_NUM</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55582">
+                                            <cell id="55583">
+                                                <label id="55630">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="MissionePdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55584">
+                                            <cell id="55585">
+                                                <data id="55631">
+                                                    <property name="resultSetColumn">MISSIONE</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55586">
+                                            <cell id="55587">
+                                                <label id="55632">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="ProgrammaPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55588">
+                                            <cell id="55589">
+                                                <data id="55633">
+                                                    <property name="resultSetColumn">PROGRAMMA</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55590">
+                                            <cell id="55591">
+                                                <label id="55634">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="ObiettivoStratPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55592">
+                                            <cell id="55593">
+                                                <data id="55635">
+                                                    <property name="resultSetColumn">OBIETTIVO_STRATEGICO</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55594">
+                                            <cell id="55595">
+                                                <label id="55736">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="AssessoratoRifPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55596">
+                                            <cell id="55597">
+                                                <table name="tbAssessoriRiferimento" id="55848">
+                                                    <property name="dataSet">AssessoratiRiferimentoDS</property>
+                                                    <list-property name="paramBindings">
+                                                        <structure>
+                                                            <property name="paramName">param_1</property>
+                                                            <simple-property-list name="expression">
+                                                                <value type="javascript">row["LINEA_AZIONE_ID"]</value>
+                                                            </simple-property-list>
+                                                        </structure>
+                                                    </list-property>
+                                                    <list-property name="boundDataColumns">
+                                                        <structure>
+                                                            <property name="name">party_name</property>
+                                                            <text-property name="displayName">party_name</text-property>
+                                                            <expression name="expression" type="javascript">dataSetRow["party_name"]</expression>
+                                                            <property name="dataType">string</property>
+                                                        </structure>
+                                                    </list-property>
+                                                    <column id="55855"/>
+                                                    <detail>
+                                                        <row id="55851">
+                                                            <cell id="55852">
+                                                                <data id="55857">
+                                                                    <property name="resultSetColumn">party_name</property>
+                                                                </data>
+                                                            </cell>
+                                                        </row>
+                                                    </detail>
+                                                </table>
+                                            </cell>
+                                        </row>
+                                        <row id="55598">
+                                            <cell id="55599">
+                                                <label id="55738">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="AltroAssessoratoPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55600">
+                                            <cell id="55601">
+                                                <table name="tbAssessoratiCoinvolti" id="55858">
+                                                    <property name="dataSet">AssessoratiCoinvoltiDS</property>
+                                                    <list-property name="paramBindings">
+                                                        <structure>
+                                                            <property name="paramName">param_1</property>
+                                                            <simple-property-list name="expression">
+                                                                <value type="javascript">row["LINEA_AZIONE_ID"]</value>
+                                                            </simple-property-list>
+                                                        </structure>
+                                                    </list-property>
+                                                    <list-property name="boundDataColumns">
+                                                        <structure>
+                                                            <property name="name">party_name</property>
+                                                            <text-property name="displayName">party_name</text-property>
+                                                            <expression name="expression" type="javascript">dataSetRow["party_name"]</expression>
+                                                            <property name="dataType">string</property>
+                                                        </structure>
+                                                    </list-property>
+                                                    <column id="55865"/>
+                                                    <detail>
+                                                        <row id="55861">
+                                                            <cell id="55862">
+                                                                <data id="55867">
+                                                                    <property name="resultSetColumn">party_name</property>
+                                                                </data>
+                                                            </cell>
+                                                        </row>
+                                                    </detail>
+                                                </table>
+                                            </cell>
+                                        </row>
+                                        <row id="55602">
+                                            <cell id="55603">
+                                                <label id="55740">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="PoliticaPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55604">
+                                            <cell id="55605">
+                                                <data id="55741">
+                                                    <property name="resultSetColumn">POLITICA</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55606">
+                                            <cell id="55607">
+                                                <label id="55742">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="StrutturaRespPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55608">
+                                            <cell id="55609">
+                                                <data id="55743">
+                                                    <property name="resultSetColumn">STRUTTURA_VERTICE</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55610">
+                                            <cell id="55611">
+                                                <label id="55744">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="AltriSoggettiPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55612">
+                                            <cell id="55613">
+                                                <data id="55745">
+                                                    <property name="resultSetColumn">SOGGETTI_COINVOLTI</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55614">
+                                            <cell id="55615">
+                                                <label id="55746">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="LineaAzionePdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55616">
+                                            <cell id="55617">
+                                                <data id="55747">
+                                                    <property name="resultSetColumn">LINEA_AZIONE</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55618">
+                                            <cell id="55619">
+                                                <label id="55748">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="ModalitaLineaAzionePdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55620">
+                                            <cell id="55621">
+                                                <data id="55749">
+                                                    <property name="resultSetColumn">MODALITA_IMPLEMENTAZIONE</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55622">
+                                            <cell id="55623">
+                                                <label id="55762">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="StrumentiAttuazionePdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55624">
+                                            <cell id="55625">
+                                                <data id="55763">
+                                                    <property name="resultSetColumn">MODALITA_ATTUAZIONE</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55898">
+                                            <cell id="55899">
+                                                <label id="55900">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="ObiettivoAgenda"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55896">
+                                            <cell id="55897">
+                                                <data id="55903">
+                                                    <property name="resultSetColumn">OBIETTIVO_AGENDA</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55892">
+                                            <cell id="55893">
+                                                <label id="55901">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="DominioBenessere"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55888">
+                                            <cell id="55889">
+                                                <data id="55904">
+                                                    <property name="resultSetColumn">DOMINIO_BENESSERE</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55890">
+                                            <cell id="55891">
+                                                <label id="55902">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="IndicatoreBenessere"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55894">
+                                            <cell id="55895">
+                                                <data id="55905">
+                                                    <property name="resultSetColumn">INDICATORE_BENESSERE</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55626">
+                                            <cell id="55627">
+                                                <label id="55764">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="FontiFinanziariePdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55750">
+                                            <cell id="55751">
+                                                <data id="55906">
+                                                    <property name="resultSetColumn">FONTI</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55752">
+                                            <cell id="55753">
+                                                <label id="55766">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <property name="display">inline</property>
+                                                    <text-property name="text" key="RisultatiAttesiPdf2"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55754">
+                                            <cell id="55755">
+                                                <data id="55839">
+                                                    <property name="resultSetColumn">RISULTATI_123</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55756">
+                                            <list-property name="visibility">
+                                                <structure>
+                                                    <property name="format">all</property>
+                                                    <expression name="valueExpr" type="javascript">true</expression>
+                                                </structure>
+                                            </list-property>
+                                            <cell id="55757">
+                                                <label id="55770">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <property name="display">inline</property>
+                                                    <text-property name="text" key="RisultatiAttestPiuUnoPdf"></text-property>
+                                                </label>
+                                                <text id="55771">
+                                                    <property name="display">inline</property>
+                                                    <property name="contentType">auto</property>
+                                                    <text-property name="content"><![CDATA[ ]]></text-property>
+                                                </text>
+                                                <text-data id="55772">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <property name="display">inline</property>
+                                                    <expression name="valueExpr">BirtDateTime.year(params["monitoringDate"].value) + 1</expression>
+                                                    <property name="contentType">html</property>
+                                                </text-data>
+                                            </cell>
+                                        </row>
+                                        <row id="55758">
+                                            <list-property name="visibility">
+                                                <structure>
+                                                    <property name="format">all</property>
+                                                    <expression name="valueExpr" type="javascript">true</expression>
+                                                </structure>
+                                            </list-property>
+                                            <cell id="55759">
+                                                <data id="55840">
+                                                    <property name="resultSetColumn">RISULTATI_121</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55760">
+                                            <list-property name="visibility">
+                                                <structure>
+                                                    <property name="format">all</property>
+                                                    <expression name="valueExpr" type="javascript">true</expression>
+                                                </structure>
+                                            </list-property>
+                                            <cell id="55761">
+                                                <label id="55776">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <property name="display">inline</property>
+                                                    <text-property name="text" key="RisultatiAttesiPiuDuePdf"></text-property>
+                                                </label>
+                                                <text id="55777">
+                                                    <property name="display">inline</property>
+                                                    <property name="contentType">auto</property>
+                                                    <text-property name="content"><![CDATA[ ]]></text-property>
+                                                </text>
+                                                <text-data id="55778">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <property name="display">inline</property>
+                                                    <expression name="valueExpr">BirtDateTime.year(params["monitoringDate"].value) + 2</expression>
+                                                    <property name="contentType">html</property>
+                                                </text-data>
+                                            </cell>
+                                        </row>
+                                        <row id="55773">
+                                            <list-property name="visibility">
+                                                <structure>
+                                                    <property name="format">all</property>
+                                                    <expression name="valueExpr" type="javascript">true</expression>
+                                                </structure>
+                                            </list-property>
+                                            <cell id="55774">
+                                                <data id="55841">
+                                                    <property name="resultSetColumn">RISULTATI_122</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55780">
+                                            <cell id="55781">
+                                                <label id="55796">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="BeneficiarioPrincipalePdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55782">
+                                            <cell id="55783">
+                                                <data id="55797">
+                                                    <property name="resultSetColumn">BENEFICIARIO_PRINCIPALE</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55784">
+                                            <cell id="55785">
+                                                <label id="55798">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="UlterioreBeneficiarioPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55786">
+                                            <cell id="55787">
+                                                <data id="55799">
+                                                    <property name="resultSetColumn">ALTRO_BENEFICIARIO</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55788">
+                                            <cell id="55789">
+                                                <label id="55800">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="BancheDatiPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55790">
+                                            <cell id="55791">
+                                                <data id="55801">
+                                                    <property name="resultSetColumn">LINK_BANCHEDATI</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                        <row id="55792">
+                                            <cell id="55793">
+                                                <label id="55802">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <text-property name="text" key="RisultatiRaggiuntiPdf"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                        <row id="55794">
+                                            <cell id="55795">
+                                                <data id="55803">
+                                                    <property name="resultSetColumn">RISULTATI_PRECEDENTI</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                            </row>
+                        </detail>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+        <table name="masterTable" id="55636">
+            <property name="dataSet">DatiDefrDS</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">LINEA_AZIONE_ID</property>
+                    <text-property name="displayName">LINEA_AZIONE_ID</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LINEA_AZIONE_ID"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">LINEA_AZIONE_NUM</property>
+                    <text-property name="displayName">LINEA_AZIONE_NUM</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LINEA_AZIONE_NUM"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">MISSIONE</property>
+                    <text-property name="displayName">MISSIONE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["MISSIONE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">PROGRAMMA</property>
+                    <text-property name="displayName">PROGRAMMA</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PROGRAMMA"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">OBIETTIVO_STRATEGICO</property>
+                    <text-property name="displayName">OBIETTIVO_STRATEGICO</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["OBIETTIVO_STRATEGICO"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">POLITICA</property>
+                    <text-property name="displayName">POLITICA</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["POLITICA"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">STRUTTURA_VERTICE</property>
+                    <text-property name="displayName">STRUTTURA_VERTICE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["STRUTTURA_VERTICE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">SOGGETTI_COINVOLTI</property>
+                    <text-property name="displayName">SOGGETTI_COINVOLTI</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["SOGGETTI_COINVOLTI"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">LINEA_AZIONE</property>
+                    <text-property name="displayName">LINEA_AZIONE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LINEA_AZIONE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">MODALITA_IMPLEMENTAZIONE</property>
+                    <text-property name="displayName">MODALITA_IMPLEMENTAZIONE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["MODALITA_IMPLEMENTAZIONE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">MODALITA_ATTUAZIONE</property>
+                    <text-property name="displayName">MODALITA_ATTUAZIONE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["MODALITA_ATTUAZIONE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">FONTI_FINANZIARIE</property>
+                    <text-property name="displayName">FONTI_FINANZIARIE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["FONTI_FINANZIARIE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">RISULTATI_121</property>
+                    <text-property name="displayName">RISULTATI_121</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["RISULTATI_121"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">RISULTATI_122</property>
+                    <text-property name="displayName">RISULTATI_122</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["RISULTATI_122"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">RISULTATI_123</property>
+                    <text-property name="displayName">RISULTATI_123</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["RISULTATI_123"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">BENEFICIARIO_PRINCIPALE</property>
+                    <text-property name="displayName">BENEFICIARIO_PRINCIPALE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["BENEFICIARIO_PRINCIPALE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ALTRO_BENEFICIARIO</property>
+                    <text-property name="displayName">ALTRO_BENEFICIARIO</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ALTRO_BENEFICIARIO"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">LINK_BANCHEDATI</property>
+                    <text-property name="displayName">LINK_BANCHEDATI</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LINK_BANCHEDATI"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">RISULTATI_PRECEDENTI</property>
+                    <text-property name="displayName">RISULTATI_PRECEDENTI</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["RISULTATI_PRECEDENTI"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">COUNT</property>
+                    <text-property name="displayName">COUNT</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["COUNT"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <column id="55706"/>
+            <column id="55707"/>
+            <column id="55708"/>
+            <column id="55709"/>
+            <column id="55710"/>
+            <column id="55711"/>
+            <column id="55712"/>
+            <column id="55713"/>
+            <column id="55714"/>
+            <column id="55715"/>
+            <column id="55716"/>
+            <column id="55717"/>
+            <column id="55718"/>
+            <column id="55719"/>
+            <column id="55720"/>
+            <column id="55721"/>
+            <column id="55722">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">true</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="55723">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">true</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="55724"/>
+            <column id="55725"/>
+            <column id="55726"/>
+            <column id="55727"/>
+            <header>
+                <row id="55637">
+                    <cell id="55638">
+                        <label id="55728">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="LineaAzioneNumXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55639">
+                        <label id="55729">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="PoliticaXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55640">
+                        <label id="55730">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="MissioneXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55641">
+                        <label id="55731">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="ProgrammaXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55642">
+                        <label id="55804">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="ObiettivoStratXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55643">
+                        <label id="55805">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="AssessoratoRifXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55644">
+                        <label id="55806">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="AltroAssessoratoXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55645">
+                        <label id="55807">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="PoliticaRegionaleXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55646">
+                        <label id="55808">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="StrutturaRespXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55647">
+                        <label id="55809">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="UODTitolareXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55648">
+                        <label id="55810">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="AltriSoggettiXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55649">
+                        <label id="55811">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="LineaAzioneXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55650">
+                        <label id="55812">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="ModalitaLineaAzioneXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55651">
+                        <label id="55813">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="StrumentiAttuazioneXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55652">
+                        <label id="55814">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="FontiFinanziarieXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55653">
+                        <label id="55845">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="RisultatiAttesiXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55654">
+                        <text-data id="55816">
+                            <property name="fontWeight">bold</property>
+                            <expression name="valueExpr">reportContext.getMessage('RisultatiAttesiXls', reportContext.getLocale()) +&#13;
+' ' +&#13;
+(BirtDateTime.year(params["monitoringDate"].value) + 1)</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="55655">
+                        <text-data id="55817">
+                            <property name="fontWeight">bold</property>
+                            <expression name="valueExpr">reportContext.getMessage('RisultatiAttesiXls', reportContext.getLocale()) +&#13;
+' ' +&#13;
+(BirtDateTime.year(params["monitoringDate"].value) + 2)</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="55656">
+                        <label id="55818">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="BeneficiarioPrincipaleXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55657">
+                        <label id="55819">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="UlterioreBeneficiarioXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55658">
+                        <label id="55820">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="BancheDatiXls"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="55659">
+                        <label id="55821">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="RisultatiRaggiuntiXls"></text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="55660">
+                    <cell id="55661">
+                        <data id="55732">
+                            <property name="resultSetColumn">LINEA_AZIONE_NUM</property>
+                        </data>
+                    </cell>
+                    <cell id="55662">
+                        <data id="55733">
+                            <property name="resultSetColumn">POLITICA</property>
+                        </data>
+                    </cell>
+                    <cell id="55663">
+                        <data id="55734">
+                            <property name="resultSetColumn">MISSIONE</property>
+                        </data>
+                    </cell>
+                    <cell id="55664">
+                        <data id="55735">
+                            <property name="resultSetColumn">PROGRAMMA</property>
+                        </data>
+                    </cell>
+                    <cell id="55665">
+                        <data id="55822">
+                            <property name="resultSetColumn">OBIETTIVO_STRATEGICO</property>
+                        </data>
+                    </cell>
+                    <cell id="55666">
+                        <table id="55868">
+                            <property name="dataSet">AssessoratiRiferimentoDS</property>
+                            <list-property name="paramBindings">
+                                <structure>
+                                    <property name="paramName">param_1</property>
+                                    <simple-property-list name="expression">
+                                        <value type="javascript">row["LINEA_AZIONE_ID"]</value>
+                                    </simple-property-list>
+                                </structure>
+                            </list-property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">party_name</property>
+                                    <text-property name="displayName">party_name</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["party_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Aggregation</property>
+                                    <property name="dataType">string</property>
+                                    <property name="aggregateFunction">CONCATENATE</property>
+                                    <list-property name="arguments">
+                                        <structure>
+                                            <property name="name">Expression</property>
+                                            <expression name="value" type="javascript">BirtStr.trim(row["party_name"])</expression>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">Separat&amp;or</property>
+                                            <expression name="value" type="javascript">"; "</expression>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">Ma&amp;x length</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">Sho&amp;w all values</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                            </list-property>
+                            <column id="55875"/>
+                            <footer>
+                                <row id="55873">
+                                    <cell id="55874">
+                                        <data id="55876">
+                                            <property name="resultSetColumn">Aggregation</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </footer>
+                        </table>
+                    </cell>
+                    <cell id="55667">
+                        <table id="55877">
+                            <property name="dataSet">AssessoratiCoinvoltiDS</property>
+                            <list-property name="paramBindings">
+                                <structure>
+                                    <property name="paramName">param_1</property>
+                                    <simple-property-list name="expression">
+                                        <value type="javascript">row["LINEA_AZIONE_ID"]</value>
+                                    </simple-property-list>
+                                </structure>
+                            </list-property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">party_name</property>
+                                    <text-property name="displayName">party_name</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["party_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Aggregation</property>
+                                    <property name="dataType">string</property>
+                                    <property name="aggregateFunction">CONCATENATE</property>
+                                    <list-property name="arguments">
+                                        <structure>
+                                            <property name="name">Expression</property>
+                                            <expression name="value" type="javascript">BirtStr.trim(row["party_name"])</expression>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">Separat&amp;or</property>
+                                            <expression name="value" type="javascript">"; "</expression>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">Ma&amp;x length</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">Sho&amp;w all values</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                            </list-property>
+                            <column id="55884"/>
+                            <footer>
+                                <row id="55882">
+                                    <cell id="55883">
+                                        <data id="55885">
+                                            <property name="resultSetColumn">Aggregation</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </footer>
+                        </table>
+                    </cell>
+                    <cell id="55668">
+                        <data id="55825">
+                            <property name="resultSetColumn">POLITICA</property>
+                        </data>
+                    </cell>
+                    <cell id="55669">
+                        <data id="55826">
+                            <property name="resultSetColumn">STRUTTURA_VERTICE</property>
+                        </data>
+                    </cell>
+                    <cell id="55670"/>
+                    <cell id="55671">
+                        <data id="55827">
+                            <property name="resultSetColumn">SOGGETTI_COINVOLTI</property>
+                        </data>
+                    </cell>
+                    <cell id="55672">
+                        <data id="55828">
+                            <property name="resultSetColumn">LINEA_AZIONE</property>
+                        </data>
+                    </cell>
+                    <cell id="55673">
+                        <data id="55829">
+                            <property name="resultSetColumn">MODALITA_IMPLEMENTAZIONE</property>
+                        </data>
+                    </cell>
+                    <cell id="55674">
+                        <data id="55830">
+                            <property name="resultSetColumn">MODALITA_ATTUAZIONE</property>
+                        </data>
+                    </cell>
+                    <cell id="55675">
+                        <data id="55831">
+                            <property name="resultSetColumn">FONTI_FINANZIARIE</property>
+                        </data>
+                    </cell>
+                    <cell id="55676">
+                        <data id="55842">
+                            <property name="resultSetColumn">RISULTATI_123</property>
+                        </data>
+                    </cell>
+                    <cell id="55677">
+                        <data id="55843">
+                            <property name="resultSetColumn">RISULTATI_121</property>
+                        </data>
+                    </cell>
+                    <cell id="55678">
+                        <data id="55844">
+                            <property name="resultSetColumn">RISULTATI_122</property>
+                        </data>
+                    </cell>
+                    <cell id="55679">
+                        <data id="55835">
+                            <property name="resultSetColumn">BENEFICIARIO_PRINCIPALE</property>
+                        </data>
+                    </cell>
+                    <cell id="55680">
+                        <data id="55836">
+                            <property name="resultSetColumn">ALTRO_BENEFICIARIO</property>
+                        </data>
+                    </cell>
+                    <cell id="55681">
+                        <data id="55837">
+                            <property name="resultSetColumn">LINK_BANCHEDATI</property>
+                        </data>
+                    </cell>
+                    <cell id="55682">
+                        <data id="55838">
+                            <property name="resultSetColumn">RISULTATI_PRECEDENTI</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+</report>

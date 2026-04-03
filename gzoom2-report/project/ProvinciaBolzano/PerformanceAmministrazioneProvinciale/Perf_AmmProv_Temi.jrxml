@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_AmmProv_Temi" printOrder="Horizontal" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceAmministrazioneProvinciale" uuid="b1826acb-7e31-452e-a967-7fa0a3a01dd7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" vTextAlign="Middle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="langLocale" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="id_struttura" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["10086"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="date3112String" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101String" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT 
+ETCH, 
+TEMA_IT,
+TEMA_DE,
+LINK_IT,
+LINK_DE
+FROM
+(SELECT 
+	TEMA.ETCH AS ETCH,
+	TEMA.WORK_EFFORT_NAME_LANG AS TEMA_IT,
+	TEMA.WORK_EFFORT_NAME AS TEMA_DE,
+	TEMA.DESCRIPTION_LANG AS LINK_IT,
+	TEMA.DESCRIPTION AS LINK_DE
+/* OBIETTIVO STRATEGICO */
+FROM WORK_EFFORT OBS
+/* TEMA */
+JOIN WORK_EFFORT_ASSOC WEA ON WEA.WORK_EFFORT_ID_TO = OBS.WORK_EFFORT_ID AND WEA.WORK_EFFORT_ASSOC_TYPE_ID = '20R4C'
+JOIN WORK_EFFORT TEMA ON TEMA.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_FROM 
+WHERE OBS.WORK_EFFORT_TYPE_ID = '20D62' 
+AND OBS.ORG_UNIT_ID=  $P{id_struttura} 
+AND OBS.ESTIMATED_START_DATE <=  TO_DATE( $P{date3112String} ,'YYYY-MM-DD')
+AND OBS.ESTIMATED_COMPLETION_DATE >=  TO_DATE( $P{date0101String} ,'YYYY-MM-DD')
+UNION ALL
+SELECT 
+	TEMA.ETCH AS ETCH,
+	TEMA.WORK_EFFORT_NAME_LANG AS TEMA_IT,
+	TEMA.WORK_EFFORT_NAME AS TEMA_DE,
+	TEMA.DESCRIPTION_LANG AS LINK_IT,
+	TEMA.DESCRIPTION AS LINK_DE
+/* PRIORITA' SVILUPPO */
+FROM WORK_EFFORT PRIO
+/* TEMA */
+JOIN WORK_EFFORT_ASSOC WEA ON WEA.WORK_EFFORT_ID_TO = PRIO.WORK_EFFORT_ID AND WEA.WORK_EFFORT_ASSOC_TYPE_ID = '20R4C'
+JOIN WORK_EFFORT TEMA ON TEMA.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_FROM 
+WHERE PRIO.WORK_EFFORT_TYPE_ID = '20D64' 
+AND PRIO.ORG_UNIT_ID= $P{id_struttura}
+AND PRIO.ESTIMATED_START_DATE <= TO_DATE( $P{date3112String} ,'YYYY-MM-DD') 
+AND PRIO.ESTIMATED_COMPLETION_DATE >=   TO_DATE( $P{date0101String} ,'YYYY-MM-DD')  )
+ORDER BY ETCH]]>
+	</queryString>
+	<field name="TEMA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_TEMA_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_TEMA_IT"/>
+	</field>
+	<field name="TEMA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_TEMA_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_TEMA_DE"/>
+	</field>
+	<field name="LINK_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="LINK_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="LINK_IT"/>
+	</field>
+	<field name="LINK_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="LINK_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="LINK_DE"/>
+	</field>
+	<field name="ETCH" class="java.lang.String"/>
+	<variable name="AGGREGATION" class="java.lang.String">
+		<variableExpression><![CDATA[$V{AGGREGATION}+($V{AGGREGATION}.isEmpty()? "<html>":"")+" <a href='"+( $P{langLocale}.equals("_LANG")?$F{LINK_IT}:$F{LINK_DE})+"'><u>"+( $P{langLocale}.equals("_LANG")?$F{TEMA_IT}:$F{TEMA_DE})+"</u></a>&nbsp;&nbsp;&nbsp;"]]></variableExpression>
+		<initialValueExpression><![CDATA[""]]></initialValueExpression>
+	</variable>
+	<variable name="TEMI_COUNT" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[1]]></variableExpression>
+	</variable>
+	<detail>
+		<band/>
+	</detail>
+	<summary>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement style="TextFieldStyle" mode="Transparent" x="200" y="0" width="602" height="15" isRemoveLineWhenBlank="true" backcolor="#FF0C08" uuid="f419bc1d-07ec-4b7d-af4c-8a0644c5718a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{AGGREGATION}!= null && $V{AGGREGATION}!=""]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$V{AGGREGATION}+"</html>"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" uuid="e72a5b44-e243-4941-a4db-6f67e6948524">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Label CapitoloProgrammaCoalizione"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{AGGREGATION}!= null && $V{AGGREGATION}!=""]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Tema}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

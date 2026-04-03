@@ -1,0 +1,53 @@
+<!-- Disappearing Messages -->
+<p-toast></p-toast>
+<p-confirmDialog> </p-confirmDialog>
+
+<!-- Messages Error -->
+<p-messages key="error"></p-messages>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table
+      [buttonBack]="true"
+      [buttonSave]="true"
+      [backLinkRelToThisRoute]="backLink"
+      (saveEvent)="save()"
+      (bldxEvent)="toConditions()"
+    ></app-toolbar-data-table>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <p *ngIf="!!title" style="text-align: center">
+      <b>{{ title }}</b>
+    </p>
+    <br />
+    <form [formGroup]="queryFormGroup">
+      <ng-container *ngIf="this.queryType != 'I'">
+        <span class="p-float-label">
+          <textarea
+            id="query-float-label"
+            rows="5"
+            cols="160"
+            pInputTextarea
+            formControlName="columnFormatting"
+          ></textarea>
+          <label for="query-float-label">{{
+            "Columns Formatting" | i18n
+          }}</label>
+        </span>
+      </ng-container>
+
+      <br /><br />
+      <span class="p-float-label">
+        <textarea
+          id="query-float-label"
+          rows="200"
+          cols="160"
+          pInputTextarea
+          required
+          formControlName="query"
+        ></textarea>
+        <label for="query-float-label">Query</label>
+      </span>
+    </form>
+  </ng-template>
+</p-card>

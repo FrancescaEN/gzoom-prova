@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.ContactMechMapper">
+
+    <update id="anonymizeContactMech">
+        UPDATE CONTACT_MECH
+        SET INFO_STRING = NULL
+        WHERE INFO_STRING IS NOT NULL
+          AND CONTACT_MECH_ID IN (SELECT PC.CONTACT_MECH_ID
+                                  FROM PARTY_CONTACT_MECH PC
+                                           INNER JOIN PARTY PA ON
+                                      PA.PARTY_ID = PC.PARTY_ID
+                                          AND PA.PARTY_TYPE_ID = 'PERSON'
+                                          AND PA.STATUS_ID = 'PARTY_DISABLED'
+                                          AND PA.END_DATE IS NOT NULL
+                                          AND PA.END_DATE &lt; #{expirationDate}
+                                          AND PA.PARTY_NAME &lt;&gt; PA.PARTY_ID)
+    </update>
+
+
+    <resultMap id="contactMechResultMapEx" type="it.mapsgroup.gzoom.mybatis.dto.ContactMechEx">
+        <id property="contactMechId" column="contact_mech_id" jdbcType="VARCHAR"/>
+        <result property="contactMechTypeId" column="contact_mech_type_id" jdbcType="VARCHAR"/>
+        <result property="infoString" column="info_string" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastModifiedByUserLogin" column="last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="created_by_user_login" jdbcType="VARCHAR"/>
+
+        <result column = "USER_LOGIN_ID" property = "userLogin.userLoginId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getEmailInfoString" resultMap="contactMechResultMapEx" parameterType="java.util.Map">
+        SELECT UL.USER_LOGIN_ID AS USER_LOGIN_ID, CM.INFO_STRING
+        FROM PARTY_CONTACT_MECH P
+                 JOIN CONTACT_MECH CM ON CM.CONTACT_MECH_ID = P.CONTACT_MECH_ID
+                 JOIN USER_LOGIN UL ON UL.PARTY_ID = P.PARTY_ID
+        WHERE CONTACT_MECH_TYPE_ID='EMAIL_ADDRESS' and (P.PARTY_ID = #{username} or CM.INFO_STRING = #{username} or UL.user_login_id = #{username})
+    </select>
+
+    <select id="getInfoString" resultMap="contactMech" parameterType="java.util.Map">
+        select cm.info_string
+        from party_contact_mech p
+                 join contact_mech cm on cm.contact_mech_id = p.contact_mech_id
+                 JOIN USER_LOGIN UL ON UL.PARTY_ID = P.PARTY_ID
+        where contact_mech_type_id = 'EMAIL_ADDRESS' and UL.user_login_id = #{username}
+    </select>
+
+
+
+</mapper>

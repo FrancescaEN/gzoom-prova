@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>it.mapsgroup.gzoom</groupId>
+        <artifactId>gzoom2</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>ofbiz-hotdeploy</artifactId>
+    <name>Green Nebula OfBiz hotdeploy customization</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <hot-deploy.folder>hot-deploy-tmp</hot-deploy.folder>
+    </properties>
+
+    <build>
+        <sourceDirectory>${basedir}/gn/src-share</sourceDirectory>
+        <plugins>
+            <!--copy gn folder to temp dir-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/${hot-deploy.folder}/${project.build.finalName}/gn
+                            </outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>gn</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--remove test service definition from ofbiz-component.xml file-->
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>
+                            ${basedir}/target/${hot-deploy.folder}/${project.build.finalName}/gn/ofbiz-component.xml
+                        </include>
+                    </includes>
+                    <!--<excludes>
+                        <exclude>target/**/do-not-replace-me.*</exclude>
+                    </excludes>-->
+                    <regex>false</regex>
+                    <tokenFile>${basedir}/assembly/token.txt</tokenFile>
+
+                    <!--<token>![CDATA[<service-resource type="model" loader="main" location="servicedef/services_test.xml"/>]]</token>-->
+                    <!--<value>zzz</value>-->
+                    <valueFile>${basedir}/assembly/value.txt</valueFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${plugin.deploy.version}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.xmlrpc</groupId>
+            <artifactId>xmlrpc-client</artifactId>
+            <version>3.1.3</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+</project>

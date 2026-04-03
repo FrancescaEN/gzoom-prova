@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CatalogoProcedimenti" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceProcedimenti" uuid="4b2df2f8-1483-4de8-a60c-9b39e39a8f4f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[VldfUFJPQ0VESU1FTlRJX05PVEUgLDE3NiwxNSwxNzRkN2ExNC00ZWRhLTQ5MzctYWRhMS1kOTRj
+N2FiYmU5MWE7VldfUFJPQ0VESU1FTlRJICwxNSwxNSxjNjM5YWEwMS1iOWJmLTQ5Y2MtYTZiMC1l
+NjdjMTg1OTZjNDE7]]>
+	</property>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="315"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="680"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="511"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="479"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box padding="2"/>
+	</style>
+	<subDataset name="Dataset_ObSost" uuid="5d03b2d9-2c5f-45e5-b78c-ad8f3d4f941d">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="301"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="694"/>
+		<parameter name="work_effort_id_ob" class="java.lang.String"/>
+		<parameter name="monitoringDateString" class="java.lang.String"/>
+		<parameter name="langLocale" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT 
+	VP.ID_PROCEDIMENTO,
+	VP.NOME_PROCEDIMENTO_IT,
+	VP.NOME_PROCEDIMENTO_DE,
+	VPN.CONTENUTO_NOTA_IT,
+	VPN.CONTENUTO_NOTA_DE,
+	VP.TERMINE_FISSATO,
+	VP.DECORRENZA_IT,
+	VP.DECORRENZA_DE,
+	VP.AVVIO_PROC_IT,
+	VP.AVVIO_PROC_DE, 
+	VP.ID_STRUTTURA
+FROM VW_PROCEDIMENTI VP
+JOIN VW_PROCEDIMENTI_NOTE VPN ON VPN.ID_PROCEDIMENTO = VP.ID_PROCEDIMENTO AND VPN.SEQUENZA_NOTA = 120
+WHERE VP.TERMINE_FISSATO IS NOT NULL AND VP.TERMINE_ORDINARIO IS NULL AND VP.TERMINE_STABILITO_IT IS NULL]]>
+		</queryString>
+		<field name="ID_PROCEDIMENTO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ID_PROCEDIMENTO"/>
+			<property name="com.jaspersoft.studio.field.name" value="ID_PROCEDIMENTO"/>
+		</field>
+		<field name="NOME_PROCEDIMENTO_IT" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="NOME_PROCEDIMENTO_IT"/>
+			<property name="com.jaspersoft.studio.field.name" value="NOME_PROCEDIMENTO_IT"/>
+		</field>
+		<field name="NOME_PROCEDIMENTO_DE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="NOME_PROCEDIMENTO_DE"/>
+			<property name="com.jaspersoft.studio.field.name" value="NOME_PROCEDIMENTO_DE"/>
+		</field>
+		<field name="CONTENUTO_NOTA_IT" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="CONTENUTO_NOTA_IT"/>
+			<property name="com.jaspersoft.studio.field.name" value="CONTENUTO_NOTA_IT"/>
+		</field>
+		<field name="CONTENUTO_NOTA_DE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="CONTENUTO_NOTA_DE"/>
+			<property name="com.jaspersoft.studio.field.name" value="CONTENUTO_NOTA_DE"/>
+		</field>
+		<field name="TERMINE_FISSATO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TERMINE_FISSATO"/>
+			<property name="com.jaspersoft.studio.field.name" value="TERMINE_FISSATO"/>
+		</field>
+		<field name="DECORRENZA_IT" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DECORRENZA_IT"/>
+			<property name="com.jaspersoft.studio.field.name" value="DECORRENZA_IT"/>
+		</field>
+		<field name="DECORRENZA_DE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DECORRENZA_DE"/>
+			<property name="com.jaspersoft.studio.field.name" value="DECORRENZA_DE"/>
+		</field>
+		<field name="ID_STRUTTURA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ID_STRUTTURA"/>
+			<property name="com.jaspersoft.studio.field.name" value="ID_STRUTTURA"/>
+		</field>
+		<field name="AVVIO_PROC_IT" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="AVVIO_PROC_IT"/>
+			<property name="com.jaspersoft.studio.field.name" value="AVVIO_PROC_IT"/>
+		</field>
+		<field name="AVVIO_PROC_DE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="AVVIO_PROC_DE"/>
+			<property name="com.jaspersoft.studio.field.name" value="AVVIO_PROC_DE"/>
+		</field>
+	</subDataset>
+	<parameter name="ReportTitle" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{orgUnitIdString} != null && $P{orgUnitIdString} != "" ? $P{orgUnitIdString} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String"/>
+	<parameter name="monitoringDate" class="java.lang.String"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.lang.String"/>
+	<parameter name="date3112sql" class="java.lang.String"/>
+	<parameter name="odaDialect" class="java.lang.String"/>
+	<parameter name="date0101" class="java.lang.String"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String"/>
+	<parameter name="ReportSmallPath" class="java.lang.String"/>
+	<parameter name="IconNavPath" class="java.lang.String"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String"/>
+	<parameter name="filterWhereString" class="java.lang.String"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String"/>
+	<parameter name="personId" class="java.lang.String"/>
+	<parameter name="workEffortId" class="java.lang.String"/>
+	<parameter name="date3009" class="java.lang.String"/>
+	<parameter name="date3009sql" class="java.lang.String"/>
+	<parameter name="exposePaginator" class="java.lang.String"/>
+	<parameter name="id_scheda" class="java.lang.String"/>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterCustomTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted0101" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted3006" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( "30/06/" + $P{customTimePeriod}.substring(0, 4)) : 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_scheda_orig" class="java.lang.String"/>
+	<parameter name="customTimePeriodFormatted3112" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P1sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{workEffortId}  != null && $P{workEffortId}  != "" ? 
+	"AND OB_STRAT.ID_OBIETTIVO_STRATEGICO= '" + $P{workEffortId}+"'"
+: " "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterCustomTimePeriod_Prest" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ? 
+("TO_DATE(DATA_INIZIO_PRESTAZIONE,'DD/MM/YYYY') <= TO_DATE('" + $P{customTimePeriodFormatted} + "','DD/MM/YYYY') AND TO_DATE(DATA_FINE_PRESTAZIONE,'DD/MM/YYYY') >= TO_DATE('" + $P{customTimePeriodFormatted0101} + "','DD/MM/YYYY')" ) : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codice_struttura" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="id_procedimento" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="nome_struttura_it" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="nome_ufficio_it" class="java.lang.String"/>
+	<parameter name="year" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ))]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+	VP.ID_PROCEDIMENTO,
+	VP.NOME_PROCEDIMENTO_IT,
+	VP.NOME_PROCEDIMENTO_DE,
+	VPN.CONTENUTO_NOTA_IT,
+	VPN.CONTENUTO_NOTA_DE,
+	VP.TERMINE_FISSATO,
+	VP.DECORRENZA_IT,
+	VP.DECORRENZA_DE,
+	VP.AVVIO_PROC_IT,
+	VP.AVVIO_PROC_DE,
+	VP.CODICE_PROCEDIMENTO,
+	VP.ID_STRUTTURA,
+	VP.NOME_STRUTTURA_IT,
+	VP.DATA_FINE_PROCEDIMENTO
+FROM VW_PROCEDIMENTI VP
+JOIN VW_PROCEDIMENTI_NOTE VPN ON VPN.ID_PROCEDIMENTO = VP.ID_PROCEDIMENTO AND VPN.SEQUENZA_NOTA = 120
+WHERE VP.TERMINE_FISSATO IS NOT NULL AND VP.TERMINE_ORDINARIO IS NULL AND VP.TERMINE_STABILITO_IT IS NULL AND VP.ID_PROCEDIMENTO  =  $P{id_procedimento}  AND VP.ID_STRUTTURA =  $P{codice_struttura}]]>
+	</queryString>
+	<field name="ID_STRUTTURA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ID_STRUTTURA"/>
+		<property name="com.jaspersoft.studio.field.name" value="ID_STRUTTURA"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOME_PROCEDIMENTO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOME_PROCEDIMENTO_IT"/>
+		<property name="com.jaspersoft.studio.field.name" value="NOME_PROCEDIMENTO_IT"/>
+	</field>
+	<field name="NOME_PROCEDIMENTO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOME_PROCEDIMENTO_DE"/>
+		<property name="com.jaspersoft.studio.field.name" value="NOME_PROCEDIMENTO_DE"/>
+	</field>
+	<field name="CONTENUTO_NOTA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CONTENUTO_NOTA_IT"/>
+		<property name="com.jaspersoft.studio.field.name" value="CONTENUTO_NOTA_IT"/>
+	</field>
+	<field name="CONTENUTO_NOTA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CONTENUTO_NOTA_DE"/>
+		<property name="com.jaspersoft.studio.field.name" value="CONTENUTO_NOTA_DE"/>
+	</field>
+	<field name="TERMINE_FISSATO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TERMINE_FISSATO"/>
+		<property name="com.jaspersoft.studio.field.name" value="TERMINE_FISSATO"/>
+	</field>
+	<field name="DECORRENZA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DECORRENZA_IT"/>
+		<property name="com.jaspersoft.studio.field.name" value="DECORRENZA_IT"/>
+	</field>
+	<field name="DECORRENZA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DECORRENZA_DE"/>
+		<property name="com.jaspersoft.studio.field.name" value="DECORRENZA_DE"/>
+	</field>
+	<field name="AVVIO_PROC_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="AVVIO_PROC_IT"/>
+		<property name="com.jaspersoft.studio.field.name" value="AVVIO_PROC_IT"/>
+	</field>
+	<field name="AVVIO_PROC_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="AVVIO_PROC_DE"/>
+		<property name="com.jaspersoft.studio.field.name" value="AVVIO_PROC_DE"/>
+	</field>
+	<field name="CODICE_PROCEDIMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CODICE_PROCEDIMENTO"/>
+		<property name="com.jaspersoft.studio.field.name" value="CODICE_PROCEDIMENTO"/>
+	</field>
+	<field name="NOME_STRUTTURA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOME_STRUTTURA_IT"/>
+		<property name="com.jaspersoft.studio.field.name" value="NOME_STRUTTURA_IT"/>
+	</field>
+	<field name="DATA_FINE_PROCEDIMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATA_FINE_PROCEDIMENTO"/>
+		<property name="com.jaspersoft.studio.field.name" value="DATA_FINE_PROCEDIMENTO"/>
+	</field>
+	<detail>
+		<band height="15" splitType="Immediate">
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="822" height="15" isRemoveLineWhenBlank="true" backcolor="#E64340" uuid="14034ead-4176-468a-a90c-915fcb59116c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[INTEGER_VALUE( RIGHT($F{DATA_FINE_PROCEDIMENTO}, 4))>=$P{year}]]></printWhenExpression>
+				</reportElement>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="150" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="b58ede8d-99a0-417b-b6f1-37b161825dd6">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{NOME_PROCEDIMENTO_IT}) : 
+($F{NOME_PROCEDIMENTO_DE})]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="150" y="0" width="352" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="8949425b-7cca-464c-bb9e-fd42fc1a66c8">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{CONTENUTO_NOTA_IT}) : 
+($F{CONTENUTO_NOTA_DE})]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="502" y="0" width="120" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="b5b45ef9-514f-4af8-b90e-724fbc662e76">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{TERMINE_FISSATO}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="622" y="0" width="100" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="95530b7b-4fc0-47b8-b924-2e8b29e232b9">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+   ($F{DECORRENZA_IT} != null && !$F{DECORRENZA_IT}.isEmpty() ? $F{DECORRENZA_IT} : "") 
+   : 
+   ($F{DECORRENZA_DE} != null && !$F{DECORRENZA_DE}.isEmpty() ? $F{DECORRENZA_DE} : "")
+]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="722" y="0" width="100" height="15" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="b49a11c5-b8b1-41ee-8fb8-5abdda96060a">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{AVVIO_PROC_IT}) : 
+($F{AVVIO_PROC_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

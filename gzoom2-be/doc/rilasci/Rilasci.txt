@@ -1,0 +1,105 @@
+PRIMO RILASCIO
+
+CREAZIONE CARTELLE
+copiare tutte le cartelle che sono dentro la cartella rilasci
+in ambienti linux, attenziona al file gzoom-ismea.target
+che va spostato nella cartella dei servizi
+
+CONFIGURAZIONE IP E PORTE
+Se è un primo rilascio dopo aver fatto tutti i passaggi serve dire a Bruno
+il path dove è presente gzoom2 (gzoom-app),
+per aprire la porta e configurare il proxy.
+
+su GzoomLegacy, per gli ambienti che rispondono al proxy di gzoom-tux-1
+bisogna configurare le properties con indirizzo e porta sull GzoomLegacy, per il file startofbiz.sh:
+ofbiz.rmi.bound-host=127.AB.CD.E
+startofbiz.ADMIN_PORT=EDCBA
+
+inserendo l'indirizzo che si trova dentro: GZoom-doc\Local_installations\hosts
+
+su Gzoom2, per tutti
+nella cartella config, nel file gzoom.properties configurare:
+server.address=127.62.52.2
+server.port=6000
+management.port=6002
+management.address=127.62.52.2
+che vanno a sovrascrivere le properties di application.properties sia di gzoom-bin che gzoom-bin-report
+
+
+nel file dentro config/gzoom.properties e config/gzoom-report.properties cambiare la properties
+ofbiz.server.xmlrpc.url=http://<ip>:<port>/gzoom/control/xmlrpc (sono su gzoom-lan URL alternativo)
+
+nel file dentro config/gzoom.properties
+gzoom.server.report.url=http://<ip>:8099/rest/report
+
+
+(Bruno va ad aprire il file che si chiama gzoom....conf e aggiungere in fondo al file
+il record con il nuovo ambiente, e dopo bisogna riavviare il proxy.
+
+GZoom-doc\Develop\Apache-GZOOM-TUX-1\etc\apache2\sites-available
+)
+
+CONFIGURAZIONE DATABASE
+
+I dati relativi alle nuove voci di menu e ai permessi per i gruppi di sicurezza
+vengono caricati nel run-install-custom-seed del GzoomLegacy
+
+--> IMPORTANTE
+sempre nel primo rilascio bisogna creare le tabelle di QUARTZ
+tramite il link selezionare il DB del cliente ed eseguire lo script SQL.
+
+https://github.com/elventear/quartz-scheduler/tree/master/distribution/src/main/assembly/root/docs/dbTables
+
+*********************************
+
+Per fare un rilascio bisogna avere le cartelle:
+
+gzoom: che contine il gzoom legacy
+
+gzoom-bin: che contine il back-end guardare esempio del contenuto nella cartella oltre al .jar che viene creato nel modulo rest-boot/target
+    1. Cambiare la versione sostituendo 2.0.11rc1 con la versione nuova nei pom.xls
+    2. fare la commit e push
+    3. creare il TAG e fare la push
+    4. creare il pacchetto eseguendo dalla cartella gzoom2-backend => mvn package -Dmaven.test.skip=true
+        il comando crea i file rest-boot<version>.jar sia del modulo dei report che di gzoom2 e i jar si trovano dentro
+        report-rest-boot/target e rest-boot/target
+    5. Prendere i file e portarli sulla macchina per ora nella cartella tmp (e non in release con cartella con data di oggi)
+    6. posizionarsi sulla cartella gzoom-bin => cp ../tmp/rest-boot<version>.jar rest-boot.jar
+    7. Far partire con sh ./run.sh
+    ! Per stoppare => kill $(< logs/gzoom2-be.pid)
+    ! nella cartella ../logs troveremo 2 file con I log e il pid
+
+gzoom-bin-report: continene il modulo del report, in più bisogna aggiungere le librerie di birt nella cartella birt_lib
+    1. il pacchetto e la versione sono stati già fatticon passaggio precedente (creazione gzoom-bin) e sono stati già portati sull amacchina
+    2. posizionarsi sulla cartella gzoom-bin-report => cp ../tmp/report-rest-boot<version>.jar report-rest-boot.jar
+    3. se è la prima volta bisogna fare dentro la cartella birt_lib =>  unzip ./lib.zip -d .
+    4. Far partire con sh ./run.sh
+    ! Per stoppare => kill $(< logs/gzoom2-report-be.pid)
+    ! nella cartella ../logs troveremo 2 file con I log e il pid
+
+gzoom-app: front-end
+    1. cambiare la versione che si trova in app.module.ts
+    2. fare il commit e push
+    3. creare il TAG e fare lapush
+    4. creare il pacchetto con => ng build --base-href /gzoom2/ --prod
+    5. fare lo zip della cartella dist (Attenzione ad avitare che la cartella abbia la cartella dist al suo interno)
+    6. Prendere dist.zip e portarlo sulla macchina per ora nella cartella tmp (e non in release con cartella con data di oggi)
+    7. Rinominare in dist_<versione>.zip
+    8. Spostare il pacchetto nella gzoom-app da dentro la cartella eseguire => unzip ../tmp/dist_<versione>.zip -d .
+
+gzoom-report/report: lista dei report
+
+creare anche una cartella con nome 'logs'
+
+
+! verificare che tutti i servizi sono su con il comando:
+ps aux | grep java
+
+! per vedere indirozzo e porte corrette
+netstat -tlpn | grep java
+
+
+PROBLEMATICHE:
+Nel caso il proxypass apache dia un errore di questo tipo: (13)Permission denied: [client 10.104.59.18:1500] Couldn't read /home/gzoom/gzoom-app/index.html, closing connection.
+verificare i permessi della dir dove si trova gzoom2 e nel caso impostarli a 755
+chmod -R 755 /home/gzoom/

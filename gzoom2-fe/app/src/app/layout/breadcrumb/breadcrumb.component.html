@@ -1,0 +1,15 @@
+<p-breadcrumb *ngIf="breadcrumbsLenght() > 0" class="max-w-full" [model]="breadcrumbsLast()" [home]="home" homeAriaLabel="home">
+  <ng-template pTemplate="item" let-item >
+    <ng-container *ngIf="!item.leaf else elseBlock">
+      <a class="p-menuitem-link">
+        <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+        <span>{{ item.label }}</span>
+      </a>
+    </ng-container>
+    <ng-template #elseBlock>
+      <a class="p-menuitem-link">
+        <span class="text-color" style="font-weight: bold;">{{ item.label }}</span>
+      </a>
+    </ng-template>
+  </ng-template>
+</p-breadcrumb>

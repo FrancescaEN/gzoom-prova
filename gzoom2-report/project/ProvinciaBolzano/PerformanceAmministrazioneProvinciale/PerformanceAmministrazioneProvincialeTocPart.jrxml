@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final utlizzo versione della libreria JasperReports6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TocPart" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" resourceBundle="PerformanceAmministrazioneProvinciale" uuid="47d0342f-7687-4167-8741-854ed01cfed5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="236"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="758"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<subDataset name="Dataset1" uuid="e422b084-1712-4148-87a4-52fb77b76162">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postres_aslnapoli3sud"/>
+		<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[$P{monitoringDateString}  != null && $P{monitoringDateString}  != "" ? $P{monitoringDateString} : TODAY( )]]></defaultValueExpression>
+		</parameter>
+		<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[$P{orgUnitIdString}  != null && $P{orgUnitIdString}  != "" ? $P{orgUnitIdString} : ""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="workEffortTypeId" class="java.lang.String">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[select INTESTAZIONE_Q1,INTESTAZIONE_Q2, INTESTAZIONE_REND,INTESTAZIONE_PREV from exp_str EXP
+inner join work_effort FIL_W
+on FIL_W.work_effort_id = EXP.work_effort_id_str
+where EXP.anno = TO_CHAR($P{monitoringDateString}::date, 'YYYY')
+and work_Effort_Type_Id = $P{workEffortTypeId}
+ /* START orgUnitIdString */
+ $P!{orgUnitIdString}
+ /* END orgUnitIdString */
+ limit 1]]>
+		</queryString>
+		<field name="intestazione_q1" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="intestazione_q1"/>
+			<property name="com.jaspersoft.studio.field.label" value="intestazione_q1"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exp_str"/>
+		</field>
+		<field name="intestazione_q2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="intestazione_q2"/>
+			<property name="com.jaspersoft.studio.field.label" value="intestazione_q2"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exp_str"/>
+		</field>
+		<field name="intestazione_rend" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="intestazione_rend"/>
+			<property name="com.jaspersoft.studio.field.label" value="intestazione_rend"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exp_str"/>
+		</field>
+		<field name="intestazione_prev" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="intestazione_prev"/>
+			<property name="com.jaspersoft.studio.field.label" value="intestazione_prev"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exp_str"/>
+		</field>
+	</subDataset>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId},$P{langLocale})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="langLocale" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{monitoringDate}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId}  != null && $P{orgUnitId}  != "" ? " AND (EXP.ORG_UNIT_ID_STR = '"+ $P{orgUnitId} + "' OR EXP.WORK_EFFORT_ID_STR = '"+ $P{workEffortId} + "')" : " AND EXP.ORG_UNIT_ID_STR like '%%'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ReportLargePath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_LARGE",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LogoHeaderPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_HEADER",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="level" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="level"/>
+		<property name="com.jaspersoft.studio.field.label" value="level"/>
+	</field>
+	<field name="label" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="label"/>
+		<property name="com.jaspersoft.studio.field.label" value="label"/>
+	</field>
+	<field name="pageIndex" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="pageIndex"/>
+		<property name="com.jaspersoft.studio.field.label" value="pageIndex"/>
+	</field>
+	<title>
+		<band height="358" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[!($P{reportContentId}.equals( "REPORT_PREV_PPAP_JR") ||
+$P{reportContentId}.equals( "REPORT_VAL_PPAP_JR") ||
+$P{reportContentId}.equals( "REPORT_V_PPAP_PS_JR") || 
+$P{reportContentId}.equals( "REPORT_RSTR_PPAP_JR") ||
+$P{reportContentId}.equals( "REPORT_V_PPAP_OP_JR") || 
+$P{reportContentId}.equals( "REPORT_VPRE_PPAP_JR"))]]></printWhenExpression>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="0" y="0" width="802" height="75" uuid="ce4a1a4f-a4ab-407e-a7f4-f602afa0b33b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[false]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{LogoHeaderPath}]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="149" y="140" width="460" height="200" uuid="0697141c-8d93-44b9-bdeb-477cc7a8ad31">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{ReportLargePath}]]></imageExpression>
+			</image>
+			<break>
+				<reportElement x="0" y="357" width="100" height="1" uuid="95bae6b4-f03d-4431-8d2d-358a19ce583f">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</break>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="53" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement style="TextFieldStyle" mode="Opaque" x="0" y="35" width="802" height="18" backcolor="#D5D5D5" uuid="9bb3388c-170d-4c27-b5ba-98729f3a21be">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Indice}]]></textFieldExpression>
+				<anchorNameExpression><![CDATA["Indice"]]></anchorNameExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="101" y="0" width="600" height="35" uuid="f9757d0d-2f57-49ab-942f-6603fcddcc71">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{LogoHeaderPath}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="45">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement positionType="Float" x="0" y="15" width="802" height="15" isRemoveLineWhenBlank="true" uuid="147ac2a0-cc51-47e7-88b6-280021f0b4fc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="10" y="0" width="792" height="15" isRemoveLineWhenBlank="true" uuid="afa4bcd8-bbd2-46bd-8dab-f076dbe38e13">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$F{level}==2]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="9" isBold="false" isItalic="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{label}]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Indice" + $F{label}]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA[$F{label}]]></hyperlinkAnchorExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="801" height="15" isRemoveLineWhenBlank="true" uuid="7e49262e-dc78-4c30-a52c-fe05d96fec8c">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" hyperlinkType="LocalAnchor">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="801" height="15" isRemoveLineWhenBlank="true" uuid="f0ca2960-444d-4abd-b350-b53ca5164625">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$F{level} == 1]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="10" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{label}]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Indice" + $F{label}]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA[$F{label}]]></hyperlinkAnchorExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="30" width="802" height="15" isRemoveLineWhenBlank="true" uuid="4ed9dc91-c1c0-4f39-ab1b-d7af4096ec85">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+					<reportElement style="Default" positionType="Float" stretchType="ContainerHeight" x="20" y="0" width="782" height="15" isRemoveLineWhenBlank="true" uuid="327cd62e-779e-43bb-b534-ca671d279788">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<printWhenExpression><![CDATA[$F{level}==3]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="false" isItalic="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{label}]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Indice" + $F{label}]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA[$F{label}]]></hyperlinkAnchorExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="30">
+			<frame>
+				<reportElement positionType="Float" x="0" y="15" width="382" height="15" uuid="e9fd1d16-634e-4b78-8723-0c70a50ead2e"/>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" x="0" y="0" width="80" height="15" isRemoveLineWhenBlank="true" uuid="13ed1e3e-651f-42c0-a56f-7d4a3730820b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label Governabilita"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{Governabilita}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" x="102" y="0" width="80" height="15" isRemoveLineWhenBlank="true" uuid="7a3ea223-2220-4e1f-8bd0-8cdb0c13bf00">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label Governabilita Diretta"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{diretta}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" x="204" y="0" width="80" height="15" isRemoveLineWhenBlank="true" uuid="703d1b93-4657-4e03-84d2-3f55d57b2dff">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label Governabilita Parziale"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{parziale}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" x="306" y="0" width="76" height="15" isRemoveLineWhenBlank="true" uuid="78c018fe-5092-4354-81f1-89fe6778ca80">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label Non Governabile"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{nongovernabile}]]></textFieldExpression>
+				</textField>
+				<image hAlign="Left" vAlign="Middle" onErrorType="Icon">
+					<reportElement x="80" y="2" width="22" height="12" isRemoveLineWhenBlank="true" uuid="8c80966c-6eec-4e1f-9e4a-a3b400a45a3c">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<imageExpression><![CDATA["/img/pallino_nero.png"]]></imageExpression>
+				</image>
+				<image hAlign="Left" vAlign="Middle" onErrorType="Icon">
+					<reportElement x="182" y="2" width="22" height="12" isRemoveLineWhenBlank="true" uuid="41f76bef-af36-40ac-933d-20c75d8c8c4e">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<imageExpression><![CDATA["/img/mezzo_pallino_nero.png"]]></imageExpression>
+				</image>
+				<image hAlign="Left" vAlign="Middle" onErrorType="Icon">
+					<reportElement x="284" y="2" width="22" height="12" isRemoveLineWhenBlank="true" uuid="7555b72f-411c-4159-ae9e-08112fb7ab20">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<imageExpression><![CDATA["/img/pallino_vuoto.png"]]></imageExpression>
+				</image>
+			</frame>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="0" y="0" width="76" height="15" isRemoveLineWhenBlank="true" uuid="4fcba8db-cd4c-42a0-a185-a597fe25a9e5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Label Governabilita"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Legenda}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

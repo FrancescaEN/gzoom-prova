@@ -1,0 +1,88 @@
+<gzoom-message
+  severity="info"
+  icon="pi pi-info-circle"
+  message="{{
+    'If the indicator is calculated from other indicators, select the Calculation Formula and enter the Calculation Parameters.'
+      | i18n
+  }}"
+/>
+<form [formGroup]="form">
+  <p-messages key="error"></p-messages>
+  <div class="d-flex flex-row justify-content-between flex-wrap">
+    <gzoom-row-flex>
+      <gzoom-label label="Calculation formula" labelPos="top">
+        <gzoom-dropdown
+          [options]="this.customMethod$ | async"
+          style="width: 240px"
+          controlName="calcCustomMethodId"
+          [filter]="true"
+          [showClear]="true"
+        />
+      </gzoom-label>
+      <gzoom-label
+        style="padding-right: 20px"
+        label="Calculation priority"
+        labelPos="top"
+      >
+        <gzoom-number controlName="prioCalc" />
+      </gzoom-label>
+    </gzoom-row-flex>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        flex-grow: 2;
+        align-items: end;
+        padding: 5px 0px;
+        gap: 5px;
+      "
+    >
+      <gzoom-button-outlined
+        style="margin-bottom: 3px"
+        icon="pi pi-refresh"
+        [label]="'Reset' | i18n"
+        [disabled]="this.form.pristine"
+        (onClick)="reset()"
+      ></gzoom-button-outlined>
+      <gzoom-button
+        style="margin-bottom: 3px"
+        icon="pi pi-save"
+        label="{{ 'Save' | i18n }}"
+        [disabled]="this.form.pristine"
+        (onClick)="updateCalculation()"
+      />
+    </div>
+  </div>
+</form>
+<br />
+<p-accordion [multiple]="true" [activeIndex]="activeIndex">
+  <p-accordionTab
+    header="{{ 'calculation-parameters' | i18n }}"
+    [disabled]="this.activeIndex.indexOf(0) == -1"
+  >
+    <gzoom-message
+      severity="info"
+      icon="pi pi-info-circle"
+      message="{{
+        'Add the indicators representing the Calculation Factors consistent with the selected Calculation Formula.'
+          | i18n
+      }}"
+    />
+    <gzoom-calculation-parameters
+      [reloadData$]="reload$"
+      [(disableSave)]="disableSaveComp"
+    ></gzoom-calculation-parameters>
+  </p-accordionTab>
+  <p-accordionTab header="{{ 'Calculation element for...' | i18n }}"
+  >
+    <gzoom-message
+      severity="info"
+      icon="pi pi-info-circle"
+      message="{{
+        'This section shows, in read-only mode, the list of calculated indicators for which this indicator is a factor.'
+          | i18n
+      }}"
+    />
+    <gzoom-calculation-element-for></gzoom-calculation-element-for>
+  </p-accordionTab>
+</p-accordion>

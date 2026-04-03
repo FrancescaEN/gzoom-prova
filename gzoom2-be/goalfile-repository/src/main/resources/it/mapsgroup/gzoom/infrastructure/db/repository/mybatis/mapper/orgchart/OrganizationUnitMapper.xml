@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.mapper.orgchart.OrganizationUnitMapper">
+
+    <resultMap id="partyDto" type="it.mapsgroup.gzoom.infrastructure.orgchart.dto.PartyDto">
+        <id column="uo_id" property="partyId" jdbcType="VARCHAR"/>
+        <result column="uo_main_code" property="parentRoleCode" jdbcType="VARCHAR"/>
+        <result column="uo_other_code" property="externalId" jdbcType="VARCHAR"/>
+        <result column="uo_name" property="partyName" jdbcType="VARCHAR"/>
+        <result column="uo_name_lang" property="partyNameLang" jdbcType="VARCHAR"/>
+        <association property="responsible" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.PartyDto">
+            <id column="resp_id" property="partyId"  jdbcType="VARCHAR"/>
+            <result column="resp_name" property="partyName" jdbcType="VARCHAR"/>
+            <result column="resp_name" property="partyNameLang" jdbcType="VARCHAR"/>
+        </association>
+        <association property="roleType" javaType="it.mapsgroup.gzoom.infrastructure.orgchart.dto.RoleTypeDto">
+            <id column="role_type_id" property="roleTypeId" jdbcType="VARCHAR"/>
+            <result column="role_name" property="description" jdbcType="VARCHAR"/>
+            <result column="role_name_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+
+    <select id="selectOrganizationUnits" resultMap="partyDto">
+        SELECT DISTINCT
+        UO.PARTY_ID AS UO_ID
+        , UOC.PARENT_ROLE_CODE AS UO_MAIN_CODE
+        , UO.EXTERNAL_ID AS UO_OTHER_CODE
+        , UO.PARTY_NAME AS UO_NAME
+        , UO.PARTY_NAME_LANG AS UO_NAME_LANG
+        FROM PARTY_PARENT_ROLE UOC
+        INNER JOIN PARTY UO ON UO.PARTY_ID = UOC.PARTY_ID
+        <if test='(roleTypeId != null &amp;&amp; roleTypeId != "") || endYear != null || startYear != null || refDate != null'>
+            INNER JOIN PARTY_ROLE PR ON PR.PARTY_ID = UO.PARTY_ID
+        </if>
+        <if test="endYear != null || startYear != null || refDate != null">
+            LEFT JOIN PARTY_RELATIONSHIP UORES ON UORES.PARTY_ID_FROM = UO.PARTY_ID
+            AND UORES.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+            <choose>
+                <when test="endYear != null">
+                    <choose>
+                        <when test="startYear != null">
+                            AND EXTRACT(YEAR FROM UORES.FROM_DATE) <![CDATA[>=]]> #{startYear,jdbcType=NUMERIC}
+                        </when>
+                        <otherwise>
+                            AND EXTRACT(YEAR FROM UORES.FROM_DATE) <![CDATA[>=]]> #{endYear,jdbcType=NUMERIC}
+                        </otherwise>
+                    </choose>
+                    AND (UORES.THRU_DATE IS NULL OR EXTRACT(YEAR FROM UORES.THRU_DATE) <![CDATA[<=]]> #{endYear,jdbcType=NUMERIC})
+                </when>
+                <when test="refDate != null">
+                    AND UORES.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+                    AND (UORES.THRU_DATE IS NULL OR UORES.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+                </when>
+            </choose>
+            LEFT JOIN PARTY RES ON RES.PARTY_ID = UORES.PARTY_ID_TO
+            LEFT OUTER JOIN PARTY_RELATIONSHIP ORGRD
+            ON ORGRD.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+            AND ORGRD.ROLE_TYPE_ID_FROM = PR.ROLE_TYPE_ID
+            AND ORGRD.PARTY_ID_FROM = PR.PARTY_ID
+            AND ORGRD.PARTY_ID_TO = UO.PARTY_ID
+            <choose>
+                <when test="endYear != null">
+                    <choose>
+                        <when test="startYear != null">
+                            AND EXTRACT(YEAR FROM ORGRD.FROM_DATE) <![CDATA[>=]]> #{startYear,jdbcType=NUMERIC}
+                        </when>
+                        <otherwise>
+                            AND EXTRACT(YEAR FROM ORGRD.FROM_DATE) <![CDATA[>=]]> #{endYear,jdbcType=NUMERIC}
+                        </otherwise>
+                    </choose>
+                    AND (ORGRD.THRU_DATE IS NULL OR EXTRACT(YEAR FROM ORGRD.THRU_DATE) <![CDATA[<=]]> #{endYear,jdbcType=NUMERIC})
+                </when>
+                <when test="refDate != null">
+                    AND ORGRD.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+                    AND (ORGRD.THRU_DATE IS NULL OR ORGRD.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+                </when>
+            </choose>
+            LEFT OUTER JOIN PARTY_RELATIONSHIP SUPORG
+            ON SUPORG.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+            AND SUPORG.ROLE_TYPE_ID_TO = PR.ROLE_TYPE_ID
+            AND SUPORG.PARTY_ID_TO = PR.PARTY_ID
+            <choose>
+                <when test="endYear != null">
+                    <choose>
+                        <when test="startYear != null">
+                            AND EXTRACT(YEAR FROM SUPORG.FROM_DATE) <![CDATA[>=]]> #{startYear,jdbcType=NUMERIC}
+                        </when>
+                        <otherwise>
+                            AND EXTRACT(YEAR FROM SUPORG.FROM_DATE) <![CDATA[>=]]> #{endYear,jdbcType=NUMERIC}
+                        </otherwise>
+                    </choose>
+                    AND (SUPORG.THRU_DATE IS NULL OR EXTRACT(YEAR FROM SUPORG.THRU_DATE) <![CDATA[<=]]> #{endYear,jdbcType=NUMERIC})
+                </when>
+                <when test="refDate != null">
+                    AND SUPORG.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+                    AND (SUPORG.THRU_DATE IS NULL OR SUPORG.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+                </when>
+            </choose>
+            LEFT OUTER JOIN PARTY_RELATIONSHIP SUPRD
+            ON SUPRD.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+            AND SUPRD.ROLE_TYPE_ID_FROM = SUPORG.ROLE_TYPE_ID_FROM
+            AND SUPRD.PARTY_ID_FROM = SUPORG.PARTY_ID_FROM
+            AND SUPRD.PARTY_ID_TO = UO.PARTY_ID
+            <choose>
+                <when test="endYear != null">
+                    <choose>
+                        <when test="startYear != null">
+                            AND EXTRACT(YEAR FROM SUPRD.FROM_DATE) <![CDATA[>=]]> #{startYear,jdbcType=NUMERIC}
+                        </when>
+                        <otherwise>
+                            AND EXTRACT(YEAR FROM SUPRD.FROM_DATE) <![CDATA[>=]]> #{endYear,jdbcType=NUMERIC}
+                        </otherwise>
+                    </choose>
+                    AND (SUPRD.THRU_DATE IS NULL OR EXTRACT(YEAR FROM SUPRD.THRU_DATE) <![CDATA[<=]]> #{endYear,jdbcType=NUMERIC})
+                </when>
+                <when test="refDate != null">
+                    AND SUPRD.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+                    AND (SUPRD.THRU_DATE IS NULL OR SUPRD.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+                </when>
+            </choose>
+            LEFT OUTER JOIN PARTY_RELATIONSHIP TOPSUP
+            ON TOPSUP.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+            AND TOPSUP.ROLE_TYPE_ID_TO = SUPORG.ROLE_TYPE_ID_FROM
+            AND TOPSUP.PARTY_ID_TO = SUPORG.PARTY_ID_FROM
+            <choose>
+                <when test="endYear != null">
+                    <choose>
+                        <when test="startYear != null">
+                            AND EXTRACT(YEAR FROM TOPSUP.FROM_DATE) <![CDATA[>=]]> #{startYear,jdbcType=NUMERIC}
+                        </when>
+                        <otherwise>
+                            AND EXTRACT(YEAR FROM TOPSUP.FROM_DATE) <![CDATA[>=]]> #{endYear,jdbcType=NUMERIC}
+                        </otherwise>
+                    </choose>
+                    AND (TOPSUP.THRU_DATE IS NULL OR EXTRACT(YEAR FROM TOPSUP.THRU_DATE) <![CDATA[<=]]> #{endYear,jdbcType=NUMERIC})
+                </when>
+                <when test="refDate != null">
+                    AND TOPSUP.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+                    AND (TOPSUP.THRU_DATE IS NULL OR TOPSUP.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+                </when>
+            </choose>
+            LEFT OUTER JOIN PARTY_RELATIONSHIP TOPRD
+            ON TOPRD.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+            AND TOPRD.ROLE_TYPE_ID_FROM = TOPSUP.ROLE_TYPE_ID_FROM
+            AND TOPRD.PARTY_ID_FROM = TOPSUP.PARTY_ID_FROM
+            AND TOPRD.PARTY_ID_TO = UO.PARTY_ID
+            <choose>
+                <when test="endYear != null">
+                    <choose>
+                        <when test="startYear != null">
+                            AND EXTRACT(YEAR FROM TOPRD.FROM_DATE) <![CDATA[>=]]> #{startYear,jdbcType=NUMERIC}
+                        </when>
+                        <otherwise>
+                            AND EXTRACT(YEAR FROM TOPRD.FROM_DATE) <![CDATA[>=]]> #{endYear,jdbcType=NUMERIC}
+                        </otherwise>
+                    </choose>
+                    AND (TOPRD.THRU_DATE IS NULL OR EXTRACT(YEAR FROM TOPRD.THRU_DATE) <![CDATA[<=]]> #{endYear,jdbcType=NUMERIC})
+                </when>
+                <when test="refDate != null">
+                    AND TOPRD.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+                    AND (TOPRD.THRU_DATE IS NULL OR TOPRD.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+                </when>
+            </choose>
+        </if>
+        WHERE UOC.ORGANIZATION_ID = #{organizationId, mode=IN, jdbcType=VARCHAR}
+        AND UOC.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+        <if test='roleTypeId != null &amp;&amp; roleTypeId != ""'>
+            AND PR.ROLE_TYPE_ID = #{roleTypeId, mode=IN, jdbcType=VARCHAR}
+        </if>
+        <if test="endYear != null || startYear != null || refDate != null">
+            <if test='permissionView.getCtxPermission()=="RESP"'>
+                AND (
+                <if test='permissionView.isOrg()'>
+                    (ORGRD.PARTY_ID_TO IS NOT NULL
+                    AND (ORGRD.CTX_ENABLED IS NULL OR ORGRD.CTX_ENABLED
+                    LIKE CONCAT('%', CONCAT(WET.PARENT_TYPE_ID,'%'))))
+
+                    <if test='permissionView.isSup() || permissionView.isTop()'>
+                        OR
+                    </if>
+                </if>
+                <if test='permissionView.isSup()'>
+                    (SUPRD.PARTY_ID_TO IS NOT NULL
+                    AND (SUPRD.CTX_ENABLED IS NULL OR SUPRD.CTX_ENABLED
+                    LIKE CONCAT('%', CONCAT(WET.PARENT_TYPE_ID,'%'))))
+
+                    <if test='permissionView.isTop()'>
+                        OR
+                    </if>
+                </if>
+                <if test='permissionView.isTop()'>
+                    (TOPRD.PARTY_ID_TO IS NOT NULL
+                    AND (TOPRD.CTX_ENABLED IS NULL OR TOPRD.CTX_ENABLED
+                    LIKE CONCAT('%', CONCAT(WET.PARENT_TYPE_ID,'%'))))
+                </if>
+                )
+            </if>
+        </if>
+        <choose>
+            <when test='showUoCode == null || showUoCode.name == "NONE"'>
+                ORDER BY <choose><when test='languageType != null &amp;&amp; languageType.name()=="BILING" &amp;&amp; secondaryLang'>UO.PARTY_NAME_LANG</when><otherwise>UO.PARTY_NAME</otherwise></choose>
+            </when>
+            <when test='showUoCode.name == "MAIN"'>
+                ORDER BY UOC.PARENT_ROLE_CODE
+            </when>
+            <when test='showUoCode.name == "EXT"'>
+                ORDER BY UO.EXTERNAL_ID
+            </when>
+        </choose>
+    </select>
+
+    <select id="selectOrganizationUnitsAndTypes" resultMap="partyDto">
+        SELECT DISTINCT
+        UOC.PARENT_ROLE_CODE AS UO_MAIN_CODE,
+        UO.EXTERNAL_ID AS UO_OTHER_CODE,
+        UO.PARTY_NAME AS UO_NAME,
+        UO.PARTY_NAME_LANG AS UO_NAME_LANG,
+        UO.PARTY_ID AS UO_ID,
+        RT.DESCRIPTION AS ROLE_NAME,
+        RT.DESCRIPTION_LANG AS ROLE_NAME_LANG,
+        RT.ROLE_TYPE_ID AS ROLE_TYPE_ID,
+        RES.PARTY_ID AS RESP_ID,
+        RES.PARTY_NAME AS RESP_NAME
+        FROM PARTY UO
+        INNER JOIN PARTY_PARENT_ROLE UOC ON UOC.PARTY_ID = UO.PARTY_ID AND UOC.ROLE_TYPE_ID = 'ORGANIZATION_UNIT'
+        INNER JOIN PARTY_ROLE PR ON PR.PARTY_ID = UO.PARTY_ID
+        INNER JOIN WORK_EFFORT_TYPE WET ON (WET.ORG_UNIT_ROLE_TYPE_ID IS NULL AND WET.ORG_UNIT_ROLE_TYPE_ID2 IS NULL AND WET.ORG_UNIT_ROLE_TYPE_ID3 IS NULL) OR PR.ROLE_TYPE_ID IN (WET.ORG_UNIT_ROLE_TYPE_ID, WET.ORG_UNIT_ROLE_TYPE_ID2, WET.ORG_UNIT_ROLE_TYPE_ID3)
+        INNER JOIN ROLE_TYPE RT ON RT.ROLE_TYPE_ID = PR.ROLE_TYPE_ID and RT.role_type_id <![CDATA[<>]]> 'INTERNAL_ORGANIZATIO'
+        LEFT JOIN PARTY_RELATIONSHIP UORES ON UORES.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE' AND UORES.PARTY_ID_FROM = UO.PARTY_ID
+        AND UORES.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+        AND (UORES.THRU_DATE IS NULL OR UORES.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+        LEFT JOIN PARTY RES ON RES.PARTY_ID = UORES.PARTY_ID_TO
+        LEFT OUTER JOIN PARTY_RELATIONSHIP ORGRD
+        ON ORGRD.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+        AND ORGRD.ROLE_TYPE_ID_FROM = PR.ROLE_TYPE_ID
+        AND ORGRD.PARTY_ID_FROM = PR.PARTY_ID
+        AND ORGRD.PARTY_ID_TO = UO.PARTY_ID
+        AND ORGRD.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+        AND (ORGRD.THRU_DATE IS NULL
+        OR ORGRD.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+        LEFT OUTER JOIN PARTY_RELATIONSHIP SUPORG
+        ON SUPORG.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+        AND SUPORG.ROLE_TYPE_ID_TO = PR.ROLE_TYPE_ID
+        AND SUPORG.PARTY_ID_TO = PR.PARTY_ID
+        AND SUPORG.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+        AND (SUPORG.THRU_DATE IS NULL
+        OR SUPORG.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+        LEFT OUTER JOIN PARTY_RELATIONSHIP SUPRD
+        ON SUPRD.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+        AND SUPRD.ROLE_TYPE_ID_FROM = SUPORG.ROLE_TYPE_ID_FROM
+        AND SUPRD.PARTY_ID_FROM = SUPORG.PARTY_ID_FROM
+        AND SUPRD.PARTY_ID_TO = UO.PARTY_ID
+        AND SUPRD.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+        AND (SUPRD.THRU_DATE IS NULL
+        OR SUPRD.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+        LEFT OUTER JOIN PARTY_RELATIONSHIP TOPSUP
+        ON TOPSUP.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+        AND TOPSUP.ROLE_TYPE_ID_TO = SUPORG.ROLE_TYPE_ID_FROM
+        AND TOPSUP.PARTY_ID_TO = SUPORG.PARTY_ID_FROM
+        AND TOPSUP.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+        AND (TOPSUP.THRU_DATE IS NULL
+        OR TOPSUP.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+        LEFT OUTER JOIN PARTY_RELATIONSHIP TOPRD
+        ON TOPRD.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+        AND TOPRD.ROLE_TYPE_ID_FROM = TOPSUP.ROLE_TYPE_ID_FROM
+        AND TOPRD.PARTY_ID_FROM = TOPSUP.PARTY_ID_FROM
+        AND TOPRD.PARTY_ID_TO = UO.PARTY_ID
+        AND TOPRD.FROM_DATE <![CDATA[<=]]> #{refDate,jdbcType=TIMESTAMP}
+        AND (TOPRD.THRU_DATE IS NULL
+        OR TOPRD.THRU_DATE <![CDATA[>=]]> #{refDate,jdbcType=TIMESTAMP})
+        WHERE UOC.ORGANIZATION_ID = #{organizationId, mode=IN, jdbcType=VARCHAR}
+        <if test='permissionView.getCtxPermission()=="RESP"'>
+            AND (
+            <if test='permissionView.isOrg()'>
+                (ORGRD.PARTY_ID_TO IS NOT NULL
+                AND (ORGRD.CTX_ENABLED IS NULL OR ORGRD.CTX_ENABLED
+                LIKE CONCAT('%', CONCAT(WET.PARENT_TYPE_ID,'%'))))
+
+                <if test='permissionView.isSup() || permissionView.isTop()'>
+                    OR
+                </if>
+            </if>
+            <if test='permissionView.isSup()'>
+                (SUPRD.PARTY_ID_TO IS NOT NULL
+                AND (SUPRD.CTX_ENABLED IS NULL OR SUPRD.CTX_ENABLED
+                LIKE CONCAT('%', CONCAT(WET.PARENT_TYPE_ID,'%'))))
+
+                <if test='permissionView.isTop()'>
+                    OR
+                </if>
+            </if>
+            <if test='permissionView.isTop()'>
+                (TOPRD.PARTY_ID_TO IS NOT NULL
+                AND (TOPRD.CTX_ENABLED IS NULL OR TOPRD.CTX_ENABLED
+                LIKE CONCAT('%', CONCAT(WET.PARENT_TYPE_ID,'%'))))
+            </if>
+            )
+        </if>
+        ORDER BY
+        <choose>
+            <when test='showUoCode.name == "MAIN"'>
+                UOC.PARENT_ROLE_CODE
+            </when>
+            <when test='showUoCode.name == "EXT"'>
+                UO.EXTERNAL_ID
+            </when>
+            <otherwise>
+                <choose><when test='languageType != null &amp;&amp; languageType.name()=="BILING" &amp;&amp; secondaryLang'>UO.PARTY_NAME_LANG</when><otherwise>UO.PARTY_NAME</otherwise></choose>
+            </otherwise>
+        </choose>
+    </select>
+
+
+</mapper>

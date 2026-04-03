@@ -1,0 +1,58 @@
+#!/bin/sh
+#####################################################################
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#####################################################################
+
+if [ -z "${GZOOM_LEGACY_JAVA_VERSION}" ]; then
+    GZOOM_LEGACY_JAVA_VERSION=11
+fi
+
+if update-alternatives --list java | grep "usage" >/dev/null; then
+    jdk11_alternatives=$(alternatives --list | grep $GZOOM_LEGACY_JAVA_VERSION)
+    JAVA_HOME=$(alternatives --list | grep $GZOOM_LEGACY_JAVA_VERSION | rev | cut -f1 | rev | uniq)
+else
+    jdk11_alternatives=$(update-alternatives --list java | grep $GZOOM_LEGACY_JAVA_VERSION)
+    JAVA_HOME=$(update-alternatives --list java | grep $GZOOM_LEGACY_JAVA_VERSION | rev | cut -d/ -f3- | rev)
+fi
+
+if [ -z "$jdk11_alternatives" ]; then
+    echo "GZoom legacy needs JDK $GZOOM_LEGACY_JAVA_VERSION" 1>&2
+    exit 1
+fi
+
+echo "Start GZoom Ant script using JDK at "$JAVA_HOME
+
+# location of java executable
+if [ -f "$JAVA_HOME/bin/java" ]; then
+  JAVA="$JAVA_HOME/bin/java"
+else
+  JAVA=java
+fi
+
+find_jar() {
+    top="$(cd "$(dirname "$0")"; echo "$PWD")"
+    set -- "$top"/framework/base/lib/apache-ant-1.10.8/lib/ant-launcher.jar
+    if [ $# = 1 ] && [ -e "$1" ]; then
+        echo "$1"
+    else
+        echo "Couldn't find ant-launcher.jar" 1>&2
+        exit 1
+    fi
+}
+"$JAVA" -jar "$(find_jar)" "$@"
+

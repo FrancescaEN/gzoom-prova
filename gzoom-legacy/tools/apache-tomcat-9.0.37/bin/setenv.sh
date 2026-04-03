@@ -1,0 +1,1 @@
+CATALINA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms256M -Xmx1024M -XX:+DisableExplicitGC -Xdebug -Xrunjdwp:transport=dt_socket,address=8091,server=y,suspend=n"

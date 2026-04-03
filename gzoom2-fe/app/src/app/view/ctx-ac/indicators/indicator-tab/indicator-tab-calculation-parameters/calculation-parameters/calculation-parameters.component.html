@@ -1,0 +1,289 @@
+<p-toast></p-toast>
+
+<p-messages key="error"></p-messages>
+<div class="d-flex flex-row flex-wrap justify-content-between">
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    <gzoom-button
+      icon="pi pi-plus"
+      [label]="'Add factor' | i18n"
+      (onClick)="newParameter()"
+      [disabled]="!disableSave"
+    ></gzoom-button>
+    <gzoom-button-outlined
+      icon="pi pi-trash"
+      [label]="'Delete factors selected' | i18n"
+      (onClick)="delete()"
+      [disabled]="!(this.selectedItems.length > 0)"
+    ></gzoom-button-outlined>
+  </div>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    <gzoom-button-outlined
+      icon="pi pi-refresh"
+      [label]="'Reset' | i18n"
+      [disabled]="disableSave"
+      (onClick)="reset()"
+    ></gzoom-button-outlined>
+
+    <gzoom-button
+      icon="pi pi-save"
+      [disabled]="disableSave"
+      [label]="'Save' | i18n"
+      (onClick)="save()"
+    ></gzoom-button>
+  </div>
+</div>
+
+<p-table
+  [value]="glAccountInputCalc"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [tableStyle]="{ 'min-width': '20rem' }"
+  id="table-card"
+  [(selection)]="selectedItems"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  scrollHeight="30vh"
+  [scrollable]="scrollable | async"
+  [loading]="loading"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        class="table-head-th"
+        style="width: 1rem; padding-right: 5px !important"
+      >
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Sequence" | i18n }}*
+          <p-sortIcon
+            pSortableColumn="inputSequenceNum"
+            field="inputSequenceNum"
+          />
+          <p-columnFilter
+            type="text"
+            field="inputSequenceNum"
+            matchMode="contains"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Factor" | i18n }}*
+
+          <p-sortIcon
+            pSortableColumn="factorCalculator"
+            field="factorCalculator"
+          />
+          <p-columnFilter
+            type="text"
+            field="factorCalculator"
+            matchMode="contains"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Operando" | i18n }}
+          <p-sortIcon
+            pSortableColumn="glAccountRef.accountName"
+            field="glAccountRef.accountName"
+          />
+          <p-columnFilter
+            type="text"
+            field="glAccountRef.accountName"
+            matchMode="contains"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Value type" | i18n }}
+
+          <p-sortIcon pSortableColumn="glFiscalTypeId" field="glFiscalTypeId" />
+
+          <p-columnFilter
+            field="glFiscalTypeId"
+            matchMode="equals"
+            display="menu"
+            operator="or"
+            [showMatchModes]="false"
+            [showOperator]="false"
+            [showAddButton]="true"
+          >
+            <ng-template
+              pTemplate="filter"
+              let-value
+              let-filter="filterCallback"
+            >
+              <p-dropdown
+                [ngModel]="value"
+                [options]="glFiscalType"
+                (onChange)="filter($event.value)"
+                placeholder="{{ 'Any' | i18n }}"
+              >
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-glAccountInputCalc
+    let-columns="columns"
+    let-editing="editing"
+  >
+    <tr class="small-row">
+      <td>
+        <p-tableCheckbox [value]="glAccountInputCalc"></p-tableCheckbox>
+      </td>
+
+      <td
+        class="data-cell"
+        [pEditableColumn]="glAccountInputCalc.inputSequenceNum"
+        pEditableColumnField="inputSequenceNum"
+      >
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Sequence" | i18n }}*</b></span
+        >
+
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="glAccountInputCalc.inputSequenceNum"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="
+                changeValue(glAccountInputCalc.glAccountInputCalcId)
+              "
+              required="true"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ glAccountInputCalc.inputSequenceNum }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td
+        class="data-cell"
+        [pEditableColumn]="glAccountInputCalc.factorCalculator"
+        pEditableColumnField="factorCalculator"
+      >
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Factor" | i18n }}*</b></span
+        >
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="glAccountInputCalc.factorCalculator"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="
+                changeValue(glAccountInputCalc.glAccountInputCalcId)
+              "
+              required="true"
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ glAccountInputCalc.factorCalculator }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Operando" | i18n }}</b></span
+        >
+
+        <gzoom-button-link
+          icon="pi pi-file-edit"
+          tooltipLabel="{{ ('Change' | i18n) + ' operando' }}"
+          tooltipPosition="left"
+          buttonStyle="padding-bottom: 3px !important; padding-top: 0px !important; width: min-content"
+          [disabled]="!disableSave"
+          (onClick)="changeOperand(glAccountInputCalc)"
+        ></gzoom-button-link>
+        {{ glAccountInputCalc.glAccountRef?.accountName }}
+      </td>
+
+      <td
+        class="data-cell"
+        [pEditableColumn]="glAccountInputCalc.glFiscalTypeId"
+        pEditableColumnField="glFiscalTypeId"
+      >
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Value type" | i18n }}</b></span
+        >
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <p-dropdown
+              [options]="glFiscalType"
+              [(ngModel)]="glAccountInputCalc.glFiscalTypeId"
+              appendTo="body"
+              placeholder="{{ 'Select' | i18n }}"
+              showClear="true"
+              (keydown.ArrowRight)="doNothing($event)"
+              (keydown.ArrowLeft)="doNothing($event)"
+              (keydown.ArrowDown)="doNothing($event)"
+              (keydown.ArrowUp)="doNothing($event)"
+              (ngModelChange)="
+                changeValue(glAccountInputCalc.glAccountInputCalcId)
+              "
+            ></p-dropdown>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ getGlFiscalTypeDescr(glAccountInputCalc.glFiscalTypeId) }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"></ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-confirmDialog></p-confirmDialog>

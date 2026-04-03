@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.CustomTimePeriodMapper">
+
+    <resultMap id="CustomTimePeriod" type="it.mapsgroup.gzoom.mybatis.dto.CustomTimePeriod">
+        <result column = "PERIOD_NAME" property = "periodName" jdbcType="VARCHAR"/>
+        <result column = "PERIOD_NAME_LANG" property = "periodNameLang" jdbcType="VARCHAR"/>
+        <result column = "CUSTOM_TIME_PERIOD_ID" property = "customTimePeriodId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getTimesheetCustomTimePeriodDropdownFilter" resultMap="CustomTimePeriod" parameterType="java.util.Map">
+        SELECT DISTINCT CTP.PERIOD_NAME  AS "PERIOD_NAME", CTP.PERIOD_NAME_LANG  AS "PERIOD_NAME_LANG", CTP.CUSTOM_TIME_PERIOD_ID  AS "CUSTOM_TIME_PERIOD_ID"
+        FROM TIMESHEET TM
+        INNER JOIN TS_BY_USER_LOGIN TU ON TU.TIMESHEET_ID = TM.TIMESHEET_ID AND TU.USER_LOGIN_ID = #{userLoginId}
+        INNER JOIN WORK_EFFORT_TYPE_PERIOD PDO ON PDO.WORK_EFFORT_TYPE_PERIOD_ID = TM.WORK_EFFORT_TYPE_PERIOD_ID
+        INNER JOIN CUSTOM_TIME_PERIOD CTP ON CTP.CUSTOM_TIME_PERIOD_ID = PDO.CUSTOM_TIME_PERIOD_ID
+   </select>
+
+</mapper>

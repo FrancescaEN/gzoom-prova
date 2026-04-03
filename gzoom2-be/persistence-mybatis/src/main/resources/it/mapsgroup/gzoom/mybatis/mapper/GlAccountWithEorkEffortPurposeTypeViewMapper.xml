@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.GlAccountWithWorkEffortPurposeTypeViewMapper">
+    <select id="getGlAccountWithWorkEffortPurposeTypeViewFilter" parameterType="java.util.Map">
+        SELECT *
+        FROM GL_ACCOUNT_WITH_WORK_EFFORT_PURPOSE_TYPE_VIEW
+        WHERE ORGANIZATION_PARTY_ID = #{organizationId}
+        <if test="val">
+            <if test="secondaryLang == true">
+                AND LOWER(concat( ACCOUNT_CODE, concat(' - ', ACCOUNT_NAME_LANG))) LIKE LOWER(CONCAT('%', CONCAT(#{val}, '%')))
+            </if>
+            <if test="secondaryLang != true">
+                AND LOWER(concat( ACCOUNT_CODE, concat(' - ', ACCOUNT_NAME))) LIKE LOWER(CONCAT('%', CONCAT(#{val}, '%')))
+            </if>
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,217 @@
+<div style="height: min-content; margin-bottom: 20px">
+  <form *ngIf="filterForm" [formGroup]="filterForm">
+    <div style="display: flex; flex-direction: column; gap: 5px">
+      <gzoom-search-filter
+        label="{{ ('Search indicator' | i18n) + ':' }}"
+        [placeholder]="'Search by ID, code or title.' | i18n"
+        controlNameSearchField="search"
+        controlNameMachMode="matchModeSearch"
+        style="width: 100%"
+        (clearButton)="filter()"
+        (onEnter)="filter()"
+      />
+
+      <gzoom-row-flex style="width: fit-content; gap: 10px">
+        <gzoom-label label="{{ ('Tipology' | i18n) + ':' }}" labelPos="left">
+          <gzoom-dropdown
+            [options]="this.glAccountType"
+            style="width: 240px"
+            controlName="glAccountTypeId"
+            [showClear]="true"
+            placeholder="All"
+            [filter]="true"
+          />
+        </gzoom-label>
+        <gzoom-label label="{{ ('Purpose' | i18n) + ':' }}" labelPos="left">
+          <gzoom-multiselect
+            [options]="this.workEffortPurposeType"
+            style="width: 240px"
+            controlName="workEffortPurposeTypeId"
+            [showClear]="true"
+            placeholder="All"
+          />
+        </gzoom-label>
+      </gzoom-row-flex>
+
+      <div style="display: flex">
+        <div style="width: 50%"></div>
+        <div
+          style="
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+          "
+        >
+          <gzoom-button-outlined
+            [label]="'Reset filters' | i18n"
+            [disabled]="this.loading || this.disableResetFilter"
+            (onClick)="resetFilter()"
+          ></gzoom-button-outlined>
+          <gzoom-button
+            [label]="'Apply filters' | i18n"
+            [disabled]="this.loading || this.filterForm.pristine"
+            (onClick)="filter()"
+          ></gzoom-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<p-table
+  [value]="indicators"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [tableStyle]="{ 'min-width': '20rem' }"
+  id="table-card"
+  [(selection)]="selectedIndicator"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  scrollHeight="30vh"
+  [scrollable]="scrollable | async"
+  [loading]="loading"
+  (onRowSelect)="emitSelect()"
+  (onRowUnselect)="emitSelect()"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        class="table-head-th"
+        style="width: 1rem; padding-right: 5px !important"
+      ></th>
+
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "ID" | i18n }}
+          <p-sortIcon pSortableColumn="glAccountId" field="glAccountId" />
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Code" | i18n }}
+
+          <p-sortIcon pSortableColumn="accountCode" field="accountCode" />
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Title" | i18n }}
+          <p-sortIcon
+            pSortableColumn="{{
+              this.secondaryLang ? 'accountNameLang' : 'accountName'
+            }}"
+            field="{{ this.secondaryLang ? 'accountNameLang' : 'accountName' }}"
+          />
+        </div>
+      </th>
+
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Typology" | i18n }}
+
+          <p-sortIcon
+            pSortableColumn="glAccountTypeId"
+            field="glAccountTypeId"
+          />
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-glAccount
+    let-columns="columns"
+    let-editing="editing"
+  >
+    <tr class="small-row">
+      <td>
+        <p-tableRadioButton [value]="glAccount"></p-tableRadioButton>
+      </td>
+
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "ID" | i18n }}</b></span
+        >
+        {{ glAccount.glAccountId }}
+      </td>
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Code" | i18n }}</b></span
+        >
+        {{ glAccount.accountCode }}
+      </td>
+
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Title" | i18n }}</b></span
+        >
+        {{
+          this.secondaryLang ? glAccount.accountNameLang : glAccount.accountName
+        }}
+      </td>
+
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Typology" | i18n }}</b></span
+        >
+        <div *ngIf="this.glAccountType">
+          {{ getGlAccountTypeDescription(glAccount.glAccountTypeId) }}
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"></ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div style="min-height: 60px">
+  <gzoom-label [label]="('Selected indicator' | i18n) + ':'" labelPos="top">
+    <i *ngIf="!selectedIndicator" style="padding-left: 5px">{{
+        "No indicator selected" | i18n
+      }}</i>
+    <div
+      *ngIf="selectedIndicator"
+      style="
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        flex-wrap: wrap;
+        align-items: baseline;
+      "
+    >
+      <p-chip>
+        <div
+          style="
+            height: 25px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+          "
+        >
+          {{
+            selectedIndicator.accountCode +
+            " - " +
+            (this.secondaryLang
+              ? selectedIndicator.accountNameLang
+              : selectedIndicator.accountName)
+          }}
+        </div>
+      </p-chip
+      >
+    </div>
+  </gzoom-label>
+</div>
+<br />

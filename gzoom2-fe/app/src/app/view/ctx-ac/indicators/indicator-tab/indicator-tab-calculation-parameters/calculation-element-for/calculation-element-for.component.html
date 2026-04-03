@@ -1,0 +1,125 @@
+<p-table
+  [value]="glAccountInputCalc"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [tableStyle]="{ 'min-width': '20rem' }"
+  id="table-card"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  scrollHeight="30vh"
+  [scrollable]="scrollable | async"
+  [loading]="loading"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th class="table-head-th" style="width: 20px"></th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Unit" | i18n }}
+          <p-sortIcon
+            pSortableColumn="glAccount.accountName"
+            field="glAccount.accountName"
+          />
+          <p-columnFilter
+            type="text"
+            matchMode="contains"
+            field="glAccount.accountName"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Calculation formula" | i18n }}
+          <p-sortIcon
+            pSortableColumn="glAccount.calcCustomMethodId"
+            field="glAccount.calcCustomMethodId"
+          />
+
+          <p-columnFilter
+            field="glAccount.calcCustomMethodId"
+            matchMode="equals"
+            display="menu"
+            [showMatchModes]="false"
+            [showOperator]="false"
+            [showAddButton]="false"
+          >
+            <ng-template
+              pTemplate="filter"
+              let-value
+              let-filter="filterCallback"
+            >
+              <p-dropdown
+                [ngModel]="value"
+                [options]="customMethod$ | async"
+                (onChange)="filter($event.value)"
+                placeholder="{{ 'Any' | i18n }}"
+              >
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-small-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Factor" | i18n }}
+
+          <p-sortIcon
+            pSortableColumn="factorCalculator"
+            field="factorCalculator"
+          />
+          <p-columnFilter
+            type="text"
+            matchMode="contains"
+            field="factorCalculator"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-glAccountInputCalc
+    let-columns="columns"
+    let-editing="editing"
+  >
+    <tr class="small-row">
+      <td style="display: flex"></td>
+
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Unit" | i18n }}</b></span
+        >
+
+        {{ glAccountInputCalc.glAccount?.accountName }}
+      </td>
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Calculation formula" | i18n }}*</b></span
+        >
+        {{ glAccountInputCalc.glAccount.calcCustomMethodId }}
+      </td>
+
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Factor" | i18n }}</b></span
+        >
+        {{ glAccountInputCalc.factorCalculator }}
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"> </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

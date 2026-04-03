@@ -1,0 +1,242 @@
+package it.mapsgroup.gzoom.mybatis.mapper;
+
+import it.mapsgroup.gzoom.mybatis.dto.Person;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
+import org.springframework.stereotype.Repository;
+
+import java.time.Instant;
+import java.util.List;
+
+@Mapper
+@Repository
+public interface PersonMapper {
+
+    @Delete({
+        "delete from person",
+        "where party_id = #{partyId,jdbcType=VARCHAR}"
+    })
+    int deleteByPrimaryKey(String partyId);
+
+    @Insert({
+        "insert into person (party_id, salutation, ",
+        "first_name, middle_name, ",
+        "last_name, personal_title, ",
+        "suffix, nickname, ",
+        "first_name_local, middle_name_local, ",
+        "last_name_local, other_local, ",
+        "member_id, gender, birth_date, ",
+        "deceased_date, height, ",
+        "weight, mothers_maiden_name, ",
+        "marital_status, social_security_number, ",
+        "passport_number, passport_expire_date, ",
+        "total_years_work_experience, comments, ",
+        "employment_status_enum_id, residence_status_enum_id, ",
+        "occupation, years_with_employer, ",
+        "months_with_employer, existing_customer, ",
+        "card_id, last_updated_stamp, ",
+        "last_updated_tx_stamp, created_stamp, ",
+        "created_tx_stamp, birth_place, ",
+        "birth_country, number_of_child, ",
+        "empl_position_type_id, empl_position_type_date, ",
+        "employment_amount, last_modified_by_user_login, ",
+        "created_by_user_login, person_position)",
+        "values (#{partyId,jdbcType=VARCHAR}, #{salutation,jdbcType=VARCHAR}, ",
+        "#{firstName,jdbcType=VARCHAR}, #{middleName,jdbcType=VARCHAR}, ",
+        "#{lastName,jdbcType=VARCHAR}, #{personalTitle,jdbcType=VARCHAR}, ",
+        "#{suffix,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, ",
+        "#{firstNameLocal,jdbcType=VARCHAR}, #{middleNameLocal,jdbcType=VARCHAR}, ",
+        "#{lastNameLocal,jdbcType=VARCHAR}, #{otherLocal,jdbcType=VARCHAR}, ",
+        "#{memberId,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, #{birthDate,jdbcType=DATE}, ",
+        "#{deceasedDate,jdbcType=DATE}, #{height,jdbcType=DOUBLE}, ",
+        "#{weight,jdbcType=DOUBLE}, #{mothersMaidenName,jdbcType=VARCHAR}, ",
+        "#{maritalStatus,jdbcType=CHAR}, #{socialSecurityNumber,jdbcType=VARCHAR}, ",
+        "#{passportNumber,jdbcType=VARCHAR}, #{passportExpireDate,jdbcType=DATE}, ",
+        "#{totalYearsWorkExperience,jdbcType=DOUBLE}, #{comments,jdbcType=VARCHAR}, ",
+        "#{employmentStatusEnumId,jdbcType=VARCHAR}, #{residenceStatusEnumId,jdbcType=VARCHAR}, ",
+        "#{occupation,jdbcType=VARCHAR}, #{yearsWithEmployer,jdbcType=NUMERIC}, ",
+        "#{monthsWithEmployer,jdbcType=NUMERIC}, #{existingCustomer,jdbcType=CHAR}, ",
+        "#{cardId,jdbcType=VARCHAR}, #{lastUpdatedStamp,jdbcType=TIMESTAMP}, ",
+        "#{lastUpdatedTxStamp,jdbcType=TIMESTAMP}, #{createdStamp,jdbcType=TIMESTAMP}, ",
+        "#{createdTxStamp,jdbcType=TIMESTAMP}, #{birthPlace,jdbcType=VARCHAR}, ",
+        "#{birthCountry,jdbcType=VARCHAR}, #{numberOfChild,jdbcType=NUMERIC}, ",
+        "#{emplPositionTypeId,jdbcType=VARCHAR}, #{emplPositionTypeDate,jdbcType=TIMESTAMP}, ",
+        "#{employmentAmount,jdbcType=NUMERIC}, #{lastModifiedByUserLogin,jdbcType=VARCHAR}, ",
+        "#{createdByUserLogin,jdbcType=VARCHAR}, #{personPosition,jdbcType=VARCHAR})"
+    })
+    int insert(Person row);
+
+    @Select({
+        "select",
+        "party_id, salutation, first_name, middle_name, last_name, personal_title, suffix, ",
+        "nickname, first_name_local, middle_name_local, last_name_local, other_local, ",
+        "member_id, gender, birth_date, deceased_date, height, weight, mothers_maiden_name, ",
+        "marital_status, social_security_number, passport_number, passport_expire_date, ",
+        "total_years_work_experience, comments, employment_status_enum_id, residence_status_enum_id, ",
+        "occupation, years_with_employer, months_with_employer, existing_customer, card_id, ",
+        "last_updated_stamp, last_updated_tx_stamp, created_stamp, created_tx_stamp, ",
+        "birth_place, birth_country, number_of_child, empl_position_type_id, empl_position_type_date, ",
+        "employment_amount, last_modified_by_user_login, created_by_user_login, person_position",
+        "from person",
+        "where party_id = #{partyId,jdbcType=VARCHAR}"
+    })
+    @Results(id = "person", value = {
+        @Result(column="party_id", property="partyId", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="salutation", property="salutation", jdbcType=JdbcType.VARCHAR),
+        @Result(column="first_name", property="firstName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="middle_name", property="middleName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="last_name", property="lastName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="personal_title", property="personalTitle", jdbcType=JdbcType.VARCHAR),
+        @Result(column="suffix", property="suffix", jdbcType=JdbcType.VARCHAR),
+        @Result(column="nickname", property="nickname", jdbcType=JdbcType.VARCHAR),
+        @Result(column="first_name_local", property="firstNameLocal", jdbcType=JdbcType.VARCHAR),
+        @Result(column="middle_name_local", property="middleNameLocal", jdbcType=JdbcType.VARCHAR),
+        @Result(column="last_name_local", property="lastNameLocal", jdbcType=JdbcType.VARCHAR),
+        @Result(column="other_local", property="otherLocal", jdbcType=JdbcType.VARCHAR),
+        @Result(column="member_id", property="memberId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="gender", property="gender", jdbcType=JdbcType.CHAR),
+        @Result(column="birth_date", property="birthDate", jdbcType=JdbcType.DATE),
+        @Result(column="deceased_date", property="deceasedDate", jdbcType=JdbcType.DATE),
+        @Result(column="height", property="height", jdbcType=JdbcType.DOUBLE),
+        @Result(column="weight", property="weight", jdbcType=JdbcType.DOUBLE),
+        @Result(column="mothers_maiden_name", property="mothersMaidenName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="marital_status", property="maritalStatus", jdbcType=JdbcType.CHAR),
+        @Result(column="social_security_number", property="socialSecurityNumber", jdbcType=JdbcType.VARCHAR),
+        @Result(column="passport_number", property="passportNumber", jdbcType=JdbcType.VARCHAR),
+        @Result(column="passport_expire_date", property="passportExpireDate", jdbcType=JdbcType.DATE),
+        @Result(column="total_years_work_experience", property="totalYearsWorkExperience", jdbcType=JdbcType.DOUBLE),
+        @Result(column="comments", property="comments", jdbcType=JdbcType.VARCHAR),
+        @Result(column="employment_status_enum_id", property="employmentStatusEnumId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="residence_status_enum_id", property="residenceStatusEnumId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="occupation", property="occupation", jdbcType=JdbcType.VARCHAR),
+        @Result(column="years_with_employer", property="yearsWithEmployer", jdbcType=JdbcType.NUMERIC),
+        @Result(column="months_with_employer", property="monthsWithEmployer", jdbcType=JdbcType.NUMERIC),
+        @Result(column="existing_customer", property="existingCustomer", jdbcType=JdbcType.CHAR),
+        @Result(column="card_id", property="cardId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="last_updated_stamp", property="lastUpdatedStamp", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="last_updated_tx_stamp", property="lastUpdatedTxStamp", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="created_stamp", property="createdStamp", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="created_tx_stamp", property="createdTxStamp", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="birth_place", property="birthPlace", jdbcType=JdbcType.VARCHAR),
+        @Result(column="birth_country", property="birthCountry", jdbcType=JdbcType.VARCHAR),
+        @Result(column="number_of_child", property="numberOfChild", jdbcType=JdbcType.NUMERIC),
+        @Result(column="empl_position_type_id", property="emplPositionTypeId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="empl_position_type_date", property="emplPositionTypeDate", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="employment_amount", property="employmentAmount", jdbcType=JdbcType.NUMERIC),
+        @Result(column="last_modified_by_user_login", property="lastModifiedByUserLogin", jdbcType=JdbcType.VARCHAR),
+        @Result(column="created_by_user_login", property="createdByUserLogin", jdbcType=JdbcType.VARCHAR),
+        @Result(column="person_position", property="personPosition", jdbcType=JdbcType.VARCHAR)
+    })
+    Person selectByPrimaryKey(String partyId);
+
+
+    @Select({
+        "select",
+        "party_id, salutation, first_name, middle_name, last_name, personal_title, suffix, ",
+        "nickname, first_name_local, middle_name_local, last_name_local, other_local, ",
+        "member_id, gender, birth_date, deceased_date, height, weight, mothers_maiden_name, ",
+        "marital_status, social_security_number, passport_number, passport_expire_date, ",
+        "total_years_work_experience, comments, employment_status_enum_id, residence_status_enum_id, ",
+        "occupation, years_with_employer, months_with_employer, existing_customer, card_id, ",
+        "last_updated_stamp, last_updated_tx_stamp, created_stamp, created_tx_stamp, ",
+        "birth_place, birth_country, number_of_child, empl_position_type_id, empl_position_type_date, ",
+        "employment_amount, last_modified_by_user_login, created_by_user_login, person_position",
+        "from person"
+    })
+    @Results({
+        @Result(column="party_id", property="partyId", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="salutation", property="salutation", jdbcType=JdbcType.VARCHAR),
+        @Result(column="first_name", property="firstName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="middle_name", property="middleName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="last_name", property="lastName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="personal_title", property="personalTitle", jdbcType=JdbcType.VARCHAR),
+        @Result(column="suffix", property="suffix", jdbcType=JdbcType.VARCHAR),
+        @Result(column="nickname", property="nickname", jdbcType=JdbcType.VARCHAR),
+        @Result(column="first_name_local", property="firstNameLocal", jdbcType=JdbcType.VARCHAR),
+        @Result(column="middle_name_local", property="middleNameLocal", jdbcType=JdbcType.VARCHAR),
+        @Result(column="last_name_local", property="lastNameLocal", jdbcType=JdbcType.VARCHAR),
+        @Result(column="other_local", property="otherLocal", jdbcType=JdbcType.VARCHAR),
+        @Result(column="member_id", property="memberId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="gender", property="gender", jdbcType=JdbcType.CHAR),
+        @Result(column="birth_date", property="birthDate", jdbcType=JdbcType.DATE),
+        @Result(column="deceased_date", property="deceasedDate", jdbcType=JdbcType.DATE),
+        @Result(column="height", property="height", jdbcType=JdbcType.DOUBLE),
+        @Result(column="weight", property="weight", jdbcType=JdbcType.DOUBLE),
+        @Result(column="mothers_maiden_name", property="mothersMaidenName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="marital_status", property="maritalStatus", jdbcType=JdbcType.CHAR),
+        @Result(column="social_security_number", property="socialSecurityNumber", jdbcType=JdbcType.VARCHAR),
+        @Result(column="passport_number", property="passportNumber", jdbcType=JdbcType.VARCHAR),
+        @Result(column="passport_expire_date", property="passportExpireDate", jdbcType=JdbcType.DATE),
+        @Result(column="total_years_work_experience", property="totalYearsWorkExperience", jdbcType=JdbcType.DOUBLE),
+        @Result(column="comments", property="comments", jdbcType=JdbcType.VARCHAR),
+        @Result(column="employment_status_enum_id", property="employmentStatusEnumId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="residence_status_enum_id", property="residenceStatusEnumId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="occupation", property="occupation", jdbcType=JdbcType.VARCHAR),
+        @Result(column="years_with_employer", property="yearsWithEmployer", jdbcType=JdbcType.NUMERIC),
+        @Result(column="months_with_employer", property="monthsWithEmployer", jdbcType=JdbcType.NUMERIC),
+        @Result(column="existing_customer", property="existingCustomer", jdbcType=JdbcType.CHAR),
+        @Result(column="card_id", property="cardId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="last_updated_stamp", property="lastUpdatedStamp", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="last_updated_tx_stamp", property="lastUpdatedTxStamp", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="created_stamp", property="createdStamp", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="created_tx_stamp", property="createdTxStamp", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="birth_place", property="birthPlace", jdbcType=JdbcType.VARCHAR),
+        @Result(column="birth_country", property="birthCountry", jdbcType=JdbcType.VARCHAR),
+        @Result(column="number_of_child", property="numberOfChild", jdbcType=JdbcType.NUMERIC),
+        @Result(column="empl_position_type_id", property="emplPositionTypeId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="empl_position_type_date", property="emplPositionTypeDate", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="employment_amount", property="employmentAmount", jdbcType=JdbcType.NUMERIC),
+        @Result(column="last_modified_by_user_login", property="lastModifiedByUserLogin", jdbcType=JdbcType.VARCHAR),
+        @Result(column="created_by_user_login", property="createdByUserLogin", jdbcType=JdbcType.VARCHAR),
+        @Result(column="person_position", property="personPosition", jdbcType=JdbcType.VARCHAR)
+    })
+    List<Person> selectAll();
+
+    @Update({
+        "update person",
+        "set salutation = #{salutation,jdbcType=VARCHAR},",
+          "first_name = #{firstName,jdbcType=VARCHAR},",
+          "middle_name = #{middleName,jdbcType=VARCHAR},",
+          "last_name = #{lastName,jdbcType=VARCHAR},",
+          "personal_title = #{personalTitle,jdbcType=VARCHAR},",
+          "suffix = #{suffix,jdbcType=VARCHAR},",
+          "nickname = #{nickname,jdbcType=VARCHAR},",
+          "first_name_local = #{firstNameLocal,jdbcType=VARCHAR},",
+          "middle_name_local = #{middleNameLocal,jdbcType=VARCHAR},",
+          "last_name_local = #{lastNameLocal,jdbcType=VARCHAR},",
+          "other_local = #{otherLocal,jdbcType=VARCHAR},",
+          "member_id = #{memberId,jdbcType=VARCHAR},",
+          "gender = #{gender,jdbcType=CHAR},",
+          "birth_date = #{birthDate,jdbcType=DATE},",
+          "deceased_date = #{deceasedDate,jdbcType=DATE},",
+          "height = #{height,jdbcType=DOUBLE},",
+          "weight = #{weight,jdbcType=DOUBLE},",
+          "mothers_maiden_name = #{mothersMaidenName,jdbcType=VARCHAR},",
+          "marital_status = #{maritalStatus,jdbcType=CHAR},",
+          "social_security_number = #{socialSecurityNumber,jdbcType=VARCHAR},",
+          "passport_number = #{passportNumber,jdbcType=VARCHAR},",
+          "passport_expire_date = #{passportExpireDate,jdbcType=DATE},",
+          "total_years_work_experience = #{totalYearsWorkExperience,jdbcType=DOUBLE},",
+          "comments = #{comments,jdbcType=VARCHAR},",
+          "employment_status_enum_id = #{employmentStatusEnumId,jdbcType=VARCHAR},",
+          "residence_status_enum_id = #{residenceStatusEnumId,jdbcType=VARCHAR},",
+          "occupation = #{occupation,jdbcType=VARCHAR},",
+          "years_with_employer = #{yearsWithEmployer,jdbcType=NUMERIC},",
+          "months_with_employer = #{monthsWithEmployer,jdbcType=NUMERIC},",
+          "existing_customer = #{existingCustomer,jdbcType=CHAR},",
+          "card_id = #{cardId,jdbcType=VARCHAR},",
+          "last_updated_stamp = #{lastUpdatedStamp,jdbcType=TIMESTAMP},",
+          "last_updated_tx_stamp = #{lastUpdatedTxStamp,jdbcType=TIMESTAMP},",
+          "birth_place = #{birthPlace,jdbcType=VARCHAR},",
+          "birth_country = #{birthCountry,jdbcType=VARCHAR},",
+          "number_of_child = #{numberOfChild,jdbcType=NUMERIC},",
+          "empl_position_type_id = #{emplPositionTypeId,jdbcType=VARCHAR},",
+          "empl_position_type_date = #{emplPositionTypeDate,jdbcType=TIMESTAMP},",
+          "employment_amount = #{employmentAmount,jdbcType=NUMERIC},",
+          "last_modified_by_user_login = #{lastModifiedByUserLogin,jdbcType=VARCHAR},",
+          "person_position = #{personPosition,jdbcType=VARCHAR}",
+        "where party_id = #{partyId,jdbcType=VARCHAR}"
+    })
+    int updateByPrimaryKey(Person row);
+    int anonymizePerson(Instant expirationDate);
+}

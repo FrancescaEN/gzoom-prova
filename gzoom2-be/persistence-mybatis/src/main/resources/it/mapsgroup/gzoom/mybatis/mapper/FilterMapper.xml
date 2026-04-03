@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper">
+	
+  
+  <sql id="filterInnerJoin">
+  	<if test="!(filter.isFullAdmin or filter.isView)">
+	  	INNER JOIN ( 
+	  			SELECT FIL_UL.PARTY_ID AS UL_PARTY_ID, FIL_ULVR.USER_LOGIN_ID AS ULVR_USER_LOGIN_ID, FIL_ULVR.PARTY_ID AS ULVR_PARTY_ID, FIL_ULVR.ROLE_TYPE_ID AS ULVR_ROLE_TYPE_ID 
+	            FROM USER_LOGIN_VALID_PARTY_ROLE FIL_ULVR
+	            INNER JOIN USER_LOGIN FIL_UL ON FIL_ULVR.USER_LOGIN_ID = FIL_UL.USER_LOGIN_ID) FIL_U ON FIL_W.ORGANIZATION_ID = FIL_U.ULVR_PARTY_ID AND FIL_U.ULVR_ROLE_TYPE_ID = 'INTERNAL_ORGANIZATIO'
+  	</if>
+  </sql>
+  
+  <sql id="filterLeftJoin">
+  	<if test="!(filter.isFullAdmin or filter.isView)">
+		INNER JOIN WORK_EFFORT_TYPE FIL_WT ON FIL_WT.WORK_EFFORT_TYPE_ID = FIL_W.WORK_EFFORT_TYPE_ID
+		LEFT OUTER JOIN PARTY_RELATIONSHIP FIL_PRM ON FIL_W.ORG_UNIT_ROLE_TYPE_ID = FIL_PRM.ROLE_TYPE_ID_FROM AND FIL_W.ORG_UNIT_ID = FIL_PRM.PARTY_ID_FROM
+	    	AND (FIL_PRM.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+		    	OR (FIL_PRM.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE'
+		    		AND (FIL_PRM.CTX_ENABLED IS NULL
+		               OR FIL_PRM.CTX_ENABLED LIKE CONCAT('%', CONCAT(FIL_WT.PARENT_TYPE_ID, '%'))
+		       		)
+		   		)
+			)
+
+		AND FIL_PRM.FROM_DATE &#60;= FIL_W.ESTIMATED_COMPLETION_DATE
+	    	AND (FIL_PRM.THRU_DATE IS NULL OR FIL_PRM.THRU_DATE &#62;= FIL_W.ESTIMATED_COMPLETION_DATE) AND FIL_PRM.PARTY_ID_TO = FIL_U.UL_PARTY_ID
+	    
+	    LEFT OUTER JOIN PARTY_RELATIONSHIP FIL_PRS ON FIL_W.ORG_UNIT_ROLE_TYPE_ID = FIL_PRS.ROLE_TYPE_ID_TO AND FIL_W.ORG_UNIT_ID = FIL_PRS.PARTY_ID_TO
+	         AND FIL_PRS.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP' AND FIL_PRS.FROM_DATE &#60;= FIL_W.ESTIMATED_COMPLETION_DATE
+	         AND (FIL_PRS.THRU_DATE IS NULL OR FIL_PRS.THRU_DATE &#62;= FIL_W.ESTIMATED_COMPLETION_DATE)
+	    
+	    
+	    LEFT OUTER JOIN PARTY_RELATIONSHIP FIL_PRS2 ON FIL_PRS.ROLE_TYPE_ID_FROM = FIL_PRS2.ROLE_TYPE_ID_FROM AND FIL_PRS.PARTY_ID_FROM = FIL_PRS2.PARTY_ID_FROM
+			AND (FIL_PRS2.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+				OR (FIL_PRS2.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE'
+					AND (FIL_PRS2.CTX_ENABLED IS NULL
+						OR FIL_PRS2.CTX_ENABLED LIKE CONCAT('%', CONCAT(FIL_WT.PARENT_TYPE_ID, '%'))
+					)
+				)
+			)
+			AND FIL_PRS2.FROM_DATE &#60;= FIL_W.ESTIMATED_COMPLETION_DATE
+	        AND (FIL_PRS2.THRU_DATE IS NULL OR FIL_PRS2.THRU_DATE &#62;= FIL_W.ESTIMATED_COMPLETION_DATE) AND FIL_PRS2.PARTY_ID_TO = FIL_U.UL_PARTY_ID
+	    
+		
+		LEFT OUTER JOIN PARTY_RELATIONSHIP FIL_Z2 ON FIL_PRS.ROLE_TYPE_ID_FROM = FIL_Z2.ROLE_TYPE_ID_TO AND FIL_PRS.PARTY_ID_FROM = FIL_Z2.PARTY_ID_TO
+			  AND FIL_Z2.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP' AND FIL_Z2.FROM_DATE &#60;= FIL_W.ESTIMATED_COMPLETION_DATE
+			  AND (FIL_Z2.THRU_DATE IS NULL OR FIL_Z2.THRU_DATE &#62;= FIL_W.ESTIMATED_COMPLETION_DATE)
+			  
+			  
+		LEFT OUTER JOIN PARTY_RELATIONSHIP FIL_Y2 ON FIL_Z2.ROLE_TYPE_ID_FROM = FIL_Y2.ROLE_TYPE_ID_FROM AND FIL_Z2.PARTY_ID_FROM = FIL_Y2.PARTY_ID_FROM
+			AND (FIL_Y2.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+				OR (FIL_Y2.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE'
+					AND (FIL_Y2.CTX_ENABLED IS NULL
+						OR FIL_Y2.CTX_ENABLED LIKE CONCAT('%', CONCAT(FIL_WT.PARENT_TYPE_ID, '%'))
+					)
+				)
+			)
+			AND FIL_Y2.FROM_DATE &#60;= FIL_W.ESTIMATED_COMPLETION_DATE
+			AND (FIL_Y2.THRU_DATE IS NULL OR FIL_Y2.THRU_DATE &#62;= FIL_W.ESTIMATED_COMPLETION_DATE)
+			AND FIL_Y2.PARTY_ID_TO = FIL_U.UL_PARTY_ID
+		
+	    LEFT OUTER JOIN WORK_EFFORT_PARTY_ASSIGNMENT FIL_WEPA ON FIL_W.WORK_EFFORT_ID = FIL_WEPA.WORK_EFFORT_ID AND FIL_W.ESTIMATED_COMPLETION_DATE = FIL_WEPA.THRU_DATE
+	         AND FIL_WEPA.ROLE_TYPE_ID LIKE 'WEM%' AND FIL_WEPA.PARTY_ID = FIL_U.UL_PARTY_ID 
+    </if> 
+  </sql>
+  
+  <sql id="filterWherIsOrg">
+  	 OR FIL_PRM.PARTY_ID_TO IS NOT NULL
+  </sql>
+  <sql id="filterWhereIsSup">
+  	 OR FIL_PRS2.PARTY_ID_TO IS NOT NULL
+  </sql>
+  <sql id="filterWhereIsTop">
+  	 OR FIL_Y2.PARTY_ID_TO IS NOT NULL
+  </sql>
+  <sql id="filterWherIsRole">
+  	 OR  FIL_WEPA.PARTY_ID IS NOT NULL
+  </sql>
+  <sql id="filterUserLogin">
+  	  AND FIL_U.ULVR_USER_LOGIN_ID = #{filter.userLoginId}
+  </sql>
+  
+  <sql id="filterWhere">
+  	  <if test="!(filter.isFullAdmin or filter.isView)">
+  	  	<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterUserLogin"/>
+  	  	AND (1 = 0 
+  	  	<if test="filter.isOrgMgr">
+  	  		<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterWherIsOrg"/>
+  	  	</if>
+  	  	<if test="filter.isRole">
+  	  		<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterWherIsRole"/>
+  	  	</if>
+  	  	<if test="filter.isSup">
+  	  		<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterWhereIsSup"/>
+  	  	</if>
+  	  	<if test="filter.isTop">
+  	  		<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterWhereIsTop"/>
+  	  	</if>
+  	  	)  	  	
+  	  </if>
+  </sql>
+
+	<sql id="filterQueryPerson">
+		<!--Parametri #{ userLoginId, parentTypeId, filter } -->
+		<!--Property  ${ aliasParty } -->
+		<if test="filter.isOrgMgr or filter.isSup or filter.isTop or filter.isRole">
+			INNER JOIN PARTY_RELATIONSHIP UO ON UO.PARTY_ID_TO = ${aliasParty}.PARTY_ID
+			AND UO.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_EMPLOYMENT'
+			AND UO.THRU_DATE IS NULL
+			INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = #{userLoginId}
+			<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.leftJoinOrg">
+				<property name="aliasUserLogin" value="UL"/>
+				<property name="aliasPR" value="E"/>
+				<property name="aliasTabConcat" value="UO"/>
+			</include>
+
+			<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.leftJoinRollup">
+				<property name="aliasPR" value="Z"/>
+				<property name="aliasTabConcat" value="UO"/>
+			</include>
+
+			<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.leftJoinOrg">
+				<property name="aliasUserLogin" value="UL"/>
+				<property name="aliasPR" value="Y"/>
+				<property name="aliasTabConcat" value="Z"/>
+			</include>
+
+			<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.leftJoinRollup">
+				<property name="aliasPR" value="Z2"/>
+				<property name="aliasTabConcat" value="Z"/>
+			</include>
+
+			<include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.leftJoinOrg">
+				<property name="aliasUserLogin" value="UL"/>
+				<property name="aliasPR" value="Y2"/>
+				<property name="aliasTabConcat" value="Z2"/>
+			</include>
+
+			WHERE 1=1
+			<if test="filter.isOrgMgr">
+				AND E.PARTY_ID_TO IS NOT NULL
+			</if>
+			<if test="filter.isSup">
+				AND Y.PARTY_ID_TO IS NOT NULL
+			</if>
+			<if test="filter.isRole">
+				AND UL.PARTY_ID = ${aliasParty}.PARTY_ID
+			</if>
+			<if test="filter.isTop">
+				AND Y2.PARTY_ID_TO IS NOT NULL
+			</if>
+		</if>
+	</sql>
+
+	<sql id="leftJoinOrg">
+		LEFT JOIN PARTY_RELATIONSHIP ${aliasPR} ON ${aliasPR}.ROLE_TYPE_ID_FROM = ${aliasTabConcat}.ROLE_TYPE_ID_FROM
+											AND ${aliasPR}.PARTY_ID_FROM = ${aliasTabConcat}.PARTY_ID_FROM
+											AND (
+												${aliasPR}.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+												OR (
+													${aliasPR}.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE'
+													AND ( ${aliasPR}.CTX_ENABLED IS NULL OR ${aliasPR}.CTX_ENABLED LIKE CONCAT('%', CONCAT(#{parentTypeId}, '%')))
+												)
+											)
+											AND ${aliasPR}.THRU_DATE IS NULL
+											AND ${aliasPR}.PARTY_ID_TO = ${aliasUserLogin}.PARTY_ID
+	</sql>
+
+	<sql id="leftJoinRollup">
+		LEFT JOIN PARTY_RELATIONSHIP ${aliasPR} ON ${aliasPR}.ROLE_TYPE_ID_TO = ${aliasTabConcat}.ROLE_TYPE_ID_FROM
+											AND ${aliasPR}.PARTY_ID_TO = ${aliasTabConcat}.PARTY_ID_FROM
+											AND ${aliasPR}.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+											AND ${aliasPR}.THRU_DATE IS NULL
+	</sql>
+
+	<sql id="getFilterQuery">
+        <!--Parametri #{ userLoginId, parentTypeId, filter } -->
+        <!--Property  ${ aliasPartyRole } -->
+        INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = #{userLoginId}
+        LEFT JOIN PARTY_RELATIONSHIP E ON E.ROLE_TYPE_ID_FROM = ${aliasPartyRole}.ROLE_TYPE_ID
+        AND E.PARTY_ID_FROM = ${aliasPartyRole}.PARTY_ID
+        AND (
+        E.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE'
+        OR (
+        E.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_DELEGATE'
+        AND ( E.CTX_ENABLED IS NULL OR E.CTX_ENABLED LIKE CONCAT('%', CONCAT(#{parentTypeId}, '%')))
+        )
+        )
+        AND E.THRU_DATE IS NULL
+        AND E.PARTY_ID_TO = UL.PARTY_ID
+
+        LEFT JOIN PARTY_RELATIONSHIP Z ON Z.ROLE_TYPE_ID_TO = ${aliasPartyRole}.ROLE_TYPE_ID
+        AND Z.PARTY_ID_TO = ${aliasPartyRole}.PARTY_ID
+        AND Z.PARTY_RELATIONSHIP_TYPE_ID = 'GROUP_ROLLUP'
+        AND Z.THRU_DATE IS NULL
+
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.leftJoinOrg">
+            <property name="aliasUserLogin" value="UL"/>
+            <property name="aliasPR" value="Y"/>
+            <property name="aliasTabConcat" value="Z"/>
+        </include>
+
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.leftJoinRollup">
+            <property name="aliasPR" value="Z2"/>
+            <property name="aliasTabConcat" value="Z"/>
+        </include>
+
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.leftJoinOrg">
+            <property name="aliasUserLogin" value="UL"/>
+            <property name="aliasPR" value="Y2"/>
+            <property name="aliasTabConcat" value="Z2"/>
+        </include>
+        WHERE
+        (
+        <if test="filter.isFullAdmin or filter.isView">
+            1=1
+        </if>
+        <if test="filter.isOrgMgr">
+            E.PARTY_ID_TO IS NOT NULL
+        </if>
+        <if test="filter.isSup">
+            <if test="filter.isOrgMgr">
+                OR
+            </if>
+            Y.PARTY_ID_TO IS NOT NULL
+        </if>
+        <if test="filter.isTop">
+            <if test="filter.isOrgMgr or filter.isSup">
+                OR
+            </if>
+            Y2.PARTY_ID_TO IS NOT NULL
+        </if>
+		<if test="filter.isRole">
+			<if test="filter.isOrgMgr or filter.isSup or filter.isTop">
+				OR
+			</if>
+			UL.PARTY_ID = ${aliasPartyRole}.PARTY_ID
+		</if>
+        )
+
+
+    </sql>
+  
+</mapper>

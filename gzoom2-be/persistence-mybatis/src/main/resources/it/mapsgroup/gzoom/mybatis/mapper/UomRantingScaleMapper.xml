@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.UomRatingScaleMapper">
+
+    <resultMap id="uomResultMap" type="it.mapsgroup.gzoom.mybatis.dto.Uom">
+        <id property="uomId" column="uomId" jdbcType="VARCHAR"/>
+        <result property="uomTypeId" column="uomTypeId" jdbcType="VARCHAR"/>
+        <result property="abbreviation" column="abbreviation" jdbcType="VARCHAR"/>
+        <result property="description" column="uomDescription" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="uomLastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="uomLastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="uomCreatedStamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="uomCreatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result property="decimalScale" column="decimalScale" jdbcType="NUMERIC"/>
+        <result property="minValue" column="minValue" jdbcType="DOUBLE"/>
+        <result property="maxValue" column="maxValue" jdbcType="DOUBLE"/>
+        <result property="abbreviationLang" column="abbreviationLang" jdbcType="VARCHAR"/>
+        <result property="descriptionLang" column="uomDescriptionLang" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="uomCreatedByUserLogin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="uomRatingScaleExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.UomRatingScaleEx">
+        <id column="uom_id" property="uomId"  jdbcType="VARCHAR"/>
+        <id column="uom_rating_value" property="uomRatingValue"  jdbcType="DOUBLE"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="icon_content_id" property="iconContentId" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <association property="uom" resultMap="uomResultMap" />
+    </resultMap>
+
+    <select id="getUomRatingScalesEx" resultMap="uomRatingScaleExResultMap">
+    SELECT
+    URS.uom_id,
+    URS.uom_rating_value,
+    URS.description,
+    URS.icon_content_id,
+    URS.description_lang,
+    URS.last_modified_by_user_login,
+    URS.created_by_user_login,
+    URS.last_updated_stamp,
+    URS.last_updated_tx_stamp,
+    URS.created_stamp,
+    URS.created_tx_stamp,
+    UOM.uom_id AS uomId,
+    UOM.uom_type_id AS uomTypeId,
+    UOM.abbreviation,
+    UOM.description AS uomDescription,
+    UOM.last_updated_stamp AS uomLastUpdatedStamp,
+    UOM.last_updated_tx_stamp AS uomLastUpdatedTxStamp,
+    UOM.created_stamp AS uomCreatedStamp,
+    UOM.created_tx_stamp AS uomCreatedTxStamp,
+    UOM.decimal_scale AS decimalScale,
+    UOM.min_value AS minValue,
+    UOM.max_value AS maxValue,
+    UOM.abbreviation_lang AS abbreviationLang,
+    UOM.description_lang AS uomDescriptionLang,
+    UOM.created_by_user_login AS uomCreatedByUserLogin
+    FROM UOM_RATING_SCALE URS
+    INNER JOIN UOM UOM ON UOM.UOM_ID = URS.UOM_ID
+    WHERE URS.UOM_ID = #{uomId}
+    ORDER BY URS.UOM_RATING_VALUE ASC
+    </select>
+
+    <select id="getUomRatingScaleEx" resultMap="uomRatingScaleExResultMap">
+   SELECT
+    URS.uom_id,
+    URS.uom_rating_value,
+    URS.description,
+    URS.icon_content_id,
+    URS.description_lang,
+    URS.last_modified_by_user_login,
+    URS.created_by_user_login,
+    URS.last_updated_stamp,
+    URS.last_updated_tx_stamp,
+    URS.created_stamp,
+    URS.created_tx_stamp,
+    UOM.uom_id AS uomId,
+    UOM.uom_type_id AS uomTypeId,
+    UOM.abbreviation,
+    UOM.description AS uomDescription,
+    UOM.last_updated_stamp AS uomLastUpdatedStamp,
+    UOM.last_updated_tx_stamp AS uomLastUpdatedTxStamp,
+    UOM.created_stamp AS uomCreatedStamp,
+    UOM.created_tx_stamp AS uomCreatedTxStamp,
+    UOM.decimal_scale AS decimalScale,
+    UOM.min_value AS minValue,
+    UOM.max_value AS maxValue,
+    UOM.abbreviation_lang AS abbreviationLang,
+    UOM.description_lang AS uomDescriptionLang,
+    UOM.created_by_user_login AS uomCreatedByUserLogin
+    FROM UOM_RATING_SCALE URS
+    INNER JOIN UOM UOM ON UOM.UOM_ID = URS.UOM_ID
+    WHERE URS.UOM_ID = #{uomId}
+      AND URS.UOM_RATING_VALUE = #{uomRatingValue}
+    </select>
+
+    <select id="getUomRatingScales" resultMap="uomRatingScaleResultMap">
+    SELECT *
+    FROM uom_rating_scale
+    WHERE uom_id = #{uomId}
+    </select>
+
+    <select id="getUomRatingScalesExcludingGlAccount" resultMap="uomRatingScaleResultMap">
+        select urs.* from uom_rating_scale urs
+                              join gl_account ga on ga.default_uom_id = urs.uom_id
+        where ga.gl_account_id = #{glAccountId}
+          and (urs.uom_id, urs.uom_rating_value) not in (
+            select gamrs.uom_id, gamrs.uom_rating_value from gl_account_meas_rat_sc gamrs
+            where gamrs.gl_account_id = #{glAccountId}
+        )
+        order by urs.uom_rating_value
+    </select>
+
+
+</mapper>

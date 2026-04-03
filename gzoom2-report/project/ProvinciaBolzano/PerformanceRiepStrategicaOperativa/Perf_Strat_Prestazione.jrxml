@@ -1,0 +1,1197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_Strat_Prestazione" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="4b2df2f8-1483-4de8-a60c-9b39e39a8f4f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="315"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="680"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="738"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="251"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<subDataset name="Dataset_ObSost" uuid="5d03b2d9-2c5f-45e5-b78c-ad8f3d4f941d">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="301"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="694"/>
+		<parameter name="work_effort_id_ob" class="java.lang.String"/>
+		<parameter name="monitoringDateString" class="java.lang.String"/>
+		<parameter name="langLocale" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select STRAT.* ,
+SOST.*
+from VW_OB_STRATEGICO_OBSOST STRAT
+join VW_OB_SOSTENIBILITA SOST on SOST.ID_OB_SOSTENIBILITA = STRAT.ID_OBIETTIVO_SOSTENIBILITA 
+where STRAT.ID_OBIETTIVO_STRATEGICO  = $P{work_effort_id_ob}]]>
+		</queryString>
+		<field name="CODICE_OBIETTIVO_STRATEGICO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODICE_OBIETTIVO_STRATEGICO"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODICE_OBIETTIVO_STRATEGICO"/>
+		</field>
+		<field name="CODICE_OBIETTIVO_SOSTENIBILITA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODICE_OBIETTIVO_SOSTENIBILITA"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODICE_OBIETTIVO_SOSTENIBILITA"/>
+		</field>
+		<field name="ID_OBIETTIVO_STRATEGICO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ID_OBIETTIVO_STRATEGICO"/>
+			<property name="com.jaspersoft.studio.field.label" value="ID_OBIETTIVO_STRATEGICO"/>
+		</field>
+		<field name="ID_OBIETTIVO_SOSTENIBILITA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ID_OBIETTIVO_SOSTENIBILITA"/>
+			<property name="com.jaspersoft.studio.field.label" value="ID_OBIETTIVO_SOSTENIBILITA"/>
+		</field>
+		<field name="CODICE_OB_SOSTENIBILITA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODICE_OB_SOSTENIBILITA"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODICE_OB_SOSTENIBILITA"/>
+		</field>
+		<field name="ETICHETTA_OB_SOSTENIBILITA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ETICHETTA_OB_SOSTENIBILITA"/>
+			<property name="com.jaspersoft.studio.field.label" value="ETICHETTA_OB_SOSTENIBILITA"/>
+		</field>
+		<field name="NOME_OB_SOSTENIBILITA_IT" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOME_OB_SOSTENIBILITA_IT"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOME_OB_SOSTENIBILITA_IT"/>
+		</field>
+		<field name="NOME_OB_SOSTENIBILITA_DE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOME_OB_SOSTENIBILITA_DE"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOME_OB_SOSTENIBILITA_DE"/>
+		</field>
+		<field name="DATA_INIZIO_OB_SOSTENIBILITA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="DATA_INIZIO_OB_SOSTENIBILITA"/>
+			<property name="com.jaspersoft.studio.field.label" value="DATA_INIZIO_OB_SOSTENIBILITA"/>
+		</field>
+		<field name="DATA_FINE_OB_SOSTENIBILITA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="DATA_FINE_OB_SOSTENIBILITA"/>
+			<property name="com.jaspersoft.studio.field.label" value="DATA_FINE_OB_SOSTENIBILITA"/>
+		</field>
+		<field name="CODICE_STRUTTURA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODICE_STRUTTURA"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODICE_STRUTTURA"/>
+		</field>
+		<field name="CODICE_ESTERNO_STRUTTURA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODICE_ESTERNO_STRUTTURA"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODICE_ESTERNO_STRUTTURA"/>
+		</field>
+		<field name="NOME_STRUTTURA_IT" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOME_STRUTTURA_IT"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOME_STRUTTURA_IT"/>
+		</field>
+		<field name="NOME_STRUTTURA_DE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOME_STRUTTURA_DE"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOME_STRUTTURA_DE"/>
+		</field>
+		<field name="ID_OB_SOSTENIBILITA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="ID_OB_SOSTENIBILITA"/>
+			<property name="com.jaspersoft.studio.field.label" value="ID_OB_SOSTENIBILITA"/>
+		</field>
+	</subDataset>
+	<parameter name="ReportTitle" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String"/>
+	<parameter name="orgUnitId" class="java.lang.String"/>
+	<parameter name="orgUnitIdString" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{orgUnitIdString} != null && $P{orgUnitIdString} != "" ? $P{orgUnitIdString} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String"/>
+	<parameter name="userLoginId" class="java.lang.String"/>
+	<parameter name="monitoringDate" class="java.lang.String"/>
+	<parameter name="filterWhere" class="java.lang.String"/>
+	<parameter name="filterLeftJoin" class="java.lang.String"/>
+	<parameter name="filterInnerJoin" class="java.lang.String"/>
+	<parameter name="date3112" class="java.lang.String"/>
+	<parameter name="date3112sql" class="java.lang.String"/>
+	<parameter name="odaDialect" class="java.lang.String"/>
+	<parameter name="date0101" class="java.lang.String"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="Company" class="java.lang.String"/>
+	<parameter name="ReportSmallPath" class="java.lang.String"/>
+	<parameter name="IconNavPath" class="java.lang.String"/>
+	<parameter name="workEffortTypeId" class="java.lang.String"/>
+	<parameter name="reportContentId" class="java.lang.String"/>
+	<parameter name="filterWhereString" class="java.lang.String"/>
+	<parameter name="filterLeftJoinString" class="java.lang.String"/>
+	<parameter name="filterInnerJoinString" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String"/>
+	<parameter name="personId" class="java.lang.String"/>
+	<parameter name="workEffortId" class="java.lang.String"/>
+	<parameter name="date3009" class="java.lang.String"/>
+	<parameter name="date3009sql" class="java.lang.String"/>
+	<parameter name="exposePaginator" class="java.lang.String"/>
+	<parameter name="id_scheda" class="java.lang.String"/>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterCustomTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted0101" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted3006" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( "30/06/" + $P{customTimePeriod}.substring(0, 4)) : 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_scheda_orig" class="java.lang.String"/>
+	<parameter name="customTimePeriodFormatted3112" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112P1sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortIdStringPrest" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{workEffortId}  != null && $P{workEffortId}  != "" ? 
+	"AND PRE.WORK_EFFORT_ID= '" + $P{workEffortId}+"'"
+: " "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterCustomTimePeriod_Prest" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ? 
+("TO_DATE(DATA_INIZIO_PRESTAZIONE,'DD/MM/YYYY') <= TO_DATE('" + $P{customTimePeriodFormatted} + "','DD/MM/YYYY') AND TO_DATE(DATA_FINE_PRESTAZIONE,'DD/MM/YYYY') >= TO_DATE('" + $P{customTimePeriodFormatted0101} + "','DD/MM/YYYY')" ) : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_prestazione" class="java.lang.String"/>
+	<parameter name="date3112String" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101String" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	PRE.SOURCE_REFERENCE_ID AS CODICE_PRESTAZIONE,
+	PRE.WORK_EFFORT_ID AS ID_PRESTAZIONE,
+	PRE.ETCH AS ETICHETTA_PRESTAZIONE,
+	PRE.WORK_EFFORT_NAME_LANG AS NOME_PRESTAZIONE_IT,
+	PRE.WORK_EFFORT_NAME AS NOME_PRESTAZIONE_DE,
+	WEPT.DESCRIPTION_LANG AS TIPOLOGIA_PRESTAZIONE_IT,
+	WEPT.DESCRIPTION AS TIPOLOGIA_PRESTAZIONE_DE,
+	NOTE.FINALITA_IT,
+	NOTE.FINALITA_DE,
+	NOTE.DESCRIZIONE_IT,
+	NOTE.DESCRIZIONE_DE,
+	NOTE.FONTE_IT,
+	NOTE.FONTE_DE,
+	CAR.VALORE_FLAG_PARIOPP_IT AS VALORE_FLAG_PARI_OPPORTUNITA,
+	CAR.VALORE_FLAG_PARIOPP AS VALORE_FLAG_PARI_OPPORTUNITA_DE,
+	CAR.VALORE_FLAG_PNC_IT AS VALORE_FLAG_PNC,
+	CAR.VALORE_FLAG_PNC AS VALORE_FLAG_PNC_DE,
+	PRE.WORK_EFFORT_ID AS ID_PRESTAZIONE,
+	OBS.WORK_EFFORT_ID AS ID_OBIETTIVO_STRATEGICO,
+	OBS.WORK_EFFORT_NAME AS NOME_OBIETTIVO_STRATEGICO_DE,
+	OBS.WORK_EFFORT_NAME_LANG AS NOME_OBIETTIVO_STRATEGICO_IT,
+	GRADO.VALORE_DE AS GRADO_DE,
+	GRADO.VALORE_IT AS GRADO_IT,
+	(SELECT COUNT(*)
+		FROM WORK_EFFORT PREST
+		JOIN WORK_EFFORT_ASSOC WEA ON WEA.WORK_EFFORT_ID_TO = PREST.WORK_EFFORT_ID AND WEA.WORK_EFFORT_ASSOC_TYPE_ID = '20R8C'
+		JOIN WORK_EFFORT OBSOST ON OBSOST.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_FROM	AND OBSOST.WORK_EFFORT_TYPE_ID = '20R84' AND OBSOST.WORK_EFFORT_REVISION_ID IS NULL
+		WHERE PREST.WORK_EFFORT_TYPE_ID = '20C42' AND PREST.WORK_EFFORT_REVISION_ID IS NULL AND PREST.WORK_EFFORT_ID = PRE.WORK_EFFORT_ID
+	) AS CONTA_OBIETTIVI2030,
+	(SELECT COUNT(*)
+		FROM WORK_EFFORT_MEASURE INDIC
+		JOIN GL_ACCOUNT GL ON GL.GL_ACCOUNT_ID = INDIC.GL_ACCOUNT_ID
+		WHERE INDIC.WORK_EFFORT_ID = PRE.WORK_EFFORT_ID AND GL.SOURCE_LANG = 'S'
+		AND INDIC.FROM_DATE<=TO_DATE( $P{customTimePeriodFormatted3112} ,'DD/MM/YYYY') AND INDIC.THRU_DATE>=TO_DATE( $P{customTimePeriodFormatted0101} ,'DD/MM/YYYY')
+	) AS CONTA_STANDARD_QUALITA
+/* PRESTAZIONI */
+FROM WORK_EFFORT PRE
+/* TIPO PRESTAZIONE */
+LEFT JOIN WORK_EFFORT_PURPOSE_TYPE WEPT ON	WEPT.WORK_EFFORT_PURPOSE_TYPE_ID = PRE.WORK_EFFORT_PURPOSE_TYPE_ID
+/* STRUTTURA */
+JOIN PARTY STRUTT ON STRUTT.PARTY_ID = PRE.ORG_UNIT_ID
+JOIN PARTY_PARENT_ROLE PPRSTRUTT ON	PPRSTRUTT.PARTY_ID = STRUTT.PARTY_ID AND PPRSTRUTT.ROLE_TYPE_ID <> 'INTERNAL_ORGANIZATIO'
+/* COLLEGAMENTO A OBIETTIVO STRATEGICO */
+LEFT JOIN WORK_EFFORT_ASSOC WEA ON WEA.WORK_EFFORT_ID_TO = PRE.WORK_EFFORT_ID AND WEA.WORK_EFFORT_ASSOC_TYPE_ID = '20D62C'
+LEFT JOIN WORK_EFFORT OBS ON OBS.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_FROM AND OBS.WORK_EFFORT_TYPE_ID = '20D62'	AND OBS.WORK_EFFORT_REVISION_ID IS NULL
+/*GRADO DI RAGGIUNGIMENTO */
+LEFT JOIN(
+	SELECT
+WEM.WORK_EFFORT_ID,
+	GAMRS.UOM_CODE AS VALORE_DE,
+	GAMRS.UOM_CODE_LANG AS VALORE_IT
+FROM WORK_EFFORT_MEASURE WEM
+JOIN ACCTG_TRANS ACT ON ACT.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID AND ACT.TRANSACTION_DATE = TO_DATE($P{date3112String},'YYYY-MM-DD')
+JOIN ACCTG_TRANS_ENTRY ATE ON ATE.ACCTG_TRANS_ID = ACT.ACCTG_TRANS_ID AND ATE.GL_ACCOUNT_ID = '10096'
+JOIN GL_ACCOUNT_MEAS_RAT_SC GAMRS ON GAMRS.GL_ACCOUNT_ID = ATE.GL_ACCOUNT_ID AND GAMRS.UOM_RATING_VALUE = ATE.AMOUNT
+)GRADO ON GRADO.WORK_EFFORT_ID=PRE.WORK_EFFORT_ID
+/* NOTE */
+LEFT JOIN (
+	SELECT
+		WEN.WORK_EFFORT_ID,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 10 THEN TO_CHAR(ND.NOTE_INFO_LANG) ELSE NULL END) AS FINALITA_IT,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 10 THEN TO_CHAR(ND.NOTE_INFO) ELSE NULL END) AS FINALITA_DE,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 10 THEN ND.NOTE_NAME_LANG ELSE NULL END) AS NOME_FINALITA_IT,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 10 THEN ND.NOTE_NAME ELSE NULL END) AS NOME_FINALITA_DE,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 15 THEN TO_CHAR(ND.NOTE_INFO_LANG) ELSE NULL END) AS DESCRIZIONE_IT,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 15 THEN TO_CHAR(ND.NOTE_INFO) ELSE NULL END) AS DESCRIZIONE_DE,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 15 THEN ND.NOTE_NAME_LANG ELSE NULL END) AS NOME_DESCRIZIONE_IT,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 15 THEN ND.NOTE_NAME ELSE NULL END) AS NOME_DESCRIZIONE_DE,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 20 THEN TO_CHAR(ND.NOTE_INFO_LANG) ELSE NULL END) AS FONTE_IT,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 20 THEN TO_CHAR(ND.NOTE_INFO) ELSE NULL END) AS FONTE_DE,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 20 THEN ND.NOTE_NAME_LANG ELSE NULL END) AS NOME_FONTE_IT,
+		MAX(CASE WHEN WEN.SEQUENCE_ID = 20 THEN ND.NOTE_NAME ELSE NULL END) AS NOME_FONTE_DE
+	FROM WORK_EFFORT_NOTE WEN
+	LEFT JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+	GROUP BY
+		WEN.WORK_EFFORT_ID
+) NOTE ON NOTE.WORK_EFFORT_ID = PRE.WORK_EFFORT_ID
+/* CARATTERISTICHE */
+LEFT JOIN (
+	SELECT
+		WEM.WORK_EFFORT_ID,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10825' THEN GAMRS.UOM_CODE_LANG ELSE NULL END) AS VALORE_FLAG_PROCESSO_IT,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10825' THEN GAMRS.UOM_CODE ELSE NULL END) AS VALORE_FLAG_PROCESSO,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10825' THEN GL.ACCOUNT_NAME_LANG ELSE NULL END) AS NOME_FLAG_PROCESSO_IT,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10825' THEN GL.ACCOUNT_NAME ELSE NULL END) AS NOME_FLAG_PROCESSO,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10106' THEN GAMRS.UOM_CODE_LANG ELSE NULL END) AS VALORE_FLAG_SOSTENIBILITA_IT,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10106' THEN GAMRS.UOM_CODE ELSE NULL END) AS VALORE_FLAG_SOSTENIBILITA,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10106' THEN GL.ACCOUNT_NAME_LANG ELSE NULL END) AS NOME_FLAG_SOSTENIBILITA_IT,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10106' THEN GL.ACCOUNT_NAME ELSE NULL END) AS NOME_FLAG_SOSTENIBILITA,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '11140' THEN GAMRS.UOM_CODE_LANG ELSE NULL END) AS VALORE_FLAG_PNRR_IT,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '11140' THEN GAMRS.UOM_CODE ELSE NULL END) AS VALORE_FLAG_PNRR,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '11141' THEN GAMRS.UOM_CODE_LANG ELSE NULL END) AS VALORE_FLAG_PNC_IT,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '11141' THEN GAMRS.UOM_CODE ELSE NULL END) AS VALORE_FLAG_PNC,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10091' THEN GAMRS.UOM_CODE_LANG ELSE NULL END) AS VALORE_FLAG_PARIOPP_IT,
+		MAX(CASE WHEN WEM.GL_ACCOUNT_ID = '10091' THEN GAMRS.UOM_CODE ELSE NULL END) AS VALORE_FLAG_PARIOPP
+	FROM WORK_EFFORT_MEASURE WEM
+	JOIN GL_ACCOUNT GL ON GL.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+	LEFT JOIN ACCTG_TRANS_ENTRY ATE ON ATE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID
+	LEFT JOIN GL_ACCOUNT_MEAS_RAT_SC GAMRS ON GAMRS.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+		AND GAMRS.UOM_RATING_VALUE <= ATE.AMOUNT AND GAMRS.UOM_RATING_VALUE >= ATE.AMOUNT
+	GROUP BY
+		WEM.WORK_EFFORT_ID
+) CAR ON CAR.WORK_EFFORT_ID = PRE.WORK_EFFORT_ID
+JOIN WORK_EFFORT FIL_W ON FIL_W.WORK_EFFORT_ID = PRE.WORK_EFFORT_ID
+$P!{filterInnerJoinString}
+$P!{filterLeftJoinString}
+WHERE PRE.WORK_EFFORT_TYPE_ID = '20C42' AND PRE.WORK_EFFORT_REVISION_ID IS NULL AND PRE.ORG_UNIT_ID = $P{orgUnitId}
+	AND PRE.ESTIMATED_START_DATE <= TO_DATE($P{customTimePeriodFormatted},'DD/MM/YYYY')
+	AND PRE.ESTIMATED_COMPLETION_DATE >= TO_DATE($P{customTimePeriodFormatted0101},'DD/MM/YYYY')
+	$P!{filterWhereString}
+	 $P!{workEffortIdStringPrest} 
+ORDER BY CAST(REGEXP_REPLACE(PRE.ETCH, '[^0-9]', '') AS INTEGER)]]>
+	</queryString>
+	<field name="CODICE_PRESTAZIONE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CODICE_OBIETTIVO_STRATEGICO"/>
+		<property name="com.jaspersoft.studio.field.label" value="CODICE_OBIETTIVO_STRATEGICO"/>
+	</field>
+	<field name="ETICHETTA_PRESTAZIONE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ETICHETTA_OBIETTIVO_STRATEGICO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ETICHETTA_OBIETTIVO_STRATEGICO"/>
+	</field>
+	<field name="NOME_PRESTAZIONE_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_OBIETTIVO_STRATEGICO_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_OBIETTIVO_STRATEGICO_IT"/>
+	</field>
+	<field name="NOME_PRESTAZIONE_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_OBIETTIVO_STRATEGICO_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_OBIETTIVO_STRATEGICO_DE"/>
+	</field>
+	<field name="FINALITA_IT" class="java.lang.String"/>
+	<field name="FINALITA_DE" class="java.lang.String"/>
+	<field name="DESCRIZIONE_IT" class="java.lang.String"/>
+	<field name="DESCRIZIONE_DE" class="java.lang.String"/>
+	<field name="FONTE_IT" class="java.lang.String"/>
+	<field name="FONTE_DE" class="java.lang.String"/>
+	<field name="VALORE_FLAG_PARI_OPPORTUNITA" class="java.lang.String"/>
+	<field name="VALORE_FLAG_PARI_OPPORTUNITA_DE" class="java.lang.String"/>
+	<field name="VALORE_FLAG_PNC" class="java.lang.String"/>
+	<field name="VALORE_FLAG_PNC_DE" class="java.lang.String"/>
+	<field name="ID_PRESTAZIONE" class="java.lang.String"/>
+	<field name="ID_OBIETTIVO_STRATEGICO" class="java.lang.String"/>
+	<field name="CONTA_OBIETTIVI2030" class="java.lang.Integer"/>
+	<field name="CONTA_STANDARD_QUALITA" class="java.lang.Integer"/>
+	<field name="NOME_OBIETTIVO_STRATEGICO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_OBIETTIVO_STRATEGICO_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_OBIETTIVO_STRATEGICO_DE"/>
+	</field>
+	<field name="NOME_OBIETTIVO_STRATEGICO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_OBIETTIVO_STRATEGICO_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_OBIETTIVO_STRATEGICO_IT"/>
+	</field>
+	<field name="TIPOLOGIA_PRESTAZIONE_IT" class="java.lang.String"/>
+	<field name="TIPOLOGIA_PRESTAZIONE_DE" class="java.lang.String"/>
+	<field name="GRADO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GRADO_DE"/>
+		<property name="com.jaspersoft.studio.field.label" value="GRADO_DE"/>
+	</field>
+	<field name="GRADO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GRADO_IT"/>
+		<property name="com.jaspersoft.studio.field.label" value="GRADO_IT"/>
+	</field>
+	<group name="CodiceObStratGruppo">
+		<groupExpression><![CDATA[$F{CODICE_PRESTAZIONE}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<frame>
+					<reportElement x="200" y="0" width="602" height="15" uuid="03a86cfd-7943-4702-9b20-5004ea9d0035"/>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+						<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Opaque" x="18" y="0" width="584" height="15" backcolor="#EBEBEB" uuid="09b5ce22-1ac0-46bc-b970-c1bddb304e67">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.element.name" value="Nome Prestazione"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#808080"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#808080"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#808080"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#808080"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#808080"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{NOME_PRESTAZIONE_IT}) : 
+($F{NOME_PRESTAZIONE_DE})]]></textFieldExpression>
+						<anchorNameExpression><![CDATA["DestinazioneEtch"+($P{langLocale}.equals("_LANG") ? 
+($F{ETICHETTA_PRESTAZIONE}+" - "+$F{NOME_PRESTAZIONE_IT}) : 
+($F{ETICHETTA_PRESTAZIONE}+" - "+$F{NOME_PRESTAZIONE_DE}))]]></anchorNameExpression>
+						<hyperlinkReferenceExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{ETICHETTA_PRESTAZIONE}+" - "+$F{NOME_PRESTAZIONE_IT}) : 
+($F{ETICHETTA_PRESTAZIONE}+" - "+$F{NOME_PRESTAZIONE_DE})]]></hyperlinkReferenceExpression>
+						<hyperlinkAnchorExpression><![CDATA["Etch"]]></hyperlinkAnchorExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+						<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="18" height="15" backcolor="#EBEBEB" uuid="cfd3a60c-9698-450d-80eb-eeabf48e387e">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.element.name" value="Etich. Prestazione"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#808080"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#808080"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#808080"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#808080"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#808080"/>
+						</box>
+						<textElement verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ETICHETTA_PRESTAZIONE}+"    "]]></textFieldExpression>
+						<anchorNameExpression><![CDATA["Etch"]]></anchorNameExpression>
+						<hyperlinkReferenceExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{ETICHETTA_PRESTAZIONE}+" - "+$F{NOME_PRESTAZIONE_IT}) : 
+($F{ETICHETTA_PRESTAZIONE}+" - "+$F{NOME_PRESTAZIONE_DE})]]></hyperlinkReferenceExpression>
+						<hyperlinkAnchorExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{ETICHETTA_PRESTAZIONE}+" - "+$F{NOME_PRESTAZIONE_IT}) : 
+($F{ETICHETTA_PRESTAZIONE}+" - "+$F{NOME_PRESTAZIONE_DE})]]></hyperlinkAnchorExpression>
+					</textField>
+				</frame>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="200" height="15" forecolor="#000000" backcolor="#EBEBEB" uuid="1c0cc676-4b04-4b6e-8272-d5d32fe61416">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label Prestazione"/>
+						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25" lineColor="#808080"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#808080"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#808080"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#808080"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#808080"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph spacingBefore="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Prestazione}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<detail>
+		<band height="271" splitType="Immediate">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="15" width="802" height="15" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="3cc52eb0-e115-43ad-8fc2-7923c0f81530"/>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#FFFFFF" uuid="0cdbd2c0-cd50-48d2-a931-32a1656e82b7">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label CapitoloProgrammaCoalizione"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Finalita}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Opaque" x="200" y="0" width="602" height="15" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="3daf16a6-0cd3-4f09-a858-393d55a3400a">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Nome Programma Governo"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{FINALITA_IT}) : 
+($F{FINALITA_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="30" width="802" height="15" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="08559f3a-e89d-481d-bece-0e044908f766"/>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#767171" uuid="73769539-38b9-4c42-a865-b09c9def5a05">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label CapitoloProgrammaCoalizione"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{BreveDescrizione}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="200" y="0" width="602" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="35ff4bc4-ef13-42a0-adba-6a75bc7f96ec">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Nome Programma Governo"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+$F{DESCRIZIONE_IT}.replace("\u00AD", "-")
+ : 
+$F{DESCRIZIONE_DE}.replace("\u00AD", "-")]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="45" width="802" height="15" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="d7fb1148-8f8a-4d82-af4b-5550cbe8c074"/>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#767171" uuid="b2826be9-0f4d-4c2b-9b86-f6372a0fe1e8">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label CapitoloProgrammaCoalizione"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{FonteNormativa}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="200" y="0" width="602" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="3be7ee60-3693-42d3-9500-e4fb21632806">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Nome Programma Governo"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{FONTE_IT}) : 
+($F{FONTE_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame borderSplitType="DrawBorders">
+				<reportElement positionType="Float" mode="Transparent" x="0" y="60" width="802" height="15" uuid="cc4a5133-e1ab-41f6-8faa-9f46ee7c0e39">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#FFFFFF" uuid="8631ff06-fff9-4828-aeb3-8198f8b16463">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label CapitoloProgrammaCoalizione"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Destinatari}]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement isPrintRepeatedValues="false" mode="Transparent" x="200" y="0" width="602" height="15" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="cdb8203a-b64f-431f-a988-aa13f6b78e9a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Destinatari"/>
+					</reportElement>
+					<subreportParameter name="langLocale">
+						<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="work_effort_id_ob">
+						<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+						<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["Prest_Destinatari.jasper"]]></subreportExpression>
+				</subreport>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="135" width="802" height="15" backcolor="#FFFFFF" uuid="12c8bbe0-1603-4c8e-b939-527aacb66d50">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="200" y="0" width="240" height="15" forecolor="#767171" uuid="827918d0-93cf-4ef6-afdf-e7b35c911347">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{FLAG_PARI_OPPORTUNITA}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="440" y="0" width="50" height="15" uuid="2ab1f413-97f8-4bbd-843c-32818d9366e3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{VALORE_FLAG_PARI_OPPORTUNITA}) : 
+($F{VALORE_FLAG_PARI_OPPORTUNITA_DE})]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" uuid="76eb04fe-f61a-409c-b9a8-d20b80159292">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label Strumenti Qualita"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{AltreCaratteristiche}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="752" y="0" width="50" height="15" uuid="d27d251b-eac0-4183-8695-30e4ac2f998d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{VALORE_FLAG_PNC}) : 
+($F{VALORE_FLAG_PNC_DE})]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="490" y="0" width="262" height="15" forecolor="#767171" uuid="b16cc880-bf16-44bd-b17e-e68783f7b9bd">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{FLAG_PNC}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="105" width="802" height="15" uuid="85a1125a-08e3-4163-851d-b3cddc8a8999">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Missioni PNRR"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_MissioniPNRR.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="120" width="802" height="15" backcolor="#CCCCFF" uuid="235e0ca2-4ffa-44c2-bc0e-ff68fb0f3bc3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Processo Anticorruzione"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_ProcAnticorruzione.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="180" width="802" height="15" isRemoveLineWhenBlank="true" uuid="b4ffce3f-a7fa-473e-887d-ec8e2485780a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Commenti Indicatori"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted0101">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted3112">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted3112}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_Commenti_Indicatori.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="195" width="802" height="15" isRemoveLineWhenBlank="true" uuid="a232cb1f-39bd-47dd-afdc-8b5331dbd087">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Commenti Target Consuntivo"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted0101">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted3112">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted3112}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_Commenti_ConsTarget_Indicatori.jasper"]]></subreportExpression>
+			</subreport>
+			<textField textAdjust="StretchHeight">
+				<reportElement style="TextFieldStyle" positionType="Float" x="0" y="255" width="802" height="12" isRemoveLineWhenBlank="true" forecolor="#767171" uuid="91b45a9c-2ccb-40b1-a578-ce9649c0cabd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$F{CONTA_STANDARD_QUALITA}>0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG")?"* Standard di qualità":
+"* Qualitätsstandards"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="165" width="802" height="15" isRemoveLineWhenBlank="true" uuid="d713a4cc-10ef-437b-ab82-7daff6ced3d7">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Natura Indicatori"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportContentId}.equals( "REP_RIESTR_PPAP_JR")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date0101sql">
+					<subreportParameterExpression><![CDATA[$P{date0101sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3112sql">
+					<subreportParameterExpression><![CDATA[$P{date3112sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_LOCALE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted0101">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted3112">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted3112}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_Natura_Indicatori.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="165" width="802" height="15" isRemoveLineWhenBlank="true" uuid="5e9c70f3-62c3-4562-acb9-f70c0e8dc546">
+					<property name="com.jaspersoft.studio.element.name" value="Natura Indicatori Relazione"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportContentId}.equals( "REP_RIERSTR_PPAP_JR")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date0101sql">
+					<subreportParameterExpression><![CDATA[$P{date0101sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3112sql">
+					<subreportParameterExpression><![CDATA[$P{date3112sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_LOCALE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted0101">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted3112">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted3112}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_Natura_IndicatoriRel.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="240" width="802" height="15" isRemoveLineWhenBlank="true" uuid="875b8cc2-b766-4df3-bd4c-77f866e2fc0f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Allegati"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<subreportParameter name="id_scheda">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Allegati.jasper"]]></subreportExpression>
+			</subreport>
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="15" uuid="8fc6a844-13c0-4ad3-878a-3b1bd4a88da7"/>
+				<box>
+					<pen lineWidth="0.1"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textField textAdjust="StretchHeight" evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="200" height="15" forecolor="#767171" uuid="d6f8ca65-d2c2-4da3-ab7c-dd3ae75ed98c">
+						<printWhenExpression><![CDATA[true]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{ObiettivoStrategico}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ContainerHeight" x="200" y="0" width="602" height="15" uuid="edad1155-a532-4cb1-a56e-3904652db8e5">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<printWhenExpression><![CDATA[true]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{NOME_OBIETTIVO_STRATEGICO_IT}) : 
+($F{NOME_OBIETTIVO_STRATEGICO_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+			<subreport>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="90" width="802" height="15" backcolor="#CCFF00" uuid="57cec92a-2e5c-4835-be15-a3725399cc86">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Obiettivi Sostenibilità"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Perf_Strat_Prest_ObSost.jasper"]]></subreportExpression>
+			</subreport>
+			<frame>
+				<reportElement positionType="Float" mode="Transparent" x="0" y="75" width="802" height="15" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="ffaa1f01-5de2-4761-8714-d6ff0a62fd71">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#767171" uuid="c8fc1d7c-cf14-4c03-ad68-f9a48a6e7b05">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="Label Tipologia Prestazione"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{TipologiaPrestazione}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="TextFieldStyle" stretchType="ContainerHeight" x="200" y="0" width="602" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="d76e13b5-bd92-42c7-a408-d86d0c98a83d">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.element.name" value="TIPOLOGIA_PRESTAZIONE"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{TIPOLOGIA_PRESTAZIONE_IT}) : 
+($F{TIPOLOGIA_PRESTAZIONE_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="TextFieldStyle" positionType="Float" mode="Transparent" x="0" y="150" width="200" height="15" isRemoveLineWhenBlank="true" forecolor="#767171" backcolor="#F5F5F5" uuid="710e04c6-9361-42a0-9e92-16229e02eb60">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Label Grado Raggiungimento"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportContentId}.equals( "REP_RIERSTR_PPAP_JR") || $P{reportContentId}.equals( "REP_RIEROPE_PPAP_JR")]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement markup="html">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GradoRaggiungimento}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement style="TextFieldStyle" positionType="Float" x="200" y="150" width="602" height="15" uuid="3c99aea1-3cfd-4929-9cb4-629561e78a2a">
+					<property name="com.jaspersoft.studio.element.name" value="Nome Grado Raggiungimento"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportContentId}.equals( "REP_RIERSTR_PPAP_JR") || $P{reportContentId}.equals( "REP_RIEROPE_PPAP_JR")]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1" lineColor="#767171"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{GRADO_IT}) : 
+($F{GRADO_DE})]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="210" width="802" height="15" isRemoveLineWhenBlank="true" uuid="1cec708e-5511-464f-afa0-0c1e7404cce9">
+					<property name="com.jaspersoft.studio.element.name" value="Personale Impiegato"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportContentId}.equals( "REP_RIESTR_PPAP_JR")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date0101sql">
+					<subreportParameterExpression><![CDATA[$P{date0101sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3112sql">
+					<subreportParameterExpression><![CDATA[$P{date3112sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_LOCALE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted0101">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted3112">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted3112}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="workEffortTypeId">
+					<subreportParameterExpression><![CDATA[$P{workEffortTypeId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_Personale_Impiegato.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="210" width="802" height="15" isRemoveLineWhenBlank="true" uuid="48f0aca5-7db7-4a5a-b215-b322e478e9c3">
+					<property name="com.jaspersoft.studio.element.name" value="Personale Impiegato Relazione"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportContentId}.equals( "REP_RIERSTR_PPAP_JR")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date0101sql">
+					<subreportParameterExpression><![CDATA[$P{date0101sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3112sql">
+					<subreportParameterExpression><![CDATA[$P{date3112sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_LOCALE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted0101">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted3112">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted3112}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="workEffortTypeId">
+					<subreportParameterExpression><![CDATA[$P{workEffortTypeId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_Personale_ImpiegatoRel.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="225" width="802" height="15" isRemoveLineWhenBlank="true" uuid="5d46877f-c71d-4c8c-9ff0-f491bd398940">
+					<property name="com.jaspersoft.studio.element.name" value="Risorse finanziarie"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<subreportParameter name="work_effort_id_ob">
+					<subreportParameterExpression><![CDATA[$F{ID_PRESTAZIONE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date0101sql">
+					<subreportParameterExpression><![CDATA[$P{date0101sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3112sql">
+					<subreportParameterExpression><![CDATA[$P{date3112sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_LOCALE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted0101">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted3112">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted3112}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="workEffortTypeId">
+					<subreportParameterExpression><![CDATA[$P{workEffortTypeId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Prest_Risorse_Finanziarie.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

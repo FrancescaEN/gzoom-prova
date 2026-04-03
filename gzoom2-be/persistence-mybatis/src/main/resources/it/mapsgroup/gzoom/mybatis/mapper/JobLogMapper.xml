@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.JobLogMapper">
+
+    <resultMap id="jobLogExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.JobLogEx">
+        <id property="jobLogId" column="JOB_LOG_ID" jdbcType="VARCHAR"/>
+        <result column="JOB_ID" property="jobId" jdbcType="VARCHAR"/>
+        <result column="USER_LOGIN_ID" property="userLoginId" jdbcType="VARCHAR"/>
+        <result column="SERVICE_TYPE_ID" property="serviceTypeId" jdbcType="VARCHAR"/>
+        <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR"/>
+        <result column="JL_DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="LOG_DATE" property="logDate" jdbcType="TIMESTAMP"/>
+        <result column="LOG_END_DATE" property="logEndDate" jdbcType="TIMESTAMP"/>
+        <result column="RECORD_ELABORATED" property="recordElaborated" jdbcType="NUMERIC"/>
+        <result column="WARNING_MESSAGES" property="warningMessages" jdbcType="NUMERIC"/>
+        <result column="BLOCKING_ERRORS" property="blockingErrors" jdbcType="NUMERIC"/>
+        <result column="ELAB_REF1" property="elabRef1" jdbcType="VARCHAR"/>
+        <result column="SESSION_ID" property="sessionId" jdbcType="VARCHAR"/>
+        <result column="JLST_DESCRIPTION" property="jobLogServiceType.description" jdbcType="VARCHAR"/>
+        <result column = "TOTALE" property = "totalRow"/>
+    </resultMap>
+
+    <select id="getJobLogEx" resultMap="jobLogExResultMap" parameterType="java.util.Map">
+        SELECT
+        JL.JOB_LOG_ID AS "JOB_LOG_ID",
+        JL.JOB_ID AS "JOB_ID",
+        JL.SERVICE_TYPE_ID AS "SERVICE_TYPE_ID",
+        JL.SERVICE_NAME AS "SERVICE_NAME",
+        JL.LOG_DATE AS "LOG_DATE",
+        JL.LOG_END_DATE AS "LOG_END_DATE",
+        JL.RECORD_ELABORATED AS "RECORD_ELABORATED",
+        JL.BLOCKING_ERRORS AS "BLOCKING_ERRORS",
+        JL.WARNING_MESSAGES AS "WARNING_MESSAGES",
+        JL.ELAB_REF1 AS "ELAB_REF1",
+        JL.USER_LOGIN_ID AS "USER_LOGIN_ID",
+        JL.SESSION_ID AS "SESSION_ID",
+        JL.DESCRIPTION AS "JL_DESCRIPTION",
+        JLST.DESCRIPTION as "JLST_DESCRIPTION",
+
+        <if test='_databaseId == "mysql"'>
+            CONTA.TOTALE
+        </if>
+        <if test='_databaseId != "mysql"'>
+            COUNT(*) over()  AS "TOTALE"
+        </if>
+
+        FROM JOB_LOG JL
+        JOIN JOB_LOG_SERVICE_TYPE JLST ON JLST.SERVICE_TYPE_ID = JL.SERVICE_TYPE_ID
+
+        <if test='_databaseId == "mysql"'>
+            join (
+            select COUNT(*) AS "TOTALE"
+            FROM JOB_LOG JL
+            JOIN JOB_LOG_SERVICE_TYPE JLST ON JLST.SERVICE_TYPE_ID = JL.SERVICE_TYPE_ID
+
+            <if test='filters != null '>
+                AND (
+            </if>
+            <include refid="filter"></include>
+            <if test='filters != null '>
+                )
+            </if>
+            ) CONTA
+        </if>
+
+        <if test='filters != null '>
+            AND (
+        </if>
+        <include refid="filter"></include>
+        <if test='filters != null '>
+            )
+        </if>
+
+        <if test='SORTFIELD != null'>
+            <choose>
+                <when test='SORTFIELD == "jobLogId"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.JOB_LOG_ID ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.JOB_LOG_ID DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "serviceTypeIdDesc"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JLST.DESCRIPTION ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JLST.DESCRIPTION DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "serviceName"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.SERVICE_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.SERVICE_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "logDate"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.LOG_DATE ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.LOG_DATE DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "logEndDate"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.LOG_END_DATE ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.LOG_END_DATE DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "recordElaborated"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.RECORD_ELABORATED ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.RECORD_ELABORATED DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "blockingErrors"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.BLOCKING_ERRORS ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.BLOCKING_ERRORS DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "warningMessages"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.WARNING_MESSAGES ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.WARNING_MESSAGES DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "elabRef1"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.ELAB_REF1 ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.ELAB_REF1 DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "userLoginId"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.USER_LOGIN_ID ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.USER_LOGIN_ID DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "sessionId"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY JL.SESSION_ID ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY JL.SESSION_ID DESC
+                    </if>
+                </when>
+            </choose>
+        </if>
+        <if test='SORTFIELD == null'>
+            ORDER BY JL.JOB_LOG_ID ASC
+        </if>
+        <if test='_databaseId == "mysql"'>
+            LIMIT #{LIMIT}
+            OFFSET #{OFFSET}
+        </if>
+        <if  test='_databaseId != "mysql"'>
+            OFFSET #{OFFSET} ROWS FETCH NEXT #{LIMIT} ROWS ONLY
+        </if>
+
+    </select>
+
+    <sql id="filter" >
+        <if test='filters != null and filters.length > 0'>
+            <foreach collection='filters' item="item" index="index" open="" close="" separator=" AND ">
+                <choose>
+                    <when test='item.field == "jobLogId" and item.value != null'>
+                        JL.JOB_LOG_ID = #{item.value }
+                    </when>
+                    <when test='item.field == "serviceTypeIdDesc" and item.value != null'>
+                        LOWER(JLST.DESCRIPTION) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))) OR JL.SERVICE_TYPE_ID = #{item.value }
+                    </when>
+                    <when test='item.field == "serviceName" and item.value != null'>
+                        LOWER(JL.SERVICE_NAME) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "logDate" and item.dateValue != null'>
+                        JL.LOG_DATE &gt;= #{item.dateValue }
+                    </when>
+                    <when test='item.field == "logEndDate" and item.dateValue != null'>
+                        JL.LOG_END_DATE &gt;= #{item.dateValue }
+                    </when>
+                    <when test='item.field == "recordElaborated" and item.bigDecimalValue != null'>
+                        JL.RECORD_ELABORATED = #{item.bigDecimalValue }
+                    </when>
+                    <when test='item.field == "blockingErrors" and item.bigDecimalValue != null'>
+                        JL.BLOCKING_ERRORS = #{item.bigDecimalValue }
+                    </when>
+                    <when test='item.field == "warningMessages" and item.bigDecimalValue != null'>
+                        JL.WARNING_MESSAGES = #{item.bigDecimalValue }
+                    </when>
+                    <when test='item.field == "elabRef1" and item.value != null'>
+                        LOWER(JL.ELAB_REF1) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "userLoginId" and item.value != null'>
+                        LOWER(JL.USER_LOGIN_ID) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "sessionId" and item.value != null'>
+                        LOWER(JL.SESSION_ID) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                </choose>
+            </foreach>
+        </if>
+    </sql>
+
+</mapper>

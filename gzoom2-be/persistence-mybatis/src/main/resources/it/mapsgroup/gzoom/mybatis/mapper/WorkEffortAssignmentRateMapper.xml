@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.WorkEffortAssignmentRateMapper">
+
+
+    <resultMap id="rateTypeResultMap" type="it.mapsgroup.gzoom.mybatis.dto.RateType">
+        <id property="rateTypeId" column="rate_type_id" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="getWorkEffortAssignmentRateExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortAssignmentRateEx">
+        <id property="workEffortId" column="work_effort_id" jdbcType="VARCHAR"/>
+        <result property="rateTypeId" column="rate_type_id" jdbcType="VARCHAR"/>
+        <result property="partyId" column="party_id" jdbcType="VARCHAR"/>
+        <result property="fromDate" column="from_date" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="rate" property="rate" jdbcType="NUMERIC"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+
+        <result property="rateType.rateTypeId" column="RT_rateTypeId" jdbcType="VARCHAR"/>
+        <result column="RT_description" property="rateType.description" jdbcType="VARCHAR"/>
+        <result column="RT_lastUpdatedStamp" property="rateType.lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="RT_lastUpdatedTxStamp" property="rateType.lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="RT_createdStamp" property="rateType.createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="RT_createdTxStamp" property="rateType.createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="RT_descriptionLang" property="rateType.descriptionLang" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <select id="getWorkEffortAssignmentRateExs" resultMap="getWorkEffortAssignmentRateExResultMap" parameterType="java.util.Map">
+        SELECT WORK_EFFORT_ASSIGNMENT_RATE.*,
+        RT.rate_type_id AS RT_rateTypeId,
+        RT.description AS RT_description,
+        RT.last_updated_stamp AS RT_lastUpdatedStamp,
+        RT.last_updated_tx_stamp AS RT_lastUpdatedTxStamp,
+        RT.created_stamp AS RT_createdStamp,
+        RT.created_tx_stamp AS RT_createdTxStamp,
+        RT.description_lang AS RT_descriptionLang
+        FROM WORK_EFFORT_ASSIGNMENT_RATE
+        INNER JOIN RATE_TYPE RT ON RT.RATE_TYPE_ID = WORK_EFFORT_ASSIGNMENT_RATE.RATE_TYPE_ID
+        WHERE WORK_EFFORT_ASSIGNMENT_RATE.WORK_EFFORT_ID = #{workEffortId}
+   </select>
+
+</mapper>

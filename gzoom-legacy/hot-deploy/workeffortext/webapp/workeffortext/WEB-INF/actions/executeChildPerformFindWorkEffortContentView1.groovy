@@ -1,0 +1,7 @@
+import org.ofbiz.base.util.*;
+
+parameters.allegatoContentId = "WEFLD_CONT1";
+context.inputFields.allegatoContentId= "WEFLD_CONT1";
+
+// Debug.log("executeChildPerformFindWorkEffortContentView2 Passa da qui parameters.allegatoContentId " + parameters.allegatoContentId);
+GroovyUtil.runScriptAtLocation("component:/workeffortext/webapp/workeffortext/WEB-INF/actions/executeChildPerformFindWorkEffortContentView.groovy", context);

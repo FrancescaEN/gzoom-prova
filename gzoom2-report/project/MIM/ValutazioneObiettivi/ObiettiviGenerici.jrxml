@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TablePart" pageWidth="842" pageHeight="1191" whenNoDataType="AllSectionsNoDetail" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryNewPage="true" isFloatColumnFooter="true" resourceBundle="ValutazioneObiettivi" uuid="5c559f3e-b23b-4cd4-a579-7ed7c0d2b615">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postgres_gzoom_mim"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="810"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="730"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="257"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Default" isDefault="true" fontSize="10" pdfEncoding="Cp1252" isPdfEmbedded="false">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId} != null && $P{orgUnitId} != ""  && ($P{workEffortId} == null || $P{workEffortId} == "")? "AND fil_w.org_unit_id='"+ $P{orgUnitId} +"'": ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String"/>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("9",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3009}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{workEffortId} != null && $P{workEffortId} != "" ? "AND work_effort_id_sk='"+ $P{workEffortId} +"'": ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposeReleaseDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="LogoHeaderPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_HEADER",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cf" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[with recursive work_effort_hierarchy as (
+select
+	we.work_effort_id,
+	we.work_effort_name,
+	we.work_effort_name_lang,
+	we.current_status_id as work_effort_current_status_id,
+	we.source_reference_id,
+	we.etch,
+	we.estimated_start_date,
+	we.estimated_completion_date,
+	wet.work_effort_type_id,
+	wet.description as type_description,
+	wet.description_lang as type_description_lang,
+	wet.hierarchy_assoc_type_id as work_effort_assoc_type_id,
+	wet.weight_kpi,
+	wet.weight_sons,
+	wet.weight_assoc_work_effort,
+	wet.weight_control_sum,
+	wet.weight_kpi_control_sum,
+	wet.total_enum_id_kpi,
+	wet.total_enum_id_sons,
+	wet.total_enum_id_assoc,
+	(null::timestamptz) as work_effort_assoc_from_date,
+	(null::timestamptz) as work_effort_assoc_thru_date,
+	0::numeric as sequence_num,
+	(null::varchar) as work_effort_id_from,
+	0 as tree_level,
+	d.object_info as icon_path,
+	wem_gl.uom_descr,
+	wem_gl.uom_descr_lang,
+	wem_gl.comments ,
+	wem_gl.comments_lang ,
+	wem_gl.comments2 ,
+	wem_gl.comments2_lang ,
+	wem_gl.kpi_score_weight ,
+	wem_gl.kpi_other_weight ,
+	wem_gl.work_effort_measure_id,
+	wem_gl.account_name,
+	wem_gl.account_name_lang,
+	wem_gl.account_code,
+	wem_gl.source as account_source,
+	wem_gl.source_lang as account_source_lang,
+	um.abbreviation,
+	um.abbreviation_lang,
+	ct.from_date as ct_from_date,
+	ct.thru_date as ct_thru_date,
+	(null::double precision) as obj_weight,
+	(null::varchar) as note_info,
+	(null::varchar) as note_info_lang,
+	(null::varchar) as note_id,
+	(null::varchar) as note_name,
+	at.gl_fiscal_type_id,
+	ate.amount,
+	ate.orig_amount,
+	ate.amount_locked,
+	ate.currency_uom_id as value_uom_id,
+	ate.description as reference,
+	ate.description_lang as reference_lang,
+	ate.acctg_trans_entry_seq_id,
+	mrs.uom_rating_value,
+	mrs.uom_code as value_code,
+	mrs.uom_code_lang as value_code_lang,
+	mrs.uom_descr as value_desc,
+	mrs.uom_descr_lang as value_desc_lang,
+	case
+		when ate.gl_account_id = 'SCOREKPI' then 'Y'
+		else 'N'
+	end as is_scorekpi,
+	case
+		when wet.work_effort_type_id = '25IN1DSA2' and wem_gl.account_code ='SCORE' then 1
+		when wet.work_effort_type_id = '25IN1DSA2' and wem_gl.account_code <>'SCORE' then 2
+		else 0
+	end as ordinamento
+from
+	work_effort we
+inner join work_effort_type wet on
+	wet.work_effort_type_id = we.work_effort_type_id
+left outer join work_effort_type_period wetp on
+	wetp.work_effort_type_period_id = we.work_effort_type_period_id
+left outer join custom_time_period ct on
+	ct.custom_time_period_id = wetp.custom_time_period_id
+left outer join content c on
+	c.content_id = wet.icon_content_id
+left outer join data_resource d on
+	d.data_resource_id = c.data_resource_id
+left outer join (
+select wem.uom_descr,
+	wem.uom_descr_lang,
+	wem.comments ,
+	wem.comments_lang ,
+	wem.comments2 ,
+	wem.comments2_lang ,
+	wem.kpi_score_weight ,
+	wem.kpi_other_weight ,
+	wem.work_effort_measure_id,
+	wem.work_effort_id,
+	gl.gl_account_id,
+	gl.gl_account_type_id,
+	gl.default_uom_id,
+	gl.account_name,
+	gl.account_name_lang,
+	gl.account_code,
+	gl.source,
+	gl.source_lang
+from work_effort_measure wem
+inner join gl_account gl on
+	gl.gl_account_id = wem.gl_account_id
+where gl.account_code not in ('ESITO_CONCI','ESITO_CONTR')) wem_gl on wem_gl.work_effort_id = we.work_effort_id
+left join gl_account_type_gl_fiscal_type atft on
+	atft.gl_account_type_id = wem_gl.gl_account_type_id
+	and atft.gl_fiscal_type_id = 'ACTUAL'
+left join acctg_trans_entry ate on
+	(ate.gl_account_id = wem_gl.gl_account_id
+		or ate.gl_account_id = 'SCOREKPI')
+	and ate.voucher_ref = wem_gl.work_effort_measure_id
+	and atft.gl_fiscal_type_id = ate.gl_fiscal_type_id
+left join acctg_trans at on
+	at.acctg_trans_id = ate.acctg_trans_id
+left join gl_fiscal_type gft on
+	gft.gl_fiscal_type_id = ate.gl_fiscal_type_id
+left outer join work_effort_meas_rat_sc mrs on
+	mrs.work_effort_measure_id = wem_gl.work_effort_measure_id
+	and mrs.uom_id = ate.currency_uom_id
+	and mrs.uom_rating_value = ate.amount
+left outer join uom um on
+	um.uom_id = wem_gl.default_uom_id
+inner join work_effort_party_assignment wepa on
+	wepa.work_effort_id = we.work_effort_id
+	and wepa.role_type_id = 'WEM_EVAL_IN_CHARGE'
+inner join user_login ul on
+	ul.party_id = wepa.party_id
+where
+	ul.user_login_id =  $P{cf} 
+	and we.work_effort_revision_id is null
+	and wet.is_root = 'Y'
+	and (ct.thru_date is null
+		or (we.estimated_start_date <= ct.thru_date
+			and we.estimated_completion_date >= ct.thru_date
+			and wepa.from_date <= ct.thru_date
+			and wepa.thru_date >= ct.thru_date))
+union all
+select
+	wea.work_effort_id_to as work_effort_id,
+	wec.work_effort_name,
+	wec.work_effort_name_lang,
+	wec.current_status_id as work_effort_current_status_id,
+	wec.source_reference_id,
+	wec.etch,
+	wec.estimated_start_date,
+	wec.estimated_completion_date,
+	wet.work_effort_type_id,
+	wet.description as type_description,
+	wet.description_lang as type_description_lang,
+	wea.work_effort_assoc_type_id,
+	wet.weight_kpi,
+	wet.weight_sons,
+	wet.weight_assoc_work_effort,
+	wet.weight_control_sum,
+	wet.weight_kpi_control_sum,
+	wet.total_enum_id_kpi,
+	wet.total_enum_id_sons,
+	wet.total_enum_id_assoc,
+	wea.from_date as work_effort_assoc_from_date,
+	wea.thru_date as work_effort_assoc_thru_date,
+	wea.sequence_num,
+	wea.work_effort_id_from,
+	weh.tree_level + 1 as tree_level,
+	d.object_info as icon_path,
+	wem_gl.uom_descr,
+	wem_gl.uom_descr_lang,
+	wem_gl.comments ,
+	wem_gl.comments_lang ,
+	wem_gl.comments2 ,
+	wem_gl.comments2_lang ,
+	wem_gl.kpi_score_weight ,
+	wem_gl.kpi_other_weight ,
+	wem_gl.work_effort_measure_id,
+	wem_gl.account_name,
+	wem_gl.account_name_lang,
+	wem_gl.account_code,
+	wem_gl.source as account_source,
+	wem_gl.source_lang as account_source_lang,
+	um.abbreviation,
+	um.abbreviation_lang,
+	weh.ct_from_date,
+	weh.ct_thru_date,
+	wea.assoc_weight as obj_weight,
+	nd.note_info,
+	nd.note_info_lang,
+	nd.note_id,
+	nd.note_name,
+	at.gl_fiscal_type_id,
+	ate.amount,
+	ate.orig_amount,
+	ate.amount_locked,
+	ate.currency_uom_id as value_uom_id,
+	ate.description as reference,
+	ate.description_lang as reference_lang,
+	ate.acctg_trans_entry_seq_id,
+	mrs.uom_rating_value,
+	mrs.uom_code as value_code,
+	mrs.uom_code_lang as value_code_lang,
+	mrs.uom_descr as value_desc,
+	mrs.uom_descr_lang as value_desc_lang,
+	case
+		when ate.gl_account_id = 'SCOREKPI' then 'Y'
+		else 'N'
+	end as is_scorekpi,
+	case
+		when wet.work_effort_type_id = '25IN1DSA2' and wem_gl.account_code ='SCORE' then 1
+		when wet.work_effort_type_id = '25IN1DSA2' and wem_gl.account_code <>'SCORE' then 2
+		else 0
+	end as ordinamento
+from
+	work_effort_hierarchy weh
+inner join work_effort_assoc wea on
+	weh.work_effort_id = wea.work_effort_id_from
+	and wea.work_effort_assoc_type_id = weh.work_effort_assoc_type_id
+inner join work_effort wec on
+	wec.work_effort_id = wea.work_effort_id_to
+inner join work_effort_type wet on
+	wet.work_effort_type_id = wec.work_effort_type_id
+left outer join (
+	select
+		wen.work_effort_id,
+		nd.note_info,
+		nd.note_info_lang,
+		nd.note_id,
+		nd.note_name
+	from
+		note_data nd
+	inner join work_effort_note wen on
+		wen.note_id = nd.note_id
+	where
+		nd.note_name = 'Obiettivo specifico' ) nd on
+	nd.work_effort_id = wec.work_effort_id
+left outer join content c on
+	c.content_id = wet.icon_content_id
+left outer join data_resource d on
+	d.data_resource_id = c.data_resource_id
+left outer join (
+select wem.uom_descr,
+	wem.uom_descr_lang,
+	wem.comments ,
+	wem.comments_lang ,
+	wem.comments2 ,
+	wem.comments2_lang ,
+	wem.kpi_score_weight ,
+	wem.kpi_other_weight ,
+	wem.work_effort_measure_id,
+	wem.work_effort_id,
+	gl.gl_account_id,
+	gl.gl_account_type_id,
+	gl.default_uom_id,
+	gl.account_name,
+	gl.account_name_lang,
+	gl.account_code,
+	gl.source,
+	gl.source_lang
+from work_effort_measure wem
+inner join gl_account gl on
+	gl.gl_account_id = wem.gl_account_id
+where gl.account_code not in ('ESITO_CONCI','ESITO_CONTR')) wem_gl on	
+	wem_gl.work_effort_id = wea.work_effort_id_to
+	and (weh.ct_thru_date is null
+		or (wea.from_date <= weh.ct_thru_date
+			and wea.thru_date >= weh.ct_thru_date))
+left outer join gl_account gl on
+	gl.gl_account_id = wem_gl.gl_account_id
+	and gl.account_code not in ('ESITO_CONCI','ESITO_CONTR')
+left join gl_account_type_gl_fiscal_type atft on
+	atft.gl_account_type_id = gl.gl_account_type_id
+	and atft.gl_fiscal_type_id = 'ACTUAL'
+left join acctg_trans_entry ate on
+	(ate.gl_account_id = wem_gl.gl_account_id
+		or ate.gl_account_id = 'SCOREKPI')
+	and ate.voucher_ref = wem_gl.work_effort_measure_id
+	and atft.gl_fiscal_type_id = ate.gl_fiscal_type_id
+left join acctg_trans at on
+	at.acctg_trans_id = ate.acctg_trans_id
+left join gl_fiscal_type gft on
+	gft.gl_fiscal_type_id = ate.gl_fiscal_type_id
+	and gft.gl_fiscal_type_id = 'ACTUAL'
+left outer join work_effort_meas_rat_sc mrs on
+	mrs.work_effort_measure_id = wem_gl.work_effort_measure_id
+	and mrs.uom_id = ate.currency_uom_id
+	and mrs.uom_rating_value = ate.amount
+left outer join uom um on
+	um.uom_id = gl.default_uom_id
+where
+	wec.work_effort_revision_id is null )
+select
+	work_effort_id,
+	work_effort_id_from,
+	work_effort_name,
+	work_effort_name_lang,
+	work_effort_current_status_id,
+	note_info,
+	note_info_lang,
+	note_id,
+	note_name,
+	obj_weight,
+	work_effort_type_id,
+	estimated_start_date,
+	estimated_completion_date,
+	type_description,
+	type_description_lang,
+	tree_level,
+	work_effort_assoc_type_id,
+	work_effort_assoc_from_date,
+	work_effort_assoc_thru_date,
+	sequence_num,
+	icon_path,
+	uom_descr,
+	uom_descr_lang,
+	comments,
+	comments_lang,
+	comments2,
+	comments2_lang,
+	kpi_score_weight,
+	kpi_other_weight,
+	account_name,
+	account_name_lang,
+	account_code,
+	account_source,
+	account_source_lang,
+	abbreviation,
+	abbreviation_lang,
+	work_effort_measure_id,
+	amount,
+	orig_amount,
+	amount_locked,
+	value_uom_id,
+	uom_rating_value,
+	value_code,
+	value_code_lang,
+	value_desc,
+	value_desc_lang,
+	reference,
+	reference_lang,
+	gl_fiscal_type_id,
+	is_scorekpi,
+	weight_kpi,
+	weight_sons,
+	weight_assoc_work_effort,
+	total_enum_id_kpi,
+	total_enum_id_sons,
+	total_enum_id_assoc,
+	weight_control_sum,
+	weight_kpi_control_sum
+        FROM work_effort_hierarchy
+        WHERE tree_level<=2
+        ORDER BY ordinamento,tree_level, sequence_num, work_effort_id,account_code]]>
+	</queryString>
+	<field name="work_effort_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_id"/>
+	</field>
+	<field name="work_effort_id_from" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_id_from"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_id_from"/>
+	</field>
+	<field name="work_effort_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_name"/>
+	</field>
+	<field name="work_effort_name_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_name_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_name_lang"/>
+	</field>
+	<field name="work_effort_current_status_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_current_status_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_current_status_id"/>
+	</field>
+	<field name="note_info" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="note_info"/>
+		<property name="com.jaspersoft.studio.field.label" value="note_info"/>
+	</field>
+	<field name="note_info_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="note_info_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="note_info_lang"/>
+	</field>
+	<field name="note_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="note_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="note_id"/>
+	</field>
+	<field name="note_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="note_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="note_name"/>
+	</field>
+	<field name="obj_weight" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="obj_weight"/>
+		<property name="com.jaspersoft.studio.field.label" value="obj_weight"/>
+	</field>
+	<field name="work_effort_type_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_type_id"/>
+	</field>
+	<field name="estimated_start_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="estimated_start_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="estimated_start_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="estimated_completion_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="estimated_completion_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="estimated_completion_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_ind_ds"/>
+	</field>
+	<field name="type_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="type_description"/>
+		<property name="com.jaspersoft.studio.field.label" value="type_description"/>
+	</field>
+	<field name="type_description_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="type_description_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="type_description_lang"/>
+	</field>
+	<field name="tree_level" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="tree_level"/>
+		<property name="com.jaspersoft.studio.field.label" value="tree_level"/>
+	</field>
+	<field name="work_effort_assoc_type_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_assoc_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_assoc_type_id"/>
+	</field>
+	<field name="work_effort_assoc_from_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_assoc_from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_assoc_from_date"/>
+	</field>
+	<field name="work_effort_assoc_thru_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_assoc_thru_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_assoc_thru_date"/>
+	</field>
+	<field name="sequence_num" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="sequence_num"/>
+		<property name="com.jaspersoft.studio.field.label" value="sequence_num"/>
+	</field>
+	<field name="icon_path" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="icon_path"/>
+		<property name="com.jaspersoft.studio.field.label" value="icon_path"/>
+	</field>
+	<field name="uom_descr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="uom_descr"/>
+		<property name="com.jaspersoft.studio.field.label" value="uom_descr"/>
+	</field>
+	<field name="uom_descr_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="uom_descr_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="uom_descr_lang"/>
+	</field>
+	<field name="comments" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="comments"/>
+		<property name="com.jaspersoft.studio.field.label" value="comments"/>
+	</field>
+	<field name="comments_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="comments_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="comments_lang"/>
+	</field>
+	<field name="comments2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="comments2"/>
+		<property name="com.jaspersoft.studio.field.label" value="comments2"/>
+	</field>
+	<field name="comments2_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="comments2_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="comments2_lang"/>
+	</field>
+	<field name="kpi_score_weight" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="kpi_score_weight"/>
+		<property name="com.jaspersoft.studio.field.label" value="kpi_score_weight"/>
+	</field>
+	<field name="kpi_other_weight" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="kpi_other_weight"/>
+		<property name="com.jaspersoft.studio.field.label" value="kpi_other_weight"/>
+	</field>
+	<field name="account_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="account_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="account_name"/>
+	</field>
+	<field name="account_name_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="account_name_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="account_name_lang"/>
+	</field>
+	<field name="account_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="account_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="account_code"/>
+	</field>
+	<field name="account_source" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="account_source"/>
+		<property name="com.jaspersoft.studio.field.label" value="account_source"/>
+	</field>
+	<field name="account_source_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="account_source_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="account_source_lang"/>
+	</field>
+	<field name="abbreviation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="abbreviation"/>
+		<property name="com.jaspersoft.studio.field.label" value="abbreviation"/>
+	</field>
+	<field name="abbreviation_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="abbreviation_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="abbreviation_lang"/>
+	</field>
+	<field name="work_effort_measure_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="work_effort_measure_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="work_effort_measure_id"/>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+	</field>
+	<field name="orig_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="orig_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="orig_amount"/>
+	</field>
+	<field name="amount_locked" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="amount_locked"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount_locked"/>
+	</field>
+	<field name="value_uom_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="value_uom_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="value_uom_id"/>
+	</field>
+	<field name="uom_rating_value" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="uom_rating_value"/>
+		<property name="com.jaspersoft.studio.field.label" value="uom_rating_value"/>
+	</field>
+	<field name="value_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="value_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="value_code"/>
+	</field>
+	<field name="value_code_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="value_code_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="value_code_lang"/>
+	</field>
+	<field name="value_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="value_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="value_desc"/>
+	</field>
+	<field name="value_desc_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="value_desc_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="value_desc_lang"/>
+	</field>
+	<field name="reference" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reference"/>
+		<property name="com.jaspersoft.studio.field.label" value="reference"/>
+	</field>
+	<field name="reference_lang" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reference_lang"/>
+		<property name="com.jaspersoft.studio.field.label" value="reference_lang"/>
+	</field>
+	<field name="gl_fiscal_type_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gl_fiscal_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="gl_fiscal_type_id"/>
+	</field>
+	<field name="is_scorekpi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="is_scorekpi"/>
+		<property name="com.jaspersoft.studio.field.label" value="is_scorekpi"/>
+	</field>
+	<field name="weight_kpi" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="weight_kpi"/>
+		<property name="com.jaspersoft.studio.field.label" value="weight_kpi"/>
+	</field>
+	<field name="weight_sons" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="weight_sons"/>
+		<property name="com.jaspersoft.studio.field.label" value="weight_sons"/>
+	</field>
+	<field name="weight_assoc_work_effort" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="weight_assoc_work_effort"/>
+		<property name="com.jaspersoft.studio.field.label" value="weight_assoc_work_effort"/>
+	</field>
+	<field name="total_enum_id_kpi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="total_enum_id_kpi"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_enum_id_kpi"/>
+	</field>
+	<field name="total_enum_id_sons" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="total_enum_id_sons"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_enum_id_sons"/>
+	</field>
+	<field name="total_enum_id_assoc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="total_enum_id_assoc"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_enum_id_assoc"/>
+	</field>
+	<field name="weight_control_sum" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="weight_control_sum"/>
+		<property name="com.jaspersoft.studio.field.label" value="weight_control_sum"/>
+	</field>
+	<field name="weight_kpi_control_sum" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="weight_kpi_control_sum"/>
+		<property name="com.jaspersoft.studio.field.label" value="weight_kpi_control_sum"/>
+	</field>
+	<group name="Gruppo1">
+		<groupExpression><![CDATA[$F{work_effort_id_from}]]></groupExpression>
+	</group>
+	<group name="Gruppo2">
+		<groupExpression><![CDATA[$F{work_effort_id}]]></groupExpression>
+	</group>
+	<detail>
+		<band height="65">
+			<printWhenExpression><![CDATA[$F{work_effort_type_id}.equals("25IN1DSA1")]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="10" width="802" height="20" forecolor="#153D63" uuid="e36dcd53-fa2e-4234-83be-977527517c70"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Misurazione e valutazione dei risultati in base al conseguimento degli obiettivi"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="30" width="802" height="1" forecolor="#5189A2" uuid="546fab03-8e28-4235-b9ec-a02d8e0924cf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<frame>
+				<reportElement positionType="Float" x="640" y="38" width="162" height="12" uuid="79b5186e-7a83-4bf2-a1d1-372e3d21a178">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="0" width="110" height="12" forecolor="#153D63" uuid="f512d3a9-43d4-4f6e-8277-bd9577bccd84"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Punteggio:"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.###;(#,##0.###-)">
+					<reportElement positionType="Float" mode="Transparent" x="109" y="0" width="53" height="12" forecolor="#153D63" uuid="ffc0a61b-1a44-4520-b5ea-4619578ad13f"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="38" width="255" height="12" uuid="674d59e4-5f23-41c2-9bc6-df08fb5e1e86"/>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="0" width="120" height="12" forecolor="#153D63" uuid="96f31ea6-c97f-4050-8163-6293d117f6d3"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Max punti:"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.###;(#,##0.###-)">
+					<reportElement positionType="Float" mode="Transparent" x="115" y="0" width="140" height="12" forecolor="#153D63" uuid="fb2f5688-14e7-4aaf-bb65-32d5ce26f7cc"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(
+    ($F{weight_kpi} != null && $F{weight_kpi}.doubleValue() > 0 && "SUM".equals($F{total_enum_id_kpi}))
+        ? $F{weight_kpi_control_sum}
+        : (
+            ($F{weight_sons} != null && $F{weight_sons}.doubleValue() > 0 && "SUM".equals($F{total_enum_id_sons}))
+                ? $F{weight_control_sum}
+                : $F{obj_weight}
+          )
+)]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+		<band height="75">
+			<printWhenExpression><![CDATA[$F{tree_level}.equals(2)]]></printWhenExpression>
+			<frame>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="802" height="40" backcolor="#E8E8E8" uuid="d34b7b4e-c4d9-4ece-925c-fc2bf9b108fb">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" mode="Transparent" x="0" y="0" width="802" height="20" forecolor="#153D63" uuid="11c01811-c2eb-4573-9250-913312ebe7ce"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{type_description}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" mode="Transparent" x="0" y="20" width="802" height="20" forecolor="#153D63" uuid="60a22a98-1c90-476c-bc6c-0f01acc1d155"/>
+					<box bottomPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{work_effort_name}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement positionType="Float" x="0" y="44" width="802" height="1" forecolor="#5189A2" uuid="6a620430-4df2-47ef-b5fc-88a6a3390688">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed" lineColor="#E8E8E8"/>
+				</graphicElement>
+			</line>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="50" width="802" height="20" uuid="2a1f3373-944b-43d8-8c0f-eb957a4a64f0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="id">
+					<subreportParameterExpression><![CDATA[$F{work_effort_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cf">
+					<subreportParameterExpression><![CDATA[$P{cf}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["ObiettiviSpecifici.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="90">
+			<printWhenExpression><![CDATA[$F{work_effort_type_id}.equals("25IN1DSA2") && $F{account_code}.equals("SCORE")]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="10" width="802" height="20" isRemoveLineWhenBlank="true" forecolor="#153D63" uuid="007ba579-996f-4524-b80e-69b6f1f64c78"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Comportamenti professionali e organizzativi"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="30" width="802" height="1" forecolor="#5189A2" uuid="21a2127f-871c-42d3-9c39-165bdd8e34e7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<frame>
+				<reportElement positionType="Float" x="0" y="70" width="801" height="20" uuid="c20ef745-044d-4ec4-b2fa-0f6de28f9602"/>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" mode="Opaque" x="260" y="0" width="100" height="20" forecolor="#153D63" backcolor="#DAE9F7" uuid="c442550b-d5e0-4a0e-b24f-856e90995a33">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Punteggio"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="260" height="20" forecolor="#153D63" backcolor="#DAE9F7" uuid="c76c1989-92c9-4621-b1f7-7b2e7697d61c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Criteri"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" mode="Opaque" x="360" y="0" width="440" height="20" forecolor="#153D63" backcolor="#DAE9F7" uuid="93a8a239-3801-46a9-9774-4571138076a6">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Descrizione"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="38" width="293" height="12" uuid="ce910e4a-ead1-4079-ac75-32d5a68f957d"/>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="0" width="160" height="12" forecolor="#153D63" uuid="9576f621-2953-4a62-91c6-499a33a223f6"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Max punti:"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.###;(#,##0.###-)">
+					<reportElement positionType="Float" mode="Opaque" x="153" y="0" width="140" height="12" forecolor="#153D63" uuid="ac13b37f-03cf-4a3c-8e41-471003f5d4ff"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(
+    ($F{weight_kpi} != null && $F{weight_kpi}.doubleValue() > 0 && "SUM".equals($F{total_enum_id_kpi}))
+        ? $F{weight_kpi_control_sum}
+        : (
+            ($F{weight_sons} != null && $F{weight_sons}.doubleValue() > 0 && "SUM".equals($F{total_enum_id_sons}))
+                ? $F{weight_control_sum}
+                : $F{obj_weight}
+          )
+)]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="640" y="38" width="160" height="12" uuid="ee9b776d-cc42-4205-8c56-4cd0939a2ed4">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="0" width="110" height="12" forecolor="#153D63" uuid="b5c34bea-75c3-40d2-9031-94ad570fb7d8"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Punteggio:"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.###;(#,##0.###-)">
+					<reportElement positionType="Float" mode="Transparent" x="107" y="0" width="53" height="12" forecolor="#153D63" uuid="7d75f733-902a-4d80-873f-f6d9bd0a16a0"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<break>
+				<reportElement positionType="Float" x="0" y="4" width="100" height="1" uuid="7ac7ff0e-2e65-4d63-a184-8ed09a506bb5"/>
+			</break>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{work_effort_type_id}.equals("25IN1DSA2") && $F{tree_level}.equals(1) && $F{is_scorekpi}.equals("Y")]]></printWhenExpression>
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="801" height="20" uuid="eefaf8b7-3ca7-4d44-b0d2-c6089955c217"/>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="260" height="20" uuid="83d6183a-0504-4115-a561-9d8efc2c6874"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{account_name}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.###;(#,##0.###-)">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="260" y="0" width="100" height="20" uuid="1080960b-6e55-4347-8359-558fcb116180">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="360" y="0" width="440" height="20" uuid="9dd7b75e-faa1-44fc-b87e-bab2e46412f5">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#E8E8E8"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{value_desc}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

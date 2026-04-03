@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.TimesheetMapper">
+
+
+    <resultMap id="TimesheetExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.TimesheetEx">
+        <id column="timesheet_id" property="timesheetId" jdbcType="VARCHAR"/>
+        <result column="party_id" property="partyId" jdbcType="VARCHAR"/>
+        <result column="client_party_id" property="clientPartyId" jdbcType="VARCHAR"/>
+        <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="status_id" property="statusId" jdbcType="VARCHAR"/>
+        <result column="approved_by_user_login_id" property="approvedByUserLoginId" jdbcType="VARCHAR"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="contract_hours" property="contractHours" jdbcType="DOUBLE"/>
+        <result column="actual_hours" property="actualHours" jdbcType="DOUBLE"/>
+        <result column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+
+        <result column = "PARTY_PARTY_NAME" property = "party.partyName" jdbcType="VARCHAR"/>
+        <result column = "PARTY_STRUCTURE_PARTY_NAME" property = "partyStructure.partyName" jdbcType="VARCHAR"/>
+        <result column = "PARTY_STRUCTURE_PARTY_NAME_LANG" property = "partyStructure.partyNameLang" jdbcType="VARCHAR"/>
+        <result column = "STATUS_ITEM_DESC" property = "statusItem.description" jdbcType="VARCHAR"/>
+        <result column = "STATUS_ITEM_DESC_LANG" property = "statusItem.descriptionLang" jdbcType="VARCHAR"/>
+        <result column = "UOM_DESCRIPTION" property = "uom.description" jdbcType="VARCHAR"/>
+        <result column = "UOM_DESCRIPTION_LANG" property = "uom.descriptionLang" jdbcType="VARCHAR"/>
+        <result column = "TS_BY_USER_LOGIN" property = "tsByUserLogin.updateable" jdbcType="VARCHAR"/>
+        <result column = "CUSTOM_TIME_PERIOD_PERIOD_NAME" property = "customTimePeriod.periodName" jdbcType="VARCHAR"/>
+        <result column = "CUSTOM_TIME_PERIOD_PERIOD_NAME_LANG" property = "customTimePeriod.periodNameLang" jdbcType="VARCHAR"/>
+        <result column = "PARTY_PARENT_ROLE_PARENT_ROLE_CODE" property = "partyParentRole.parentRoleCode" jdbcType="VARCHAR"/>
+        <result column = "PARTY_PARENT_ROLE_USER_PARENT_ROLE_CODE" property = "partyParentRoleUser.parentRoleCode" jdbcType="VARCHAR"/>
+
+        <result column = "TOTALE" property = "totalRow"/>
+    </resultMap>
+
+
+
+    <select id="findTimesheetsPagination" resultMap="TimesheetExResultMap" parameterType="java.util.Map">
+        SELECT TM.*,
+        PE.PARTY_NAME AS "PARTY_PARTY_NAME",
+        UO.PARTY_NAME AS "PARTY_STRUCTURE_PARTY_NAME", UO.PARTY_NAME_LANG AS "PARTY_STRUCTURE_PARTY_NAME_LANG",
+        ST.DESCRIPTION AS "STATUS_ITEM_DESC", ST.DESCRIPTION_LANG AS "STATUS_ITEM_DESC_LANG",
+        UM.DESCRIPTION AS "UOM_DESCRIPTION", UM.DESCRIPTION_LANG AS "UOM_DESCRIPTION_LANG",
+        TU.UPDATEABLE AS "TS_BY_USER_LOGIN",
+        CTP.PERIOD_NAME AS "CUSTOM_TIME_PERIOD_PERIOD_NAME",
+        CTP.PERIOD_NAME_LANG AS "CUSTOM_TIME_PERIOD_PERIOD_NAME_LANG",
+        PPR.PARENT_ROLE_CODE AS "PARTY_PARENT_ROLE_PARENT_ROLE_CODE",
+        PPO.PARENT_ROLE_CODE AS "PARTY_PARENT_ROLE_USER_PARENT_ROLE_CODE",
+        COUNT(*) OVER () AS "TOTALE"
+        FROM TIMESHEET TM
+        INNER JOIN TS_BY_USER_LOGIN TU
+        ON TU.TIMESHEET_ID = TM.TIMESHEET_ID AND TU.USER_LOGIN_ID = #{userLoginId}
+        INNER JOIN PARTY_HISTORY_VIEW PV
+        ON PV.PARTY_ID = TM.PARTY_ID AND PV.FROM_DATE &lt; TM.THRU_DATE AND (PV.THRU_DATE IS NULL OR PV.THRU_DATE &gt; TM.THRU_DATE)
+        INNER JOIN EMPL_POSITION_TYPE EP
+        ON EP.EMPL_POSITION_TYPE_ID = PV.EMPL_POSITION_TYPE_ID
+        INNER JOIN STATUS_ITEM ST
+        ON ST.STATUS_ID = TM.STATUS_ID
+        INNER JOIN WORK_EFFORT_TYPE_PERIOD PDO
+        ON PDO.WORK_EFFORT_TYPE_PERIOD_ID = TM.WORK_EFFORT_TYPE_PERIOD_ID
+        INNER JOIN PARTY PE
+        ON PE.PARTY_ID = TU.PARTY_ID_PE
+        INNER JOIN PARTY UO
+        ON UO.PARTY_ID = TU.PARTY_ID_UO
+        INNER JOIN UOM UM
+        ON UM.UOM_ID = TM.EFFORT_UOM_ID
+        INNER JOIN WORK_EFFORT_NOTE WN
+        ON WN.WORK_EFFORT_ID = TM.WORK_EFFORT_ID AND WN.SEQUENCE_ID = 10
+        INNER JOIN NOTE_DATA ND
+        ON ND.NOTE_ID = WN.NOTE_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR
+        ON PPR.PARTY_ID = TU.PARTY_ID_PE
+        INNER JOIN PARTY_PARENT_ROLE PPO
+        ON PPO.PARTY_ID = TU.PARTY_ID_UO
+        INNER JOIN CUSTOM_TIME_PERIOD CTP
+        ON CTP.CUSTOM_TIME_PERIOD_ID = PDO.CUSTOM_TIME_PERIOD_ID
+
+        <if test='filters != null and filters.length > 0'>
+            <foreach collection='filters' item="item" index="index" open="WHERE " close="" separator=" AND " >
+                <choose>
+                    <when test='item.field == "workEffortTypePeriod" and item.value != null' >
+                        <if test='SECONDARYLANGUAGE == true'>
+                            LOWER(CTP.PERIOD_NAME_LANG) LIKE  LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                             LOWER(CTP.PERIOD_NAME) LIKE  LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                    </when>
+                    <when test='item.field == "partyName" and item.value != null' >
+                         LOWER(PE.PARTY_NAME) LIKE  LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))) OR  LOWER(PPR.PARENT_ROLE_CODE) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                    <when test='item.field == "abbreviation" and item.value != null' >
+                        <if test='SECONDARYLANGUAGE == true'>
+                              LOWER(UM.DESCRIPTION_LANG) LIKE  LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                              LOWER(UM.DESCRIPTION) LIKE  LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                    </when>
+                    <when test='item.field == "partyStructure" and item.value != null' >
+                        <if test='SECONDARYLANGUAGE == true'>
+                             LOWER(PPO.PARENT_ROLE_CODE) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))) OR LOWER(UO.PARTY_NAME_LANG) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                        <if test='SECONDARYLANGUAGE == false'>
+                             LOWER(PPO.PARENT_ROLE_CODE) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%'))) OR LOWER(UO.PARTY_NAME) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                        </if>
+                    </when>
+                    <when test='item.field == "actualHours" and item.value != null' >
+                         TM.ACTUAL_HOURS = #{item.doubleValue}
+                    </when>
+                    <when test='item.field == "description" and item.value != null' >
+                        ST.STATUS_ID = #{item.value}
+                    </when>
+                    <when test='item.field == "updatable" and item.value != null' >
+                         LOWER(TU.UPDATEABLE) LIKE LOWER(CONCAT('%', CONCAT(#{item.value}, '%')))
+                    </when>
+                </choose>
+            </foreach>
+        </if>
+
+        <if test='SORTFIELD != null'>
+            <choose>
+
+                <when test='SORTFIELD == "workEffortTypePeriod"' >
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY CTP.PERIOD_NAME_LANG ASC
+                    </if>
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY CTP.PERIOD_NAME_LANG ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY CTP.PERIOD_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY CTP.PERIOD_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "partyName"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY PE.PARTY_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY PE.PARTY_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "abbreviation"' >
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY UM.DESCRIPTION_LANG ASC
+                    </if>
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY UM.DESCRIPTION_LANG ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY UM.DESCRIPTION ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY UM.DESCRIPTION DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "partyStructure"' >
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY UO.PARTY_NAME_LANG ASC
+                    </if>
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY UO.PARTY_NAME_LANG ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY UO.PARTY_NAME ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY UO.PARTY_NAME DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "actualHours"' >
+                    <if test='SORTORDER == 1'>
+                        ORDER BY TM.ACTUAL_HOURS ASC
+                    </if>
+                    <if test='SORTORDER == -1'>
+                        ORDER BY TM.ACTUAL_HOURS DESC
+                    </if>
+                </when>
+                <when test='SORTFIELD == "description"' >
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY ST.DESCRIPTION_LANG ASC
+                    </if>
+                    <if test='SORTORDER == 1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY ST.DESCRIPTION_LANG ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == true'>
+                        ORDER BY ST.DESCRIPTION ASC
+                    </if>
+                    <if test='SORTORDER == -1 and SECONDARYLANGUAGE == false'>
+                        ORDER BY ST.DESCRIPTION DESC
+                    </if>
+                </when>
+            </choose>
+        </if>
+        <if test='SORTFIELD == null'>
+            ORDER BY TU.UPDATEABLE DESC, CTP.CUSTOM_TIME_PERIOD_ID DESC, PE.PARTY_NAME ASC
+        </if>
+        <if test='_databaseId == "mysql"'>
+            LIMIT #{LIMIT}
+            OFFSET #{OFFSET}
+        </if>
+        <if  test='_databaseId != "mysql"'>
+            OFFSET #{OFFSET} ROWS FETCH NEXT #{LIMIT} ROWS ONLY
+        </if>
+    </select>
+
+    <resultMap id="TimesheetExResultMap2" type="it.mapsgroup.gzoom.mybatis.dto.TimesheetEx">
+        <id column="timesheet_id" property="timesheetId" jdbcType="VARCHAR"/>
+        <result column="party_id" property="partyId" jdbcType="VARCHAR"/>
+        <result column="client_party_id" property="clientPartyId" jdbcType="VARCHAR"/>
+        <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="status_id" property="statusId" jdbcType="VARCHAR"/>
+        <result column="approved_by_user_login_id" property="approvedByUserLoginId" jdbcType="VARCHAR"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="contract_hours" property="contractHours" jdbcType="DOUBLE"/>
+        <result column="actual_hours" property="actualHours" jdbcType="DOUBLE"/>
+        <result column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+
+
+        <result column = "PARTY_PARTY_NAME" property = "party.partyName" jdbcType="VARCHAR"/>
+        <result column = "PARTY_STRUCTURE_PARTY_NAME" property = "partyStructure.partyName" jdbcType="VARCHAR"/>
+        <result column = "PARTY_STRUCTURE_PARTY_NAME_LANG" property = "partyStructure.partyNameLang" jdbcType="VARCHAR"/>
+        <result column = "STATUS_ITEM_DESC" property = "statusItem.description" jdbcType="VARCHAR"/>
+        <result column = "STATUS_ITEM_DESC_LANG" property = "statusItem.descriptionLang" jdbcType="VARCHAR"/>
+        <result column = "UOM_DESCRIPTION" property = "uom.description" jdbcType="VARCHAR"/>
+        <result column = "UOM_DESCRIPTION_LANG" property = "uom.descriptionLang" jdbcType="VARCHAR"/>
+        <result column = "TS_BY_USER_LOGIN" property = "tsByUserLogin.updateable" jdbcType="VARCHAR"/>
+        <result column = "CUSTOM_TIME_PERIOD_PERIOD_NAME" property = "customTimePeriod.periodName" jdbcType="VARCHAR"/>
+        <result column = "CUSTOM_TIME_PERIOD_PERIOD_NAME_LANG" property = "customTimePeriod.periodNameLang" jdbcType="VARCHAR"/>
+        <result column = "PARTY_PARENT_ROLE_PARENT_ROLE_CODE" property = "partyParentRole.parentRoleCode" jdbcType="VARCHAR"/>
+        <result column = "PARTY_PARENT_ROLE_USER_PARENT_ROLE_CODE" property = "partyParentRoleUser.parentRoleCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getTimesheetExs" resultMap="TimesheetExResultMap2" parameterType="java.util.Map">
+        SELECT TM.*,
+        PE.PARTY_NAME AS "PARTY_PARTY_NAME",
+        UO.PARTY_NAME AS "PARTY_STRUCTURE_PARTY_NAME", UO.PARTY_NAME_LANG AS "PARTY_STRUCTURE_PARTY_NAME_LANG",
+        ST.DESCRIPTION AS "STATUS_ITEM_DESC", ST.DESCRIPTION_LANG AS "STATUS_ITEM_DESC_LANG",
+        UM.DESCRIPTION AS "UOM_DESCRIPTION", UM.DESCRIPTION_LANG AS "UOM_DESCRIPTION_LANG",
+        TU.UPDATEABLE AS "TS_BY_USER_LOGIN",
+        CTP.PERIOD_NAME AS "CUSTOM_TIME_PERIOD_PERIOD_NAME",
+        CTP.PERIOD_NAME_LANG AS "CUSTOM_TIME_PERIOD_PERIOD_NAME_LANG",
+        PPR.PARENT_ROLE_CODE AS "PARTY_PARENT_ROLE_PARENT_ROLE_CODE" , PPO.PARENT_ROLE_CODE AS "PARTY_PARENT_ROLE_USER_PARENT_ROLE_CODE"
+        FROM TIMESHEET TM
+        INNER JOIN TS_BY_USER_LOGIN TU
+        ON TU.TIMESHEET_ID = TM.TIMESHEET_ID AND TU.USER_LOGIN_ID = #{userLoginId}
+        INNER JOIN PARTY_HISTORY_VIEW PV
+        ON PV.PARTY_ID = TM.PARTY_ID AND PV.FROM_DATE &lt; TM.THRU_DATE AND (PV.THRU_DATE IS NULL OR PV.THRU_DATE &gt; TM.THRU_DATE)
+        INNER JOIN EMPL_POSITION_TYPE EP
+        ON EP.EMPL_POSITION_TYPE_ID = PV.EMPL_POSITION_TYPE_ID
+        INNER JOIN STATUS_ITEM ST
+        ON ST.STATUS_ID = TM.STATUS_ID
+        INNER JOIN WORK_EFFORT_TYPE_PERIOD PDO
+        ON PDO.WORK_EFFORT_TYPE_PERIOD_ID = TM.WORK_EFFORT_TYPE_PERIOD_ID
+        INNER JOIN PARTY PE
+        ON PE.PARTY_ID = TU.PARTY_ID_PE
+        INNER JOIN PARTY UO
+        ON UO.PARTY_ID = TU.PARTY_ID_UO
+        INNER JOIN UOM UM
+        ON UM.UOM_ID = TM.EFFORT_UOM_ID
+        INNER JOIN WORK_EFFORT_NOTE WN
+        ON WN.WORK_EFFORT_ID = TM.WORK_EFFORT_ID AND WN.SEQUENCE_ID = 10
+        INNER JOIN NOTE_DATA ND
+        ON ND.NOTE_ID = WN.NOTE_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR
+        ON PPR.PARTY_ID = TU.PARTY_ID_PE
+        INNER JOIN PARTY_PARENT_ROLE PPO
+        ON PPO.PARTY_ID = TU.PARTY_ID_UO
+        INNER JOIN CUSTOM_TIME_PERIOD CTP
+        ON CTP.CUSTOM_TIME_PERIOD_ID = PDO.CUSTOM_TIME_PERIOD_ID
+   </select>
+
+    <resultMap id="noteDataTimesheetResultMap" type="it.mapsgroup.gzoom.mybatis.dto.NoteData">
+        <result column = "NOTE_ID" property = "noteId" jdbcType="VARCHAR"/>
+        <result column = "NOTE_NAME" property = "noteName" jdbcType="VARCHAR"/>
+        <result column = "NOTE_NAME_LANG" property = "noteNameLang" jdbcType="VARCHAR"/>
+        <result column = "NOTE_INFO" property = "noteInfo" jdbcType="VARCHAR"/>
+        <result column = "NOTE_INFO_LANG" property = "noteInfoLang" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="partyHistoryViewResultMap" type="it.mapsgroup.gzoom.mybatis.dto.PartyHistoryView">
+        <id column="party_id" property="partyId" jdbcType="VARCHAR"/>
+        <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="employment_amount" property="employmentAmount" jdbcType="NUMERIC"/>
+        <result column="empl_position_type_id" property="emplPositionTypeId" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="workEffortTypeMap" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortType">
+        <result column="work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+        <result column="parent_type_id" property="parentTypeId" jdbcType="VARCHAR"/>
+        <result column="has_table" property="hasTable" jdbcType="CHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="influence_catalog_id" property="influenceCatalogId" jdbcType="VARCHAR"/>
+        <result column="icon_content_id" property="iconContentId" jdbcType="VARCHAR"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="code_prefix" property="codePrefix" jdbcType="VARCHAR"/>
+        <result column="code_counter" property="codeCounter" jdbcType="VARCHAR"/>
+        <result column="is_template" property="isTemplate" jdbcType="CHAR"/>
+        <result column="is_root" property="isRoot" jdbcType="CHAR"/>
+        <result column="local_name_content_id" property="localNameContentId" jdbcType="VARCHAR"/>
+        <result column="is_in_only_one_card" property="isInOnlyOneCard" jdbcType="CHAR"/>
+        <result column="all_roles_assigned" property="allRolesAssigned" jdbcType="CHAR"/>
+        <result column="all_org_assigned" property="allOrgAssigned" jdbcType="CHAR"/>
+        <result column="child_template_id" property="childTemplateId" jdbcType="VARCHAR"/>
+        <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="hierarchy_assoc_type_id" property="hierarchyAssocTypeId" jdbcType="VARCHAR"/>
+        <result column="weight_control_sum" property="weightControlSum" jdbcType="DOUBLE"/>
+        <result column="uom_range_score_id" property="uomRangeScoreId" jdbcType="VARCHAR"/>
+        <result column="we_layout_type_enum_id" property="weLayoutTypeEnumId" jdbcType="VARCHAR"/>
+        <result column="period_type_id" property="periodTypeId" jdbcType="VARCHAR"/>
+        <result column="type_id1" property="typeId1" jdbcType="VARCHAR"/>
+        <result column="type_id2" property="typeId2" jdbcType="VARCHAR"/>
+        <result column="type_id3" property="typeId3" jdbcType="VARCHAR"/>
+        <result column="type_id4" property="typeId4" jdbcType="VARCHAR"/>
+        <result column="rule_type_id1" property="ruleTypeId1" jdbcType="VARCHAR"/>
+        <result column="rule_type_id2" property="ruleTypeId2" jdbcType="VARCHAR"/>
+        <result column="rule_type_id3" property="ruleTypeId3" jdbcType="VARCHAR"/>
+        <result column="rule_type_id4" property="ruleTypeId4" jdbcType="VARCHAR"/>
+        <result column="rule_type_id5" property="ruleTypeId5" jdbcType="VARCHAR"/>
+        <result column="min1" property="min1" jdbcType="NUMERIC"/>
+        <result column="min2" property="min2" jdbcType="NUMERIC"/>
+        <result column="min3" property="min3" jdbcType="NUMERIC"/>
+        <result column="min4" property="min4" jdbcType="NUMERIC"/>
+        <result column="min5" property="min5" jdbcType="NUMERIC"/>
+        <result column="max1" property="max1" jdbcType="NUMERIC"/>
+        <result column="max2" property="max2" jdbcType="NUMERIC"/>
+        <result column="max3" property="max3" jdbcType="NUMERIC"/>
+        <result column="max4" property="max4" jdbcType="NUMERIC"/>
+        <result column="max5" property="max5" jdbcType="NUMERIC"/>
+        <result column="weight_kpi" property="weightKpi" jdbcType="DOUBLE"/>
+        <result column="weight_sons" property="weightSons" jdbcType="DOUBLE"/>
+        <result column="weight_assoc_work_effort" property="weightAssocWorkEffort" jdbcType="DOUBLE"/>
+        <result column="total_enum_id_kpi" property="totalEnumIdKpi" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_sons" property="totalEnumIdSons" jdbcType="VARCHAR"/>
+        <result column="total_enum_id_assoc" property="totalEnumIdAssoc" jdbcType="VARCHAR"/>
+        <result column="work_effort_assoc_type_id" property="workEffortAssocTypeId" jdbcType="VARCHAR"/>
+        <result column="we_purpose_type_id_res" property="wePurposeTypeIdRes" jdbcType="VARCHAR"/>
+        <result column="we_purpose_type_id_ind" property="wePurposeTypeIdInd" jdbcType="VARCHAR"/>
+        <result column="etch" property="etch" jdbcType="VARCHAR"/>
+        <result column="short_label" property="shortLabel" jdbcType="VARCHAR"/>
+        <result column="is_indic_auto" property="isIndicAuto" jdbcType="CHAR"/>
+        <result column="frame_enum_id" property="frameEnumId" jdbcType="VARCHAR"/>
+        <result column="seq_digit" property="seqDigit" jdbcType="NUMERIC"/>
+        <result column="seq_only_id" property="seqOnlyId" jdbcType="CHAR"/>
+        <result column="we_purpose_type_id_we" property="wePurposeTypeIdWe" jdbcType="VARCHAR"/>
+        <result column="has_product" property="hasProduct" jdbcType="CHAR"/>
+        <result column="has_person_filter" property="hasPersonFilter" jdbcType="CHAR"/>
+        <result column="weight_kpi_control_sum" property="weightKpiControlSum" jdbcType="DOUBLE"/>
+        <result column="work_effort_type_hierarchy_id" property="workEffortTypeHierarchyId" jdbcType="VARCHAR"/>
+        <result column="show_scorekpi" property="showScorekpi" jdbcType="CHAR"/>
+        <result column="enable_snapshot" property="enableSnapshot" jdbcType="CHAR"/>
+        <result column="copy" property="copy" jdbcType="CHAR"/>
+        <result column="purpose_etch" property="purposeEtch" jdbcType="VARCHAR"/>
+        <result column="eval_enum_id" property="evalEnumId" jdbcType="VARCHAR"/>
+        <result column="apply_score_range" property="applyScoreRange" jdbcType="CHAR"/>
+        <result column="enable_multi_year_flag" property="enableMultiYearFlag" jdbcType="CHAR"/>
+        <result column="org_unit_role_type_id" property="orgUnitRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="for_all_users" property="forAllUsers" jdbcType="CHAR"/>
+        <result column="is_role_type_id_auto" property="isRoleTypeIdAuto" jdbcType="CHAR"/>
+        <result column="role_type_id_auto" property="roleTypeIdAuto" jdbcType="VARCHAR"/>
+        <result column="party_rel_type_id_auto" property="partyRelTypeIdAuto" jdbcType="VARCHAR"/>
+        <result column="parent_period_filter" property="parentPeriodFilter" jdbcType="CHAR"/>
+        <result column="period_open_enum_id" property="periodOpenEnumId" jdbcType="VARCHAR"/>
+        <result column="show_hierarchy" property="showHierarchy" jdbcType="CHAR"/>
+        <result column="score_period_enum_id" property="scorePeriodEnumId" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="etch_lang" property="etchLang" jdbcType="VARCHAR"/>
+        <result column="note_lang" property="noteLang" jdbcType="VARCHAR"/>
+        <result column="purpose_etch_lang" property="purposeEtchLang" jdbcType="VARCHAR"/>
+        <result column="is_root_active" property="isRootActive" jdbcType="CHAR"/>
+        <result column="reminder_active" property="reminderActive" jdbcType="CHAR"/>
+        <result column="seq_esp" property="seqEsp" jdbcType="NUMERIC"/>
+        <result column="gp_menu_enum_id" property="gpMenuEnumId" jdbcType="VARCHAR"/>
+        <result column="initially_collapsed" property="initiallyCollapsed" jdbcType="VARCHAR"/>
+        <result column="batch_status_active" property="batchStatusActive" jdbcType="CHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="org_unit_role_type_id2" property="orgUnitRoleTypeId2" jdbcType="VARCHAR"/>
+        <result column="org_unit_role_type_id3" property="orgUnitRoleTypeId3" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="workEffortTypePeriodResultMap" type="it.mapsgroup.gzoom.mybatis.dto.WorkEffortTypePeriod">
+        <id column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="work_effort_type_id" property="workEffortTypeId" jdbcType="VARCHAR"/>
+        <result column="custom_time_period_id" property="customTimePeriodId" jdbcType="VARCHAR"/>
+        <result column="gl_fiscal_type_enum_id" property="glFiscalTypeEnumId" jdbcType="VARCHAR"/>
+        <result column="status_type_id" property="statusTypeId" jdbcType="VARCHAR"/>
+        <result column="per_lav_from" property="perLavFrom" jdbcType="TIMESTAMP"/>
+        <result column="per_lav_thru" property="perLavThru" jdbcType="TIMESTAMP"/>
+        <result column="des_proc" property="desProc" jdbcType="VARCHAR"/>
+        <result column="status_enum_id" property="statusEnumId" jdbcType="VARCHAR"/>
+        <result column="organization_id" property="organizationId" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="partyResultMap" type="it.mapsgroup.gzoom.mybatis.dto.Party">
+        <id column="party_id" property="partyId" jdbcType="VARCHAR"/>
+        <result column="party_type_id" property="partyTypeId" jdbcType="VARCHAR"/>
+        <result column="external_id" property="externalId" jdbcType="VARCHAR"/>
+        <result column="preferred_currency_uom_id" property="preferredCurrencyUomId" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="status_id" property="statusId" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="data_source_id" property="dataSourceId" jdbcType="VARCHAR"/>
+        <result column="is_unread" property="isUnread" jdbcType="CHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="fiscal_code" property="fiscalCode" jdbcType="VARCHAR"/>
+        <result column="vat_code" property="vatCode" jdbcType="VARCHAR"/>
+        <result column="party_name" property="partyName" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="end_date" property="endDate" jdbcType="TIMESTAMP"/>
+        <result column="party_name_lang" property="partyNameLang" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="partyResultMap2" type="it.mapsgroup.gzoom.mybatis.dto.Party">
+        <id column="party_id" property="partyId" jdbcType="VARCHAR"/>
+        <result column="party_type_id" property="partyTypeId" jdbcType="VARCHAR"/>
+        <result column="external_id" property="externalId" jdbcType="VARCHAR"/>
+        <result column="preferred_currency_uom_id" property="preferredCurrencyUomId" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="status_id" property="statusId" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="data_source_id" property="dataSourceId" jdbcType="VARCHAR"/>
+        <result column="is_unread" property="isUnread" jdbcType="CHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="fiscal_code" property="fiscalCode" jdbcType="VARCHAR"/>
+        <result column="vat_code" property="vatCode" jdbcType="VARCHAR"/>
+        <result column="party_name" property="partyName" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="end_date" property="endDate" jdbcType="TIMESTAMP"/>
+        <result column="party_name_lang" property="partyNameLang" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="statusItemResultMap" type="it.mapsgroup.gzoom.mybatis.dto.StatusItem">
+        <id column="status_id" property="statusId" jdbcType="VARCHAR"/>
+        <result column="status_type_id" property="statusTypeId" jdbcType="VARCHAR"/>
+        <result column="status_code" property="statusCode" jdbcType="VARCHAR"/>
+        <result column="sequence_id" property="sequenceId" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="act_st_enum_id" property="actStEnumId" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="uomResultMap" type="it.mapsgroup.gzoom.mybatis.dto.Uom">
+        <id column="uom_id" property="uomId" jdbcType="VARCHAR"/>
+        <result column="uom_type_id" property="uomTypeId" jdbcType="VARCHAR"/>
+        <result column="abbreviation" property="abbreviation" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="decimal_scale" property="decimalScale" jdbcType="NUMERIC"/>
+        <result column="min_value" property="minValue" jdbcType="DOUBLE"/>
+        <result column="max_value" property="maxValue" jdbcType="DOUBLE"/>
+        <result column="abbreviation_lang" property="abbreviationLang" jdbcType="VARCHAR"/>
+        <result column="description_lang" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="tsByUserLoginResultMap" type="it.mapsgroup.gzoom.mybatis.dto.TsByUserLogin">
+        <id column="timesheet_id" property="timesheetId" jdbcType="VARCHAR"/>
+        <result column="user_login_id" property="userLoginId" jdbcType="VARCHAR"/>
+        <result column="party_id_pe" property="partyIdPe" jdbcType="VARCHAR"/>
+        <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="party_id_uo" property="partyIdUo" jdbcType="VARCHAR"/>
+        <result column="updateable" property="updateable" jdbcType="VARCHAR"/>
+        <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="status_id" property="statusId" jdbcType="VARCHAR"/>
+        <result column="contract_hours" property="contractHours" jdbcType="DOUBLE"/>
+        <result column="actual_hours" property="actualHours" jdbcType="DOUBLE"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="role_type" property="roleType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="customTimePeriodResultMap" type="it.mapsgroup.gzoom.mybatis.dto.CustomTimePeriod">
+        <id column="custom_time_period_id" property="customTimePeriodId" jdbcType="VARCHAR"/>
+        <result column="parent_period_id" property="parentPeriodId" jdbcType="VARCHAR"/>
+        <result column="period_type_id" property="periodTypeId" jdbcType="VARCHAR"/>
+        <result column="period_num" property="periodNum" jdbcType="NUMERIC"/>
+        <result column="period_name" property="periodName" jdbcType="VARCHAR"/>
+        <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="thru_date" property="thruDate" jdbcType="TIMESTAMP"/>
+        <result column="is_closed" property="isClosed" jdbcType="CHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="custom_time_period_code" property="customTimePeriodCode" jdbcType="VARCHAR"/>
+        <result column="custom_time_period_code_lang" property="customTimePeriodCodeLang" jdbcType="VARCHAR"/>
+        <result column="period_name_lang" property="periodNameLang" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <resultMap id="TimesheetExResultMap3" type="it.mapsgroup.gzoom.mybatis.dto.TimesheetEx">
+        <id column="timesheet_id" property="timesheetId" jdbcType="VARCHAR"/>
+        <result column="party_id" property="partyId" jdbcType="VARCHAR"/>
+        <result column="client_party_id" property="clientPartyId" jdbcType="VARCHAR"/>
+        <result column="from_date" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="status_id" property="statusId" jdbcType="VARCHAR"/>
+        <result column="approved_by_user_login_id" property="approvedByUserLoginId" jdbcType="VARCHAR"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="contract_hours" property="contractHours" jdbcType="DOUBLE"/>
+        <result column="actual_hours" property="actualHours" jdbcType="DOUBLE"/>
+        <result column="work_effort_type_period_id" property="workEffortTypePeriodId" jdbcType="VARCHAR"/>
+        <result column="effort_uom_id" property="effortUomId" jdbcType="VARCHAR"/>
+        <result column="work_effort_id" property="workEffortId" jdbcType="VARCHAR"/>
+        <result column = "PARTY_PARTY_NAME" property = "party.partyName" jdbcType="VARCHAR"/>
+        <result column = "PARTY_STRUCTURE_PARTY_NAME" property = "partyStructure.partyName" jdbcType="VARCHAR"/>
+        <result column = "PARTY_STRUCTURE_PARTY_NAME_LANG" property = "partyStructure.partyNameLang" jdbcType="VARCHAR"/>
+        <result column = "STATUS_ITEM_DESC" property = "statusItem.description" jdbcType="VARCHAR"/>
+        <result column = "STATUS_ITEM_DESC_LANG" property = "statusItem.descriptionLang" jdbcType="VARCHAR"/>
+
+        <association property="partyHistoryView" resultMap="partyHistoryViewResultMap"/>
+        <association property="noteData" resultMap="noteDataTimesheetResultMap"/>
+        <association property="workEffortTypePeriod" resultMap="workEffortTypePeriodResultMap"/>
+        <association property="uom" resultMap="uomResultMap"/>
+        <association property="tsByUserLogin" resultMap="tsByUserLoginResultMap"/>
+        <association property="customTimePeriod" resultMap="customTimePeriodResultMap"/>
+    </resultMap>
+
+    <select id="getTimesheetExsById" resultMap="TimesheetExResultMap3" parameterType="java.util.Map">
+        SELECT TM.*, PV.*, ND.*, PDO.*, UM.*, TU.*, CTP.*,
+        PE.PARTY_NAME AS "PARTY_PARTY_NAME",
+        UO.PARTY_NAME AS "PARTY_STRUCTURE_PARTY_NAME", UO.PARTY_NAME_LANG AS "PARTY_STRUCTURE_PARTY_NAME_LANG",
+        ST.DESCRIPTION AS "STATUS_ITEM_DESC", ST.DESCRIPTION_LANG AS "STATUS_ITEM_DESC_LANG"
+        FROM TIMESHEET TM
+        INNER JOIN TS_BY_USER_LOGIN TU
+        ON TU.TIMESHEET_ID = TM.TIMESHEET_ID AND TU.USER_LOGIN_ID = #{userLoginId}
+        INNER JOIN PARTY_HISTORY_VIEW PV
+        ON PV.PARTY_ID = TM.PARTY_ID AND PV.FROM_DATE &lt; TM.THRU_DATE AND (PV.THRU_DATE IS NULL OR PV.THRU_DATE &gt; TM.THRU_DATE)
+        INNER JOIN EMPL_POSITION_TYPE EP
+        ON EP.EMPL_POSITION_TYPE_ID = PV.EMPL_POSITION_TYPE_ID
+        INNER JOIN STATUS_ITEM ST
+        ON ST.STATUS_ID = TM.STATUS_ID
+        INNER JOIN WORK_EFFORT_TYPE_PERIOD PDO
+        ON PDO.WORK_EFFORT_TYPE_PERIOD_ID = TM.WORK_EFFORT_TYPE_PERIOD_ID
+        INNER JOIN PARTY PE
+        ON PE.PARTY_ID = TU.PARTY_ID_PE
+        INNER JOIN PARTY UO
+        ON UO.PARTY_ID = TU.PARTY_ID_UO
+        INNER JOIN UOM UM
+        ON UM.UOM_ID = TM.EFFORT_UOM_ID
+        INNER JOIN WORK_EFFORT_NOTE WN
+        ON WN.WORK_EFFORT_ID = TM.WORK_EFFORT_ID AND WN.SEQUENCE_ID = 10
+        INNER JOIN NOTE_DATA ND
+        ON ND.NOTE_ID = WN.NOTE_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR
+        ON PPR.PARTY_ID = TU.PARTY_ID_PE
+        INNER JOIN PARTY_PARENT_ROLE PPO
+        ON PPO.PARTY_ID = TU.PARTY_ID_UO
+        INNER JOIN CUSTOM_TIME_PERIOD CTP
+        ON CTP.CUSTOM_TIME_PERIOD_ID = PDO.CUSTOM_TIME_PERIOD_ID
+        WHERE TM.TIMESHEET_ID = #{timesheetId}
+
+    </select>
+
+</mapper>

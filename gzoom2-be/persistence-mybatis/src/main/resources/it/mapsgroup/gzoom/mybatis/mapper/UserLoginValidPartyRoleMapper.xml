@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.UserLoginValidPartyRoleMapper">
+
+    <resultMap id="userLoginValidPartyRoleExResultMap" type="it.mapsgroup.gzoom.mybatis.dto.UserLoginValidPartyRoleEx">
+        <id property="userLoginId" column="user_login_id" jdbcType="VARCHAR"/>
+        <id property="partyId" column="party_id" jdbcType="VARCHAR"/>
+        <id property="roleTypeId" column="role_type_id" jdbcType="VARCHAR"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <association property="partyGroup" resultMap="it.mapsgroup.gzoom.mybatis.mapper.PartyGroupMapper.partyGroupResultMap" columnPrefix="PG_"></association>
+    </resultMap>
+
+    <select id="getUserLoginValidPartyRoleList" resultMap="userLoginValidPartyRoleExResultMap" parameterType="java.util.Map">
+       SELECT USER_LOGIN_VALID_PARTY_ROLE.*,
+        PG.party_id AS PG_party_id,
+        PG.group_name AS PG_group_name,
+        PG.group_name_local AS PG_group_name_local,
+        PG.office_site_name AS PG_office_site_name,
+        PG.annual_revenue AS PG_annual_revenue,
+        PG.num_employees AS PG_num_employees,
+        PG.ticker_symbol AS PG_ticker_symbol,
+        PG.comments AS PG_comments,
+        PG.logo_image_url AS PG_logo_image_url,
+        PG.last_updated_stamp AS PG_last_updated_stamp,
+        PG.last_updated_tx_stamp AS PG_last_updated_tx_stamp,
+        PG.created_stamp AS PG_created_stamp,
+        PG.created_tx_stamp AS PG_created_tx_stamp,
+        PG.year_statistic_data AS PG_year_statistic_data,
+        PG.annual_turnover AS PG_annual_turnover,
+        PG.group_name_lang AS PG_group_name_lang,
+        PG.last_modified_by_user_login AS PG_last_modified_by_user_login,
+        PG.created_by_user_login AS PG_created_by_user_login
+        FROM USER_LOGIN_VALID_PARTY_ROLE
+        INNER JOIN PARTY_GROUP PG ON PG.PARTY_ID = USER_LOGIN_VALID_PARTY_ROLE.PARTY_ID
+        WHERE USER_LOGIN_VALID_PARTY_ROLE.USER_LOGIN_ID = #{user}
+    </select>
+
+</mapper>

@@ -1,0 +1,143 @@
+gzoom-confirm-dialog {
+  position: absolute;
+
+  // Header
+  --gzoom-confirm-dialog-header-height: 48px;
+
+  // Content
+  --gzoom-confirm-dialog-content-min-height: unset;
+  --gzoom-confirm-dialog-content-align-items: center;
+  --gzoom-confirm-dialog-content-gap: unset;
+
+  // Footer
+  --gzoom-confirm-dialog-footer-button-min-width: unset;
+
+  // Confirm button
+  --gzoom-confirm-dialog-confirm-button-background: #0059B3;
+  --gzoom-confirm-dialog-confirm-button-background-hover: #1069C3;
+  --gzoom-confirm-dialog-confirm-button-background-active: #FAFAFA;
+  --gzoom-confirm-dialog-confirm-button-border-color: #0059B3;
+  --gzoom-confirm-dialog-confirm-button-border-color-active: var(--gzoom-confirm-dialog-confirm-button-border-color);
+  --gzoom-confirm-dialog-confirm-button-color: #fff;
+  --gzoom-confirm-dialog-confirm-button-color-active: #0059B3;
+
+  // Reject button
+  --gzoom-confirm-dialog-reject-button-background: #FAFAFA;
+  --gzoom-confirm-dialog-reject-button-background-hover: #EAEAEA;
+  --gzoom-confirm-dialog-reject-button-background-active: #0059B3;
+  --gzoom-confirm-dialog-reject-button-border-color: #0059B3;
+  --gzoom-confirm-dialog-reject-button-border-color-active: var(--gzoom-confirm-dialog-reject-button-border-color);
+  --gzoom-confirm-dialog-reject-button-color: #0059B3;
+  --gzoom-confirm-dialog-reject-button-color-active: #fff;
+}
+
+.gzoom-confirm-dialog {
+  border-radius: 0;
+  background-color: #fff !important;
+  padding: 16px 24px 24px 24px;
+  gap: 10px;
+  min-width: 500px;
+
+  .p-dialog-header {
+    gap: 16px;
+    padding: 0;
+    height: var(--gzoom-confirm-dialog-header-height);
+
+    .p-dialog-title {
+      //height: 48px;
+      font-size: 20px;
+      //line-height: 48px;
+      color: #000;
+      font-weight: 700;
+    }
+
+    .p-dialog-header-close {
+      height: 16px;
+      width: 12px;
+      border-radius: 0;
+
+      svg {
+        height: 12px;
+        width: 12px;
+        color: #000;
+      }
+    }
+
+    .p-dialog-header-close:hover {
+      svg {
+        color: #555;
+      }
+    }
+  }
+
+  .p-dialog-content {
+    min-height: var(--gzoom-confirm-dialog-content-min-height);
+    padding: 0;
+    align-items: var(--gzoom-confirm-dialog-content-align-items);
+    gap: var(--gzoom-confirm-dialog-content-gap);
+
+    color: #1E293B;
+    font-size: 14px;
+    line-height: 24px;
+
+    .p-confirm-dialog-message {
+      margin: 0;
+    }
+  }
+
+  .p-dialog-footer {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    // todo var:
+    button {
+      height: 36px;
+      min-width: var(--gzoom-confirm-dialog-footer-button-min-width);
+      margin: 0;
+      border-radius: 5px;
+      padding: 0 15px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 20px;
+    }
+
+    button:focus,
+    button:focus-visible {
+      box-shadow: none;
+    }
+
+    .p-confirm-dialog-accept {
+      background-color: var(--gzoom-confirm-dialog-confirm-button-background);
+      border-color: var(--gzoom-confirm-dialog-confirm-button-border-color);
+      color: var(--gzoom-confirm-dialog-confirm-button-color);
+    }
+
+    .p-confirm-dialog-accept:hover {
+      background-color: var(--gzoom-confirm-dialog-confirm-button-background-hover);
+    }
+
+    .p-confirm-dialog-accept:active {
+      background-color: var(--gzoom-confirm-dialog-confirm-button-background-active) !important;
+      border-color: var(--gzoom-confirm-dialog-confirm-button-border-color-active);
+      color: var(--gzoom-confirm-dialog-confirm-button-color-active) !important;
+    }
+
+    .p-confirm-dialog-reject {
+      background-color: var(--gzoom-confirm-dialog-reject-button-background);
+      border-color: var(--gzoom-confirm-dialog-reject-button-border-color);
+      color: var(--gzoom-confirm-dialog-reject-button-color);
+    }
+
+    .p-confirm-dialog-reject:hover {
+      background-color: var(--gzoom-confirm-dialog-reject-button-background-hover);
+    }
+
+    .p-confirm-dialog-reject:active {
+      background-color: var(--gzoom-confirm-dialog-reject-button-background-active) !important;
+      border-color: var(--gzoom-confirm-dialog-reject-button-border-color);
+      color: var(--gzoom-confirm-dialog-reject-button-color-active) !important;
+    }
+  }
+}

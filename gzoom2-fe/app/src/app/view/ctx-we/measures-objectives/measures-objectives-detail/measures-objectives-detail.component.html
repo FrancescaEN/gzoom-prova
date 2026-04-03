@@ -1,0 +1,168 @@
+<!-- Disappearing Messages -->
+<p-toast></p-toast>
+
+<!-- Messages Error -->
+<p-messages key="error"></p-messages>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table
+      [buttonBack]="true"
+      [buttonSave]="true"
+      [buttonNew]="true"
+      [buttonDelete]="true"
+      (saveEvent)="save()"
+      (deleteEvent)="delete()"
+    ></app-toolbar-data-table>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <gzoom-card-detail [details]="this.details" />
+    <br />
+    <form *ngIf="form" [formGroup]="form" (onSubmit)="onSubmit()">
+      <p-accordion [multiple]="true" [activeIndex]="activeIndex">
+        <p-accordionTab header="{{ 'Distinctive data' | i18n }}">
+          <gzoom-row-flex>
+            <gzoom-label-input-date
+              *ngIf="this.form.get('fromDate')"
+              label="Start Date"
+              [required]="true"
+              controlName="fromDate"
+            />
+            <gzoom-label-input-date
+              *ngIf="this.form.get('thruDate')"
+              label="End Date"
+              [required]="true"
+              controlName="thruDate"
+              [minDate]="this.form.get('fromDate').value"
+            />
+          </gzoom-row-flex>
+
+          <gzoom-row-flex>
+            <gzoom-label-input-number
+              *ngIf="this.form.get('sequenceId')"
+              label="Sequence"
+              [required]="false"
+              controlName="sequenceId"
+            />
+            <gzoom-label-input-dropdown
+              *ngIf="this.form.get('periodTypeId')"
+              label="Periodicity"
+              [required]="true"
+              [options]="dropdownPT"
+              controlName="periodTypeId"
+            />
+
+            <gzoom-label-input-dropdown
+              [width] = "'20vw'"
+              *ngIf="this.form.get('weMeasureTypeEnumId')"
+              label="Measure Type"
+              [required]="true"
+              [options]="dropdownWeMeasureType"
+              controlName="weMeasureTypeEnumId"
+            />
+          </gzoom-row-flex>
+
+          <gzoom-row-flex>
+            <gzoom-label-input-text-area
+              *ngIf="this.form.get('uomDescr')"
+              [style]="
+                'width: ' +
+                (('BILING' | i18nLangType) ? 49 : 100) +
+                '%; min-width: 300px'
+              "
+              label="Description"
+              [required]="false"
+              flag="0"
+              maxLength="2000"
+              controlName="uomDescr"
+            />
+
+            <gzoom-label-input-text-area
+              *ngIf="this.form.get('uomDescrLang') && 'BILING' | i18nLangType"
+              [style]="'width: 49%; min-width: 300px'"
+              label="Description"
+              [required]="false"
+              flag="1"
+              maxLength="2000"
+              controlName="uomDescrLang"
+            />
+          </gzoom-row-flex>
+          <gzoom-row-flex>
+            <gzoom-label-input-text-area
+              *ngIf="this.form.get('comments')"
+              [style]="
+                'width: ' +
+                (('BILING' | i18nLangType) ? 49 : 100) +
+                '%;  min-width: 300px'
+              "
+              label="Comment"
+              [required]="false"
+              flag="0"
+              maxLength="2000"
+              controlName="comments"
+            />
+            <gzoom-label-input-text-area
+              *ngIf="this.form.get('commentsLang') && 'BILING' | i18nLangType"
+              [style]="'width: 49%;  min-width: 300px'"
+              label="Comment"
+              [required]="false"
+              flag="1"
+              maxLength="2000"
+              controlName="commentsLang"
+            />
+          </gzoom-row-flex>
+        </p-accordionTab>
+        <p-accordionTab header="{{ 'Specific parameters' | i18n }}">
+          <gzoom-row-flex>
+            <gzoom-label-input-number
+              *ngIf="this.form.get('kpiScoreWeight')"
+              label="Weight"
+              [required]="true"
+              controlName="kpiScoreWeight"
+              mode="decimal"
+              [minFractionDigits]="2"
+            />
+            <gzoom-label-input-number
+              *ngIf="this.form.get('kpiOtherWeight')"
+              label="Other weight"
+              [required]="true"
+              controlName="kpiOtherWeight"
+              mode="decimal"
+              [minFractionDigits]="2"
+            />
+          </gzoom-row-flex>
+
+          <gzoom-row-flex>
+            <gzoom-label-input-dropdown
+            [width] = "'20vw'"
+              *ngIf="this.form.get('weScoreConvEnumId')"
+              label="We Score Conv Enum Id"
+              [required]="true"
+              [options]="dropdownWeScoreConvEnum"
+              controlName="weScoreConvEnumId"
+            />
+
+            <gzoom-label-input-dropdown
+            style="margin-left: 5vw;"
+              *ngIf="this.form.get('weWithoutPerf')"
+              label="We Without Perf"
+              [required]="true"
+              [options]="dropdownWeWithoutPerf"
+              controlName="weWithoutPerf"
+            />
+
+            <gzoom-label-input-dropdown
+              *ngIf="this.form.get('weScoreRangeEnumId')"
+              label="We Score Range Enum Id"
+              [required]="true"
+              [options]="dropdownWeScoreRangeEnum"
+              controlName="weScoreRangeEnumId"
+            />
+          </gzoom-row-flex>
+        </p-accordionTab>
+      </p-accordion>
+    </form>
+  </ng-template>
+</p-card>
+
+<p-confirmDialog></p-confirmDialog>

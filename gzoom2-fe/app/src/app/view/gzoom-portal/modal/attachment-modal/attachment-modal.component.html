@@ -1,0 +1,114 @@
+<gzoom-modal [loadingModal]="loading">
+  <gzoom-modal-header>
+    <h1>Allegato per obiettivo specifico</h1>
+  </gzoom-modal-header>
+
+  <gzoom-modal-body>
+    <div class="tip">
+      <i class="gzoom-icon gzoom-circle-info"></i>
+      <span>Esplicitare nel campo Descrizione l'indicatore a cui si fa riferimento.</span>
+    </div>
+    <gzoom-form>
+      <div class="input-group">
+        <span class="label">Obiettivo specifico</span>
+        <span style="padding: 0 8px;">{{ goal.name }}</span>
+      </div>
+      <!-- left here in case the client changes their mind :)
+            <div class="input-group input-group-row">
+              <span>Tipo contenuto:</span>
+              <span>Documento</span>
+            </div>
+
+            <div class="input-group input-group-row">
+              <div>
+                <span>Inizio validità:</span>
+                <span>{{(attachment? attachment.fromDate : goal?.fromDate) | date: 'dd/MM/yyyy'}}</span>
+              </div>
+              <div>
+                <span>Fine validità:</span>
+                <span>{{(attachment? attachment.thruDate : goal.thruDate) | date: 'dd/MM/yyyy'}}</span>
+              </div>
+            </div>
+      -->
+      <div class="input-group">
+        <div class="input-group input-group-row">
+          <label for="description">
+            Descrizione:
+            @if (editEnabled) {
+              <strong>(*)</strong>
+            }
+          </label>
+          <input type="text" id="description" name="description" [(ngModel)]="description"
+                 maxlength="{{descriptionMaxLength}}" [readonly]="!editEnabled" />
+        </div>
+        @if (editEnabled) {
+          <p class="text-length">{{ description ? description.length : 0 }}/{{ descriptionMaxLength }} caratteri</p>
+        }
+      </div>
+
+      <div class="input-group input-group-row">
+        <span class="label"
+              style="align-self: flex-end; height: 32px; color: #07254A; font-weight: 400; font-size: 14px;">
+          File:
+          @if (editEnabled) {
+            <strong>(*)</strong>
+          }
+        </span>
+        <div class="input-group" style="width: unset; gap: 2px;">
+          <span class="label">Allegato:</span>
+
+          @if (attachment) {
+            <div class="attachment-data">
+              <strong>File caricato:</strong>
+              <span>{{ attachment?.fileName }}</span>
+              @if (editEnabled) {
+                <gzoom-button (onClick)="confirmDelete($event)" [outlined]=true class="red">
+                  <i class="gzoom-icon gzoom-bin"></i>
+                </gzoom-button>
+              }
+              <gzoom-button (onClick)="download()" [outlined]=true>
+                <i class="gzoom-icon gzoom-file-arrow-down"></i>
+              </gzoom-button>
+            </div>
+
+          } @else {
+            @if (editEnabled) {
+              <div class="input-file">
+                <p-fileUpload
+                  mode="advanced"
+                  chooseIcon="pi pi-upload"
+                  chooseLabel="Scegli file"
+                  showUploadButton="false"
+                  showCancelButton="false"
+                  name="demo[]"
+                  accept=".pdf"
+                  invalidFileTypeMessageSummary=""
+                  invalidFileTypeMessageDetail="Il file non ha il formato PDF, l'unico ammesso."
+                  maxFileSize="{{fileMaxSize}}"
+                  invalidFileSizeMessageSummary=""
+                  invalidFileSizeMessageDetail="La dimensione del file non è valida. Il limite massimo è di {0}."
+                  customUpload="true"
+                  (onSelect)="onFileSelect($event)"
+                  (onRemove)="onFileClear($event)"
+                  styleClass="gzoom-form"
+                />
+                <span>Solo formato PDF, massimo 10 MB</span>
+              </div>
+            } @else {
+              Nessun file caricato.
+            }
+          }
+        </div>
+      </div>
+    </gzoom-form>
+  </gzoom-modal-body>
+
+  <gzoom-modal-footer>
+    <gzoom-button [label]="editEnabled? 'Annulla' : 'Chiudi'" (onClick)="closeModal()" [outlined]=true />
+    @if (editEnabled) {
+      <gzoom-button label="Salva" (onClick)="save()"
+                    [disabled]="isSaving || (!isDefined(description) || description === '') || (!isDefined(attachment) && !isDefined(file))"
+      />
+    }
+  </gzoom-modal-footer>
+</gzoom-modal>

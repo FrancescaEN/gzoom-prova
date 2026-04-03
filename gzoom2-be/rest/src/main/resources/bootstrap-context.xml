@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <ctx:annotation-config/>
+
+    <!--load it.memelabs.smartnebula.lmm.persistence.PersistenceConfiguration-->
+
+
+    <!--<import resource="classpath:/lmm/spring/security-context.xml"/>-->
+    <import resource="classpath:/lmm/spring/backend-context.xml"/>
+    <!--<import resource="classpath:file-manager-context.xml"/>-->
+    <!--<import resource="classpath:report-context.xml"/>-->
+    <!--<import resource="classpath:mail-context.xml"/>-->
+
+
+    <!--<bean id="esClientConfig" class="it.memelabs.smartnebula.lmm.es.service.ElasticSearchConfigImpl">
+        <constructor-arg name="esClusterSniff" value="${es.cluster.sniff}"/>
+        <constructor-arg name="esSocketHost" value="${es.socket.host}"/>
+        <constructor-arg name="esSocketPort" value="${es.socket.port}"/>
+        <constructor-arg name="esArchiveIndexName" value="${es.archive.index.name}"/>
+        <constructor-arg name="esAuditIndexName" value="${es.audit.index.name}"/>
+        <constructor-arg name="esWwlIndexName" value="${es.wwl.index.name}"/>
+        <constructor-arg name="esClusterName" value=""/>
+    </bean>
+    <import resource="classpath:/lmm/spring/elastic-search-context.xml"/>-->
+
+    <bean id="queryConfigReportTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="2"/>
+        <property name="maxPoolSize" value="5"/>
+        <property name="queueCapacity" value="5000"/>
+    </bean>
+</beans>

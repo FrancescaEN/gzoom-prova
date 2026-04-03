@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Procedimenti_Informazioni" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceProcedimenti" uuid="a6dd33a8-1f56-4efb-8eb9-abed98686d35">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box padding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3112" class="java.lang.String"/>
+	<parameter name="date3112sql" class="java.lang.String"/>
+	<parameter name="date0101" class="java.lang.String"/>
+	<parameter name="date0101sql" class="java.lang.String"/>
+	<parameter name="customTimePeriodP1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodP2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )+2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-1)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-2)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodM3" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( ""+(INTEGER_VALUE($P{customTimePeriod}.substring(0, 4) )-3)  + "-"+  $P{customTimePeriod}.substring(5, 7) + "-" + $P{customTimePeriod}.substring(8, 10) ): 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearP1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )+1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearP2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )+2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearM1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )-1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearM2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )-2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="yearM3" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[INTEGER_VALUE($P{customTimePeriod}.substring(0, 4 ) )-3]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_procedimento" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM ( 
+SELECT 
+	VPN.ID_PROCEDIMENTO AS ID_PROCEDIMENTO,
+	MAX(CASE WHEN VPN.SEQUENZA_NOTA = 110 THEN TO_CHAR(VPN.CONTENUTO_NOTA_IT) ELSE NULL END) AS SERVIZIO_IT,
+	MAX(CASE WHEN VPN.SEQUENZA_NOTA = 110 THEN TO_CHAR(VPN.CONTENUTO_NOTA_DE) ELSE NULL END) AS SERVIZIO_DE,
+	MAX(CASE WHEN VPN.SEQUENZA_NOTA = 120 THEN TO_CHAR(VPN.CONTENUTO_NOTA_IT) ELSE NULL END) AS NORMATIVA_IT,
+	MAX(CASE WHEN VPN.SEQUENZA_NOTA = 120 THEN TO_CHAR(VPN.CONTENUTO_NOTA_DE) ELSE NULL END) AS NORMATIVA_DE
+FROM 
+	VW_PROCEDIMENTI_NOTE VPN 
+GROUP BY 
+    VPN.ID_PROCEDIMENTO)
+WHERE ID_PROCEDIMENTO = $P{id_procedimento}]]>
+	</queryString>
+	<field name="ID_PROCEDIMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_PROCEDIMENTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_PROCEDIMENTO"/>
+	</field>
+	<field name="SERVIZIO_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SERVIZIO_IT"/>
+		<property name="com.jaspersoft.studio.field.name" value="SERVIZIO_IT"/>
+	</field>
+	<field name="SERVIZIO_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SERVIZIO_DE"/>
+		<property name="com.jaspersoft.studio.field.name" value="SERVIZIO_DE"/>
+	</field>
+	<field name="NORMATIVA_IT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NORMATIVA_IT"/>
+		<property name="com.jaspersoft.studio.field.name" value="NORMATIVA_IT"/>
+	</field>
+	<field name="NORMATIVA_DE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NORMATIVA_DE"/>
+		<property name="com.jaspersoft.studio.field.name" value="NORMATIVA_DE"/>
+	</field>
+	<detail>
+		<band height="45">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="822" height="15" isRemoveLineWhenBlank="true" forecolor="#383838" backcolor="#F5F5F5" uuid="9387817e-32a0-4757-a140-6c08b4c8df00">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.1"/>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Informazioni}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement positionType="Float" x="0" y="15" width="822" height="15" isRemoveLineWhenBlank="true" uuid="c1e7e525-2e7e-4075-99de-687e543f1269">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{SERVIZIO_IT}!=null &&  $F{SERVIZIO_IT}!="" ): 
+($F{SERVIZIO_DE}!=null &&  $F{SERVIZIO_DE}!="")]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" forecolor="#333333" backcolor="#FFFFFF" uuid="547b0cd2-d6f3-4477-b6c7-636b9debb661">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Justified">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{LinkServizio}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="200" y="0" width="622" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="8ff6ed35-a1cb-4209-aabc-d960f45195bb">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Justified">
+						<font size="8" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+($F{SERVIZIO_IT}): 
+($F{SERVIZIO_DE})]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="30" width="822" height="15" isRemoveLineWhenBlank="true" uuid="4f5558a5-5b6a-4f14-bf9b-c1f0d92609e8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="0" y="0" width="200" height="15" isRemoveLineWhenBlank="true" forecolor="#333333" backcolor="#FFFFFF" uuid="3bfad20b-ce28-446c-8b02-e58f9a5b7f63">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Justified">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{NormativaRiferimento}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="TextFieldStyle" positionType="Float" stretchType="ElementGroupHeight" mode="Transparent" x="200" y="0" width="622" height="15" forecolor="#333333" backcolor="#FFFFFF" uuid="0f9a5e69-b7cd-478a-aa75-72bf4e6c995d">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box bottomPadding="2">
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textElement textAlignment="Justified">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{langLocale}.equals("_LANG") ? 
+(TRIM($F{NORMATIVA_IT})): 
+(TRIM($F{NORMATIVA_DE}))]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

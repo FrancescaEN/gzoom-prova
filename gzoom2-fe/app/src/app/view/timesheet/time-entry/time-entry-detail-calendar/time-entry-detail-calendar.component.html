@@ -1,0 +1,167 @@
+<app-overlay-screen></app-overlay-screen>
+
+<p-toast></p-toast>
+
+<!-- Messages Error -->
+<p-messages [(value)]="messagesError" [enableService]="false"></p-messages>
+
+<app-information-bar [bodyBarArray]="bodyBarArray"></app-information-bar>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table
+      [gridArray]="gridArray"
+      [buttonBack]="true"
+      [backLinkRelToThisRoute]="backLink"
+      [buttonDelete]="buttonDelete"
+      [buttonSave]="buttonSave"
+      [buttonNew]="buttonNew"
+      [bldx]="buttonValidation"
+      [bldx2]="buttonValidationReopen"
+      [dataTable]="dataTable"
+      (buttonNewEvent)="openNew()"
+      (deleteEvent)="deleteRowSelected()"
+      (saveEvent)="saveAllElement()"
+      (bldxEvent)="validation()"
+      (bldx2Event)="reopen()"
+    ></app-toolbar-data-table
+  ></ng-template>
+  <ng-template pTemplate="body">
+    <div *ngIf="loading" class="d-flex justify-content-center">
+      <p-progressSpinner
+        [style]="{ width: '50px', height: '50px' }"
+        styleClass="custom-spinner"
+        strokeWidth="8"
+        fill="var(--surface-ground)"
+        animationDuration=".5s"
+      ></p-progressSpinner>
+    </div>
+    <app-table-calendar
+      *ngIf="!loading"
+      [isAction]="true"
+      [headWorkEffortArray]="headWorkEffortArray"
+      [headRateTypeArray]="headRateTypeArray"
+      [numberArray]="numberArray"
+      [totalHoursRowArray]="totalHoursRowArray"
+      [footerArray]="footerArray"
+      [selectedOn]="selectedOn"
+      [gridArray]="gridArray"
+      [editingCell]="true"
+      [scrollHeight]="'70vh'"
+      [formShape]="range"
+      [editingKeyId]="editingKeyId"
+      (dblclickRowEvent)="dblclickRowEvent($event)"
+      [typeDropdownInputArray]="workEffortsName"
+      (shareDescriptorTable)="shareDescriptorTable($event)"
+      (selectedItemDropdown)="selectedItemDropdown($event)"
+      (onBlurCell)="save($event)"
+      (notifyInputChanges)="notifyInputChanges($event)"
+      (shareSelectionItem)="shareSelectionItem($event)"
+    ></app-table-calendar>
+  </ng-template>
+</p-card>
+
+<!-- ###################CONFIRM DELETE #################### -->
+
+<p-confirmDialog #cd [style]="{ width: '450px' }">
+  <ng-template pTemplate="header" icon="pi pi-times-circle">
+    <h3>{{ "Attention" | i18n }}</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times-circle"
+      label="No"
+      (click)="cd.reject()"
+      aria-label="select no"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      label="Yes"
+      (click)="cd.accept()"
+      aria-label="select yes"
+    ></button>
+  </ng-template>
+</p-confirmDialog>
+
+<p-dialog
+  *ngIf="headerDateDialog"
+  header="{{ headerDateDialog }} {{
+    timeEntryRowDblClicked.workEffortName | i18n
+  }} - {{ timeEntryRowDblClicked.rateTypeIdDescription }}"
+  [(visible)]="displayModal"
+  [style]="{ width: '50vw' }"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+>
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-3">
+        <label for="hours">{{ "Hours" | i18n }}</label>
+        <p-inputNumber
+          pInputNumber
+          inputId="hours"
+          [(ngModel)]="timeEntryDisplayModal.hours"
+          [ngStyle]="{ width: '100%' }"
+          type="number"
+          size="2"
+          pInputMask="9*"
+          attr.aria-label="{{ 'Input data here' | i18n }}"
+          required="true"
+        ></p-inputNumber>
+      </div>
+
+      <div class="col-3" *ngIf="params.showOrderId != 'N'">
+        <label for="orderId">{{ "OrderId" | i18n }}</label>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          [(ngModel)]="timeEntryDisplayModal.orderId"
+          attr.aria-label="{{ 'Input data here' | i18n }}"
+        />
+      </div>
+
+      <div class="col-3" *ngIf="params.showJobId != 'N'">
+        <label for="jobId">{{ "JobId" | i18n }}</label>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          [(ngModel)]="timeEntryDisplayModal.jobId"
+          attr.aria-label="{{ 'Input data here' | i18n }}"
+        />
+      </div>
+    </div>
+
+    <div class="row mb-3" *ngIf="params.showComments != 'N'">
+      <label for="comments">{{ "Comments" | i18n }}</label>
+      <textarea
+        inputId="comments"
+        style="width: 90%; margin-left: 1em; margin-right: 1em"
+        pInputTextarea
+        autoResize="autoResize"
+        attr.aria-label="{{ 'Input data here' | i18n }}"
+        [(ngModel)]="timeEntryDisplayModal.comments"
+        type="string"
+      ></textarea>
+    </div>
+
+    <div class="row-2">
+      <button
+        pButton
+        class="p-button-raised"
+        pRipple
+        label="{{ 'Save' | i18n }}"
+        (click)="saveSingleTimeEntry(timeEntryDisplayModal)"
+        icon="pi pi-save"
+        attr.aria-label="{{ 'Save' | i18n }}"
+        role="button"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

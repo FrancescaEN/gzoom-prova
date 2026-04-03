@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TablePart" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" isSummaryNewPage="true" isFloatColumnFooter="true" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="5c559f3e-b23b-4cd4-a579-7ed7c0d2b615">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="810"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="730"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="257"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId}  != null && $P{orgUnitId}  != "" ? 
+	" AND ('" + $P{orgUnitId}  + "' IS NULL OR '"  + $P{orgUnitId}  + "' = ID_STRUTTURA_DIPARTIMENTO OR '"
+	+ $P{orgUnitId}  + "' = ID_STRUTTURA_RIPARTIZIONE OR '"
+	+ $P{orgUnitId}  + "' = ID_STRUTTURA_UFFICIO ) "
+: " "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="monitoringDate" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId},$P{langLocale})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="monitoringDateString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{monitoringDate}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("9",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{monitoringDate}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3009}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ (  $P{customTimePeriod}.substring(8, 10) + "/"+  $P{customTimePeriod}.substring(5, 7) + "/" + $P{customTimePeriod}.substring(0, 4)) : 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted0101" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( "01/01/" + $P{customTimePeriod}.substring(0, 4)) : 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterCustomTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ? 
+("TO_DATE(DATA_INIZIO,'DD/MM/YYYY') <= TO_DATE('" + $P{customTimePeriodFormatted} + "','DD/MM/YYYY') AND TO_DATE(DATA_FINE,'DD/MM/YYYY') >= TO_DATE('" + $P{customTimePeriodFormatted0101} + "','DD/MM/YYYY')" ) : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LogoHeaderPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_HEADER",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterCustomTimePeriod_Prest" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ? 
+("TO_DATE(DATA_INIZIO_PRESTAZIONE,'DD/MM/YYYY') <= TO_DATE('" + $P{customTimePeriodFormatted} + "','DD/MM/YYYY') AND TO_DATE(DATA_FINE_PRESTAZIONE,'DD/MM/YYYY') >= TO_DATE('" + $P{customTimePeriodFormatted0101} + "','DD/MM/YYYY')" ) : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted3112" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( "31/12/" + $P{customTimePeriod}.substring(0, 4)) : 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112String" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ($P{customTimePeriod}.substring(0, 4) + "-12-31") : 
+""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101String" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ?
+ ( $P{customTimePeriod}.substring(0, 4) + "-01-01") : 
+""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select VW.* ,
+VW.NOME_DIPARTIMENTO$P!{langLocale} as nomeDipartimento, 
+VW.NOME_RIPARTIZIONE$P!{langLocale} as nomeRipartizione, 
+VW.NOME_UFFICIO$P!{langLocale} as nomeUfficio,
+(SELECT COUNT(*) FROM WORK_EFFORT we
+WHERE WE.ORG_UNIT_ID=VW.ID_STRUTTURA_UFFICIO AND WE.WORK_EFFORT_TYPE_ID IN ('20C42')
+AND we.estimated_start_date<=TO_DATE( $P{customTimePeriodFormatted3112} ,'DD/MM/YYYY') AND we.estimated_completion_date>=TO_DATE( $P{customTimePeriodFormatted0101} ,'DD/MM/YYYY')
+)AS CONTA_SCHEDE_PREST
+/*QUERY OSSATURA PRESTAZIONI */
+from VW_OSSATURA VW
+inner join work_effort FIL_W on FIL_W.work_effort_id = VW.id_scheda
+/* START filterInnerJoin */
+   $P!{filterInnerJoinString} 
+/* END filterInnerJoin */
+/* START filterLeftJoin */
+  $P!{filterLeftJoinString} 
+/* END filterLeftJoin */
+where $P!{filterCustomTimePeriod} 
+/* START filterWhere */
+ $P!{filterWhereString} 
+   /* END filterWhere */
+ $P!{orgUnitIdString}
+ ORDER BY CODICE_ESTERNO_DIPARTIMENTO, CODICE_ESTERNO_RIPARTIZIONE, CODICE_ESTERNO_UFFICIO,cast(REGEXP_REPLACE(fil_w.etch, '[^0-9]', '')as integer)]]>
+	</queryString>
+	<field name="CODICE_ESTERNO_DIPARTIMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CODICE_ESTERNO_DIPARTIMENTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="CODICE_ESTERNO_DIPARTIMENTO"/>
+	</field>
+	<field name="NOME_DIPARTIMENTO_LANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_DIPARTIMENTO_LANG"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_DIPARTIMENTO_LANG"/>
+	</field>
+	<field name="NOME_DIPARTIMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_DIPARTIMENTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_DIPARTIMENTO"/>
+	</field>
+	<field name="CODICE_ESTERNO_RIPARTIZIONE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CODICE_ESTERNO_RIPARTIZIONE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CODICE_ESTERNO_RIPARTIZIONE"/>
+	</field>
+	<field name="NOME_RIPARTIZIONE_LANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_RIPARTIZIONE_LANG"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_RIPARTIZIONE_LANG"/>
+	</field>
+	<field name="NOME_RIPARTIZIONE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_RIPARTIZIONE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_RIPARTIZIONE"/>
+	</field>
+	<field name="CODICE_ESTERNO_UFFICIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CODICE_ESTERNO_UFFICIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="CODICE_ESTERNO_UFFICIO"/>
+	</field>
+	<field name="NOME_UFFICIO_LANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_UFFICIO_LANG"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_UFFICIO_LANG"/>
+	</field>
+	<field name="NOME_UFFICIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_UFFICIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_UFFICIO"/>
+	</field>
+	<field name="SEQUENZA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="SEQUENZA"/>
+		<property name="com.jaspersoft.studio.field.label" value="SEQUENZA"/>
+	</field>
+	<field name="TIPOLOGIA_SCHEDA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TIPOLOGIA_SCHEDA"/>
+		<property name="com.jaspersoft.studio.field.label" value="TIPOLOGIA_SCHEDA"/>
+	</field>
+	<field name="CODICE_SCHEDA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CODICE_SCHEDA"/>
+		<property name="com.jaspersoft.studio.field.label" value="CODICE_SCHEDA"/>
+	</field>
+	<field name="NOME_SCHEDA_LANG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_SCHEDA_LANG"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_SCHEDA_LANG"/>
+	</field>
+	<field name="NOME_SCHEDA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_SCHEDA"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_SCHEDA"/>
+	</field>
+	<field name="ID_SCHEDA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_SCHEDA"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_SCHEDA"/>
+	</field>
+	<field name="DATA_INIZIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DATA_INIZIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="DATA_INIZIO"/>
+	</field>
+	<field name="DATA_FINE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DATA_FINE"/>
+		<property name="com.jaspersoft.studio.field.label" value="DATA_FINE"/>
+	</field>
+	<field name="ID_STRUTTURA_DIPARTIMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_STRUTTURA_DIPARTIMENTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_STRUTTURA_DIPARTIMENTO"/>
+	</field>
+	<field name="ID_STRUTTURA_RIPARTIZIONE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_STRUTTURA_RIPARTIZIONE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_STRUTTURA_RIPARTIZIONE"/>
+	</field>
+	<field name="ID_STRUTTURA_UFFICIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_STRUTTURA_UFFICIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_STRUTTURA_UFFICIO"/>
+	</field>
+	<field name="NOMEDIPARTIMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMEDIPARTIMENTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMEDIPARTIMENTO"/>
+	</field>
+	<field name="NOMERIPARTIZIONE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMERIPARTIZIONE"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMERIPARTIZIONE"/>
+	</field>
+	<field name="NOMEUFFICIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMEUFFICIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMEUFFICIO"/>
+	</field>
+	<field name="CONTA_SCHEDE_PREST" class="java.lang.Integer"/>
+	<sortField name="Dipartimento" type="Variable"/>
+	<sortField name="Ripartizione" type="Variable"/>
+	<sortField name="Ufficio" type="Variable"/>
+	<variable name="Dipartimento" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODICE_ESTERNO_DIPARTIMENTO}]]></variableExpression>
+	</variable>
+	<variable name="Ripartizione" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODICE_ESTERNO_RIPARTIZIONE}]]></variableExpression>
+	</variable>
+	<variable name="Ufficio" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODICE_ESTERNO_UFFICIO}]]></variableExpression>
+	</variable>
+	<group name="CodiceDipartimentoGruppo" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{CODICE_ESTERNO_DIPARTIMENTO}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField textAdjust="ScaleFont" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="802" height="20" isRemoveLineWhenBlank="true" backcolor="#A6A6A6" uuid="9001ceeb-4021-44ce-8f47-4dcc3df84bac">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($P{orgUnitId}==null || $P{orgUnitId}=="" || $P{orgUnitId}.equals($F{ID_STRUTTURA_DIPARTIMENTO}))]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NOMEDIPARTIMENTO}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="CodiceRipartizioneGruppo">
+		<groupExpression><![CDATA[$F{CODICE_ESTERNO_RIPARTIZIONE}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField textAdjust="ScaleFont" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="802" height="20" isRemoveLineWhenBlank="true" backcolor="#D1D1D1" uuid="43fbc09e-ab23-4f3e-9edc-0d1c4841298b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($P{orgUnitId}==null || $P{orgUnitId}=="" ||$P{orgUnitId}.equals($F{ID_STRUTTURA_RIPARTIZIONE}) ||$P{orgUnitId}.equals($F{ID_STRUTTURA_DIPARTIMENTO}))]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NOMERIPARTIZIONE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="CodiceUfficioGruppo">
+		<groupExpression><![CDATA[$F{CODICE_ESTERNO_UFFICIO}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField textAdjust="ScaleFont" isBlankWhenNull="true" hyperlinkType="LocalAnchor">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="802" height="20" isRemoveLineWhenBlank="true" backcolor="#EBEBEB" uuid="8d54b3ad-41ca-4ee5-a23d-89c51f788a72">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[(($P{reportContentId}.equals( "REPORT_PREV_PPAP_JR") ||
+$P{reportContentId}.equals( "REPORT_VAL_PPAP_JR") ||
+$P{reportContentId}.equals( "REPORT_PRE_PPAP_JR") || 
+$P{reportContentId}.equals( "REPORT_VPRE_PPAP_JR")) &&
+($P{workEffortTypeId}.equals( "CTX_BS" ) || 
+$P{workEffortTypeId}.equals( "20C42" ))&& 
+$F{CONTA_SCHEDE_PREST}>0)]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NOMEUFFICIO}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<pageHeader>
+		<band>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="15" splitType="Immediate">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="802" height="15" isRemoveLineWhenBlank="true" uuid="29af4b50-040a-4530-a23f-ddd539ec1c21">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="ReportTitle">
+					<subreportParameterExpression><![CDATA[$P{ReportTitle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="langLocale">
+					<subreportParameterExpression><![CDATA[$P{langLocale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="defaultOrganizationPartyId">
+					<subreportParameterExpression><![CDATA[$P{defaultOrganizationPartyId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orgUnitId">
+					<subreportParameterExpression><![CDATA[$P{orgUnitId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orgUnitIdString">
+					<subreportParameterExpression><![CDATA[$P{orgUnitIdString}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="localDispatcherName">
+					<subreportParameterExpression><![CDATA[$P{localDispatcherName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="userLoginId">
+					<subreportParameterExpression><![CDATA[$P{userLoginId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monitoringDate">
+					<subreportParameterExpression><![CDATA[$P{monitoringDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="filterWhere">
+					<subreportParameterExpression><![CDATA[$P{filterWhere}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="filterLeftJoin">
+					<subreportParameterExpression><![CDATA[$P{filterLeftJoin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="filterInnerJoin">
+					<subreportParameterExpression><![CDATA[$P{filterInnerJoin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3112">
+					<subreportParameterExpression><![CDATA[$P{date3112}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3112sql">
+					<subreportParameterExpression><![CDATA[$P{date3112sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="odaDialect">
+					<subreportParameterExpression><![CDATA[$P{odaDialect}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date0101">
+					<subreportParameterExpression><![CDATA[$P{date0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date0101sql">
+					<subreportParameterExpression><![CDATA[$P{date0101sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Company">
+					<subreportParameterExpression><![CDATA[$P{Company}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ReportSmallPath">
+					<subreportParameterExpression><![CDATA[$P{ReportSmallPath}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="IconNavPath">
+					<subreportParameterExpression><![CDATA[$P{IconNavPath}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="workEffortTypeId">
+					<subreportParameterExpression><![CDATA[$P{workEffortTypeId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="reportContentId">
+					<subreportParameterExpression><![CDATA[$P{reportContentId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="filterWhereString">
+					<subreportParameterExpression><![CDATA[$P{filterWhereString}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="filterLeftJoinString">
+					<subreportParameterExpression><![CDATA[$P{filterLeftJoinString}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="filterInnerJoinString">
+					<subreportParameterExpression><![CDATA[$P{filterInnerJoinString}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="monitoringDateString">
+					<subreportParameterExpression><![CDATA[$P{monitoringDateString}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="personId">
+					<subreportParameterExpression><![CDATA[$P{personId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="workEffortId">
+					<subreportParameterExpression><![CDATA[$P{workEffortId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3009">
+					<subreportParameterExpression><![CDATA[$P{date3009}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3009sql">
+					<subreportParameterExpression><![CDATA[$P{date3009sql}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="exposePaginator">
+					<subreportParameterExpression><![CDATA[$P{exposePaginator}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customTimePeriodFormatted0101">
+					<subreportParameterExpression><![CDATA[$P{customTimePeriodFormatted0101}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="filterCustomTimePeriod">
+					<subreportParameterExpression><![CDATA[$P{filterCustomTimePeriod}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LogoHeaderPath">
+					<subreportParameterExpression><![CDATA[$P{LogoHeaderPath}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_prestazione">
+					<subreportParameterExpression><![CDATA[$F{ID_SCHEDA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="filterCustomTimePeriod_Prest">
+					<subreportParameterExpression><![CDATA[$P{filterCustomTimePeriod_Prest}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date0101String">
+					<subreportParameterExpression><![CDATA[$P{date0101String}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="date3112String">
+					<subreportParameterExpression><![CDATA[$P{date3112String}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Perf_Strat_CatalogoPrest.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+</jasperReport>

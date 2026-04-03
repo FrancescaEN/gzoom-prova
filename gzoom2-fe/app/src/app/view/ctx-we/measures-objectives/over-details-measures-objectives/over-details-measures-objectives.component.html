@@ -1,0 +1,23 @@
+<gzoom-tab-menu [activeIndexTabView]="activeIndexTabView" class="mobile" *ngIf="menuDetails"
+    [itemsn]="itemsn"></gzoom-tab-menu>
+<div style="
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: nowrap;
+        gap: 5px;
+        height: fit-content;
+      ">
+    <p-toast ></p-toast>
+    <!-- <div class="no-mobile" *ngIf="menuDetails">
+        <p-menu  #menu  id="menu-detail" [model]="itemsn"  [popup]="true"
+        routerLinkActive="active-link"></p-menu>
+        <button  pButton type="button" (click)="menu.toggle($event)" icon="pi pi-bars" ></button>
+    </div > -->
+
+    <p-menu class="no-mobile" *ngIf="menuDetails" #menu  id="menu-detail" [model]="itemsn"
+    routerLinkActive="active-link"></p-menu>
+
+    <div style="flex-grow: 2">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_Strat_Personale" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="PerformanceRiepStrategicaOperativa" uuid="b1826acb-7e31-452e-a967-7fa0a3a01dd7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle_bolzano"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="net.sf.jasperreports.default.locale" value="it_IT"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="175"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="819"/>
+	<style name="Default" isDefault="true" isBlankWhenNull="true" fontSize="8">
+		<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+	</style>
+	<style name="TextFieldStyle" fontSize="8">
+		<box topPadding="2" bottomPadding="2"/>
+	</style>
+	<parameter name="work_effort_id_ob" class="java.lang.String"/>
+	<parameter name="monitoringDateString" class="java.lang.String"/>
+	<parameter name="langLocale" class="java.lang.String"/>
+	<parameter name="filterCustomTimePeriod_Note" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{customTimePeriod} != null ? 
+("AND TO_DATE(DATA_RIFERIMENTO_NOTA,'DD/MM/YYYY') = TO_DATE('" + $P{customTimePeriodFormatted0101} + "','DD/MM/YYYY')" ) : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodFormatted0101" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+	OBO.WORK_EFFORT_ID AS ID_OBIETTIVO_OPERATIVO,
+	PERS.NOME AS NOME_PERSONA_ASSEGNATA
+/* OBIETTIVO OPERATIVO */
+FROM WORK_EFFORT OBO
+/* PERSONALE ASSEGNATO */
+LEFT JOIN (
+	SELECT 
+		PE.PARTY_ID, WEPA.WORK_EFFORT_ID, PPRSOGG.PARENT_ROLE_CODE, SOGG.PARTY_NAME AS NOME, PE.EMPL_POSITION_TYPE_ID, QUAL.PARTY_NAME_LANG, QUAL.PARTY_NAME, PE.EMPLOYMENT_AMOUNT
+	FROM WORK_EFFORT_PARTY_ASSIGNMENT WEPA
+	JOIN PARTY SOGG ON SOGG.PARTY_ID = WEPA.PARTY_ID
+	JOIN PARTY_PARENT_ROLE PPRSOGG ON PPRSOGG.PARTY_ID = SOGG.PARTY_ID
+	JOIN PERSON PE ON PE.PARTY_ID = SOGG.PARTY_ID
+	LEFT JOIN PARTY_RELATIONSHIP PR ON PR.PARTY_ID_FROM = SOGG.PARTY_ID AND PR.PARTY_RELATIONSHIP_TYPE_ID = 'QUALIF' AND PR.THRU_DATE IS NULL
+	LEFT JOIN PARTY QUAL ON QUAL.PARTY_ID = PR.PARTY_ID_TO 
+) PERS ON PERS.WORK_EFFORT_ID = OBO.WORK_EFFORT_ID 
+WHERE OBO.WORK_EFFORT_TYPE_ID = '20P46' AND OBO.WORK_EFFORT_REVISION_ID IS NULL 
+AND OBO.WORK_EFFORT_ID = $P{work_effort_id_ob}/* PASSATO DA SOPRA */
+GROUP BY OBO.WORK_EFFORT_ID,PERS.NOME
+ORDER BY PERS.NOME]]>
+	</queryString>
+	<field name="ID_OBIETTIVO_OPERATIVO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_OBIETTIVO_OPERATIVO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_OBIETTIVO_OPERATIVO"/>
+	</field>
+	<field name="NOME_PERSONA_ASSEGNATA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_PERSONA_ASSEGNATA"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOME_PERSONA_ASSEGNATA"/>
+	</field>
+	<variable name="AGGREGATION" class="java.lang.String" resetType="Group" resetGroup="Gruppo1">
+		<variableExpression><![CDATA[$V{AGGREGATION} 
++ ($V{AGGREGATION}.isEmpty() ? "<html>" : "<br/>") 
++ (
+    $F{NOME_PERSONA_ASSEGNATA} != null && !$F{NOME_PERSONA_ASSEGNATA}.isEmpty()
+        ? $F{NOME_PERSONA_ASSEGNATA}
+        : ""
+) 
++ "&nbsp;&nbsp;&nbsp;"]]></variableExpression>
+		<initialValueExpression><![CDATA[""]]></initialValueExpression>
+	</variable>
+	<group name="Gruppo1">
+		<groupExpression><![CDATA[$F{ID_OBIETTIVO_OPERATIVO}]]></groupExpression>
+		<groupFooter>
+			<band height="15">
+				<frame borderSplitType="DrawBorders">
+					<reportElement mode="Transparent" x="0" y="0" width="802" height="15" backcolor="#FFFFFF" uuid="3fac5fc0-ac7f-46ad-af5b-9f7506cd9a76">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.1" lineColor="#767171"/>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+					</box>
+					<textField textAdjust="StretchHeight" evaluationTime="Report" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="200" height="15" forecolor="#767171" backcolor="#F5F5F5" uuid="0ca396cb-b61a-4a53-9bdc-a4c07201269d"/>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement verticalAlignment="Middle">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{PersonaleAssegnato}]]></textFieldExpression>
+					</textField>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement style="TextFieldStyle" mode="Opaque" x="200" y="0" width="602" height="15" isRemoveLineWhenBlank="true" uuid="abd9005e-b53e-44b5-96f3-dad27189c051">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<printWhenExpression><![CDATA[$V{AGGREGATION}!= null && $V{AGGREGATION}!=""]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.1" lineColor="#767171"/>
+							<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+							<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#767171"/>
+						</box>
+						<textElement markup="html"/>
+						<textFieldExpression><![CDATA[$V{AGGREGATION}+"</html>"]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+</jasperReport>

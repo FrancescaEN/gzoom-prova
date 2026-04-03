@@ -1,0 +1,1048 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TablePart" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" isSummaryNewPage="true" isFloatColumnFooter="true" resourceBundle="RegistroTrattamentiResponsabile" uuid="5c559f3e-b23b-4cd4-a579-7ed7c0d2b615">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="postres_arpacalabria"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="810"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="680"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="308"/>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId}  != null && $P{orgUnitId}  != "" ? " AND FIL_W.ORG_UNIT_ID = '"+ $P{orgUnitId} + "'" : " AND FIL_W.ORG_UNIT_ID like '%%'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["GDPRPERF"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["admin"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020/01/01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),INTEGER_VALUE($P{customTimePeriod}.substring(0,4)), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),INTEGER_VALUE($P{customTimePeriod}.substring(0,4)), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select 
+	wet.etch as TIPOLOGIA_TRATTAMENTO,
+	FIL_W.work_effort_name as NOME_TRATTAMENTO,
+	FIL_W.etch as ETCH_TRATTAMENTO, FIL_W.source_reference_id as CODICE_TRATTAMENTO,
+	FIL_W.estimated_start_date as DATA_INIZIO_TRATTAMENTO, FIL_W.estimated_completion_date as DATA_FINE_TRATTAMENTO,
+	concat(pprstrutt.parent_role_code, ' - ', strutt.party_name) as UNITA_RESPONSABILE,
+	/* DESCRIZIONE TRATTAMENTO */
+	note.NOME_DESCRIZIONE as nome1, note.DESCRIZIONE as info1,
+	folder.nome_cat as nome2, tra.lista as info2,
+	car.nome_indic3 as nome3, car.indic3 as info3,
+	car.nome_indic1 as nome4, car.indic1 as info4,
+	car.nome_indic6 as nome5, car.indic6 as info5,
+	car.nome_indic2 as nome6, car.indic2 as info6,
+	car.nome_indic5 as nome7, car.indic5 as info7,
+	/* SOGGETTI COINVOLTI */
+	note.NOME_TIT_TRAT as nome8, note.TIT_TRAT as info8,
+	note.NOME_RAPP_TIT as nome9, note.RAPP_TIT as info9,
+	note.NOME_CONTATTO as nome10, note.CONTATTO as info10,
+	note.NOME_RESP_SUB as nome11, note.RESP_SUB as info11,
+	note.NOME_RAPP_RES as nome12, note.RAPP_RES as info12,
+	car.nome_indic7 as nome13, car.indic7 as info13,
+	car.nome_indic8 as nome14, car.indic8 as info14,
+	/* GESTIONE DATI */
+	'Misure organizzative' as nome15, miso.lista as info15,
+	'Misure tecniche' as nome16, mist.lista as info16,
+	'Categorie particolari di dati personali' as nome17, catp.lista as info17,
+	'Categorie di dati personali' as nome18, cat.lista as info18,
+	note.NOME_TRASF as nome19, note.TRASF as info19,
+	car.nome_indic4 as nome20, car.indic4 as info20
+/* TRATTAMENTO */
+from work_effort FIL_W
+join work_effort_type wet on wet.work_effort_type_id = FIL_W.work_effort_type_id
+/* UNITA' RESPONSABILE */
+join party strutt on strutt.party_id = FIL_W.org_unit_id
+join party_parent_role pprstrutt on pprstrutt.party_id = strutt.party_id
+/* NOMI DEI FOLDER */
+left join (
+	select 
+		WETC.WORK_EFFORT_TYPE_ID,
+		MAX(case when WETC.CONTENT_ID = 'WEFLD_IND' then WETC.ETCH else null END) as NOME_CAT,
+		MAX(case when WETC.CONTENT_ID = 'WEFLD_IND3' then WETC.ETCH else null END) as NOME_MIS,
+		MAX(case when WETC.CONTENT_ID = 'WEFLD_IND4' then WETC.ETCH else null END) as NOME_DATI
+	from WORK_EFFORT_TYPE_CONTENT WETC
+	group by
+		WETC.WORK_EFFORT_TYPE_ID
+) FOLDER on FOLDER.WORK_EFFORT_TYPE_ID = WET.WORK_EFFORT_TYPE_ID 
+/* NOTE */
+left join (
+	select
+		wen.work_effort_id,
+		max(case when wen.sequence_id = 100 then nd.note_name else null end) as NOME_RESP_SUB,
+		max(case when wen.sequence_id = 100 then nd.note_info else null end) as RESP_SUB,
+		max(case when wen.sequence_id = 120 then nd.note_name else null end) as NOME_RAPP_RES,
+		max(case when wen.sequence_id = 120 then nd.note_info else null end) as RAPP_RES,
+		max(case when wen.sequence_id = 140 then nd.note_name else null end) as NOME_DESCRIZIONE,
+		max(case when wen.sequence_id = 140 then nd.note_info else null end) as DESCRIZIONE,
+		max(case when wen.sequence_id = 150 then nd.note_name else null end) as NOME_TRASF,
+		max(case when wen.sequence_id = 150 then nd.note_info else null end) as TRASF,
+		max(case when wen.sequence_id = 160 then nd.note_name else null end) as NOME_TIT_TRAT,
+		max(case when wen.sequence_id = 160 then nd.note_info else null end) as TIT_TRAT,
+		max(case when wen.sequence_id = 170 then nd.note_name else null end) as NOME_RAPP_TIT,
+		max(case when wen.sequence_id = 170 then nd.note_info else null end) as RAPP_TIT,
+		max(case when wen.sequence_id = 180 then nd.note_name else null end) as NOME_CONTATTO,
+		max(case when wen.sequence_id = 180 then nd.note_info else null end) as CONTATTO
+	from work_effort_note wen
+	join note_data nd on nd.note_id = wen.note_id
+	group by wen.work_effort_id 
+) note on note.work_effort_id = FIL_W.work_effort_id
+/* CATEGORIE TRATTAMENTI */
+left join (
+	select 
+		wem.work_effort_id,
+		string_agg(account_name, ',
+' order by account_name) as lista
+	from work_effort_measure wem
+	join gl_account gl on gl.gl_account_id = wem.gl_account_id 
+	join work_effort_purpose_account wepa on wepa.gl_account_id = wem.gl_account_id and wepa.work_effort_purpose_type_id = 'TRACAT'
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id and ate.amount = 100
+	group by
+		wem.work_effort_id 
+) tra on tra.work_effort_id = FIL_W.work_effort_id
+/* MISURE ORGANIZZATIVE */
+left join (
+	select 
+		wem.work_effort_id,
+		string_agg(account_name, ',
+' order by account_code) as lista
+	from work_effort_measure wem
+	join gl_account gl on gl.gl_account_id = wem.gl_account_id and (gl.account_code like 'MISSIC.0%' or gl.account_code like 'MISSIC.1%')
+	join work_effort_purpose_account wepa on wepa.gl_account_id = wem.gl_account_id and wepa.work_effort_purpose_type_id = 'MISSIC'
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id and ate.amount = 100
+	where gl.account_code != 'MISSIC.000' and gl.account_code != 'MISSIC.300'
+	group by
+		wem.work_effort_id 
+) miso on miso.work_effort_id = FIL_W.work_effort_id
+/* MISURE TECNICHE */
+left join (
+	select 
+		wem.work_effort_id,
+		string_agg(account_name, ',
+' order by account_code) as lista
+	from work_effort_measure wem
+	join gl_account gl on gl.gl_account_id = wem.gl_account_id and (gl.account_code like 'MISSIC.3%' or gl.account_code like 'MISSIC.4%')
+	join work_effort_purpose_account wepa on wepa.gl_account_id = wem.gl_account_id and wepa.work_effort_purpose_type_id = 'MISSIC'
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id and ate.amount = 100
+	group by
+		wem.work_effort_id 
+) mist on mist.work_effort_id = FIL_W.work_effort_id
+/* CARATTERISTICHE PRIVACY */
+left join (
+	select 
+		wem.work_effort_id,
+		max(case when gl.gl_account_id = '10050' then gl.account_name else null end) as nome_indic1,
+		max(case when gl.gl_account_id = '10051' then gl.account_name else null end) as nome_indic2,
+		max(case when gl.gl_account_id = '10032' then gl.account_name else null end) as nome_indic3,
+		max(case when gl.gl_account_id = '10063' then gl.account_name else null end) as nome_indic4,
+		max(case when gl.gl_account_id = '10041' then gl.account_name else null end) as nome_indic5,
+		max(case when gl.gl_account_id = '10052' then gl.account_name else null end) as nome_indic6,
+		max(case when gl.gl_account_id = '10031' then gl.account_name else null end) as nome_indic7,
+		max(case when gl.gl_account_id = '10060' then gl.account_name else null end) as nome_indic8,
+		max(case when gl.gl_account_id = '10050' then gamrs.uom_descr else null end) as indic1,
+		max(case when gl.gl_account_id = '10051' then gamrs.uom_descr else null end) as indic2,
+		max(case when gl.gl_account_id = '10032' then gamrs.uom_descr else null end) as indic3,
+		max(case when gl.gl_account_id = '10063' then gamrs.uom_descr else null end) as indic4,
+		max(case when gl.gl_account_id = '10041' then gamrs.uom_descr else null end) as indic5,
+		max(case when gl.gl_account_id = '10052' then gamrs.uom_descr else null end) as indic6,
+		max(case when gl.gl_account_id = '10031' then gamrs.uom_descr else null end) as indic7,
+		max(case when gl.gl_account_id = '10060' then gamrs.uom_descr else null end) as indic8
+	from work_effort_measure wem
+	join gl_account gl on gl.gl_account_id = wem.gl_account_id 
+	join work_effort_purpose_account wepa on wepa.gl_account_id = wem.gl_account_id and wepa.work_effort_purpose_type_id = 'TRACAR'
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id
+	join gl_account_meas_rat_sc gamrs on gamrs.gl_account_id = wem.gl_account_id 
+		and gamrs.uom_rating_value = ate.amount 
+	group by
+		wem.work_effort_id 
+) car on car.work_effort_id = FIL_W.work_effort_id
+/* CATEGORIE PARTICOLARI DATI PERSONALI */
+left join (
+	select 
+		wem.work_effort_id,
+		string_agg(account_name, ',
+' order by account_code) as lista
+	from work_effort_measure wem
+	join gl_account gl on gl.gl_account_id = wem.gl_account_id and gl.account_code like 'CATPARPER%'
+	join work_effort_purpose_account wepa on wepa.gl_account_id = wem.gl_account_id and wepa.work_effort_purpose_type_id = 'CATPER'
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id and ate.amount = 100
+	group by
+		wem.work_effort_id 
+) catP on catP.work_effort_id = FIL_W.work_effort_id
+/* CATEGORIE DATI PERSONALI */
+
+/* START filterInnerJoin */
+  $P!{filterInnerJoinString}
+/* END filterInnerJoin */
+/* START filterLeftJoin */
+  $P!{filterLeftJoinString}
+/* END filterLeftJoin */
+
+left join (
+	select 
+		wem.work_effort_id,
+		string_agg(account_name, ',
+' order by account_code) as lista
+	from work_effort_measure wem
+	join gl_account gl on gl.gl_account_id = wem.gl_account_id and gl.account_code like 'CATPER%'
+	join work_effort_purpose_account wepa on wepa.gl_account_id = wem.gl_account_id and wepa.work_effort_purpose_type_id = 'CATPER'
+	join acctg_trans_entry ate on ate.voucher_ref = wem.work_effort_measure_id and ate.amount = 100
+	group by
+		wem.work_effort_id 
+) cat on cat.work_effort_id = FIL_W.work_effort_id
+where FIL_W.work_effort_type_id = $P{workEffortTypeId} and FIL_W.work_effort_revision_id is null
+	and FIL_W.ESTIMATED_START_DATE <= $P{date3112} and (FIL_W.ESTIMATED_COMPLETION_DATE >= $P{date0101} or FIL_W.ESTIMATED_COMPLETION_DATE is null)
+ /* START orgUnitIdString */
+ $P!{orgUnitIdString}
+ /* END orgUnitIdString */
+  /* START filterWhere */
+  $P!{filterWhereString} 
+   /* END filterWhere */ 
+ORDER BY
+	FIL_W.ETCH]]>
+	</queryString>
+	<field name="tipologia_trattamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipologia_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipologia_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_type"/>
+	</field>
+	<field name="nome_trattamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="etch_trattamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="etch_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="etch_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="codice_trattamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codice_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="codice_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="data_inizio_trattamento" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="data_inizio_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_inizio_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="data_fine_trattamento" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="data_fine_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_fine_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="unita_responsabile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="unita_responsabile"/>
+		<property name="com.jaspersoft.studio.field.label" value="unita_responsabile"/>
+	</field>
+	<field name="nome1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome1"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome1"/>
+	</field>
+	<field name="info1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info1"/>
+		<property name="com.jaspersoft.studio.field.label" value="info1"/>
+	</field>
+	<field name="nome2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome2"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome2"/>
+	</field>
+	<field name="info2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info2"/>
+		<property name="com.jaspersoft.studio.field.label" value="info2"/>
+	</field>
+	<field name="nome3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome3"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome3"/>
+	</field>
+	<field name="info3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info3"/>
+		<property name="com.jaspersoft.studio.field.label" value="info3"/>
+	</field>
+	<field name="nome4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome4"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome4"/>
+	</field>
+	<field name="info4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info4"/>
+		<property name="com.jaspersoft.studio.field.label" value="info4"/>
+	</field>
+	<field name="nome5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome5"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome5"/>
+	</field>
+	<field name="info5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info5"/>
+		<property name="com.jaspersoft.studio.field.label" value="info5"/>
+	</field>
+	<field name="nome6" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome6"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome6"/>
+	</field>
+	<field name="info6" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info6"/>
+		<property name="com.jaspersoft.studio.field.label" value="info6"/>
+	</field>
+	<field name="nome7" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome7"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome7"/>
+	</field>
+	<field name="info7" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info7"/>
+		<property name="com.jaspersoft.studio.field.label" value="info7"/>
+	</field>
+	<field name="nome8" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome8"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome8"/>
+	</field>
+	<field name="info8" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info8"/>
+		<property name="com.jaspersoft.studio.field.label" value="info8"/>
+	</field>
+	<field name="nome9" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome9"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome9"/>
+	</field>
+	<field name="info9" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info9"/>
+		<property name="com.jaspersoft.studio.field.label" value="info9"/>
+	</field>
+	<field name="nome10" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome10"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome10"/>
+	</field>
+	<field name="info10" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info10"/>
+		<property name="com.jaspersoft.studio.field.label" value="info10"/>
+	</field>
+	<field name="nome11" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome11"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome11"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="gl_account"/>
+	</field>
+	<field name="info11" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info11"/>
+		<property name="com.jaspersoft.studio.field.label" value="info11"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="gl_account_meas_rat_sc"/>
+	</field>
+	<field name="nome12" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome12"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome12"/>
+	</field>
+	<field name="info12" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info12"/>
+		<property name="com.jaspersoft.studio.field.label" value="info12"/>
+	</field>
+	<field name="nome13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome13"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome13"/>
+	</field>
+	<field name="info13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info13"/>
+		<property name="com.jaspersoft.studio.field.label" value="info13"/>
+	</field>
+	<field name="nome14" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome14"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome14"/>
+	</field>
+	<field name="info14" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info14"/>
+		<property name="com.jaspersoft.studio.field.label" value="info14"/>
+	</field>
+	<field name="nome15" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome15"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome15"/>
+	</field>
+	<field name="info15" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info15"/>
+		<property name="com.jaspersoft.studio.field.label" value="info15"/>
+	</field>
+	<field name="nome16" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome16"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome16"/>
+	</field>
+	<field name="info16" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info16"/>
+		<property name="com.jaspersoft.studio.field.label" value="info16"/>
+	</field>
+	<field name="nome17" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome17"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome17"/>
+	</field>
+	<field name="info17" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info17"/>
+		<property name="com.jaspersoft.studio.field.label" value="info17"/>
+	</field>
+	<field name="nome18" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome18"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome18"/>
+	</field>
+	<field name="info18" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info18"/>
+		<property name="com.jaspersoft.studio.field.label" value="info18"/>
+	</field>
+	<field name="nome19" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome19"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome19"/>
+	</field>
+	<field name="info19" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info19"/>
+		<property name="com.jaspersoft.studio.field.label" value="info19"/>
+	</field>
+	<field name="nome20" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome20"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome20"/>
+	</field>
+	<field name="info20" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info20"/>
+		<property name="com.jaspersoft.studio.field.label" value="info20"/>
+	</field>
+	<group name="TipologiaTrattamentoGroup" minHeightToStartNewPage="60" keepTogether="true">
+		<groupExpression><![CDATA[$F{codice_trattamento} + " - " + $F{nome_trattamento}]]></groupExpression>
+		<groupHeader>
+			<band height="17">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="2" width="575" height="15" backcolor="#D5D5D5" uuid="2b866f4c-0cfa-40c4-8b8d-dc2bf88f8a18"/>
+					<textField hyperlinkType="LocalAnchor" bookmarkLevel="1">
+						<reportElement x="0" y="0" width="575" height="15" uuid="30ec046e-3560-4e5b-b03c-4f7b4c5851a5">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box leftPadding="3">
+							<pen lineWidth="0.2"/>
+							<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement textAlignment="Center">
+							<font size="10" isBold="false" isUnderline="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{codice_trattamento} + " - " + $F{nome_trattamento}]]></textFieldExpression>
+						<anchorNameExpression><![CDATA[$F{codice_trattamento} + " - " + $F{nome_trattamento}]]></anchorNameExpression>
+						<hyperlinkReferenceExpression><![CDATA["TableOfContentsReport.pdf"]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+						<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="8"/>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="40">
+			<textField>
+				<reportElement x="320" y="8" width="255" height="24" uuid="1882aba9-20d4-48ec-bb88-83f75978f868">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[(($P{reportContentId}.equals( "REG_TRAT_TIT" )) ? $R{TitoloTit} : $R{TitoloResp})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="8" width="258" height="30" uuid="caa813ad-5bb2-408d-8dea-e37e251cf789"/>
+				<textFieldExpression><![CDATA["ARPACALABRIA"]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="274" y="8" width="25" height="25" uuid="af21e7a7-ef5a-4f4c-9e88-307e985f71da"/>
+				<imageExpression><![CDATA[$P{ReportSmallPath}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="33">
+			<textField>
+				<reportElement x="2" y="1" width="158" height="14" uuid="b25b598d-77a9-411a-83be-769c338fef37">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#8A9597"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Durata}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="18" width="158" height="14" uuid="57957213-68ea-422d-afb9-4504425a6ab9">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{UnitaResponsabile}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="1" width="414" height="14" uuid="ac38b67f-6513-4d71-a535-2404c7ace3ed"/>
+				<box>
+					<pen lineColor="#8A9597"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{data_inizio_trattamento},"dd/MM/yyyy" )+ " - " + DATEFORMAT($F{data_fine_trattamento}, "dd/MM/yyyy" )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="18" width="414" height="14" uuid="f9a34177-3a01-4e98-943a-ac836ba983f5">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unita_responsabile}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="16" width="574" height="1" forecolor="#8A9597" uuid="45ea6042-a26d-4b5d-8ee9-58d26176e8ff"/>
+				<graphicElement>
+					<pen lineWidth="0.1" lineColor="#8A9597"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="574" y="0" width="1" height="33" isPrintWhenDetailOverflows="true" forecolor="#808080" uuid="ce2d777f-cb9b-48b6-ae85-7b81486220fb"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="159" y="0" width="1" height="33" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="c9dbeeb5-bab8-49f9-914f-d2a0d48aa1c2">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="33" isPrintWhenDetailOverflows="true" forecolor="#808080" uuid="ba0aca2f-1213-4520-b6fe-507f472a7bc4">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[($F{nome1} != null && TRIM($F{nome1}) !="" && LEN(TRIM($F{nome1})) > 0  && $F{info1} != null && TRIM($F{info1}) !="" && LEN(TRIM($F{info1})) > 0) ||
+($F{nome2} != null && TRIM($F{nome2}) !="" && LEN(TRIM($F{nome2})) > 0  && $F{info2} != null && TRIM($F{info2}) !="" && LEN(TRIM($F{info2})) > 0)]]></printWhenExpression>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="575" height="15" backcolor="#D5D5D5" uuid="77848bd1-173c-4733-ac85-121a4cfac909">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{DescrizioneTrattamento}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="14" width="575" height="1" forecolor="#8A9597" uuid="3aa05848-6b83-4755-a98e-f57736ed80f6">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="a6e8af0a-eb85-40f8-9851-41694612e324"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="01253c37-8889-46d9-b401-c4ab3fceecca"/>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome1} != null && TRIM($F{nome1}) !="" && LEN(TRIM($F{nome1})) > 0  && $F{info1} != null && TRIM($F{info1}) !="" && LEN(TRIM($F{info1})) > 0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="2" y="0" width="158" height="15" uuid="d014be38-9f6d-481a-b331-7d2f5c37dc5c">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="162" y="0" width="412" height="15" uuid="e2570955-cbee-414b-af5e-f2a2e86ee3ce">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="079e0d55-4069-4637-9ec8-7fa4b2cb659a"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="6f0eb410-3306-4373-bec5-628ca1876940"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="160" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="d62b6da6-920f-4a88-b2a7-7206ed93e817"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome1} != null && TRIM($F{nome1}) !="" && LEN(TRIM($F{nome1})) > 0  && $F{info1} != null && TRIM($F{info1}) !="" && LEN(TRIM($F{info1})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="6971bd46-fb8c-49a3-a490-4048ae79ff71">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[$F{nome2} != null && TRIM($F{nome2}) !="" && LEN(TRIM($F{nome2})) > 0  && $F{info2} != null && TRIM($F{info2}) !="" && LEN(TRIM($F{info2})) > 0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="2" y="0" width="158" height="15" uuid="f12d842a-28b1-41fb-a4f4-d23372dd3b4f">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="162" y="0" width="412" height="15" uuid="078f26da-308b-46cd-ac7f-be697e15d86f">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info2}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="5e5db089-6c7f-4949-b425-56943a8ed9b0"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="9d2c26a9-3d4f-4b65-b63c-cb99481c8081"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="160" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="2e98faa8-b85c-4547-8ddf-6d1079c954a5"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome2} != null && TRIM($F{nome2}) !="" && LEN(TRIM($F{nome2})) > 0  && $F{info2} != null && TRIM($F{info2}) !="" && LEN(TRIM($F{info2})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="16ed273f-47c0-4afb-bb88-6d30b14e64a8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[($F{nome9} != null && TRIM($F{nome9}) !="" && LEN(TRIM($F{nome9})) > 0  && $F{info9} != null && TRIM($F{info9}) !="" && LEN(TRIM($F{info9})) > 0) ||
+($F{nome11} != null && TRIM($F{nome11}) !="" && LEN(TRIM($F{nome11})) > 0  && $F{info11} != null && TRIM($F{info11}) !="" && LEN(TRIM($F{info11})) > 0) ||
+($F{nome12} != null && TRIM($F{nome12}) !="" && LEN(TRIM($F{nome12})) > 0  && $F{info12} != null && TRIM($F{info12}) !="" && LEN(TRIM($F{info12})) > 0)]]></printWhenExpression>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="575" height="15" backcolor="#D5D5D5" uuid="9dce8793-7cf1-48c9-a13f-dc6cd8f78fd0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SoggettiCoinvolti}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="9c3e778a-9068-4ee8-8350-a36bb0a4c7da"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="fea4b0d7-4ab6-4a1d-9ba5-a55de7c364ee"/>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome9} != null && TRIM($F{nome9}) !="" && LEN(TRIM($F{nome9})) > 0  && $F{info9} != null && TRIM($F{info9}) !="" && LEN(TRIM($F{info9})) > 0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="2" y="0" width="158" height="15" uuid="8b3d2128-699d-4c4d-9e73-da7edac0f3e3">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome9}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="162" y="0" width="412" height="15" uuid="a28fe745-90fb-4f50-b74d-6709c80b7b1d">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info9}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="1b344d4c-18d1-4358-9db9-d007ebcdd691"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="cc769769-5b89-4b8c-b7f1-49ae5be1e9da"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="160" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="de412742-78d6-4678-b4d6-ec02ce7fbdac"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome9} != null && TRIM($F{nome9}) !="" && LEN(TRIM($F{nome9})) > 0  && $F{info9} != null && TRIM($F{info9}) !="" && LEN(TRIM($F{info9})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="e04059a5-d660-4dd3-bf52-0ecd97f9f150">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome11} != null && TRIM($F{nome11}) !="" && LEN(TRIM($F{nome11})) > 0  && $F{info11} != null && TRIM($F{info11}) !="" && LEN(TRIM($F{info11})) > 0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="2" y="0" width="158" height="15" uuid="1ceffaa1-bd99-4036-9563-de6d06983025">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome11}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="162" y="0" width="412" height="15" uuid="b79b5689-f1eb-4ab1-904d-d560befe374a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info11}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="3419352d-d4c7-48e3-af08-eaab299bd001"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="538a76d0-ae1b-4218-9316-fc26e1b49f70"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="160" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="3d3f9b58-3971-4b0c-9ef5-6c33cc92d054"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome11} != null && TRIM($F{nome11}) !="" && LEN(TRIM($F{nome11})) > 0  && $F{info11} != null && TRIM($F{info11}) !="" && LEN(TRIM($F{info11})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="cea7aead-04b8-4396-b6c4-bd2f1a045768">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome12} != null && TRIM($F{nome12}) !="" && LEN(TRIM($F{nome12})) > 0  && $F{info12} != null && TRIM($F{info12}) !="" && LEN(TRIM($F{info12})) > 0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="2" y="0" width="158" height="15" uuid="fd78c989-7338-4ebb-9b2f-1b698eb6ea0d">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome12}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="162" y="0" width="412" height="15" uuid="431f6094-6ab0-444e-a6b1-38f88635f05d">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info12}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="cdb529e3-d436-4ddd-b0f8-8f3aba8eb19d"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="d9699ce5-e252-46da-95bb-9f35774bf3bd"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="160" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="d6950977-f701-4316-8993-2af4c3ea2dc3"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome12} != null && TRIM($F{nome12}) !="" && LEN(TRIM($F{nome12})) > 0  && $F{info12} != null && TRIM($F{info12}) !="" && LEN(TRIM($F{info12})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="962f160c-3236-45be-83bd-144308e1d442">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[($F{nome15} != null && TRIM($F{nome15}) !="" && LEN(TRIM($F{nome15})) > 0  && $F{info15} != null && TRIM($F{info15}) !="" && LEN(TRIM($F{info15})) > 0) ||
+($F{nome16} != null && TRIM($F{nome16}) !="" && LEN(TRIM($F{nome16})) > 0  && $F{info16} != null && TRIM($F{info16}) !="" && LEN(TRIM($F{info16})) > 0) ||
+($F{nome19} != null && TRIM($F{nome19}) !="" && LEN(TRIM($F{nome19})) > 0  && $F{info19} != null && TRIM($F{info19}) !="" && LEN(TRIM($F{info19})) > 0)]]></printWhenExpression>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="575" height="15" backcolor="#D5D5D5" uuid="ecfa45ae-c1db-4787-a08d-dadccbf7a49a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GestioneDati}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="419bb057-fac9-4fe4-abb5-7432f3ace031"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="c61cd191-cf08-4352-88b9-44cb4e9c2ddc"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome14} != null && TRIM($F{nome14}) !="" && LEN(TRIM($F{nome14})) > 0  && $F{info14} != null && TRIM($F{info14}) !="" && LEN(TRIM($F{info14})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="0b207e83-ed9f-4bbc-9034-07f7562e7713">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome15} != null && TRIM($F{nome15}) !="" && LEN(TRIM($F{nome15})) > 0  && $F{info15} != null && TRIM($F{info15}) !="" && LEN(TRIM($F{info15})) > 0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="2" y="0" width="158" height="15" uuid="94a27422-c31f-494c-8f91-8f3efce50177">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome15}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="162" y="0" width="412" height="15" uuid="0c30027c-92bd-4f64-8cd7-b7790754d43e">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info15}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="c2675f5b-47fe-49a4-8cd6-86d2716ee195"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="9e25a379-21fb-4e2c-86d6-2a425b867425"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="160" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="408fce37-b97f-4ea9-8083-524ba7d05fc1"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome15} != null && TRIM($F{nome15}) !="" && LEN(TRIM($F{nome15})) > 0  && $F{info15} != null && TRIM($F{info15}) !="" && LEN(TRIM($F{info15})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="6ddda51a-e4a6-4379-b6e7-7c93cc2da541">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome16} != null && TRIM($F{nome16}) !="" && LEN(TRIM($F{nome16})) > 0  && $F{info16} != null && TRIM($F{info16}) !="" && LEN(TRIM($F{info16})) > 0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="2" y="0" width="158" height="15" uuid="7130c0c9-9e6b-4d75-a7d1-b595165d18da">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome16}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="162" y="0" width="412" height="15" uuid="e00ec2a5-905a-4359-8a8e-bc621add4525">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info16}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="8214c807-f7ab-4484-8207-c7e3f2df0de1"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="c30f78f5-81f7-46b1-a161-973940baeeae"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="160" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="3064ee96-983e-49e3-a9e8-fad46d7977cc"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome16} != null && TRIM($F{nome16}) !="" && LEN(TRIM($F{nome16})) > 0  && $F{info16} != null && TRIM($F{info16}) !="" && LEN(TRIM($F{info16})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="2ff54333-5f88-4209-a3d2-d7249e914762">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome19} != null && TRIM($F{nome19}) !="" && LEN(TRIM($F{nome19})) > 0  && $F{info19} != null && TRIM($F{info19}) !="" && LEN(TRIM($F{info19})) > 0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="2" y="0" width="158" height="15" uuid="32043e7e-ec1b-41fa-b98b-6b423661a6f0">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome19}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="162" y="0" width="412" height="15" uuid="e7932f1a-18af-4a5f-8390-535f1e76cd49">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info19}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="30ec94d6-2dff-47c2-b4a5-0db77298b48c"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="574" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="a360fd48-b1f0-49fc-9acd-f0cdcca2e1c2"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerBottom" x="160" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" forecolor="#8A9597" uuid="eefad5ef-3d48-4cb0-8aa3-cb4ecfa36d3c"/>
+			</line>
+		</band>
+		<band height="1">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{nome19} != null && TRIM($F{nome19}) !="" && LEN(TRIM($F{nome19})) > 0  && $F{info19} != null && TRIM($F{info19}) !="" && LEN(TRIM($F{info19})) > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" forecolor="#8A9597" uuid="93f6e588-f19f-4636-abb5-36a758e81f39">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="33">
+			<textField evaluationTime="Master">
+				<reportElement x="400" y="7" width="175" height="15" uuid="c768ea70-8165-4afd-b13d-df34d5456803"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. " + $V{MASTER_CURRENT_PAGE} + " di " + $V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="6" width="128" height="16" uuid="00772855-e55b-4fcf-be76-f945ae6469bd"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Stampato il " + DATEFORMAT(TODAY( ), "dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="276" y="6" width="23" height="16" uuid="0e1242ae-e61c-44a9-81de-a5831d98b53c"/>
+				<imageExpression><![CDATA[$P{IconNavPath}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

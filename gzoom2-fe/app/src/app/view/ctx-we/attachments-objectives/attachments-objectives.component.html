@@ -1,0 +1,117 @@
+<div style="height: min-content; margin-bottom: 1em; margin-top: 1em;">
+  <form *ngIf="filterForm" [formGroup]="filterForm">
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="collapseFilters">
+      <div style="display: flex; flex-direction: column; gap: 15px">
+        <gzoom-search-filter
+          label="{{ ('Search' | i18n) + ':' }}"
+          placeholder="{{'Search by' | i18n}} {{'WorkEffortContentType_workEffortContentTypeId' | i18n}}, {{'Work Effort' | i18n}}"
+          controlNameSearchField="search"
+          controlNameMachMode="matchModeSearch"
+          style="width: 100%"
+          (keyUpEvent)="filter()"
+        />
+
+        <gzoom-row-flex style="width: fit-content; gap: 10px">
+          <gzoom-label
+            label="{{ ('Work Effort' | i18n) + ':' }}"
+            labelPos="left"
+          >
+            <gzoom-dropdown
+              [options]="this.dropdownWEV | async"
+              style="width: 30vw"
+              controlName="workEffortId"
+              [showClear]="true"
+              placeholder="All"
+              [filter]="true"
+              [virtualScrollItemSize]="10"
+              [virtualScroll]="true"
+            />
+          </gzoom-label>
+          <gzoom-label
+            label="{{ ('WorkEffortContentType_workEffortContentTypeId' | i18n) + ':' }}"
+            labelPos="left"
+          >
+            <gzoom-dropdown
+              [options]="this.dropdownWECT | async"
+              style="width: 30vw"
+              controlName="workEffortContentTypeId"
+              [showClear]="true"
+              placeholder="All"
+              [filter]="true"
+              [virtualScrollItemSize]="10"
+              [virtualScroll]="true"
+            />
+          </gzoom-label>
+        </gzoom-row-flex>
+      </div>
+    </div>
+
+    <div style="display: flex">
+      <div style="width: 50%;">
+        <gzoom-button-outlined
+          [icon]="collapseFilters ? 'pi pi-angle-down' : 'pi pi-angle-up'"
+          iconPos="right"
+          label="{{ collapseFilters ? ('Open filters' | i18n) : ('Close filters' | i18n) }}"
+          (onClick)="collapse.toggle()"
+          [attr.aria-expanded]="collapseFilters"
+          aria-controls="collapseFilters"
+        ></gzoom-button-outlined>
+      </div>
+      <div
+        style="
+          width: 50%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+          "
+      >
+        <gzoom-button-outlined
+          [label]="'Reset filters' | i18n"
+          [disabled]=" this.disableResetFilter"
+          (onClick)="resetFilter()"
+        ></gzoom-button-outlined>
+        <gzoom-button
+          [label]="'Apply filters' | i18n"
+          [disabled]="this.filterForm.pristine"
+          (onClick)="filter()"
+        ></gzoom-button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="d-flex justify-content-center" *ngIf="labelInsertFilter">
+  <gzoom-message
+    style="width: 100%;"
+    severity="warn"
+    icon="pi pi-info-circle"
+    message="{{
+      'Inserire almeno un filtro'
+        | i18n
+    }}"
+  />
+</div>
+
+<div #collapse="ngbCollapse" [(ngbCollapse)]="collapseTab">
+  <app-primary-board
+    [headArray]="headArray"
+    [gridArray]="gridArray"
+    [flag]="flag"
+    [loading]="loading"
+    [collapseSidebar]="true"
+    [scrollHeight]="'70vh'"
+    [elementToAdd]="elementToAdd"
+    (saveNewAndOpen)="saveNewAndOpen($event)"
+    (saveAllElement)="saveAllElement($event)"
+    (resetAllElement)="resetAllElement()"
+    (openNew)="openNew()"
+    (delete)="delete($event)"
+    (shareDropdownItemRow)="shareDropdownItemRow($event)"
+    (myUpload)="myUploader($event)"
+    [buttonBack]="buttonBack"
+    stateKey="attachments"
+  ></app-primary-board>
+</div>
+

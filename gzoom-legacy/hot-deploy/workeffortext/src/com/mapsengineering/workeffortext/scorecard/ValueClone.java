@@ -1,0 +1,231 @@
+package com.mapsengineering.workeffortext.scorecard;
+
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.Map;
+
+import javolution.util.FastMap;
+
+import org.ofbiz.base.util.UtilMisc;
+import org.ofbiz.base.util.UtilValidate;
+import org.ofbiz.entity.Delegator;
+import org.ofbiz.entity.GenericEntityException;
+import org.ofbiz.entity.GenericValue;
+import org.ofbiz.entity.util.EntityUtil;
+
+/**
+ * Clone Value
+ *
+ */
+public class ValueClone {
+    
+    private Delegator delegator;
+    
+    private Double limitExcellentValue;
+    private Double limitMaxValue; 
+    private Double targetValue; 
+    private Double limitMedValue;
+    private Double limitMinValue;
+    private Double actualValue; 
+    private Double actualPyValue; 
+    private Double limitExcellentCount;
+    private Double limitMaxCount; 
+    private Double targetCount; 
+    private Double limitMedCount; 
+    private Double limitMinCount; 
+    private Double actualCount; 
+    private Double actualPyCount;
+    
+    /**
+     * Constructor
+     * @param delegator
+     */
+    public ValueClone(Delegator delegator) {
+        this.delegator = delegator;
+    }
+    
+    /**
+     * 
+     * @param limitExcellentValue
+     * @param limitExcellentCount
+     */
+    public void setLimitExcellentDouble(Double limitExcellentValue, double limitExcellentCount) {
+    	this.limitExcellentValue = limitExcellentValue;
+    	this.limitExcellentCount = Double.valueOf(limitExcellentCount);
+    }
+    
+    /**
+     * 
+     * @param limitMaxValue
+     * @param limitMaxCount
+     */
+    public void setLimitMaxDouble(Double limitMaxValue, double limitMaxCount) {
+    	this.limitMaxValue = limitMaxValue;
+    	this.limitMaxCount = Double.valueOf(limitMaxCount);
+    }
+    
+    /**
+     * 
+     * @param targetValue
+     * @param targetCount
+     */
+    public void setTargetDouble(Double targetValue, double targetCount) {
+    	this.targetValue = targetValue;
+    	this.targetCount = Double.valueOf(targetCount);
+    }
+    
+    /**
+     * 
+     * @param limitMedValue
+     * @param limitMedCount
+     */
+    public void setLimitMedDouble(Double limitMedValue, double limitMedCount) {
+        this.limitMedValue = limitMedValue;
+        this.limitMedCount = Double.valueOf(limitMedCount);
+    }
+    
+    /**
+     * 
+     * @param limitMinValue
+     * @param limitMinCount
+     */
+    public void setLimitMinDouble(Double limitMinValue, double limitMinCount) {
+    	this.limitMinValue = limitMinValue;
+    	this.limitMinCount = Double.valueOf(limitMinCount);
+    }
+    
+    /**
+     * 
+     * @param actualValue
+     * @param actualCount
+     */
+    public void setActualDouble(Double actualValue, double actualCount) {
+    	this.actualValue = actualValue;
+    	this.actualCount = Double.valueOf(actualCount);
+    }
+    
+    /**
+     * 
+     * @param actualPyValue
+     * @param actualPyCount
+     */
+    public void setActualPyDouble(Double actualPyValue, double actualPyCount) {
+    	this.actualPyValue = actualPyValue;
+    	this.actualPyCount = Double.valueOf(actualPyCount);
+    }
+    
+    /**
+     * 
+     * @param limitExcellentValue
+     * @param limitExcellentCount
+     */
+    public void setLimitExcellent(double limitExcellentValue, double limitExcellentCount) {
+        this.limitExcellentValue = new Double(limitExcellentValue);
+        this.limitExcellentCount = new Double(limitExcellentCount);
+    }
+    
+    /**
+     * 
+     * @param limitMaxValue
+     * @param limitMaxCount
+     */
+    public void setLimitMax(double limitMaxValue, double limitMaxCount) {
+        this.limitMaxValue = new Double(limitMaxValue);
+        this.limitMaxCount = new Double(limitMaxCount);
+    }
+    
+    /**
+     * 
+     * @param targetValue
+     * @param targetCount
+     */
+    public void setTarget(double targetValue, double targetCount) {
+        this.targetValue = new Double(targetValue);
+        this.targetCount = new Double(targetCount);
+    }
+    
+    /**
+     * 
+     * @param limitMedValue
+     * @param limitMedCount
+     */
+    public void setLimitMed(double limitMedValue, double limitMedCount) {
+        this.limitMedValue = new Double(limitMedValue);
+        this.limitMedCount = new Double(limitMedCount);
+    }
+    
+    /**
+     * 
+     * @param limitMinValue
+     * @param limitMinCount
+     */
+    public void setLimitMin(double limitMinValue, double limitMinCount) {
+        this.limitMinValue = new Double(limitMinValue);
+        this.limitMinCount = new Double(limitMinCount);
+    }
+    
+    /**
+     * 
+     * @param actualValue
+     * @param actualCount
+     */
+    public void setActual(double actualValue, double actualCount) {
+        this.actualValue = new Double(actualValue);
+        this.actualCount = new Double(actualCount);
+    }
+    
+    /**
+     * 
+     * @param actualPyValue
+     * @param actualPyCount
+     */
+    public void setActualPy(double actualPyValue, double actualPyCount) {
+        this.actualPyValue = new Double(actualPyValue);
+        this.actualPyCount = new Double(actualPyCount);
+    }
+
+    /**
+     * Add item to list
+     * @param entityList
+     * @param lastItem
+     * @return
+     * @throws GenericEntityException
+     */
+    public List<Map<String, Object>> cloneValues(List<Map<String, Object>> entityList, Map<String, Object> lastItem) throws GenericEntityException {
+        Map<String, Object> newItem = new FastMap<String, Object>(lastItem);
+
+        // Gestione alert
+        String alertFlag = "";
+        Double amountValue = UtilValidate.isNotEmpty(lastItem.get(E.amount.name())) ? (Double)lastItem.get(E.amount.name()) : 0d;
+        String amount = new DecimalFormat("#.#####").format(amountValue);
+        List<GenericValue> rangeValueList = delegator.findByAnd(E.UomRangeValues.name(), UtilMisc.toMap(E.uomRangeId.name(), (String)lastItem.get(E.weMeasureUomId.name()), E.uomRangeValuesId.name(), amount));
+        GenericValue rangeValue = EntityUtil.getFirst(rangeValueList);
+        if (UtilValidate.isNotEmpty(rangeValue)) {
+            alertFlag = rangeValue.getString("alert");
+        }
+
+        // Aggiungo calcolati
+        newItem.put(E.limitExcellentValue.name(), limitExcellentValue);
+        newItem.put(E.limitMaxValue.name(), limitMaxValue);        
+        newItem.put(E.targetValue.name(), targetValue);
+        newItem.put(E.limitMedValue.name(), limitMedValue); 
+        newItem.put(E.limitMinValue.name(), limitMinValue); 
+        newItem.put(E.actualValue.name(), actualValue);
+        newItem.put(E.actualPyValue.name(), actualPyValue);
+        newItem.put(E.limitExcellentCount.name(), limitExcellentCount);
+        newItem.put(E.limitMaxCount.name(), limitMaxCount);
+        newItem.put(E.targetCount.name(), targetCount);
+        newItem.put(E.limitMedCount.name(), limitMedCount);
+        newItem.put(E.limitMinCount.name(), limitMinCount);
+        newItem.put(E.actualCount.name(), actualCount);
+        newItem.put(E.actualPyCount.name(), actualPyCount);
+        if (UtilValidate.isNotEmpty(alertFlag)) {
+            newItem.put(E.hasScoreAlert.name(), alertFlag);
+        }
+        if(!entityList.contains(newItem)) {
+            entityList.add(newItem);
+        }
+
+        return entityList;
+    }
+}

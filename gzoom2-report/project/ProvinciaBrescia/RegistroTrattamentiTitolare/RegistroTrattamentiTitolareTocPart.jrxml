@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TocPart" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" resourceBundle="RegistroTrattamentiTitolare" uuid="47d0342f-7687-4167-8741-854ed01cfed5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="project\ProvinciaBrescia\RegistroTrattamentiTitolare\DataAdapter.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="NoteInfoDS" uuid="7ce3ec7b-16d6-4695-a134-708e0e2a3773">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mySql_local"/>
+		<parameter name="workEffortTypeId" class="java.lang.String">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="reportContentId" class="java.lang.String">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<parameter name="langLocale" class="java.lang.String">
+			<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[SELECT ND.NOTE_INFO$P!{langLocale} AS "NOTE_INFO"
+FROM  WORK_EFFORT_TYPE_ATTR WTA
+INNER JOIN NOTE_DATA ND ON ND.NOTE_ID = WTA.NOTE_ID
+INNER JOIN CONTENT C ON C.CONTENT_ID =  'GDPR_REG_TART'
+WHERE WTA.WORK_EFFORT_TYPE_ID = $P{workEffortTypeId}
+	AND C.DESCRIPTION = ND.NOTE_NAME]]>
+		</queryString>
+		<field name="NOTE_INFO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOTE_INFO"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOTE_INFO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ND"/>
+		</field>
+	</subDataset>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId} != null && $P{orgUnitId} != "" ? " AND (FIL_W.ORG_UNIT_ID = '"+ $P{orgUnitId} + "' OR FIL_W.WORK_EFFORT_ID= '"+ $P{workEffortId} + "')" : " AND FIL_W.ORG_UNIT_ID like '%%'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["admin"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020/01/01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),INTEGER_VALUE($P{customTimePeriod}.substring(0,4)), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),INTEGER_VALUE($P{customTimePeriod}.substring(0,4)), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="retrieveWorkEffortId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[IF ($P{workEffortId} != null && $P{workEffortId}  != ""  && LEN($P{workEffortId}) != 0,
+	" AND  tratt.work_effort_id= '"+ $P{workEffortId} + "' "  ,
+	" AND true"
+	)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3112sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportLargePath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_LARGE",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exposeReleaseDate" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select 
+/*QUERY INDICE 1 */
+	wet.etch as TIPOLOGIA_TRATTAMENTO,
+	FIL_W.work_effort_name as NOME_TRATTAMENTO,
+	FIL_W.etch as ETCH_TRATTAMENTO, FIL_W.source_reference_id as CODICE_TRATTAMENTO,
+	FIL_W.estimated_start_date as DATA_INIZIO_TRATTAMENTO, FIL_W.estimated_completion_date as DATA_FINE_TRATTAMENTO,
+	rl.description as TIPOLOGIA_UNITA_RESPONSABILE,
+	concat(pprstrutt.parent_role_code, ' - ', strutt.party_name) as UNITA_RESPONSABILE,
+	/* 1 - Descrizione trattamento */
+	note.NOME_DESCRIZIONE_TRATTAMENTO as NOME1,
+	note.DESCRIZIONE_TRATTAMENTO as INFO1,
+	/* 2 - Categorie trattamenti */
+	note.NOME_CATEGORIE_TRATTAMENTO as NOME2,
+	note.CATEGORIE_TRATTAMENTO as INFO2,
+	/* 3 - Base giuridica di legittimità */
+	note.NOME_BASE_TRATTAMENTO as NOME3,
+	note.BASE_TRATTAMENTO as INFO3,
+	/* 4 - Contitolari */
+	note.NOME_CONTITOLARI as NOME4,
+	note.CONTITOLARI as INFO4,
+	/* 5 - Trasferimento dati */
+	note.NOME_TRASFERIMENTO_DATI as NOME5,
+	note.TRASFERIMENTO_DATI as INFO5,
+	
+	/* 6 - Responsabile interno */
+	resp_int.description as NOME6,
+	resp_int.lista as INFO6,
+	/* 7 - Incaricato trattamento */
+	inc_tratt.description as NOME7,
+	inc_tratt.lista as INFO7,
+	/* 8 - Responsabile esterno */
+	resp_est.description as NOME8,
+	resp_est.lista as INFO8,
+	/* 9 - Titolare esterno */
+	tit_est.description as NOME9,
+	tit_est.lista as INFO9,
+	
+	/* 10 - Categorie interessati */
+	note.NOME_CATEGORIE_INTERESSATI as NOME10,
+	note.CATEGORIE_INTERESSATI as INFO10,
+	/* 11 - Categorie destinatari */
+	note.NOME_CATEGORIE_DESTINATARI as NOME11,
+	note.CATEGORIE_DESTINATARI as INFO11,
+	/* 12 - Destinatari */
+	note.NOME_DESTINATARI as NOME12,
+	note.DESTINATARI as INFO12,
+	/* 13 - Dati particolari */
+	note.NOME_DATI_PARTICOLARI as NOME13,
+	note.DATI_PARTICOLARI as INFO13,
+	/* 14 - Categorie dati personali */
+	note.NOME_DATI_PERSONALI as NOME14,
+	note.DATI_PERSONALI as INFO14,
+	/* 15 - Asset utilizzati */
+	'Asset utilizzati' as NOME15,
+	asset.lista as INFO15,
+	/* 16 - Termine ultimo cancellazione */
+	note.NOME_PERIODO_CONSERVAZIONE as NOME16,
+	note.PERIODO_CONSERVAZIONE as INFO16,
+	
+	/* 17 - Note */
+	note.NOME_NOTE as NOME17,
+	note.NOTE as INFO17,
+	/* 18 - Misure di sicurezza Organizzative */
+	note.NOME_MISURE_ORGANIZZATIVE as NOME18,
+	note.MISURE_ORGANIZZATIVE as INFO18,
+	/* 19 - Misure di sicurezza tecniche */
+	note.NOME_MISURE_TECNICHE_ORIZZONTALI as NOME19,
+	note.MISURE_TECNICHE_ORIZZONTALI as INFO19,
+	/* 20 - Misure di sicurezza tecniche (Verticali) */
+	note.NOME_MISURE_TECNICHE_VERTICALI as NOME20,
+	note.MISURE_TECNICHE_VERTICALI as INFO20,
+	/* 21 - Ulteriori misure di sicurezza */
+	note.NOME_ULTERIORI_MISURE as NOME21,
+	note.ULTERIORI_MISURE as INFO21,
+	/* 22 - Val.Impatto – Probabilità */
+	valimp.NOME_PROB as NOME22,
+	valimp.PROB as INFO22,
+	/* 23 - Val.Impatto - Gravità */
+	valimp.NOME_GRAV as NOME23,
+	valimp.GRAV as INFO23,
+	/* 24 - VALUTAZIONE D'IMPATTO */
+	valimp.NOME_VAL as NOME24,
+	valimp.VAL as INFO24,
+	/* 25 - Valutazione Necessità DPIA */
+	'Valutazione Necessità DPIA' as NOME25,
+	dpia.lista as INFO25,
+	/* 26 - Necessità DPIA */
+	'Necessità DPIA' as NOME26,
+	necdpia.uom_code as INFO26,
+	/* 27 - Atti */
+	'Atti' as NOME27,
+	atti.lista as INFO27,
+	/* 28 - Nomine */
+	'Nomine' as NOME28,
+	nomine.lista as INFO28
+/* TRATTAMENTO */
+from work_effort FIL_W
+join work_effort_type wet on wet.work_effort_type_id = FIL_W.work_effort_type_id
+/* UNITA' RESPONSABILE */
+join party strutt on strutt.party_id = FIL_W.org_unit_id
+join party_parent_role pprstrutt on pprstrutt.party_id = strutt.party_id
+join party_role prstrutt on prstrutt.party_id = strutt.party_id
+join role_type rl on rl.role_type_id = prstrutt.role_type_id and rl.role_type_id = 'SSL'
+join party org on org.party_id = FIL_W.organization_id
+/* START filterInnerJoin */
+   $P!{filterInnerJoinString} 
+/* END filterInnerJoin */
+/* START filterLeftJoin */
+  $P!{filterLeftJoinString} 
+/* END filterLeftJoin */
+
+/* 4 - Responsabile interno */
+left join (
+	select 
+		wepa.work_effort_id,
+		rt.description,
+		string_agg(p.party_name, ',
+' order by p.party_name) as lista
+	from work_effort_party_assignment wepa 
+	join party p on p.party_id = wepa.party_id
+	join role_type rt on rt.role_type_id = wepa.role_type_id and rt.role_type_id = 'WEM_GDPR_TRATRINT'
+	where wepa.from_date <= $P{date3112} and (wepa.thru_date >= $P{date0101} or wepa.thru_date is null)
+	group by wepa.work_effort_id, rt.description
+) resp_int on resp_int.work_effort_id = FIL_W.work_effort_id
+/* 5 - Incaricato trattamento */
+left join (
+	select 
+		wepa.work_effort_id,
+		rt.description,
+		string_agg(p.party_name, ',
+' order by p.party_name) as lista
+	from work_effort_party_assignment wepa 
+	join party p on p.party_id = wepa.party_id
+	join role_type rt on rt.role_type_id = wepa.role_type_id and rt.role_type_id = 'WEM_GDPR_TRATINC'
+	where wepa.from_date <= $P{date3112} and (wepa.thru_date >= $P{date0101} or wepa.thru_date is null)
+	group by wepa.work_effort_id, rt.description
+) inc_tratt on inc_tratt.work_effort_id = FIL_W.work_effort_id 
+/* 6 - Responsabile esterno */
+left join (
+	select 
+		wepa.work_effort_id,
+		rt.description,
+		string_agg(p.party_name, ',
+' order by p.party_name) as lista
+	from work_effort_party_assignment wepa 
+	join party p on p.party_id = wepa.party_id
+	join role_type rt on rt.role_type_id = wepa.role_type_id and rt.role_type_id = 'WEM_GDPR_TRATRES'
+	where wepa.from_date <= $P{date3112} and (wepa.thru_date >= $P{date0101} or wepa.thru_date is null)
+	group by wepa.work_effort_id, rt.description
+) resp_est on resp_est.work_effort_id = FIL_W.work_effort_id 
+/* 7 - Titolare esterno */
+left join (
+	select 
+		wepa.work_effort_id,
+		rt.description,
+		string_agg(p.party_name, ',
+' order by p.party_name) as lista
+	from work_effort_party_assignment wepa 
+	join party p on p.party_id = wepa.party_id
+	join role_type rt on rt.role_type_id = wepa.role_type_id and rt.role_type_id = 'WEM_GDPR_TRATTIT'
+	where wepa.from_date <= $P{date3112} and (wepa.thru_date >= $P{date0101} or wepa.thru_date is null)
+	group by wepa.work_effort_id, rt.description
+) tit_est on tit_est.work_effort_id = FIL_W.work_effort_id 
+/* 14 - Asset utilizzati */
+left join (
+	select 
+		wea.work_effort_id_from,
+		string_agg(concat(we.etch, ' - ', we.work_effort_name), ',
+' order by we.etch) as lista 
+	from work_effort_assoc wea
+	join work_effort we on we.work_effort_id = wea.work_effort_id_to and we.work_effort_type_id = '18PRAS0ASS' and we.work_effort_revision_id is null
+	group by
+		wea.work_effort_id_from
+) asset on asset.work_effort_id_from = FIL_W.work_effort_id 
+/* NOTE */
+left join (
+	select
+		wen.work_effort_id,
+		max(case when wen.sequence_id = 110 then nd.note_name else null end) as NOME_DESCRIZIONE_TRATTAMENTO,
+		max(case when wen.sequence_id = 110 then nd.note_info else null end) as DESCRIZIONE_TRATTAMENTO,
+		max(case when wen.sequence_id = 130 then nd.note_name else null end) as NOME_CATEGORIE_TRATTAMENTO,
+		max(case when wen.sequence_id = 130 then nd.note_info else null end) as CATEGORIE_TRATTAMENTO,
+		max(case when wen.sequence_id = 140 then nd.note_name else null end) as NOME_CONTITOLARI,
+		max(case when wen.sequence_id = 140 then nd.note_info else null end) as CONTITOLARI,
+		max(case when wen.sequence_id = 150 then nd.note_name else null end) as NOME_TRASFERIMENTO_DATI,
+		max(case when wen.sequence_id = 150 then nd.note_info else null end) as TRASFERIMENTO_DATI,
+		max(case when wen.sequence_id = 160 then nd.note_name else null end) as NOME_BASE_TRATTAMENTO,
+		max(case when wen.sequence_id = 160 then nd.note_info else null end) as BASE_TRATTAMENTO,
+		max(case when wen.sequence_id = 210 then nd.note_name else null end) as NOME_DATI_PERSONALI,
+		max(case when wen.sequence_id = 210 then nd.note_info else null end) as DATI_PERSONALI,
+		max(case when wen.sequence_id = 220 then nd.note_name else null end) as NOME_DATI_PARTICOLARI,
+		max(case when wen.sequence_id = 220 then nd.note_info else null end) as DATI_PARTICOLARI,
+		max(case when wen.sequence_id = 230 then nd.note_name else null end) as NOME_PERIODO_CONSERVAZIONE,
+		max(case when wen.sequence_id = 230 then nd.note_info else null end) as PERIODO_CONSERVAZIONE,
+		max(case when wen.sequence_id = 240 then nd.note_name else null end) as NOME_CATEGORIE_INTERESSATI,
+		max(case when wen.sequence_id = 240 then nd.note_info else null end) as CATEGORIE_INTERESSATI,
+		max(case when wen.sequence_id = 250 then nd.note_name else null end) as NOME_CATEGORIE_DESTINATARI,
+		max(case when wen.sequence_id = 250 then nd.note_info else null end) as CATEGORIE_DESTINATARI,
+		max(case when wen.sequence_id = 260 then nd.note_name else null end) as NOME_DESTINATARI,
+		max(case when wen.sequence_id = 260 then nd.note_info else null end) as DESTINATARI,
+		max(case when wen.sequence_id = 320 then nd.note_name else null end) as NOME_MISURE_ORGANIZZATIVE,
+		max(case when wen.sequence_id = 320 then nd.note_info else null end) as MISURE_ORGANIZZATIVE,
+		max(case when wen.sequence_id = 330 then nd.note_name else null end) as NOME_MISURE_TECNICHE_ORIZZONTALI,
+		max(case when wen.sequence_id = 330 then nd.note_info else null end) as MISURE_TECNICHE_ORIZZONTALI,
+		max(case when wen.sequence_id = 340 then nd.note_name else null end) as NOME_MISURE_TECNICHE_VERTICALI,
+		max(case when wen.sequence_id = 340 then nd.note_info else null end) as MISURE_TECNICHE_VERTICALI,
+		max(case when wen.sequence_id = 350 then nd.note_name else null end) as NOME_ULTERIORI_MISURE,
+		max(case when wen.sequence_id = 350 then nd.note_info else null end) as ULTERIORI_MISURE,
+		max(case when wen.sequence_id = 360 then nd.note_name else null end) as NOME_NOTE,
+		max(case when wen.sequence_id = 360 then nd.note_info else null end) as NOTE
+	from work_effort_note wen 
+	join note_data nd on nd.note_id = wen.note_id
+	group by wen.work_effort_id	
+) note on note.work_effort_id = FIL_W.work_effort_id 
+/* 22/23/24 - Val.Impatto */
+left join (
+	select 
+		wem.work_effort_id,
+		max(case when gl.gl_account_id = '10440' then gl.account_name else null end) as NOME_PROB,
+		max(case when gl.gl_account_id = '10440' then ate.amount else null end) as PROB,
+		max(case when gl.gl_account_id = '10441' then gl.account_name else null end) as NOME_GRAV,
+		max(case when gl.gl_account_id = '10441' then ate.amount else null end) as GRAV,
+		max(case when gl.gl_account_id = '10442' then gl.account_name else null end) as NOME_VAL,
+		max(case when gl.gl_account_id = '10442' then ate.amount else null end) as VAL
+	from work_effort_measure wem
+	join gl_account gl on gl.gl_account_id = wem.gl_account_id
+	join acctg_trans act on act.voucher_ref = wem.work_effort_measure_id
+	join acctg_trans_entry ate on ate.acctg_trans_id = act.acctg_trans_id 
+	group by
+		wem.work_effort_id
+) valimp on valimp.work_effort_id = FIL_W.work_effort_id
+/* 25 - Necessità DPIA */
+LEFT JOIN (
+	SELECT 
+		WEM.WORK_EFFORT_ID,
+		string_agg(gl.account_name, ',
+' order by gl.account_name) as lista
+	FROM WORK_EFFORT_MEASURE WEM 
+	JOIN GL_ACCOUNT GL ON GL.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+	join WORK_EFFORT_PURPOSE_ACCOUNT WEPA on WEPA.GL_ACCOUNT_ID = GL.GL_ACCOUNT_ID 
+	JOIN ACCTG_TRANS_ENTRY ATE ON ATE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID and ATE.AMOUNT = 100
+	join acctg_trans act on act.acctg_trans_id = ate.acctg_trans_id
+	JOIN WORK_EFFORT_MEAS_RAT_SC WEMRS ON WEMRS.WORK_EFFORT_MEASURE_ID = ATE.VOUCHER_REF
+  		and WEMRS.UOM_RATING_VALUE = ATE.AMOUNT
+	WHERE WEPA.WORK_EFFORT_PURPOSE_TYPE_ID = 'TRAVIP' and ATE.GL_ACCOUNT_ID <> 'GDPR10018'
+	group by
+		WEM.WORK_EFFORT_ID
+) DPIA ON DPIA.WORK_EFFORT_ID = FIL_W.WORK_EFFORT_ID
+/* 26 - Indicatore Necessità DPIA */
+left join (
+	select 
+		WEM.WORK_EFFORT_ID,
+		GL.ACCOUNT_NAME,
+		WEMRS.UOM_CODE
+	FROM WORK_EFFORT_MEASURE WEM
+	JOIN GL_ACCOUNT GL ON GL.GL_ACCOUNT_ID = WEM.GL_ACCOUNT_ID
+	JOIN ACCTG_TRANS_ENTRY ATE ON ATE.VOUCHER_REF = WEM.WORK_EFFORT_MEASURE_ID
+	join acctg_trans act on act.acctg_trans_id = ate.acctg_trans_id
+	JOIN WORK_EFFORT_MEAS_RAT_SC WEMRS ON WEMRS.WORK_EFFORT_MEASURE_ID = ATE.VOUCHER_REF
+  		AND WEMRS.UOM_RATING_VALUE = ATE.AMOUNT
+	where WEM.GL_ACCOUNT_ID = 'X10018'
+) NECDPIA on NECDPIA.WORK_EFFORT_ID = FIL_W.WORK_EFFORT_ID 
+/* 28 - Atti */
+left join (
+	select 
+		wec.work_effort_id,
+		string_agg(concat(c.description, ' - ', c.content_name), ',
+' order by c.description) as lista  
+	from work_effort_content wec
+	join content c on c.content_id = wec.content_id
+	where wec.work_effort_content_type_id = 'ALLATTI'
+	group by
+		wec.work_effort_id
+) atti on atti.work_effort_id = FIL_W.work_effort_id 
+/* 29 - Nomine */
+left join (
+	select 
+		wec.work_effort_id,
+		string_agg(concat(c.description, ' - ', c.content_name), ',
+' order by c.description) as lista 
+	from work_effort_content wec
+	join content c on c.content_id = wec.content_id
+	where wec.work_effort_content_type_id = 'ALLNOM'
+	group by
+		wec.work_effort_id
+) nomine on nomine.work_effort_id = FIL_W.work_effort_id 
+where FIL_W.work_effort_type_id = '18PRTR0TRA' and FIL_W.work_effort_revision_id is null /*and FIL_W.source_reference_id = 'TRT.0007'*/
+	and FIL_W.ESTIMATED_START_DATE <= $P{date3112} and (FIL_W.ESTIMATED_COMPLETION_DATE >= $P{date0101} or FIL_W.ESTIMATED_COMPLETION_DATE is null)
+	$P!{orgUnitIdString}
+	/* START filterWhere */
+ 	$P!{filterWhereString} 
+   /* END filterWhere */
+ORDER BY
+	WET.ETCH,
+	FIL_W.ETCH]]>
+	</queryString>
+	<field name="tipologia_trattamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipologia_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipologia_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_type"/>
+	</field>
+	<field name="nome_trattamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="etch_trattamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="etch_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="etch_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="codice_trattamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codice_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="codice_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="data_inizio_trattamento" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="data_inizio_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_inizio_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="data_fine_trattamento" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="data_fine_trattamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_fine_trattamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="tipologia_unita_responsabile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipologia_unita_responsabile"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipologia_unita_responsabile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="role_type"/>
+	</field>
+	<field name="unita_responsabile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="unita_responsabile"/>
+		<property name="com.jaspersoft.studio.field.label" value="unita_responsabile"/>
+	</field>
+	<field name="nome1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome1"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome1"/>
+	</field>
+	<field name="info1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info1"/>
+		<property name="com.jaspersoft.studio.field.label" value="info1"/>
+	</field>
+	<field name="nome2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome2"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome2"/>
+	</field>
+	<field name="info2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info2"/>
+		<property name="com.jaspersoft.studio.field.label" value="info2"/>
+	</field>
+	<field name="nome3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome3"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome3"/>
+	</field>
+	<field name="info3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info3"/>
+		<property name="com.jaspersoft.studio.field.label" value="info3"/>
+	</field>
+	<field name="nome4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome4"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome4"/>
+	</field>
+	<field name="info4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info4"/>
+		<property name="com.jaspersoft.studio.field.label" value="info4"/>
+	</field>
+	<field name="nome5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome5"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome5"/>
+	</field>
+	<field name="info5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info5"/>
+		<property name="com.jaspersoft.studio.field.label" value="info5"/>
+	</field>
+	<field name="nome6" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome6"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome6"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="role_type"/>
+	</field>
+	<field name="info6" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info6"/>
+		<property name="com.jaspersoft.studio.field.label" value="info6"/>
+	</field>
+	<field name="nome7" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome7"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome7"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="role_type"/>
+	</field>
+	<field name="info7" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info7"/>
+		<property name="com.jaspersoft.studio.field.label" value="info7"/>
+	</field>
+	<field name="nome8" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome8"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome8"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="role_type"/>
+	</field>
+	<field name="info8" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info8"/>
+		<property name="com.jaspersoft.studio.field.label" value="info8"/>
+	</field>
+	<field name="nome9" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome9"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome9"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="role_type"/>
+	</field>
+	<field name="info9" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info9"/>
+		<property name="com.jaspersoft.studio.field.label" value="info9"/>
+	</field>
+	<field name="nome10" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome10"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome10"/>
+	</field>
+	<field name="info10" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info10"/>
+		<property name="com.jaspersoft.studio.field.label" value="info10"/>
+	</field>
+	<field name="nome11" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome11"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome11"/>
+	</field>
+	<field name="info11" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info11"/>
+		<property name="com.jaspersoft.studio.field.label" value="info11"/>
+	</field>
+	<field name="nome12" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome12"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome12"/>
+	</field>
+	<field name="info12" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info12"/>
+		<property name="com.jaspersoft.studio.field.label" value="info12"/>
+	</field>
+	<field name="nome13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome13"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome13"/>
+	</field>
+	<field name="info13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info13"/>
+		<property name="com.jaspersoft.studio.field.label" value="info13"/>
+	</field>
+	<field name="nome14" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome14"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome14"/>
+	</field>
+	<field name="info14" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info14"/>
+		<property name="com.jaspersoft.studio.field.label" value="info14"/>
+	</field>
+	<field name="nome15" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome15"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome15"/>
+	</field>
+	<field name="info15" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info15"/>
+		<property name="com.jaspersoft.studio.field.label" value="info15"/>
+	</field>
+	<field name="nome16" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome16"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome16"/>
+	</field>
+	<field name="info16" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info16"/>
+		<property name="com.jaspersoft.studio.field.label" value="info16"/>
+	</field>
+	<field name="nome17" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome17"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome17"/>
+	</field>
+	<field name="info17" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info17"/>
+		<property name="com.jaspersoft.studio.field.label" value="info17"/>
+	</field>
+	<field name="nome18" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome18"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome18"/>
+	</field>
+	<field name="info18" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info18"/>
+		<property name="com.jaspersoft.studio.field.label" value="info18"/>
+	</field>
+	<field name="nome19" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome19"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome19"/>
+	</field>
+	<field name="info19" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info19"/>
+		<property name="com.jaspersoft.studio.field.label" value="info19"/>
+	</field>
+	<field name="nome20" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome20"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome20"/>
+	</field>
+	<field name="info20" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info20"/>
+		<property name="com.jaspersoft.studio.field.label" value="info20"/>
+	</field>
+	<field name="nome21" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome21"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome21"/>
+	</field>
+	<field name="info21" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info21"/>
+		<property name="com.jaspersoft.studio.field.label" value="info21"/>
+	</field>
+	<field name="nome22" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome22"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome22"/>
+	</field>
+	<field name="info22" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="info22"/>
+		<property name="com.jaspersoft.studio.field.label" value="info22"/>
+	</field>
+	<field name="nome23" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome23"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome23"/>
+	</field>
+	<field name="info23" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="info23"/>
+		<property name="com.jaspersoft.studio.field.label" value="info23"/>
+	</field>
+	<field name="nome24" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome24"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome24"/>
+	</field>
+	<field name="info24" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="info24"/>
+		<property name="com.jaspersoft.studio.field.label" value="info24"/>
+	</field>
+	<field name="nome25" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome25"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome25"/>
+	</field>
+	<field name="info25" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info25"/>
+		<property name="com.jaspersoft.studio.field.label" value="info25"/>
+	</field>
+	<field name="nome26" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome26"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome26"/>
+	</field>
+	<field name="info26" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info26"/>
+		<property name="com.jaspersoft.studio.field.label" value="info26"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort_meas_rat_sc"/>
+	</field>
+	<field name="nome27" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome27"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome27"/>
+	</field>
+	<field name="info27" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info27"/>
+		<property name="com.jaspersoft.studio.field.label" value="info27"/>
+	</field>
+	<field name="nome28" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome28"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome28"/>
+	</field>
+	<field name="info28" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="info28"/>
+		<property name="com.jaspersoft.studio.field.label" value="info28"/>
+	</field>
+	<sortField name="unita_responsabile"/>
+	<sortField name="etch_trattamento"/>
+	<group name="Unita_Responsabile">
+		<groupExpression><![CDATA[$F{unita_responsabile}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<frame>
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="554" height="20" backcolor="#FFFFFF" uuid="6c0c86df-417f-40c1-b8a7-ec1cbc219502"/>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor" bookmarkLevel="1">
+						<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="554" height="20" isRemoveLineWhenBlank="true" uuid="3709cf76-002f-4405-b254-ecb01dfb0d68">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font size="8" isBold="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{unita_responsabile}]]></textFieldExpression>
+						<anchorNameExpression><![CDATA["IndiceUNI"]]></anchorNameExpression>
+						<hyperlinkAnchorExpression><![CDATA[$F{unita_responsabile}]]></hyperlinkAnchorExpression>
+					</textField>
+					<line>
+						<reportElement positionType="Float" x="0" y="19" width="554" height="1" uuid="7835c8a6-24f1-416e-ba49-05a3e4a8b559">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.1" lineColor="#C0C0C0"/>
+						</graphicElement>
+					</line>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="350" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="45" width="555" height="21" backcolor="#D5D5D5" uuid="262d0ba5-1930-4d2a-9cca-d6987e06e36a"/>
+				<textField textAdjust="StretchHeight">
+					<reportElement x="0" y="0" width="555" height="21" uuid="1511c5d8-a8a4-4139-9fae-3b3ae97dc19f"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Registro trattamenti da titolare"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Indice"]]></anchorNameExpression>
+				</textField>
+			</frame>
+			<componentElement>
+				<reportElement x="0" y="68" width="555" height="15" uuid="bfe52087-262a-480f-8318-5f20637758b5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="NoteInfoDS" uuid="4ba9297b-89f1-4729-8920-e374b6f5dbd9">
+						<datasetParameter name="workEffortTypeId">
+							<datasetParameterExpression><![CDATA[$P{workEffortTypeId}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="langLocale">
+							<datasetParameterExpression><![CDATA[$P{langLocale}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="15" width="555">
+						<textField textAdjust="StretchHeight">
+							<reportElement x="0" y="0" width="550" height="15" uuid="aad85f07-1e2d-4afc-b23c-bfb418c71c15">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement markup="html"/>
+							<textFieldExpression><![CDATA[$F{NOTE_INFO}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField>
+				<reportElement x="1" y="8" width="100" height="15" uuid="ab39e774-6165-4e14-8f53-1adf21bacd19"/>
+				<textFieldExpression><![CDATA["Provincia di Brescia"]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="265" y="8" width="25" height="25" uuid="ce4a1a4f-a4ab-407e-a7f4-f602afa0b33b"/>
+				<imageExpression><![CDATA[$P{ReportSmallPath}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="341" y="8" width="214" height="15" uuid="b9a022e4-60ff-4db8-9f03-5f633c744f75">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Registro trattamenti da titolare "]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement positionType="Float" x="47" y="100" width="460" height="200" uuid="ebbc2c5d-6744-489e-8241-2ac798966782">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{ReportLargePath}]]></imageExpression>
+			</image>
+			<break>
+				<reportElement x="0" y="349" width="100" height="1" uuid="de48d8b2-5d77-48db-ba41-691ab74a21fb">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</break>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="76" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() == 1 ? false : true]]></printWhenExpression>
+			<textField>
+				<reportElement x="340" y="12" width="214" height="14" uuid="a764f54a-7505-4c6b-8e07-6ef78652ae86">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Registro trattamenti da titolare "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="13" width="100" height="15" uuid="deb01c3d-197e-4f5d-a625-a1faf08147d2"/>
+				<textFieldExpression><![CDATA[$P{Company}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="264" y="12" width="25" height="25" uuid="f3a6b529-d3ea-48d2-b286-5dfe0a88c48a"/>
+				<imageExpression><![CDATA[$P{ReportSmallPath}]]></imageExpression>
+			</image>
+			<frame>
+				<reportElement positionType="Float" mode="Opaque" x="1" y="50" width="555" height="21" backcolor="#D5D5D5" uuid="91050b0e-220b-498d-869b-5d9bdb740331"/>
+				<textField>
+					<reportElement x="227" y="0" width="100" height="20" uuid="20406204-c8fc-4e9b-9f18-c00547736c39"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Indice}]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Indice"]]></anchorNameExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="39">
+			<line>
+				<reportElement x="0" y="10" width="555" height="1" uuid="71a60416-1722-4e39-9d26-2df177e936df"/>
+			</line>
+			<textField evaluationTime="Master">
+				<reportElement x="400" y="18" width="155" height="15" uuid="2e008668-958b-4d54-8463-d852d02bc5c2">
+					<printWhenExpression><![CDATA[$P{exposePaginator}.equals( "Y")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. " + $V{MASTER_CURRENT_PAGE} + " di " + $V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="17" width="128" height="16" uuid="dbc8677a-d62f-4f5e-ac99-af8e134b3afe">
+					<printWhenExpression><![CDATA[$P{exposeReleaseDate}.equals( "Y" )]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Stampato il " + DATEFORMAT(TODAY( ), "dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="266" y="17" width="23" height="16" uuid="3544d33c-6478-4e9b-9126-8d85f5a727b5"/>
+				<imageExpression><![CDATA[$P{IconNavPath}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

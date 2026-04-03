@@ -1,0 +1,84 @@
+<div style="height: min-content; margin-bottom: 10px">
+  <form *ngIf="filterForm" [formGroup]="filterForm">
+    <div style="display: flex; flex-direction: column; gap: 5px">
+      <gzoom-row-flex style="width: fit-content; gap: 10px">
+        <gzoom-label
+          label="{{ (labelFilterSearchGlAccount() | i18n) + ':' }}"
+          labelPos="left"
+        >
+          <gzoom-dropdown
+            [options]="this.glAccount$() | async"
+            style="width: 500px"
+            controlName="glAccountId"
+            [showClear]="true"
+            placeholder="Any"
+            [filter]="true"
+            virtualScroll
+          />
+        </gzoom-label>
+        <gzoom-label label="{{ ('unitMeasure' | i18n) + ':' }}" labelPos="left">
+          <gzoom-dropdown
+            [options]="this.uom$()"
+            style="width: 240px"
+            controlName="uomId"
+            [showClear]="true"
+            placeholder="All"
+            [filter]="true"
+          />
+        </gzoom-label>
+      </gzoom-row-flex>
+      <gzoom-row-flex>
+        <gzoom-label
+          label="{{ ('customTimePeriod' | i18n) + ':' }}"
+          labelPos="left"
+        >
+          <gzoom-dropdown
+            [options]="this.customTimePeriod$()"
+            style="width: 240px"
+            controlName="customTimePeriodId"
+            [showClear]="true"
+            placeholder="Any"
+            [filter]="true"
+          />
+        </gzoom-label>
+        <gzoom-label
+          label="{{ ('glFiscalType' | i18n) + ':' }}"
+          labelPos="left"
+        >
+          <gzoom-dropdown
+            [options]="this.glFiscalType$() | async"
+            style="width: 240px"
+            controlName="glFiscalTypeId"
+            [showClear]="true"
+            placeholder="Any"
+            [filter]="true"
+          />
+        </gzoom-label>
+      </gzoom-row-flex>
+      <div style="display: flex">
+        <div style="width: 50%"></div>
+        <div
+          style="
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+          "
+        >
+          <gzoom-button-outlined
+            [label]="'Reset filters' | i18n"
+            [disabled]="this.disabledResetButton()"
+            (onClick)="resetFilter()"
+          ></gzoom-button-outlined>
+          <gzoom-button
+            [label]="'Apply filters' | i18n"
+            [disabled]="this.loading() || this.filterForm.pristine"
+            (onClick)="filter()"
+          ></gzoom-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

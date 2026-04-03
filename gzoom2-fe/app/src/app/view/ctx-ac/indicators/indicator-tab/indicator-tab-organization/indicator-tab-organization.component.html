@@ -1,0 +1,209 @@
+<p-toast></p-toast>
+<p-messages key="error"></p-messages>
+<div class="d-flex flex-row flex-wrap justify-content-between">
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    <gzoom-button
+      icon="pi pi-plus"
+      [label]="'Add organization' | i18n"
+      (onClick)="newOrganization()"
+      [disabled]="!disableSave"
+    ></gzoom-button>
+    <gzoom-button-outlined
+      icon="pi pi-trash"
+      [label]="'Delete organizations selected' | i18n"
+      (onClick)="delete()"
+      [disabled]="!(this.selectedItems.length > 0)"
+    ></gzoom-button-outlined>
+  </div>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 5px 0px;
+      margin-bottom: 10px;
+    "
+  >
+    <gzoom-button-outlined
+      icon="pi pi-refresh"
+      [label]="'Reset' | i18n"
+      [disabled]="disableSave"
+      (onClick)="reset()"
+    ></gzoom-button-outlined>
+
+    <gzoom-button
+      icon="pi pi-save"
+      [disabled]="disableSave"
+      [label]="'Save' | i18n"
+      (onClick)="save()"
+    ></gzoom-button>
+  </div>
+</div>
+
+<p-table
+  #dt
+  [value]="glAccountOrganizationView"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [tableStyle]="{ 'min-width': '20rem' }"
+  id="table-card"
+  [(selection)]="selectedItems"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  scrollHeight="50vh"
+  [scrollable]="scrollable | async"
+  [loading]="loading"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        class="table-head-th"
+        style="width: 1rem; padding-right: 5px !important"
+      >
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+
+      <th class="table-head-th padding-medium-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Organization" | i18n }}*
+          <p-sortIcon
+            pSortableColumn="organizationDescr"
+            field="organizationDescr"
+          />
+          <p-columnFilter
+            type="text"
+            field="organizationDescr"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-medium-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Start validity" | i18n }}
+
+          <p-sortIcon pSortableColumn="fromDate" field="fromDate" />
+          <p-columnFilter
+            type="date"
+            field="fromDate"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-medium-row-th">
+        <div class="d-flex align-items-center">
+          {{ "End validity" | i18n }}
+
+          <p-sortIcon pSortableColumn="endDate" field="endDate" />
+          <p-columnFilter
+            type="date"
+            field="endDate"
+            display="menu"
+          ></p-columnFilter>
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-glAccountOrganization
+    let-columns="columns"
+    let-editing="editing"
+  >
+    <tr>
+      <td>
+        <p-tableCheckbox [value]="glAccountOrganization"></p-tableCheckbox>
+      </td>
+
+      <td class="data-cell">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Organization" | i18n }}*</b></span
+        >{{ glAccountOrganization.organizationDescr }}
+      </td>
+      <td
+        class="data-cell"
+        [pEditableColumn]="glAccountOrganization.fromDate"
+        pEditableColumnField="fromDate"
+      >
+        <span class="p-column-title"
+        ><b>{{ "Start validity" | i18n }}</b>
+        </span>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <p-calendar
+              appendTo="body"
+              [(ngModel)]="glAccountOrganization.fromDate"
+              dateFormat="dd/mm/yy"
+              (ngModelChange)="
+                changeValue(glAccountOrganization.organizationPartyId)
+              "
+              showIcon="true"
+              showClear="true"
+              [maxDate]="glAccountOrganization.thruDate"
+            ></p-calendar>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{
+              glAccountOrganization.fromDate
+                | date: i18nService.dateShortFormat()
+            }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td
+        class="data-cell"
+        [pEditableColumn]="glAccountOrganization.thruDate"
+        pEditableColumnField="thruDate"
+      >
+        <span class="p-column-title" style="padding-right: 10px">
+          <b> {{ "End validity" | i18n }}</b>
+        </span>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <p-calendar
+              appendTo="body"
+              [(ngModel)]="glAccountOrganization.thruDate"
+              dateFormat="dd/mm/yy"
+              (ngModelChange)="
+                changeValue(glAccountOrganization.organizationPartyId)
+              "
+              showIcon="true"
+              showClear="true"
+              [minDate]="glAccountOrganization.fromDate"
+            ></p-calendar>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{
+              glAccountOrganization.thruDate
+                | date: i18nService.dateShortFormat()
+            }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"></ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-confirmDialog></p-confirmDialog>

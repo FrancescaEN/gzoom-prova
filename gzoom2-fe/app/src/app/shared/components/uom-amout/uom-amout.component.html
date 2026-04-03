@@ -1,0 +1,17 @@
+@if (amount() !== null && amount() !== undefined) {
+  @switch (uomTypeId()) {
+    @case ("RATING_SCALE") {
+      {{ getUomRatingScaleDescription() }}
+    }
+    @case ("DATE_MEASURE") {
+      {{ julianDate() | date: this.i18n.getFormat("date-short") }}
+    }
+    @default {
+      @if (decimalScale()) {
+        {{ amount() | number: "." + decimalScale() }}
+      } @else {
+        {{ amount() | number }}
+      }
+    }
+  }
+}

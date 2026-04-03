@@ -1,0 +1,16 @@
+@if (loading()) {
+  <p-skeleton width="100%" [height]="height()" />
+} @else {
+  <p-chart
+    [type]="type"
+    [options]="options"
+    [plugins]="plugins"
+    [data]="data()"
+    [ngStyle]="{
+      cursor: cursorPointer() ? 'pointer' : '',
+    }"
+    width="100%"
+    [height]="height()"
+    (onDataSelect)="selectData($event)"
+  />
+}

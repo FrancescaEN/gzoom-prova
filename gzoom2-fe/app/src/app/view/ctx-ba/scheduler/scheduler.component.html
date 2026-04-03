@@ -1,0 +1,225 @@
+<app-primary-board
+  [headArray]="headArray"
+  [gridArray]="this.gridArray"
+  [loading]="loading"
+  [collapseSidebar]="true"
+  [scrollHeight]="'70vh'"
+  [elementToAdd]="elementToAdd"
+  (clickButtonDetailsEvent)="toPlan($event)"
+  (openNew)="openNew()"
+  (saveAllElement)="saveAllElement($event)"
+  (delete)="delete($event)"
+  stateKey="scheduler"
+></app-primary-board>
+
+<p-dialog
+  [header]="headDialog"
+  [(visible)]="visibleDialog"
+  [draggable]="false"
+  [dismissableMask]="true"
+  [modal]="true"
+>
+  <form [formGroup]="form" *ngIf="form" (onSubmit)="onSubmit()">
+    <div class="form-container">
+      <div class="container">
+        <!--Configurazione job-->
+        <div>
+          <div class="d-flex flex-column align-items-baseline pb-2">
+            <ng-container *ngIf="this.newValue">
+              <h4>{{ "New" | i18n }}</h4>
+              <div class="d-flex flex-row align-items-center">
+                <div
+                  class="d-flex flex-column align-items-baseline pb-2"
+                  style="padding-right: 15px"
+                >
+                  <gzoom-label
+                    label="{{ 'Name' | i18n }}"
+                    labelPos="top"
+                    required
+                  >
+                    <input
+                      id="jobName"
+                      required
+                      pInputText
+                      formControlName="jobName"
+                    />
+                  </gzoom-label>
+                </div>
+                <div
+                  class="d-flex flex-column align-items-baseline pb-2"
+                  style="padding-right: 15px"
+                >
+                  <gzoom-label
+                    label="{{ 'Service' | i18n }}"
+                    labelPos="top"
+                    required
+                  >
+                    <p-dropdown
+                      [style]="{ width: '200px' }"
+                      [options]="dropdownServices"
+                      placeholder="{{ 'Select' | i18n }}"
+                      formControlName="service"
+                      optionValue="id"
+                      (onChange)="serviceSelectedChanged($event.value)"
+                      appendTo="body"
+                      required
+                    ></p-dropdown>
+                  </gzoom-label>
+                </div>
+              </div>
+            </ng-container>
+            <div
+              class="d-flex flex-column align-items-baseline pb-2"
+              style="padding-right: 15px"
+            >
+              <ng-container *ngIf="description.enabled">
+                <gzoom-label label="{{ 'Description' | i18n }}" labelPos="top">
+                  <textarea
+                    rows="5"
+                    cols="40"
+                    pInputTextarea
+                    formControlName="description"
+                  ></textarea>
+                </gzoom-label>
+              </ng-container>
+              <ng-container *ngIf="description.disabled">
+                <p>{{ description.value }}</p>
+              </ng-container>
+            </div>
+
+            <div formGroupName="paramForm" *ngIf="this.parameters as params">
+              <h4>{{ "Parameters" | i18n }}</h4>
+              <div *ngFor="let par of params" class="flex flex-column">
+                <div class="d-flex flex-column align-items-baseline pb-2">
+                  <gzoom-label
+                    label="{{ par.name ?? par.key }}"
+                    labelPos="top"
+                    [required]="par.required"
+                  >
+                    <ng-container *ngIf="par.type == 'String'">
+                      <input
+                        [id]="par.key"
+                        [aria-describedby]="par.key"
+                        [value]="par.defaultValue"
+                        [required]="par.required"
+                        formControlName="{{ par.key }}"
+                        pInputText
+                      />
+                    </ng-container>
+                    <ng-container *ngIf="par.type == 'String[]'">
+                      <p-chips
+                        formControlName="{{ par.key }}"
+                        separator=" "
+                      ></p-chips>
+                    </ng-container>
+                    <ng-container *ngIf="par.type == 'int'">
+                      <p-inputNumber
+                        [inputId]="par.key"
+                        locale="it-IT"
+                        formControlName="{{ par.key }}"
+                      ></p-inputNumber>
+                    </ng-container>
+                    <ng-container *ngIf="par.type == 'float'">
+                      <p-inputNumber
+                        [inputId]="par.key"
+                        locale="it-IT"
+                        [maxFractionDigits]="2"
+                        formControlName="{{ par.key }}"
+                      ></p-inputNumber>
+                    </ng-container>
+                  </gzoom-label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Schedulatore-->
+        <div>
+          <h4>{{ "Planning" | i18n }}</h4>
+          <div class="d-flex flex-column align-items-baseline pb-2">
+            <div class="d-flex flex-row align-items-center">
+              <div
+                class="d-flex flex-column align-items-baseline pb-2"
+                style="padding-right: 15px"
+              >
+                <gzoom-label
+                  label="{{ 'Date' | i18n }}"
+                  labelPos="top"
+                  required
+                >
+                  <p-calendar
+                    formControlName="startDate"
+                    [showTime]="true"
+                    [showSeconds]="true"
+                    appendTo="body"
+                    [showIcon]="true"
+                    dateFormat="dd/mm/yy"
+                    [maxDate]="endDate.value"
+                    required
+                  ></p-calendar>
+                </gzoom-label>
+              </div>
+              <div
+                class="d-flex flex-column align-items-baseline pb-2"
+                style="padding-right: 15px"
+              >
+                <gzoom-label label="{{ 'Frequency' | i18n }}" labelPos="top">
+                  <p-dropdown
+                    [options]="frequencies"
+                    formControlName="frequency"
+                    appendTo="body"
+                  ></p-dropdown>
+                </gzoom-label>
+              </div>
+              <div
+                class="d-flex flex-column align-items-baseline pb-2"
+                *ngIf="this.form.get('frequency')?.value == 'CUSTOM'"
+              >
+                <gzoom-label
+                  label="{{ 'Cron Expression' | i18n }}"
+                  labelPos="top"
+                  [required]="this.cronExpression.enabled"
+                >
+                  <input
+                    type="text"
+                    pInputText
+                    formControlName="cronExpression"
+                  />
+                </gzoom-label>
+              </div>
+            </div>
+            <div
+              class="d-flex flex-column align-items-baseline pb-2"
+              style="padding-right: 15px"
+              *ngIf="this.form.get('frequency')?.value != 'NO_REPEAT'"
+            >
+              <gzoom-label label="{{ 'End Date' | i18n }}" labelPos="top">
+                <p-calendar
+                  formControlName="endDate"
+                  [showTime]="true"
+                  [showSeconds]="true"
+                  [showIcon]="true"
+                  [showButtonBar]="true"
+                  dateFormat="dd/mm/yy"
+                  appendTo="body"
+                  [minDate]="this.startDate.value"
+                ></p-calendar>
+              </gzoom-label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="button-container" style="padding-left: 5px">
+        <p-button
+          type="button"
+          [disabled]="!form.valid"
+          (onClick)="onSubmit()"
+          label="{{ 'Plan' | i18n }}"
+          icon="pi pi-check"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+</p-dialog>

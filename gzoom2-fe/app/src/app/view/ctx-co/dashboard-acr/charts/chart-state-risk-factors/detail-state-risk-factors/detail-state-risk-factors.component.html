@@ -1,0 +1,62 @@
+<gzoom-detail-chart (back)="back()" [backLabel]="'GP_MENU_00626' | i18n">
+  <gzoom-chart-detail-state-risk-factors
+    chart
+    [levelId]="levelId()"
+    [year]="year()"
+    [fromYear]="fromYear()"
+    [riskLabel]="riskLabel()"
+    [orgUnitId]="orgUnitId()"
+  />
+
+  <div options>
+    <gzoom-row-flex>
+      <gzoom-label label="fromYear" labelPos="left" twoPoints>
+        <p-calendar
+          [(ngModel)]="fromDate"
+          [maxDate]="date"
+          view="year"
+          appendTo="body"
+          dateFormat="yy"
+          (ngModelChange)="setFromYear($event)"
+        />
+      </gzoom-label>
+      <gzoom-label label="referenceYear" labelPos="left" twoPoints>
+        <p-calendar
+          [(ngModel)]="date"
+          [minDate]="fromDate"
+          [maxDate]="maxDate"
+          view="year"
+          appendTo="body"
+          dateFormat="yy"
+          (ngModelChange)="setYear($event)"
+        />
+      </gzoom-label>
+      <gzoom-label label="Responsible Unit" labelPos="left" twoPoints>
+        <p-dropdown
+          [(ngModel)]="selectedOrgUnitId"
+          [options]="organizationUnits"
+          optionValue="id"
+          optionLabel="name"
+          appendTo="body"
+          placeholder="{{ 'Select' | i18n }}"
+          [disabled]="true"
+        />
+      </gzoom-label>
+      <gzoom-label label="proRisk" labelPos="left" twoPoints>
+        <p-dropdown
+          [(ngModel)]="selectedRisk"
+          [options]="risks()"
+          [style]="{ minWidth: '200px', maxWidth: '80vw' }"
+          appendTo="body"
+          (onChange)="setRiskId($event.value)"
+        />
+      </gzoom-label>
+    </gzoom-row-flex>
+  </div>
+  <gzoom-table-detail-state-risk-factors
+    table
+    [year]="year()"
+    [levelId]="levelId()"
+    [orgUnitId]="orgUnitId()"
+  />
+</gzoom-detail-chart>

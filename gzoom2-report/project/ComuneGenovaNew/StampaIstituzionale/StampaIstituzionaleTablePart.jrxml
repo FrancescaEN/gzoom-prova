@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TablePart" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" isSummaryNewPage="true" isFloatColumnFooter="true" resourceBundle="StampaIstituzionale" uuid="5c559f3e-b23b-4cd4-a579-7ed7c0d2b615">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sql_server_comune_genova_new "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="810"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="720"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="269"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Base" isDefault="true" fontName="DejaVu Sans" fontSize="10" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId}  != null && $P{orgUnitId}  != "" ? " AND FIL_W.ORG_UNIT_ID = '"+ $P{orgUnitId} + "'" : " AND FIL_W.ORG_UNIT_ID like '%%'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["GDPRPERF"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["admin"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020/01/01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),INTEGER_VALUE($P{customTimePeriod}.substring(0,4)), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),INTEGER_VALUE($P{customTimePeriod}.substring(0,4)), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[/* VERSIONE V1.1 CON #COND0# = AAAA
+FILTRO SU STRUTTURA 
+NUOVE AGGIUNTE DI ALCUNI CAMPI */
+
+SELECT
+	YEAR($P{customTimePeriod}) AS "Anno",
+	CONCAT(ATT.ETCH, ' - ', ATT.WORK_EFFORT_NAME) AS "Attività",
+	CONCAT(PPRSTRUTT.PARENT_ROLE_CODE, ' - ', STRUTT.PARTY_NAME) AS "Soggetto",
+	ND.NOTE_INFO AS "Descrizione dell'attività svolta",
+	-- ALLE.LISTA AS "Allegati", /* DA TRASFORMARE IN STRING_AGG */
+	WEPT.DESCRIPTION AS "Stato attività",
+	FORMAT(ATT.ESTIMATED_START_DATE, 'dd/MM/yyyy') AS "Inizio attività",
+	FORMAT(ATT.ESTIMATED_COMPLETION_DATE, 'dd/MM/yyyy') AS "Fine attività",
+	CONCAT(AZ.ETCH, ' - ', AZ.WORK_EFFORT_NAME) AS "Azione",
+	CONCAT(ATTINT.ETCH, ' - ', ATTINT.WORK_EFFORT_NAME) AS "AttivItà integrata",
+	CONCAT(AZINT.ETCH, ' - ', AZINT.WORK_EFFORT_NAME) AS "Azione integrata",
+	FORMAT(AZINT.ESTIMATED_START_DATE, 'dd/MM/yyyy') AS "Inizio azione integrata",
+	FORMAT(AZINT.ESTIMATED_COMPLETION_DATE, 'dd/MM/yyyy') AS "Fine azione integrata",
+	SINT.DESCRIPTION AS "Stato azione integrata",
+	NOTEAZINT.NOTE_INFO AS "Descrizione azione integrata",
+	CONCAT(OBS.ETCH, ' - ', OBS.WORK_EFFORT_NAME) AS "Obiettivo strategico",
+	NOTEOBS.NOTE_INFO AS "Descrizione obiettivo strategico",
+	CONCAT(PIANO.ETCH, ' - ', PIANO.WORK_EFFORT_NAME) AS "Piano d'azione",
+	NOTEPIA.NOTE_INFO AS "Descrizione piano d'azione",
+	WEA5.WORK_EFFORT_ASSOC_TYPE_ID 
+/* AZIONE DEL COMUNE / AZIONE NON DEL COMUNE */
+FROM WORK_EFFORT AZ
+/* ATTIVITA' */
+JOIN WORK_EFFORT_ASSOC WEA ON WEA.WORK_EFFORT_ID_FROM = AZ.WORK_EFFORT_ID AND WEA.WORK_EFFORT_ASSOC_TYPE_ID = '21U4ASO'
+JOIN WORK_EFFORT ATT ON ATT.WORK_EFFORT_ID = WEA.WORK_EFFORT_ID_TO AND ATT.WORK_EFFORT_TYPE_ID = '21U42ATT' AND ATT.WORK_EFFORT_REVISION_ID IS NULL
+	AND ATT.ESTIMATED_START_DATE <= $P{date3112} AND (ATT.ESTIMATED_COMPLETION_DATE >= $P{date0101} OR ATT.ESTIMATED_COMPLETION_DATE IS NULL)
+/* STATO ATTIVITA' */
+LEFT JOIN WORK_EFFORT_PURPOSE_TYPE WEPT ON WEPT.WORK_EFFORT_PURPOSE_TYPE_ID = ATT.WORK_EFFORT_PURPOSE_TYPE_ID
+/* STRUTTURA ATTIVITA' */
+JOIN PARTY STRUTT ON STRUTT.PARTY_ID = ATT.ORG_UNIT_ID 
+JOIN PARTY_PARENT_ROLE PPRSTRUTT ON PPRSTRUTT.PARTY_ID = STRUTT.PARTY_ID
+/* NOTE ATTIVITA' */
+LEFT JOIN WORK_EFFORT_NOTE WEN ON WEN.WORK_EFFORT_ID = ATT.WORK_EFFORT_ID AND WEN.SEQUENCE_ID = 100
+LEFT JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID
+
+/* ALLEGATI */
+/*
+LEFT JOIN (
+	SELECT
+		WEC.WORK_EFFORT_ID,
+		CONCAT(WECT.DESCRIPTION, ' - ', C.DESCRIPTION) AS LISTA
+	FROM WORK_EFFORT_CONTENT WEC
+	JOIN WORK_EFFORT_CONTENT_TYPE WECT ON WECT.WORK_EFFORT_CONTENT_TYPE_ID = WEC.WORK_EFFORT_CONTENT_TYPE_ID
+	JOIN CONTENT C ON C.CONTENT_ID = WEC.CONTENT_ID
+) ALLE ON ALLE.WORK_EFFORT_ID = ATT.WORK_EFFORT_ID
+*/
+
+/* AZIONE INTEGRATA */
+LEFT JOIN WORK_EFFORT_ASSOC WEA2 ON WEA2.WORK_EFFORT_ID_TO = AZ.WORK_EFFORT_ID AND WEA2.WORK_EFFORT_ASSOC_TYPE_ID = '21U2AINC'
+LEFT JOIN WORK_EFFORT AZINT ON AZINT.WORK_EFFORT_ID = WEA2.WORK_EFFORT_ID_FROM AND AZINT.WORK_EFFORT_TYPE_ID = '21U26AIN' AND AZINT.WORK_EFFORT_REVISION_ID IS NULL
+	AND AZINT.ESTIMATED_START_DATE <= $P{date3112}  AND (AZINT.ESTIMATED_COMPLETION_DATE >= $P{date0101} OR AZINT.ESTIMATED_COMPLETION_DATE IS NULL)
+/* STATO AZIONE INTEGRATA */
+LEFT JOIN STATUS_ITEM SINT ON SINT.STATUS_ID = AZINT.CURRENT_STATUS_ID
+/* NOTE AZIONE INTEGRATA */
+LEFT JOIN (
+	SELECT WEN.WORK_EFFORT_ID, ND.NOTE_INFO 
+	FROM WORK_EFFORT_NOTE WEN
+	JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID AND WEN.SEQUENCE_ID = '100'
+) NOTEAZINT ON NOTEAZINT.WORK_EFFORT_ID = AZINT.WORK_EFFORT_ID
+/* ATTIVITA' INTEGRATA */
+LEFT JOIN WORK_EFFORT_ASSOC WEA5 ON WEA5.WORK_EFFORT_ID_TO = ATT.WORK_EFFORT_ID AND WEA5.WORK_EFFORT_ASSOC_TYPE_ID = 'COPY'
+LEFT JOIN WORK_EFFORT ATTINT ON ATTINT.WORK_EFFORT_ID = WEA5.WORK_EFFORT_ID_FROM AND ATTINT.WORK_EFFORT_TYPE_ID = '21U28ATI' AND ATTINT.WORK_EFFORT_REVISION_ID IS NULL
+AND ATTINT.ESTIMATED_START_DATE <= $P{date3112} AND (ATTINT.ESTIMATED_COMPLETION_DATE >= $P{date0101} OR ATTINT.ESTIMATED_COMPLETION_DATE IS NULL)
+
+/* OBIETTIVO STRATEGICO */
+LEFT JOIN WORK_EFFORT_ASSOC WEA3 ON WEA3.WORK_EFFORT_ID_TO = AZINT.WORK_EFFORT_ID AND WEA3.WORK_EFFORT_ASSOC_TYPE_ID = '21U2OBSC'
+LEFT JOIN WORK_EFFORT OBS ON OBS.WORK_EFFORT_ID = WEA3.WORK_EFFORT_ID_FROM AND OBS.WORK_EFFORT_TYPE_ID = '21U24OST' AND OBS.WORK_EFFORT_REVISION_ID IS NULL
+	AND OBS.ESTIMATED_START_DATE <= $P{date3112} AND (OBS.ESTIMATED_COMPLETION_DATE >= $P{date0101}  OR OBS.ESTIMATED_COMPLETION_DATE IS NULL)
+/* NOTE OBIETTIVO STRATEGICO */
+LEFT JOIN (
+	SELECT WEN.WORK_EFFORT_ID, ND.NOTE_INFO 
+	FROM WORK_EFFORT_NOTE WEN
+	JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID AND WEN.SEQUENCE_ID = '100'
+) NOTEOBS ON NOTEOBS.WORK_EFFORT_ID = OBS.WORK_EFFORT_ID 
+/* PIANO AZIONE */
+LEFT JOIN WORK_EFFORT_ASSOC WEA4 ON WEA4.WORK_EFFORT_ID_TO = OBS.WORK_EFFORT_ID AND WEA4.WORK_EFFORT_ASSOC_TYPE_ID = '21U2PGE'
+LEFT JOIN WORK_EFFORT PIANO ON PIANO.WORK_EFFORT_ID = WEA4.WORK_EFFORT_ID_FROM AND PIANO.WORK_EFFORT_TYPE_ID = '21U22PAZ' AND PIANO.WORK_EFFORT_REVISION_ID IS NULL
+	AND PIANO.ESTIMATED_START_DATE <=$P{date3112} AND (PIANO.ESTIMATED_COMPLETION_DATE >=$P{date0101} OR PIANO.ESTIMATED_COMPLETION_DATE IS NULL)
+/* NOTE PIANO AZIONE */
+LEFT JOIN (
+	SELECT WEN.WORK_EFFORT_ID, ND.NOTE_INFO 
+	FROM WORK_EFFORT_NOTE WEN
+	JOIN NOTE_DATA ND ON ND.NOTE_ID = WEN.NOTE_ID AND WEN.SEQUENCE_ID = '100'
+) NOTEPIA ON NOTEPIA.WORK_EFFORT_ID = PIANO.WORK_EFFORT_ID 
+WHERE AZ.WORK_EFFORT_TYPE_ID IN ('21U40ASC', '21U40ASO') AND AZ.WORK_EFFORT_REVISION_ID IS NULL
+	AND AZ.ESTIMATED_START_DATE <=$P{date3112} AND (AZ.ESTIMATED_COMPLETION_DATE >= $P{date0101}  OR AZ.ESTIMATED_COMPLETION_DATE IS NULL)
+ORDER BY
+	ATT.ETCH, AZ.ETCH, AZINT.ETCH, OBS.ETCH, PIANO.ETCH]]>
+	</queryString>
+	<field name="Anno" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Anno"/>
+		<property name="com.jaspersoft.studio.field.label" value="Anno"/>
+	</field>
+	<field name="Attività" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Attività"/>
+		<property name="com.jaspersoft.studio.field.label" value="Attività"/>
+	</field>
+	<field name="Soggetto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Soggetto"/>
+		<property name="com.jaspersoft.studio.field.label" value="Soggetto"/>
+	</field>
+	<field name="Descrizione dell&apos;attività svolta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[Descrizione dell'attività svolta]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[Descrizione dell'attività svolta]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.tree.path" value="NOTE_DATA"/>
+	</field>
+	<field name="Stato attività" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Stato attività"/>
+		<property name="com.jaspersoft.studio.field.label" value="Stato attività"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="WORK_EFFORT_PURPOSE_TYPE"/>
+	</field>
+	<field name="Inizio attività" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Inizio attività"/>
+		<property name="com.jaspersoft.studio.field.label" value="Inizio attività"/>
+	</field>
+	<field name="Fine attività" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Fine attività"/>
+		<property name="com.jaspersoft.studio.field.label" value="Fine attività"/>
+	</field>
+	<field name="Azione" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Azione"/>
+		<property name="com.jaspersoft.studio.field.label" value="Azione"/>
+	</field>
+	<field name="AttivItà integrata" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="AttivItà integrata"/>
+		<property name="com.jaspersoft.studio.field.label" value="AttivItà integrata"/>
+	</field>
+	<field name="Azione integrata" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Azione integrata"/>
+		<property name="com.jaspersoft.studio.field.label" value="Azione integrata"/>
+	</field>
+	<field name="Inizio azione integrata" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Inizio azione integrata"/>
+		<property name="com.jaspersoft.studio.field.label" value="Inizio azione integrata"/>
+	</field>
+	<field name="Fine azione integrata" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Fine azione integrata"/>
+		<property name="com.jaspersoft.studio.field.label" value="Fine azione integrata"/>
+	</field>
+	<field name="Stato azione integrata" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Stato azione integrata"/>
+		<property name="com.jaspersoft.studio.field.label" value="Stato azione integrata"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="STATUS_ITEM"/>
+	</field>
+	<field name="Descrizione azione integrata" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Descrizione azione integrata"/>
+		<property name="com.jaspersoft.studio.field.label" value="Descrizione azione integrata"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="NOTE_DATA"/>
+	</field>
+	<field name="Obiettivo strategico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Obiettivo strategico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Obiettivo strategico"/>
+	</field>
+	<field name="Descrizione obiettivo strategico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Descrizione obiettivo strategico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Descrizione obiettivo strategico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="NOTE_DATA"/>
+	</field>
+	<field name="Piano d&apos;azione" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[Piano d'azione]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[Piano d'azione]]>
+		</property>
+	</field>
+	<field name="Descrizione piano d&apos;azione" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[Descrizione piano d'azione]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[Descrizione piano d'azione]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.tree.path" value="NOTE_DATA"/>
+	</field>
+	<field name="WORK_EFFORT_ASSOC_TYPE_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="WORK_EFFORT_ASSOC_TYPE_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="WORK_EFFORT_ASSOC_TYPE_ID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="WORK_EFFORT_ASSOC"/>
+	</field>
+	<group name="AzioneIntegrataGroup" minHeightToStartNewPage="54" keepTogether="true">
+		<groupExpression><![CDATA[$F{Piano d'azione} + " - " + $F{Obiettivo strategico} + " - " + $F{Azione integrata}]]></groupExpression>
+		<groupHeader>
+			<band height="84">
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+				<frame>
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="555" height="32" backcolor="#C9C5C5" uuid="2b866f4c-0cfa-40c4-8b8d-dc2bf88f8a18">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineColor="#C2BEBE"/>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#C2BEBE"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#C2BEBE"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true" bookmarkLevel="1">
+						<reportElement positionType="Float" mode="Transparent" x="-1" y="1" width="556" height="15" uuid="04caeb53-eceb-4c00-9bd1-88658e960922"/>
+						<box leftPadding="3">
+							<pen lineWidth="0.2"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement textAlignment="Left">
+							<font size="10" isBold="true" isUnderline="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Piano d'azione} + " - " + $F{Obiettivo strategico}]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["TableOfContentsReport.pdf"]]></hyperlinkReferenceExpression>
+						<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+					</textField>
+					<line>
+						<reportElement positionType="Float" x="0" y="0" width="555" height="1" forecolor="#C2BEBE" uuid="69aa3da1-2d66-4e95-9c07-1dba9ff8797e">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.2" lineColor="#000000"/>
+						</graphicElement>
+					</line>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true" hyperlinkType="LocalAnchor" bookmarkLevel="1">
+						<reportElement positionType="Float" mode="Transparent" x="-1" y="16" width="556" height="15" backcolor="#C9C5C5" uuid="03686235-b62b-4988-8b51-9d636ad72bd1">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						</reportElement>
+						<box leftPadding="3">
+							<pen lineWidth="0.2"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement textAlignment="Left">
+							<font size="10" isBold="true" isUnderline="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Azione integrata}]]></textFieldExpression>
+						<anchorNameExpression><![CDATA[$F{Piano d'azione} + " - " + $F{Obiettivo strategico} + " - " + $F{Azione integrata}]]></anchorNameExpression>
+						<hyperlinkReferenceExpression><![CDATA["TableOfContentsReport.pdf"]]></hyperlinkReferenceExpression>
+						<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+					</textField>
+					<line>
+						<reportElement positionType="Float" x="0" y="16" width="555" height="1" forecolor="#C2BEBE" uuid="f71feeeb-cba1-471c-aa77-35b5cb50ef28">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.2" lineColor="#000000"/>
+						</graphicElement>
+					</line>
+				</frame>
+				<line>
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="-1" y="0" width="1" height="83" isPrintWhenDetailOverflows="true" uuid="e544c379-e2bb-49af-8210-0e3a2999a26c">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+				<frame>
+					<reportElement positionType="Float" x="1" y="33" width="555" height="16" uuid="33f699ee-f54e-4850-9e3f-20c6c81eaf28">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.2" lineStyle="Solid"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement positionType="Float" mode="Transparent" x="98" y="1" width="453" height="15" backcolor="#FFFFFF" uuid="79f7ab1b-9b06-4d8a-ab64-5890fe09eead">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.tabStopWidth" value="px"/>
+						</reportElement>
+						<textElement>
+							<font size="8" isBold="false" isItalic="true"/>
+							<paragraph tabStopWidth="40"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Descrizione azione integrata}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement positionType="Float" x="2" y="1" width="90" height="15" forecolor="#706F6F" uuid="53d0629c-5d69-443c-aac7-9d72ac5527c0">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{DescrAzioneInt}]]></textFieldExpression>
+					</textField>
+					<line>
+						<reportElement positionType="Float" stretchType="ContainerHeight" x="96" y="1" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="f9397704-190f-4162-8b58-89a656a4e6fe">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+						</graphicElement>
+					</line>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="52" width="554" height="15" uuid="47f4f7b8-d617-418d-b447-c58c60c6f30c">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.2" lineStyle="Solid"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField>
+						<reportElement x="2" y="0" width="90" height="15" forecolor="#706F6F" uuid="b3c6e51f-dd8d-4a0b-9045-ca0d25d58c63">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{Durata}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="100" y="0" width="260" height="15" uuid="29f7db9c-a299-4bf1-b331-3dfce2871c59">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textFieldExpression><![CDATA[$F{Inizio azione integrata} + " - " + $F{Fine azione integrata}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="367" y="0" width="82" height="15" forecolor="#706F6F" uuid="d7eb92f7-5feb-4f37-b261-a13339891d53"/>
+						<textElement textAlignment="Left">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{StatoAzione}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="460" y="0" width="92" height="15" uuid="6042871b-43a6-4b0a-ba05-53aecf2a54f8"/>
+						<textElement textAlignment="Left"/>
+						<textFieldExpression><![CDATA[$F{Stato azione integrata}]]></textFieldExpression>
+					</textField>
+					<line>
+						<reportElement positionType="Float" stretchType="ContainerHeight" x="456" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="567c6227-0ed0-4501-8e11-91b99754673b">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement positionType="Float" stretchType="ContainerHeight" x="365" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="65f0a6f3-5176-4e05-ae42-412d173f7ba9">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement positionType="Float" stretchType="ContainerHeight" x="97" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="af98fe69-004e-46eb-b2a3-dc9703c8a71f">
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+						</graphicElement>
+					</line>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" mode="Opaque" x="0" y="68" width="555" height="16" backcolor="#F2F0F0" uuid="10ca5923-691f-41eb-8e82-c486efffdbf6">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#C2BEBE"/>
+						<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#C2BEBE"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#C2BEBE"/>
+						<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#C2BEBE"/>
+					</box>
+					<textField>
+						<reportElement positionType="Float" x="3" y="0" width="89" height="15" forecolor="#706F6F" uuid="8908f5bb-e0b0-46cf-994b-6558f57bf3bf">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{Attivita}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement positionType="Float" x="100" y="0" width="100" height="15" forecolor="#706F6F" uuid="c554df84-703c-4d6a-8b16-2159d0ed02b5">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{Soggetto}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement positionType="Float" x="229" y="0" width="100" height="15" forecolor="#706F6F" uuid="bae61898-f49f-4d82-9e29-ab993f50026c">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{Contenuto}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement positionType="Float" x="509" y="0" width="46" height="15" forecolor="#706F6F" uuid="339375f6-3caf-43e6-8bf6-c8dcabe562b3">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{StatoAttivita}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<line>
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="554" y="0" width="1" height="83" isPrintWhenDetailOverflows="true" uuid="1569c492-27d9-49fb-adba-bad780e592bc">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement positionType="Float" x="0" y="50" width="555" height="1" forecolor="#C2BEBE" uuid="44e7ba0f-733b-4f3a-a576-c693d8e11c42">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Gruppo1">
+		<groupFooter>
+			<band height="1">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<line>
+					<reportElement positionType="Float" x="0" y="-1" width="555" height="1" forecolor="#C2BEBE" uuid="c7ad4d5d-2a6f-479b-9058-6f766661c44c">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="56">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image onErrorType="Icon">
+				<reportElement x="274" y="4" width="25" height="25" uuid="af21e7a7-ef5a-4f4c-9e88-307e985f71da"/>
+				<imageExpression><![CDATA[$P{ReportSmallPath}]]></imageExpression>
+			</image>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="41" width="555" height="15" backcolor="#ABA9A9" uuid="51ef5076-efe2-485e-9813-fb5937c1cef0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField bookmarkLevel="1">
+					<reportElement positionType="Float" mode="Transparent" x="-1" y="0" width="556" height="15" backcolor="#FFFFFF" uuid="1799f406-5dc9-4956-896a-3470d7c22561">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box leftPadding="3">
+						<pen lineWidth="0.2"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{Monitoraggio} + " " + $F{Anno}]]></textFieldExpression>
+					<hyperlinkReferenceExpression><![CDATA["TableOfContentsReport.pdf"]]></hyperlinkReferenceExpression>
+					<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+				</textField>
+				<line>
+					<reportElement positionType="Float" x="0" y="0" width="555" height="1" forecolor="#C2BEBE" uuid="40d93223-4ebc-42ca-ae69-0662c31f4a5a">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="1" height="18" uuid="ae31c742-f0e9-42c0-b397-a6737e9cab73">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement stretchType="RelativeToTallestObject" x="554" y="0" width="1" height="18" uuid="f6193981-218d-44a1-88f1-6f64306819d6">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+			</frame>
+			<textField>
+				<reportElement x="1" y="12" width="229" height="15" uuid="ba1d794d-9325-44dd-a3f6-927392128478">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{Company}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="380" y="11" width="175" height="14" backcolor="#FFFFFF" uuid="56c82464-44f2-4258-8fde-f9d399fd3e30">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Monitoraggio Piano di Gestione"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement positionType="Float" stretchType="ElementGroupHeight" mode="Opaque" x="0" y="0" width="556" height="15" backcolor="#FFFFFF" uuid="acbc8990-a926-489c-9b2b-7e119d06f8db"/>
+				<box>
+					<pen lineWidth="0.2" lineStyle="Solid" lineColor="#C9C7C7"/>
+					<topPen lineWidth="0.0" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#F2F0F0"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="2" y="0" width="95" height="15" forecolor="#000000" uuid="5934b559-2e36-4b00-b009-419772b073c3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{AttivItà integrata}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true" bookmarkLevel="1">
+					<reportElement x="100" y="0" width="128" height="15" forecolor="#000000" uuid="597471dc-7d55-49c4-ab92-e4f7912b002f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{Soggetto}]]></textFieldExpression>
+					<hyperlinkAnchorExpression><![CDATA["Indice"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="230" y="0" width="250" height="15" forecolor="#000000" uuid="afc09b78-b9c4-4445-ab68-d7ed8114adee">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Descrizione dell'attività svolta}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="483" y="0" width="70" height="15" forecolor="#000000" uuid="1c03ab20-a79e-47a5-96e0-263569a7fa9e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{Stato attività}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement positionType="Float" stretchType="ElementGroupHeight" x="-1" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="1ec28835-2f0f-4cdb-b81f-effde926d48a">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement positionType="Float" stretchType="ElementGroupHeight" x="98" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="87830fe9-8cdd-4f8e-afba-05ab53a72685">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement positionType="Float" stretchType="ElementGroupHeight" x="228" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="32775ed3-859d-4e50-a5d2-27452ebe784c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement positionType="Float" stretchType="ElementGroupHeight" x="481" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="37afba01-7c02-4cbd-a054-cbf20ca22f51">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#C2BEBE"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement positionType="Float" stretchType="ElementGroupHeight" x="554" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="b812a628-429a-4652-9982-d7f6d055ba2f">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.2" lineColor="#000000"/>
+					</graphicElement>
+				</line>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="33">
+			<textField evaluationTime="Master">
+				<reportElement x="380" y="7" width="175" height="15" uuid="c768ea70-8165-4afd-b13d-df34d5456803"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. " + $V{MASTER_CURRENT_PAGE} + " di " + $V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="6" width="128" height="16" uuid="00772855-e55b-4fcf-be76-f945ae6469bd"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Stampato il " + DATEFORMAT(TODAY( ), "dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="276" y="6" width="23" height="16" uuid="0e1242ae-e61c-44a9-81de-a5831d98b53c"/>
+				<imageExpression><![CDATA[$P{IconNavPath}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

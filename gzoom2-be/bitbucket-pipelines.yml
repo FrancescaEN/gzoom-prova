@@ -1,0 +1,153 @@
+definitions:
+  steps:
+    #
+    # Build
+    #
+    - step: &build-and-publish-tag
+        name: Build and publish from automatic pipeline on tag
+        image: amazoncorretto:21
+        caches:
+          - maven
+        script:
+          - if [ ! -d /opt/apache-maven-3.9.6 ]; then
+          -   yum install -y wget tar gzip
+          -   pushd .
+          -   cd /opt 
+          -   wget --timeout=120 https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+          -   tar -xzvf apache-maven-3.9.6-bin.tar.gz
+          -   popd
+          - fi
+          - /opt/apache-maven-3.9.6/bin/mvn -s settings.xml -P bbpipeline -Dmaven.test.skip=true -Drevision=${BITBUCKET_TAG} clean deploy
+
+    - step: &build-and-publish
+        name: Build and publish from manual pipeline
+        image: amazoncorretto:21
+        caches:
+          - maven
+        script:
+          - if [ ! -d /opt/apache-maven-3.9.6 ]; then
+          -   yum install -y wget tar gzip git
+          -   pushd .
+          -   cd /opt 
+          -   wget --timeout=120 https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+          -   tar -xzvf apache-maven-3.9.6-bin.tar.gz
+          -   popd
+          - fi
+          - if [ "${version}" ]; then
+          -   git checkout tags/${version}
+          -   if [ "$?" -gt "0" ]; then
+          -     echo "Error during checkout of tags ${version}"
+          -     exit 1
+          -   fi
+          - fi
+          - /opt/apache-maven-3.9.6/bin/mvn -s settings.xml -P bbpipeline -Dmaven.test.skip=true -Drevision=${version} clean deploy
+
+    - step: &buildTagArtifacts
+        name: Build artifacts from input tag
+        image: amazoncorretto:21
+        caches:
+          - maven
+        script:
+          - yum update -y
+          - yum install -y git
+          - if [ ! -d /opt/apache-maven-3.9.6 ]; then
+          -   yum install -y wget tar gzip
+          -   pushd .
+          -   cd /opt
+          -   wget --timeout=120 https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+          -   tar -xzvf apache-maven-3.9.6-bin.tar.gz
+          -   popd
+          - fi
+          - if [ "${version}" ]; then
+          -   echo "export APP_VERSION=${version}" > setenv.sh
+          -   git fetch --all --tags
+          -   git checkout tags/${version}
+          -   if [ "$?" -gt "0" ]; then
+          -     echo "Error during checkout of tags ${version}"
+          -     exit 1
+          -   fi
+          - fi
+          - /opt/apache-maven-3.9.6/bin/mvn -s settings.xml -P bbpipeline -Dmaven.test.skip=true Drevision=${BITBUCKET_TAG} clean package
+          - find . -name "*.jar"
+          - cp ./rest-boot/target/rest-boot-*.jar ./rest-boot.jar
+          - cp ./report-rest-boot/target/report-rest-boot-*.jar ./report-rest-boot.jar
+        artifacts:
+          - setenv.sh
+          - rest-boot.jar
+          - report-rest-boot.jar
+
+
+    - step: &buildTag
+        name: Build artifacts from input tag
+        image: amazoncorretto:21
+        caches:
+          - maven
+        script:
+          - if [ ! -d /opt/apache-maven-3.9.6 ]; then
+          -   yum install -y wget tar gzip
+          -   pushd .
+          -   cd /opt
+          -   wget --timeout=120 https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+          -   tar -xzvf apache-maven-3.9.6-bin.tar.gz
+          -   popd
+          - fi
+          - echo "export APP_VERSION=${BITBUCKET_TAG}" > setenv.sh
+          - /opt/apache-maven-3.9.6/bin/mvn -s settings.xml -P bbpipeline -Dmaven.test.skip=true -Drevision=${BITBUCKET_TAG} clean package
+          - find . -name "*.jar"
+          - cp ./rest-boot/target/rest-boot-*.jar ./rest-boot.jar
+          - cp ./report-rest-boot/target/report-rest-boot-*.jar ./report-rest-boot.jar
+        artifacts:
+          - setenv.sh
+          - rest-boot.jar
+          - report-rest-boot.jar
+
+    - step: &buildImagesAndPush                                                                                                           
+        name: Build Docker images and push                                                                                                
+        image: amazon/aws-cli:2.15.43                                                                                                     
+        script:                                                                                                                           
+          - chmod +x setenv.sh                                                                                                            
+          - source setenv.sh                                                                                                              
+          - export APP_NAME="rest-boot"                                                                                                   
+          - aws s3 cp  s3://esg-ops-share/docker-push.sh .                                                                                
+          - /bin/bash ./docker-push.sh --docker-build --dockerfile ./docker/Dockerfile-rest-boot                                          
+          - export APP_NAME="report-rest-boot"                                                                                            
+          - aws s3 cp  s3://esg-ops-share/docker-push.sh .                                                                                
+          - /bin/bash ./docker-push.sh --docker-build --dockerfile ./docker/Dockerfile-report-rest-boot                                   
+        services:                                                                                                                         
+          - docker                                                                                                                        
+
+
+pipelines:
+  custom:
+    PackManually:
+      - variables:
+        - name: version
+          description: Versione
+      - step:
+          <<: *build-and-publish
+    docker:
+      - variables:
+        - name: version
+          description: Versione
+      - step:
+          <<: *buildTagArtifacts
+      - step:
+          <<: *buildImagesAndPush    
+
+    
+  tags:
+    '*':
+      - step:
+          <<: *build-and-publish-tag
+      - step:
+          <<: *buildTag
+      - step:
+          <<: *buildImagesAndPush
+#  branches:
+#    master:
+#      - step:
+#          <<: *build-and-publish
+#    qa:
+#      - step:
+#          <<: *build-and-publish
+

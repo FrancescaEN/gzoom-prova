@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.mybatis.mapper.PartyMapper">
+
+    <select id="getParties" resultMap="party" parameterType="java.util.Map">
+         SELECT P.*
+         FROM PARTY P
+         <include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.filterQueryPerson">
+             <property name="aliasParty" value="P"/>
+         </include>
+         ORDER BY P.PARTY_NAME
+    </select>
+
+    <select id="getPartiesExposed" resultMap="personEx" parameterType="java.util.Map">
+        SELECT
+        <include refid="columnNameWithAliasPerson"><property name="alias" value="PRS"/></include>,
+        <include refid="columnNameWithAliasParty"><property name="alias" value="P"/></include>
+        FROM PERSON PRS
+        INNER JOIN PARTY P ON P.PARTY_ID = PRS.PARTY_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = PRS.PARTY_ID AND PPR.ROLE_TYPE_ID = 'EMPLOYEE'
+        LEFT JOIN EMPL_POSITION_TYPE EPT ON EPT.EMPL_POSITION_TYPE_ID = PRS.EMPL_POSITION_TYPE_ID
+        INNER JOIN STATUS_ITEM SI ON SI.STATUS_ID = P.STATUS_ID
+        LEFT JOIN PARTY_CONTACT_MECH PCM ON PCM.PARTY_ID = P.PARTY_ID AND PCM.THRU_DATE IS NULL
+        LEFT JOIN CONTACT_MECH CM ON CM.CONTACT_MECH_ID = PCM.CONTACT_MECH_ID
+        WHERE CM.CONTACT_MECH_TYPE_ID = 'EMAIL_ADDRESS' OR CM.CONTACT_MECH_TYPE_ID IS NULL
+        ORDER BY PRS.LAST_NAME, PRS.FIRST_NAME
+    </select>
+
+    <select id="getManagers" parameterType="java.util.Map">
+        select
+            distinct V.PP_PARTY_ID as PARTY_ID,
+                     V.P_PARTY_NAME as PARTY_NAME
+        from
+            (
+                select
+                    RP.ROLE_TYPE_ID as RP_ROLE_TYPE_ID,
+                    RP.DESCRIPTION as RP_DESCRIPTION,
+                    RP.SHORT_LABEL as RP_SHORT_LABEL,
+                    RP.ICON_CONTENT_ID as RP_ICON_CONTENT_ID,
+                    PP.PARENT_ROLE_CODE as PP_PARENT_ROLE_CODE,
+                    PP.PARTY_ID as PP_PARTY_ID,
+                    P.PARTY_TYPE_ID as P_PARTY_TYPE_ID,
+                    P.EXTERNAL_ID as P_EXTERNAL_ID,
+                    R.ROLE_TYPE_ID as R_ROLE_TYPE_ID,
+                    R.DESCRIPTION as R_DESCRIPTION,
+                    R.SHORT_LABEL as R_SHORT_LABEL,
+                    R.ICON_CONTENT_ID as R_ICON_CONTENT_ID,
+                    P.PARTY_NAME as P_PARTY_NAME,
+                    P.PARTY_NAME_LANG as P_PARTY_NAME_LANG,
+                    P.FISCAL_CODE as P_FISCAL_CODE,
+                    P.VAT_CODE as P_VAT_CODE,
+                    P.STATUS_ID as P_STATUS_ID,
+                    PE.FIRST_NAME as PE_FIRST_NAME,
+                    PE.LAST_NAME as PE_LAST_NAME,
+                    PE.EMPL_POSITION_TYPE_ID as PE_EMPL_POSITION_TYPE_ID,
+                    PP.ORGANIZATION_ID as PP_ORGANIZATION_ID
+                from
+                    ((((PARTY P
+                        inner join PARTY_PARENT_ROLE PP on
+                        P.PARTY_ID = PP.PARTY_ID)
+                        inner join ROLE_TYPE RP on
+                        PP.ROLE_TYPE_ID = RP.ROLE_TYPE_ID)
+                        inner join PARTY_ROLE PR on
+                        PP.PARTY_ID = PR.PARTY_ID
+                            and PP.ROLE_TYPE_ID = PR.PARENT_ROLE_TYPE_ID)
+                        inner join ROLE_TYPE R on
+                        PR.ROLE_TYPE_ID = R.ROLE_TYPE_ID)
+                        left outer join PERSON PE on
+                        P.PARTY_ID = PE.PARTY_ID) V
+                inner join PARTY_RELATIONSHIP R on
+                V.PP_PARTY_ID = R.PARTY_ID_TO
+        where
+            R.PARTY_RELATIONSHIP_TYPE_ID in ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+        order by
+            V.P_PARTY_NAME asc
+    </select>
+
+    <select id="getRoleTypePartys" resultMap="party" parameterType="java.util.Map">
+        SELECT P.*
+        FROM PARTY P
+        INNER JOIN PARTY_ROLE PR ON PR.PARTY_ID = P.PARTY_ID
+        WHERE P.PARTY_TYPE_ID = 'PERSON'
+          AND PR.ROLE_TYPE_ID = #{roleTypeId}
+          AND P.STATUS_ID = 'PARTY_ENABLED'
+          AND P.PARTY_ID IN (
+            SELECT PREL.PARTY_ID_TO
+            FROM PARTY_RELATIONSHIP PREL
+            INNER JOIN PARTY_ROLE PR2 ON PR2.PARTY_ID = PREL.PARTY_ID_FROM
+            WHERE PREL.PARTY_RELATIONSHIP_TYPE_ID = 'ORG_RESPONSIBLE' 
+            <if test="roleTypeIdFrom != null">
+                AND
+                <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.forEachIn">
+                  <property name="columnName" value="PREL.ROLE_TYPE_ID_FROM"/>
+                  <property name="inList" value="roleTypeIdFromArray"/>
+                </include> <!--PREL.ROLE_TYPE_ID_FROM IN #{roleTypeIdFromArray}-->
+            </if>
+            <if test="roleTypeIdFrom == null and workEffortTypeId != null and checkPartyRole == true">
+                AND (
+                    PR2.ROLE_TYPE_ID IN (
+                        SELECT WET.ORG_UNIT_ROLE_TYPE_ID
+                        FROM WORK_EFFORT_TYPE WET
+                        WHERE WET.WORK_EFFORT_TYPE_ID = #{workEffortTypeId}
+                    )
+                    OR PR2.ROLE_TYPE_ID IN (
+                        SELECT WET.ORG_UNIT_ROLE_TYPE_ID2
+                        FROM WORK_EFFORT_TYPE WET
+                        WHERE WET.WORK_EFFORT_TYPE_ID = #{workEffortTypeId}
+                    )
+                    OR PR2.ROLE_TYPE_ID IN (
+                        SELECT WET.ORG_UNIT_ROLE_TYPE_ID3
+                        FROM WORK_EFFORT_TYPE WET
+                        WHERE WET.WORK_EFFORT_TYPE_ID = #{workEffortTypeId}
+                    )
+                )
+            </if>
+          )
+        ORDER BY P.PARTY_NAME ASC
+    </select>
+
+    <select id="checkPartyRole" resultMap="partyRole" parameterType="java.util.Map">
+        SELECT
+            PR.*
+        FROM
+            PARTY_ROLE PR
+        WHERE
+        <include refid="whereInWorkEffortTypeId"/>
+    </select>
+
+    <sql id="whereInWorkEffortTypeId">
+            PR.ROLE_TYPE_ID IN (
+                SELECT WET.ORG_UNIT_ROLE_TYPE_ID
+                FROM WORK_EFFORT_TYPE WET
+                WHERE WET.WORK_EFFORT_TYPE_ID = #{workEffortTypeId, jdbcType=VARCHAR}
+            )
+            OR (
+                    PR.ROLE_TYPE_ID IN (
+                        SELECT WET.ORG_UNIT_ROLE_TYPE_ID2
+                        FROM WORK_EFFORT_TYPE WET
+                        WHERE WET.WORK_EFFORT_TYPE_ID = #{workEffortTypeId, jdbcType=VARCHAR}
+                    )
+                    OR PR.ROLE_TYPE_ID IN (
+                        SELECT WET.ORG_UNIT_ROLE_TYPE_ID3
+                        FROM WORK_EFFORT_TYPE WET
+                        WHERE WET.WORK_EFFORT_TYPE_ID = #{workEffortTypeId, jdbcType=VARCHAR}
+                    )
+            )
+    </sql>
+
+    <select id="getRoleTypePartysBetween"  resultMap="party" parameterType="java.util.Map">
+        SELECT P.*
+        FROM PARTY P
+        INNER JOIN PARTY_ROLE PR ON PR.PARTY_ID = P.PARTY_ID
+        WHERE P.PARTY_TYPE_ID = 'PERSON' AND PR.ROLE_TYPE_ID BETWEEN #{roleTypeId0} AND #{roleTypeId1}
+        ORDER BY P.PARTY_NAME
+    </select>
+
+    <select id="getOrgUnits"  resultMap="partyEx" parameterType="java.util.Map">
+        <!--Parametri #{ userLoginId, parentTypeId, filter, roleType, workEffortTypeId, company, isLanguageLang, checkPartyRole, orderUoBy } -->
+        SELECT
+        P.*,
+        <include refid="columnNameWithAliasPartyParentRole">
+            <property name="alias" value="PPR"/>
+        </include>
+
+        FROM PARTY_ROLE PR
+        INNER JOIN PARTY P ON PR.PARTY_ID = P.PARTY_ID
+        INNER JOIN PARTY_PARENT_ROLE PPR ON PPR.PARTY_ID = P.PARTY_ID
+        <include refid="it.mapsgroup.gzoom.mybatis.mapper.FilterMapper.getFilterQuery">
+            <property name="aliasPartyRole" value="PR"/>
+        </include>
+        <!-- WHERE -->
+        AND PR.PARENT_ROLE_TYPE_ID = 'ORGANIZATION_UNIT' AND P.STATUS_ID = 'PARTY_ENABLED' AND PPR.ORGANIZATION_ID = #{company}
+          <if test="roleTypeIdFromArray.length > 0">
+              AND
+              <include refid="it.mapsgroup.gzoom.mybatis.mapper.CommonMapper.forEachIn">
+                  <property name="columnName" value="PR.ROLE_TYPE_ID"/>
+                  <property name="inList" value="roleTypeIdFromArray"/>
+              </include>
+          </if>
+          <if test="roleTypeIdFromArray.length == 0">
+              AND PR.ROLE_TYPE_ID IS NOT NULL
+          </if>
+          <if test="workEffortTypeId != null and checkPartyRole">
+              AND <include refid="whereInWorkEffortTypeId"/>
+          </if>
+        <if test="orderUoBy == 'EXTCODE'">
+            ORDER BY P.EXTERNAL_ID
+        </if>
+        <if test="orderUoBy == 'UONAME'">
+          <if test="isLanguageLang">
+              ORDER BY P.PARTY_NAME_LANG
+          </if>
+            <if test="!isLanguageLang">
+                ORDER BY P.PARTY_NAME
+            </if>
+        </if>
+        <if test="orderUoBy == 'MAINCODE'">
+            ORDER BY PPR.PARENT_ROLE_CODE
+        </if>
+    </select>
+
+    <select id="getUOGestore" resultMap="partyEx" parameterType="java.util.Map">
+        select p.PARTY_ID, pp.PARENT_ROLE_CODE as ppr_parent_role_code, p.PARTY_NAME, p.PARTY_NAME_LANG
+        from party p
+        join party_parent_role pp on pp.party_id = p.party_id
+        where pp.role_type_id = 'ORGANIZATION_UNIT' and pp.organization_id = #{organizationId}
+        <if test="isFullAdmin == false">
+            AND EXISTS (SELECT 1 from USER_LOGIN_SECURITY_GROUP ULSG
+            INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+            INNER JOIN PARTY_RELATIONSHIP PR ON PR.PARTY_ID_TO = UL.PARTY_ID
+            AND PR.PARTY_ID_FROM = p.PARTY_ID
+            AND PR.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+            AND PR.THRU_DATE IS NULL
+            WHERE ULSG.USER_LOGIN_ID = #{userLoginId})
+        </if>
+    </select>
+
+    <select id="getUOGestoreByRespCenterRoleTypeId" resultMap="partyEx" parameterType="java.util.Map">
+        select p.PARTY_ID, pp.PARENT_ROLE_CODE as ppr_parent_role_code, p.PARTY_NAME, p.PARTY_NAME_LANG
+        from party p
+        join party_parent_role pp on pp.party_id = p.party_id
+        join party_role pr on pr.party_id = p.party_id
+        where pp.role_type_id = 'ORGANIZATION_UNIT' and pp.organization_id = #{organizationId}
+        and pr.role_type_id = #{respCenterRoleTypeId}
+        <if test="isFullAdmin == false">
+            AND EXISTS (SELECT 1 from USER_LOGIN_SECURITY_GROUP ULSG
+            INNER JOIN USER_LOGIN UL ON UL.USER_LOGIN_ID = ULSG.USER_LOGIN_ID
+            INNER JOIN PARTY_RELATIONSHIP PR ON PR.PARTY_ID_TO = UL.PARTY_ID
+            AND PR.PARTY_ID_FROM = p.PARTY_ID
+            AND PR.PARTY_RELATIONSHIP_TYPE_ID IN ('ORG_RESPONSIBLE', 'ORG_DELEGATE')
+            AND PR.THRU_DATE IS NULL
+            WHERE ULSG.USER_LOGIN_ID = #{userLoginId})
+        </if>
+    </select>
+
+    <resultMap id="partyEx" type="it.mapsgroup.gzoom.mybatis.dto.PartyEx" extends="party">
+        <association property="partyParentRole" resultMap="it.mapsgroup.gzoom.mybatis.mapper.PartyParentRoleMapper.partyParentRoleMap" columnPrefix="ppr_"/>
+        <association property="partyRole" resultMap="it.mapsgroup.gzoom.mybatis.mapper.PartyRoleMapper.partyRoleMap" columnPrefix="pr_"/>
+    </resultMap>
+
+    <resultMap id="personEx" type="it.mapsgroup.gzoom.mybatis.dto.PersonEx">
+        <id property="partyId" column="prs_party_id" jdbcType="VARCHAR"/>
+        <result property="salutation" column="prs_salutation" jdbcType="VARCHAR"/>
+        <result property="firstName" column="prs_first_name" jdbcType="VARCHAR"/>
+        <result property="middleName" column="prs_middle_name" jdbcType="VARCHAR"/>
+        <result property="lastName" column="prs_last_name" jdbcType="VARCHAR"/>
+        <result property="personalTitle" column="prs_personal_title" jdbcType="VARCHAR"/>
+        <result property="suffix" column="prs_suffix" jdbcType="VARCHAR"/>
+        <result property="nickname" column="prs_nickname" jdbcType="VARCHAR"/>
+        <result property="firstNameLocal" column="prs_first_name_local" jdbcType="VARCHAR"/>
+        <result property="middleNameLocal" column="prs_middle_name_local" jdbcType="VARCHAR"/>
+        <result property="lastNameLocal" column="prs_last_name_local" jdbcType="VARCHAR"/>
+        <result property="otherLocal" column="prs_other_local" jdbcType="VARCHAR"/>
+        <result property="memberId" column="prs_member_id" jdbcType="VARCHAR"/>
+        <result property="gender" column="prs_gender" jdbcType="CHAR"/>
+        <result property="birthDate" column="prs_birth_date" jdbcType="DATE"/>
+        <result property="deceasedDate" column="prs_deceased_date" jdbcType="DATE"/>
+        <result property="height" column="prs_height" jdbcType="DOUBLE"/>
+        <result property="weight" column="prs_weight" jdbcType="DOUBLE"/>
+        <result property="mothersMaidenName" column="prs_mothers_maiden_name" jdbcType="VARCHAR"/>
+        <result property="maritalStatus" column="prs_marital_status" jdbcType="CHAR"/>
+        <result property="socialSecurityNumber" column="prs_social_security_number" jdbcType="VARCHAR"/>
+        <result property="passportNumber" column="prs_passport_number" jdbcType="VARCHAR"/>
+        <result property="passportExpireDate" column="prs_passport_expire_date" jdbcType="DATE"/>
+        <result property="totalYearsWorkExperience" column="prs_total_years_work_experience" jdbcType="DOUBLE"/>
+        <result property="comments" column="prs_comments" jdbcType="VARCHAR"/>
+        <result property="employmentStatusEnumId" column="prs_employment_status_enum_id" jdbcType="VARCHAR"/>
+        <result property="residenceStatusEnumId" column="prs_residence_status_enum_id" jdbcType="VARCHAR"/>
+        <result property="occupation" column="prs_occupation" jdbcType="VARCHAR"/>
+        <result property="yearsWithEmployer" column="prs_years_with_employer" jdbcType="NUMERIC"/>
+        <result property="monthsWithEmployer" column="prs_months_with_employer" jdbcType="NUMERIC"/>
+        <result property="existingCustomer" column="prs_existing_customer" jdbcType="CHAR"/>
+        <result property="cardId" column="prs_card_id" jdbcType="VARCHAR"/>
+        <result property="lastUpdatedStamp" column="prs_last_updated_stamp" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdatedTxStamp" column="prs_last_updated_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdStamp" column="prs_created_stamp" jdbcType="TIMESTAMP"/>
+        <result property="createdTxStamp" column="prs_created_tx_stamp" jdbcType="TIMESTAMP"/>
+        <result property="birthPlace" column="prs_birth_place" jdbcType="VARCHAR"/>
+        <result property="birthCountry" column="prs_birth_country" jdbcType="VARCHAR"/>
+        <result property="numberOfChild" column="prs_number_of_child" jdbcType="NUMERIC"/>
+        <result property="emplPositionTypeId" column="prs_empl_position_type_id" jdbcType="VARCHAR"/>
+        <result property="emplPositionTypeDate" column="prs_empl_position_type_date" jdbcType="TIMESTAMP"/>
+        <result property="employmentAmount" column="prs_employment_amount" jdbcType="NUMERIC"/>
+        <result property="lastModifiedByUserLogin" column="prs_last_modified_by_user_login" jdbcType="VARCHAR"/>
+        <result property="createdByUserLogin" column="prs_created_by_user_login" jdbcType="VARCHAR"/>
+        <result property="personPosition" column="prs_person_position" jdbcType="VARCHAR"/>
+        <association property="party" resultMap="party" columnPrefix="p_"/>
+    </resultMap>
+    <sql id="columnNameWithAliasPartyParentRole">
+         ${alias}.party_id as ppr_party_id,
+        ${alias}.role_type_id as ppr_role_type_id,
+        ${alias}.parent_role_code as ppr_parent_role_code,
+        ${alias}.organization_id as ppr_organization_id,
+        ${alias}.last_modified_by_user_login as ppr_last_modified_by_user_login,
+        ${alias}.created_by_user_login as ppr_created_by_user_login,
+        ${alias}.last_updated_stamp as ppr_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp as ppr_last_updated_tx_stamp,
+        ${alias}.created_stamp as ppr_created_stamp,
+        ${alias}.created_tx_stamp as ppr_created_tx_stamp
+    </sql>
+    <sql id="columnNameWithAliasPerson">
+        ${alias}.party_id AS prs_party_id,
+        ${alias}.salutation AS prs_salutation,
+        ${alias}.first_name AS prs_first_name,
+        ${alias}.middle_name AS prs_middle_name,
+        ${alias}.last_name AS prs_last_name,
+        ${alias}.personal_title AS prs_personal_title,
+        ${alias}.suffix AS prs_suffix,
+        ${alias}.nickname AS prs_nickname,
+        ${alias}.first_name_local AS prs_first_name_local,
+        ${alias}.middle_name_local AS prs_middle_name_local,
+        ${alias}.last_name_local AS prs_last_name_local,
+        ${alias}.other_local AS prs_other_local,
+        ${alias}.member_id AS prs_member_id,
+        ${alias}.gender AS prs_gender,
+        ${alias}.birth_date AS prs_birth_date,
+        ${alias}.deceased_date AS prs_deceased_date,
+        ${alias}.height AS prs_height,
+        ${alias}.weight AS prs_weight,
+        ${alias}.mothers_maiden_name AS prs_mothers_maiden_name,
+        ${alias}.marital_status AS prs_marital_status,
+        ${alias}.social_security_number AS prs_social_security_number,
+        ${alias}.passport_number AS prs_passport_number,
+        ${alias}.passport_expire_date AS prs_passport_expire_date,
+        ${alias}.total_years_work_experience AS prs_total_years_work_experience,
+        ${alias}.comments AS prs_comments,
+        ${alias}.employment_status_enum_id AS prs_employment_status_enum_id,
+        ${alias}.residence_status_enum_id AS prs_residence_status_enum_id,
+        ${alias}.occupation AS prs_occupation,
+        ${alias}.years_with_employer AS prs_years_with_employer,
+        ${alias}.months_with_employer AS prs_months_with_employer,
+        ${alias}.existing_customer AS prs_existing_customer,
+        ${alias}.card_id AS prs_card_id,
+        ${alias}.last_updated_stamp AS prs_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS prs_last_updated_tx_stamp,
+        ${alias}.created_stamp AS prs_created_stamp,
+        ${alias}.created_tx_stamp AS prs_created_tx_stamp,
+        ${alias}.birth_place AS prs_birth_place,
+        ${alias}.birth_country AS prs_birth_country,
+        ${alias}.number_of_child AS prs_number_of_child,
+        ${alias}.empl_position_type_id AS prs_empl_position_type_id,
+        ${alias}.empl_position_type_date AS prs_empl_position_type_date,
+        ${alias}.employment_amount AS prs_employment_amount,
+        ${alias}.last_modified_by_user_login AS prs_last_modified_by_user_login,
+        ${alias}.created_by_user_login AS prs_created_by_user_login,
+        ${alias}.person_position AS prs_person_position
+    </sql>
+    <sql id="columnNameWithAliasParty">
+        <!-- Party -->
+        ${alias}.party_id AS p_party_id,
+        ${alias}.party_type_id AS p_party_type_id,
+        ${alias}.external_id AS p_external_id,
+        ${alias}.preferred_currency_uom_id AS p_preferred_currency_uom_id,
+        ${alias}.description AS p_description,
+        ${alias}.status_id AS p_status_id,
+        ${alias}.created_date AS p_created_date,
+        ${alias}.created_by_user_login AS p_created_by_user_login,
+        ${alias}.last_modified_date AS p_last_modified_date,
+        ${alias}.last_modified_by_user_login AS p_last_modified_by_user_login,
+        ${alias}.data_source_id AS p_data_source_id,
+        ${alias}.is_unread AS p_is_unread,
+        ${alias}.last_updated_stamp AS p_last_updated_stamp,
+        ${alias}.last_updated_tx_stamp AS p_last_updated_tx_stamp,
+        ${alias}.created_stamp AS p_created_stamp,
+        ${alias}.created_tx_stamp AS p_created_tx_stamp,
+        ${alias}.fiscal_code AS p_fiscal_code,
+        ${alias}.vat_code AS p_vat_code,
+        ${alias}.party_name AS p_party_name,
+        ${alias}.description_lang AS p_description_lang,
+        ${alias}.end_date AS p_end_date,
+        ${alias}.party_name_lang AS p_party_name_lang
+    </sql>
+
+    <resultMap id="partyRole" type="it.mapsgroup.gzoom.mybatis.dto.PartyRole">
+        <id column="party_id" property="partyId" jdbcType="VARCHAR"/>
+        <id column="role_type_id" property="roleTypeId" jdbcType="VARCHAR"/>
+        <result column="last_updated_stamp" property="lastUpdatedStamp" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_tx_stamp" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_stamp" property="createdStamp" jdbcType="TIMESTAMP"/>
+        <result column="created_tx_stamp" property="createdTxStamp" jdbcType="TIMESTAMP"/>
+        <result column="parent_role_type_id" property="parentRoleTypeId" jdbcType="VARCHAR"/>
+        <result column="last_modified_by_user_login" property="lastModifiedByUserLogin" jdbcType="VARCHAR"/>
+        <result column="created_by_user_login" property="createdByUserLogin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getPartyByOrganizationId"  resultMap="party" parameterType="java.util.Map">
+       SELECT P.*
+        FROM PARTY P
+        WHERE P.PARTY_ID = #{organizationId}
+    </select>
+
+    <update id="anonymizeParty">
+        UPDATE PARTY
+        SET PARTY_NAME = PARTY_ID,
+            PARTY_NAME_LANG = PARTY_ID,
+            FISCAL_CODE = NULL
+        WHERE PARTY_TYPE_ID = 'PERSON'
+          AND STATUS_ID = 'PARTY_DISABLED'
+          AND END_DATE IS NOT NULL
+          AND END_DATE &lt; #{expirationDate}
+          AND PARTY_NAME &lt;&gt; PARTY_ID
+    </update>
+
+</mapper>

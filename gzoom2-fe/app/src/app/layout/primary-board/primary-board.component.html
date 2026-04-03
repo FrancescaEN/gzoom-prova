@@ -1,0 +1,101 @@
+<app-overlay-screen></app-overlay-screen>
+
+<!-- Disappearing Messages -->
+<p-toast></p-toast>
+
+<!-- Messages Error -->
+<p-messages key="error"></p-messages>
+
+<div class="d-flex flex-row" style="gap: 5px; width: 100%">
+  <p-card [ngStyle]="{ width: menuDetails ? '99%' : '100%' }">
+    <ng-template pTemplate="header">
+      <app-toolbar-data-table
+        (buttonNewEvent)="openNewPBoard()"
+        (deleteEvent)="deleteRowSelected()"
+        (saveEvent)="saveAllElementPBoard()"
+        (resetEvent)="resetAllAction()"
+        [gridArray]="gridArray"
+        [buttonDelete]="buttonDelete"
+        [buttonBack]="buttonBack"
+        [buttonReset]="buttonReset"
+        [backLink]="backLink"
+        [backLinkRelToThisRoute]="backLinkRelToThisRoute"
+        [buttonNew]="buttonNew"
+        [dataTable]="dataTable"
+        [buttonSave]="buttonSave"
+        [bldx]="bldx"
+        (bldxEvent)="bldxEventPBoard()"
+      ></app-toolbar-data-table>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <p *ngIf="!!title" style="text-align: center">
+        <b>{{ title }}</b>
+      </p>
+      <div *ngIf="loading" class="d-flex justify-content-center">
+        <p-progressSpinner
+          [style]="{ width: '50px', height: '50px' }"
+          styleClass="custom-spinner"
+          strokeWidth="8"
+          fill="var(--surface-ground)"
+          animationDuration=".5s"
+        ></p-progressSpinner>
+      </div>
+
+      <app-table-editing-cell
+        *ngIf="!loading && !paginationEnabled"
+        [selectedOn]="selectedOn"
+        [isAction]="true"
+        [headArray]="headArray"
+        [gridArray]="gridArray"
+        [editingCell]="true"
+        [editingKeyId]="editingKeyId"
+        [scrollHeight]="scrollHeight"
+        [flag]="flag"
+        [itemsButtonSlideMenu]="itemsButtonSlideMenu"
+        [itemsButtonLinkMenu]="itemsButtonLinkMenu"
+        [selectFile]="selectFile"
+        [stateKey]="stateKey()"
+        [resetTable]="resetTable"
+        (notifyInputChanges)="notifyInputChangesPBoard($event)"
+        (shareSelectionItem)="shareSelectionItemPBoard($event)"
+        (selectedItemDropdown)="selectedItemDropdownPBoard($event)"
+        (shareDescriptorTable)="shareDescriptorTablePBoard($event)"
+        (shareDropdownItemRow)="shareDropdownItemRowPBoard($event)"
+        (buttonShareItemEvent)="buttonShareItemEventPBoard($event)"
+        (clickButtonDetailsEvent)="onClickButtonDetailsPBoard($event)"
+        (myUpload)="myUploader($event)"
+        (selectFileLoad)="selectFileLoadPBoard($event)"
+        (selectedImage)="selectedImageFun($event)"
+      ></app-table-editing-cell>
+
+      <app-table-editing-cell-pagination
+        *ngIf="!loading && paginationEnabled"
+        [selectedOn]="true"
+        [isAction]="true"
+        [headArray]="headArray"
+        [gridArray]="gridArray"
+        [editingCell]="true"
+        [editingKeyId]="editingKeyId"
+        [headDisplay]="'flex'"
+        [scrollHeight]="scrollHeight"
+        [flag]="flag"
+        [totalRecords]="totalRecords"
+        [loading]="loadingLazy"
+        [stateKey]="stateKey()"
+        [itemsButtonSlideMenu]="itemsButtonSlideMenu"
+        [itemsButtonLinkMenu]="itemsButtonLinkMenu"
+        (notifyInputChanges)="notifyInputChangesPBoard($event)"
+        (shareSelectionItem)="shareSelectionItemPBoard($event)"
+        (selectedItemDropdown)="selectedItemDropdownPBoard($event)"
+        (shareDescriptorTable)="shareDescriptorTablePBoard($event)"
+        (shareDropdownItemRow)="shareDropdownItemRowPBoard($event)"
+        (buttonShareItemEvent)="buttonShareItemEventPBoard($event)"
+        (clickButtonDetailsEvent)="onClickButtonDetailsPBoard($event)"
+        (loadDataEvent)="loadGrid($event)"
+        (shareInfoPagination)="shareInfoPagination($event)"
+      ></app-table-editing-cell-pagination>
+    </ng-template>
+  </p-card>
+</div>
+
+<p-confirmDialog> </p-confirmDialog>

@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final utlizzo versione della libreria JasperReports6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TablePart" pageWidth="1191" pageHeight="842" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1151" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" isSummaryNewPage="true" isFloatColumnFooter="true" resourceBundle="ObiettiviValoreRendicontazione" uuid="5c559f3e-b23b-4cd4-a579-7ed7c0d2b615">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gzoom_mur_DEMO"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="810"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="730"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="257"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Default" isDefault="true" fontSize="10" pdfEncoding="Cp1252" isPdfEmbedded="false">
+		<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+	</style>
+	<parameter name="ReportTitle" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="langLocale" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="defaultOrganizationPartyId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Company"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orgUnitIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{orgUnitId} != null && $P{orgUnitId} != ""  && ($P{workEffortId} == null || $P{workEffortId} == "")? "AND fil_w.org_unit_id='"+ $P{orgUnitId} +"'": ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="localDispatcherName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userLoginId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriod" class="java.lang.String"/>
+	<parameter name="filterWhere" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterWhere()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterLeftJoin()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new com.mapsengineering.base.birt.util.UtilFilter($P{userLoginId}, $P{localDispatcherName}).getWorkEffortFilterInner()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("12",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3112sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3112}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="odaDialect" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthStartFromDatetime("1",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date0101sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[SUBSTITUTE(com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date0101}, $P{odaDialect}),"'","")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Company" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getCompany($P{userLoginId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ReportSmallPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("REPORT_SMALL",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IconNavPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.AppHeaderLogo.getReportContentUrl("ICON_NAV",$P{defaultOrganizationPartyId})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportContentId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterWhereString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterWhere} != null ? $P{filterWhere} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterLeftJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterLeftJoin} != null ? $P{filterLeftJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filterInnerJoinString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{filterInnerJoin} != null ? $P{filterInnerJoin} : ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="customTimePeriodString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="personId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="workEffortId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="date3009" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilDateTime.getMonthEndFromDatetime("9",$P{REPORT_TIME_ZONE}.getID(),YEAR($P{customTimePeriod}), $P{REPORT_LOCALE}.getDefault())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date3009sql" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.mapsengineering.base.birt.util.UtilsConvertJdbc.getConvertDateToDateJdbc($P{date3009}, $P{odaDialect});]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposePaginator" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEAR" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[Integer.parseInt($P{customTimePeriod}.substring(0, 4))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="workEffortIdString" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{workEffortId} != null && $P{workEffortId} != "" ? "AND fil_w.work_effort_id='"+ $P{workEffortId} +"'": ""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="exposeReleaseDate" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select 
+	fil_w.work_effort_id as "ID Obiettivo Valore Pubblico",
+	fil_w.etch as "Etichetta Obiettivo Valore Pubblico",
+	fil_w.work_effort_name as "Nome Obiettivo Valore Pubblico",
+	fil_w.org_unit_id as "ID struttura",
+	fil_w.info_url as "Num. Allegato",
+	p.party_name as "Nome struttura",
+	ppr.parent_role_code as "Codice struttura"
+/* OBIETTIVO DI VALORE PUBBLICO */
+from work_effort fil_w
+/* STRUTTURA */
+join party p on p.party_id = fil_w.org_unit_id
+join party_parent_role ppr on ppr.party_id = p.party_id 
+/* START filterInnerJoin */
+   $P!{filterInnerJoinString} 
+/* END filterInnerJoin */
+/* START filterLeftJoin */
+  $P!{filterLeftJoinString} 
+/* END filterLeftJoin */
+where fil_w.work_effort_type_id = '23R40PIAO' and fil_w.work_effort_revision_id is null
+	and extract(year from fil_w.estimated_completion_date) = $P{YEAR} 
+  /* START filterWhere */
+ $P!{filterWhereString} 
+   /* END filterWhere */
+ $P!{workEffortIdString} 
+  $P!{orgUnitIdString} 
+  order by fil_w.info_url,ppr.parent_role_code,fil_w.etch]]>
+	</queryString>
+	<field name="ID Obiettivo Valore Pubblico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID Obiettivo Valore Pubblico"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID Obiettivo Valore Pubblico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="Etichetta Obiettivo Valore Pubblico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Etichetta Obiettivo Valore Pubblico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Etichetta Obiettivo Valore Pubblico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="Nome Obiettivo Valore Pubblico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nome Obiettivo Valore Pubblico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nome Obiettivo Valore Pubblico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="ID struttura" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID struttura"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID struttura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="work_effort"/>
+	</field>
+	<field name="Nome struttura" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nome struttura"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nome struttura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="party"/>
+	</field>
+	<field name="Codice struttura" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Codice struttura"/>
+		<property name="com.jaspersoft.studio.field.label" value="Codice struttura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="party_parent_role"/>
+	</field>
+	<group name="GruppoIdObiettivoValPubb" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></groupExpression>
+		<groupHeader>
+			<band height="492">
+				<subreport>
+					<reportElement positionType="Float" x="0" y="181" width="1151" height="30" uuid="2c285408-9957-4d15-add5-6048af8185c1"/>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="idOvp">
+						<subreportParameterExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["SezioneAzzurra.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="114" width="1151" height="30" uuid="14b81ecd-819e-4ec3-957d-89e05daf5ac7"/>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="idOvp">
+						<subreportParameterExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["SezioneBlu.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="248" width="1151" height="30" uuid="f6d69a4b-499c-43c7-90b4-ccf9c39ca0d3"/>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="idOvp">
+						<subreportParameterExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["SezioneRosa.jasper"]]></subreportExpression>
+				</subreport>
+				<break>
+					<reportElement positionType="Float" x="0" y="144" width="95" height="1" uuid="b83dc91f-be56-4963-a333-87f6cef2f758"/>
+				</break>
+				<break>
+					<reportElement positionType="Float" x="0" y="211" width="94" height="1" uuid="17f4c9a3-66e5-4d8a-ba14-fd9be1d798c3"/>
+				</break>
+				<break>
+					<reportElement positionType="Float" x="0" y="79" width="98" height="1" uuid="3426e94a-cebc-4c7a-a03f-76560640b0e6"/>
+				</break>
+				<textField textAdjust="StretchHeight" hyperlinkType="LocalAnchor" bookmarkLevel="1">
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="1151" height="15" forecolor="#2D65AE" uuid="a390e46e-d177-4e95-b02d-b98a5ea16439">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font size="12" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Nome struttura}]]></textFieldExpression>
+					<anchorNameExpression><![CDATA[$F{Nome struttura}]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttPrimoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" hyperlinkType="LocalAnchor" bookmarkLevel="2">
+					<reportElement positionType="Float" x="0" y="15" width="1151" height="15" forecolor="#2D65AE" uuid="5a6539f3-cab0-466f-8757-1bda5871ea40"/>
+					<textElement>
+						<font size="20" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttSecondoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="30" width="1151" height="15" uuid="ae4a197e-866e-4962-a506-6b0889f70025"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["L’obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+ "' viene rappresentato analiticamente tramite la seguente scheda del Valore Pubblico."]]></textFieldExpression>
+					<hyperlinkAnchorExpression><![CDATA["Parte blu"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="160" width="1151" height="15" uuid="6d57c57c-028f-4040-a43a-4ec5bf200efa"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Gli obiettivi operativi e le relative performance organizzative funzionali all’Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+ "' sono esposti in forma tabellare."]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" bookmarkLevel="3">
+					<reportElement positionType="Float" x="0" y="145" width="1151" height="15" forecolor="#44BFEE" uuid="6a0fa4f6-8dec-4638-af7e-ca810f0ae606"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Obiettivi operativi e performance funzionali all’Obiettivo di VP '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Obiettivi operativi e performance"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttTerzoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="50" width="1151" height="29" uuid="f29f3c5a-6a24-4f47-8987-4e68b9ccb12e"/>
+					<subreportParameter name="idOvp">
+						<subreportParameterExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["SezioneRiepilogoOvp.jasper"]]></subreportExpression>
+				</subreport>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="95" width="1151" height="15" uuid="722726ff-2f0f-4f29-9f3e-8dd993cda727"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Le strategie e gli indicatori di impatto funzionali all’Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+ "' sono esposti in forma tabellare."]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" bookmarkLevel="3">
+					<reportElement positionType="Float" x="0" y="80" width="1151" height="15" forecolor="#2D65AE" uuid="720f2ea5-e19a-4f13-ac27-0f68ef005579"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Strategie e Indicatori per la creazione di Valore Pubblico funzionali all’Obiettivo di VP '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Strategie e Indicatori per la creazione di Valore Pubblico"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttTerzoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="227" width="1151" height="15" uuid="8ceaa655-b5db-4659-bccf-f71c46c4c603"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Le misure specifiche e i relativi indicatori di gestione del rischio corruttivo funzionali all’Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+ "' sono esposti in forma tabellare."]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" bookmarkLevel="3">
+					<reportElement positionType="Float" x="0" y="212" width="1151" height="15" forecolor="#E7418D" uuid="0fb510ce-1fd8-4842-94a7-aab6bab0dd43"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Misure Anticorruzione e Trasparenza funzionali all’Obiettivo di VP '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Misure Anticorruzione e Trasparenza"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttTerzoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<break>
+					<reportElement positionType="Float" x="0" y="278" width="97" height="1" uuid="675aab69-1390-4402-bb19-d8dbfa76f73e"/>
+				</break>
+				<textField textAdjust="StretchHeight" bookmarkLevel="3">
+					<reportElement positionType="Float" x="0" y="279" width="1151" height="15" forecolor="#B5B334" uuid="df8efe60-701c-48e5-b968-26d69f0017a1"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Azioni di sviluppo organizzativo funzionali all’Obiettivo di VP '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Azioni di sviluppo organizzativo"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttTerzoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="294" width="1151" height="15" uuid="be9e4d98-aae5-461b-b4f1-e244b862b90f"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Le azioni di sviluppo funzionali all’Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+ "' sono esposte in forma tabellare."]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="314" width="1151" height="15" isRemoveLineWhenBlank="true" uuid="a80cb410-7d46-4a3e-bc58-b2baa17a4ffa">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="idOvp">
+						<subreportParameterExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["SezioneVerde.jasper"]]></subreportExpression>
+				</subreport>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="348" width="1151" height="15" uuid="63fc0051-71f4-4261-865d-50673ee7ed32"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Le azioni di organizzazione del lavoro agile funzionali all’Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+ "' sono esposte in forma tabellare."]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" bookmarkLevel="3">
+					<reportElement positionType="Float" x="0" y="333" width="1151" height="15" forecolor="#B5B334" uuid="ed13ce11-58d0-41c0-9184-6a3976c758df"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Azioni di organizzazione del lavoro agile funzionali all’Obiettivo di VP '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Azioni di organizzazione del lavoro agile"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttTerzoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<subreport>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="368" width="1151" height="15" isRemoveLineWhenBlank="true" uuid="9ae2af22-8429-408e-ae92-9914be499c7b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="idOvp">
+						<subreportParameterExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["SezioneVerdeDue.jasper"]]></subreportExpression>
+				</subreport>
+				<textField textAdjust="StretchHeight" bookmarkLevel="3">
+					<reportElement positionType="Float" x="0" y="387" width="1151" height="15" forecolor="#B5B334" uuid="8ae0879e-4b22-477d-853f-754bd23e7212"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Azioni di reclutamento funzionali all’Obiettivo di VP '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Azioni di reclutamento"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttTerzoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="402" width="1151" height="15" uuid="827a367b-6b6e-4e23-b40d-67d537b12849"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Le azioni di reclutamento funzionali all’Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+ "' sono esposte in forma tabellare."]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="422" width="1151" height="15" isRemoveLineWhenBlank="true" uuid="26f26781-003f-4f84-b8c7-b77029181058">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="idOvp">
+						<subreportParameterExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["SezioneVerdeTre.jasper"]]></subreportExpression>
+				</subreport>
+				<textField textAdjust="StretchHeight" bookmarkLevel="3">
+					<reportElement positionType="Float" x="0" y="442" width="1151" height="15" forecolor="#B5B334" uuid="6581e239-2450-4b5c-bcc0-da94e38621c4"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Azioni di formazione funzionali all’Obiettivo di VP '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+					<anchorNameExpression><![CDATA["Azioni di formazione"]]></anchorNameExpression>
+					<hyperlinkWhenExpression><![CDATA[true]]></hyperlinkWhenExpression>
+					<hyperlinkAnchorExpression><![CDATA["StruttTerzoLiv"]]></hyperlinkAnchorExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement positionType="Float" x="0" y="457" width="1151" height="15" uuid="54ccc0a9-d658-4bba-be39-d97fe0dd7fd5"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Le azioni di formazione funzionali all’Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+ "' sono esposte in forma tabellare."]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="477" width="1151" height="15" isRemoveLineWhenBlank="true" uuid="5cbf857c-d536-4c92-ae60-796d8268eda7">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<subreportParameter name="YEAR">
+						<subreportParameterExpression><![CDATA[$P{YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="idOvp">
+						<subreportParameterExpression><![CDATA[$F{ID Obiettivo Valore Pubblico}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["SezioneVerdeQuattro.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<pageHeader>
+		<band height="46">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="1" y="12" width="179" height="15" uuid="ba1d794d-9325-44dd-a3f6-927392128478">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{Company}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="400" y="4" width="410" height="15" uuid="9f800b97-c9e5-4fd4-a616-1fd270280e49"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Nome struttura}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="400" y="19" width="410" height="15" uuid="a5e75359-07a5-4b52-8ae3-1339f23c27d7"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Obiettivo di Valore Pubblico '"+$F{Nome Obiettivo Valore Pubblico}+"'"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="22">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="7" width="128" height="15" uuid="00772855-e55b-4fcf-be76-f945ae6469bd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{exposeReleaseDate}.equals( "Y" )]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Stampato il " + DATEFORMAT(TODAY( ), "dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="564" y="6" width="23" height="16" uuid="0e1242ae-e61c-44a9-81de-a5831d98b53c"/>
+				<imageExpression><![CDATA[$P{IconNavPath}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement mode="Transparent" x="1051" y="7" width="50" height="15" backcolor="#FFFFFF" uuid="83ff446e-d76a-4e3c-9bbf-d020222bf5b1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{exposePaginator}.equals( "Y")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Transparent" x="1101" y="7" width="50" height="15" backcolor="#FFFFFF" uuid="79ff3bb5-5ced-444e-bc30-ea222d3b047b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{exposePaginator}.equals( "Y")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" di " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

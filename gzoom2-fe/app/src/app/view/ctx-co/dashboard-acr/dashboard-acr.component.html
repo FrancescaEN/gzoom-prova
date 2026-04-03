@@ -1,0 +1,101 @@
+<!-- Filtri -->
+<div style="margin-bottom: 10px">
+  <p-card styleClass="w-100">
+    <gzoom-row-flex>
+      <gzoom-label label="fromYear" for="fromYear" />
+      <p-calendar
+        panelStyleClass="gzoom-datepicker"
+        inputId="fromYear"
+        [(ngModel)]="fromDate"
+        [maxDate]="date"
+        view="year"
+        appendTo="body"
+        dateFormat="yy"
+        (ngModelChange)="setFromYear($event)"
+      />
+
+      <gzoom-label label="referenceYear" for="referenceYear" />
+      <p-calendar
+        panelStyleClass="gzoom-datepicker"
+        inputId="referenceYear"
+        [(ngModel)]="date"
+        [minDate]="fromDate"
+        [maxDate]="maxDate"
+        view="year"
+        appendTo="body"
+        dateFormat="yy"
+        (ngModelChange)="setYear($event)"
+      />
+
+      <gzoom-label label="Organization Unit" for="organizationUnit"/>
+      <p-dropdown
+        inputId="organizationUnit"
+        [(ngModel)]="selectedOrgUnitId"
+        [options]="organizationUnits"
+        optionValue="id"
+        optionLabel="name"
+        (ngModelChange)="setOrganizationUnit($event)"
+        placeholder="{{ 'Select' | i18n }}"
+        [showClear]="true"
+      />
+    </gzoom-row-flex>
+  </p-card>
+</div>
+<!------------------------------------------------>
+<!-- Dashboard -->
+<div class="d-flex flex-column" style="gap: 10px">
+  <p-card styleClass="w-100">
+    <div class="d-flex flex-row-col" style="gap: 20px">
+      <gzoom-chart-risk-trend
+        class="w-50-100"
+        [fromYear]="fromYear"
+        [year]="year"
+        [orgUnitId]="selectedOrgUnitId"
+      />
+      <gzoom-risk-state
+        class="w-50-100"
+        [year]="year"
+        [orgUnitId]="selectedOrgUnitId"
+      />
+    </div>
+  </p-card>
+  <p-card styleClass="w-100">
+    <div class="d-flex flex-row-col" style="gap: 20px">
+      <gzoom-chart-prevention-trend
+        class="w-50-100"
+        [fromYear]="fromYear"
+        [year]="year"
+        [orgUnitId]="selectedOrgUnitId"
+      />
+      <gzoom-chart-prevention-state
+        class="w-50-100"
+        [year]="year"
+        [orgUnitId]="selectedOrgUnitId"
+      />
+    </div>
+  </p-card>
+  <div
+    class="flex-row-col"
+    style="width: 100%; display: flex; gap: 10px; flex-wrap: nowrap"
+  >
+    <div class="w-50-100">
+      <p-card styleClass="w-100">
+        <gzoom-chart-state-risk-factors
+          [year]="year"
+          [fromYear]="fromYear"
+          [orgUnitId]="selectedOrgUnitId"
+        />
+      </p-card>
+    </div>
+    <div class="w-50-100">
+      <p-card styleClass="w-100">
+        <gzoom-chart-measurement-types-status
+          [year]="year"
+          [fromYear]="fromYear"
+          [orgUnitId]="selectedOrgUnitId"
+        />
+      </p-card>
+    </div>
+  </div>
+</div>
+<!------------------------------------------------>

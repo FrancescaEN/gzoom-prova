@@ -1,0 +1,64 @@
+<form [formGroup]="form">
+  <gzoom-row-flex>
+    <gzoom-label label="Measurement scale" labelPos="top" required="true">
+      <gzoom-dropdown
+        [options]="this.uomRatingScales | async"
+        style="width: 240px"
+        controlName="uomRatingScale"
+        [filter]="true"
+      />
+    </gzoom-label>
+  </gzoom-row-flex>
+
+  <gzoom-row-flex>
+    <gzoom-label-input-text
+      *ngIf="this.uomCode"
+      label="Code"
+      required="true"
+      [maxlength]="255"
+      [width]="'100%'"
+      style="width: 48.8%; min-width: 240px"
+      flag="0"
+      controlName="uomCode"
+    />
+    <gzoom-label-input-text
+      *ngIf="this.uomCodeLang && this.BILING"
+      label="Code"
+      required="true"
+      [maxlength]="255"
+      [width]="'100%'"
+      style="width: 48.8%; min-width: 240px"
+      flag="1"
+      controlName="uomCodeLang"
+    />
+  </gzoom-row-flex>
+  <gzoom-row-flex>
+    <gzoom-label-input-text-area
+      *ngIf="this.uomDescr"
+      [style]="'width: ' + (('BILING' | i18nLangType) ? '48.80' : 100) + '%'"
+      [minWidth]="'240px'"
+      label="Description"
+      [required]="true"
+      flag="0"
+      controlName="uomDescr"
+    />
+    <gzoom-label-input-text-area
+      *ngIf="this.uomDescrLang && this.BILING"
+      [style]="'width: 48.80%;'"
+      [minWidth]="'240px'"
+      label="Description"
+      [required]="true"
+      flag="1"
+      controlName="uomDescrLang"
+    />
+  </gzoom-row-flex>
+  <p-messages key="error-dialog"></p-messages>
+  <div class="d-flex flex-row-reverse pt-3">
+    <gzoom-button
+      icon="pi pi-save"
+      label="{{ 'Add and save' | i18n }}"
+      [disabled]="!this.form.valid"
+      (onClick)="addAndSave()"
+    />
+  </div>
+</form>

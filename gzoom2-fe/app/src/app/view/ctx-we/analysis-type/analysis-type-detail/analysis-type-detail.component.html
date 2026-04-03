@@ -1,0 +1,167 @@
+<!-- Disappearing Messages -->
+<p-toast></p-toast>
+
+<!-- Messages Error -->
+<p-messages key="error"></p-messages>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table
+      [buttonBack]="true"
+      [buttonSave]="true"
+      [buttonNew]="true"
+      [buttonDelete]="true"
+      [backLinkRelToThisRoute]="this.backLinkRelToThisRoute"
+      (saveEvent)="save()"
+      (buttonNewEvent)="create()"
+      (deleteEvent)="delete()"
+    ></app-toolbar-data-table>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <ng-container *ngIf="!this.isNew">
+      <gzoom-card-detail [details]="this.details" />
+      <br />
+    </ng-container>
+
+    <form *ngIf="form" [formGroup]="form" (onSubmit)="onSubmit()">
+      <p-accordion [multiple]="true" [activeIndex]="activeIndex">
+        <p-accordionTab header="{{ 'Distinctive data' | i18n }}">
+          <gzoom-row-flex *ngIf="this.isNew">
+            <gzoom-label-input-text
+              *ngIf="this.form.get('workEffortAnalysisId')"
+              label="Code"
+              [required]="true"
+              [maxlength]="20"
+              controlName="workEffortAnalysisId"
+            />
+          </gzoom-row-flex>
+          <gzoom-row-flex>
+            <gzoom-label-input-dropdown
+              *ngIf="this.context"
+              label="Context"
+              [required]="true"
+              [options]="dropdownContext"
+              controlName="context"
+            />
+            <gzoom-label-input-dropdown
+              *ngIf="this.workEffortTypeId"
+              label="Analysis"
+              [required]="true"
+              [options]="dropdownAnalysis"
+              controlName="workEffortTypeId"
+            />
+            <gzoom-label-input-date
+              *ngIf="this.form.get('referenceDate')"
+              label="Date"
+              [required]="true"
+              controlName="referenceDate"
+            />
+            <gzoom-label-input-dropdown
+              *ngIf="this.form.get('availabilityId')"
+              label="Availability"
+              [required]="true"
+              [options]="dropdownAvailability"
+              controlName="availabilityId"
+            />
+            <gzoom-label-input-dropdown
+              *ngIf="this.form.get('excludeValidity')"
+              label="Validity"
+              [required]="true"
+              [options]="dropdownValidity"
+              controlName="excludeValidity"
+            />
+          </gzoom-row-flex>
+
+          <gzoom-row-flex>
+            <gzoom-label-input-dropdown
+              *ngIf="this.form.get('typeBalanceScoreConId')"
+              [label]="('Value type' | i18n) + ' 1'"
+              [required]="true"
+              [options]="dropdownTypeBalance"
+              controlName="typeBalanceScoreConId"
+            />
+            <gzoom-label-input-dropdown
+              *ngIf="this.form.get('typeBalanceScoreTarId')"
+              [label]="('Value type' | i18n) + ' 2'"
+              [required]="false"
+              [options]="dropdownTypeBalance"
+              controlName="typeBalanceScoreTarId"
+              [showClear]="true"
+            />
+            <gzoom-label-input-dropdown
+              *ngIf="this.form.get('typeBalanceConsIndId')"
+              [label]="('Value type' | i18n) + ' 3'"
+              [required]="false"
+              [options]="dropdownTypeBalance"
+              controlName="typeBalanceConsIndId"
+              [showClear]="true"
+            />
+            <gzoom-label-input-dropdown
+              *ngIf="this.form.get('typeBalanceTarIndId')"
+              [label]="('Value type' | i18n) + ' 4'"
+              [required]="false"
+              [options]="dropdownTypeBalance"
+              controlName="typeBalanceTarIndId"
+              [showClear]="true"
+            />
+          </gzoom-row-flex>
+          <gzoom-row-flex>
+            <gzoom-label-input-text-area
+              *ngIf="this.form.get('description')"
+              [style]="
+                'width: ' +
+                (('BILING' | i18nLangType) ? 49 : 100) +
+                '%; min-width: 300px'
+              "
+              label="Description"
+              [required]="true"
+              flag="0"
+              maxLength="255"
+              controlName="description"
+            />
+
+            <gzoom-label-input-text-area
+              *ngIf="
+                this.form.get('descriptionLang') && 'BILING' | i18nLangType
+              "
+              [style]="'width: 49%; min-width: 300px'"
+              label="Description"
+              [required]="true"
+              flag="1"
+              maxLength="255"
+              controlName="descriptionLang"
+            />
+          </gzoom-row-flex>
+        </p-accordionTab>
+        <p-accordionTab header="{{ 'Specific parameters' | i18n }}">
+          <ng-container
+            *ngFor="
+              let item of ['M4', 'M3', 'M2', 'M1', '', 'P1', 'P2', 'P3', 'P4'];
+              index as i
+            "
+          >
+            <gzoom-row-flex>
+              <gzoom-label-input-date
+                *ngIf="this.form.get('year' + item + 'Prev')"
+                [label]="
+                  (item == '' ? ('Current year' | i18n) : ('Year' | i18n)) +
+                  (item != '' ? (i <= 3 ? ' -' + (4 - i) : ' +' + (i - 4)) : '')
+                "
+                [showClear]="true"
+                controlName="{{ 'year' + item + 'Prev' }}"
+              />
+              <gzoom-label-input-text
+                *ngIf="this.form.get('label' + item + 'Prev')"
+                label="Label"
+                [maxlength]="20"
+                controlName="{{ 'label' + item + 'Prev' }}"
+              />
+            </gzoom-row-flex>
+          </ng-container>
+        </p-accordionTab>
+      </p-accordion>
+    </form>
+  </ng-template>
+</p-card>
+
+<p-confirmDialog></p-confirmDialog>

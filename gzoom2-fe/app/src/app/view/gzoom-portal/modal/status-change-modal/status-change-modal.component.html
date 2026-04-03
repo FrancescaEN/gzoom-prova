@@ -1,0 +1,34 @@
+<gzoom-modal>
+  <gzoom-modal-header>
+    <h1>{{ 'statusChangeConfirmationHeader' | i18n }}</h1>
+  </gzoom-modal-header>
+
+  <gzoom-modal-body>
+    @if (commentEnabled) {
+      <gzoom-form>
+        <div class="input-group" style="flex-grow: 2;">
+          <label for="text">
+            {{ statusComment?.name ? statusComment?.name : 'Motivazione richiesta' }}
+            @if (commentRequired) {
+              <strong>&nbsp;(*)</strong>
+            }
+          </label>
+          <textarea pInputTextarea [(ngModel)]="text" id="text" name="text"
+                    maxlength="{{textMaxLength}}"
+                    placeholder="Inserisci commento qui (max 6000 caratteri)"></textarea>
+          <p class="text-length">{{ text ? text.length : 0 }}/{{ textMaxLength }} caratteri</p>
+        </div>
+      </gzoom-form>
+
+    } @else {
+      <span>{{ 'statusChangeConfirmationMsg' | i18n }}</span>
+    }
+  </gzoom-modal-body>
+
+  <gzoom-modal-footer>
+    <gzoom-button [label]="(commentEnabled ? 'Cancel' : 'No, cancel') | i18n" (onClick)="closeModal()"
+                  [outlined]=true />
+    <gzoom-button [label]="(commentEnabled ? 'Save' : 'Yes, confirm') | i18n" (onClick)="save()"
+                  [disabled]="commentRequired && StringUtils.isBlank(text)" />
+  </gzoom-modal-footer>
+</gzoom-modal>

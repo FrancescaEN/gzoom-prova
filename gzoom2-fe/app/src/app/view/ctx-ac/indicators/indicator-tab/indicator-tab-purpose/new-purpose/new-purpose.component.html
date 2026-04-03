@@ -1,0 +1,153 @@
+<p-table
+  [value]="purpose"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [tableStyle]="{ 'min-width': '20rem' }"
+  id="table-card"
+  [(selection)]="selectedPurpose"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{{
+    'Showing {first} to {last} of {totalRecords} entries' | i18n
+  }}"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  scrollHeight="40vh"
+  [scrollable]="scrollable | async"
+  [loading]="loading"
+  dataKey="id"
+  (onRowSelect)="setChip($event)"
+  (onRowUnselect)="removeChip($event)"
+  (selectAllChange)="allChip($event)"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        class="table-head-th"
+        style="width: 1rem; padding-right: 5px !important"
+      >
+        <p-tableHeaderCheckbox
+          (click)="allChip($event)"
+        ></p-tableHeaderCheckbox>
+      </th>
+
+      <th class="table-head-th padding-medium-row-th">
+        <div class="d-flex align-items-center">
+          {{ "purpose" | i18n }}*
+          <p-sortIcon pSortableColumn="description" field="description" />
+          <p-columnFilter
+            type="text"
+            field="description"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+      <th class="table-head-th padding-medium-row-th">
+        <div class="d-flex align-items-center">
+          {{ "Used in" | i18n }}
+
+          <p-columnFilter
+            type="text"
+            field="usedIn"
+            display="menu"
+            matchMode="contains"
+          ></p-columnFilter>
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-purpose
+    let-columns="columns"
+    let-editing="editing"
+  >
+    <tr>
+      <td>
+        <p-tableCheckbox [value]="purpose"></p-tableCheckbox>
+      </td>
+
+      <td style="padding-left: 0px !important">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "purpose" | i18n }}*</b></span
+        >{{ purpose.description }}
+      </td>
+      <td style="padding-left: 0px !important">
+        <span class="p-column-title" style="padding-right: 10px">
+          <b>{{ "Used in" | i18n }}</b></span
+        >
+        <ul>
+          <li *ngFor="let item of purpose.usedIn">{{ item }}</li>
+        </ul>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft"></ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="20" role="cell">
+        <p class="emptyRow">{{ "There is no data to display" | i18n }}</p>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div style="min-height: 60px">
+  <gzoom-label [label]="('Selected purposes' | i18n) + ':'" labelPos="top">
+    <i *ngIf="chipFilter.length == 0" style="padding-left: 5px">{{
+        "No purpose selected" | i18n
+      }}</i>
+    <div
+      *ngIf="chipFilter.length > 0"
+      style="
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        flex-wrap: wrap;
+        align-items: baseline;
+      "
+    >
+      <ng-template ngFor let-item [ngForOf]="chipFilter" let-i="index">
+        <p-chip>
+          <div
+            style="
+              height: 25px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+            "
+          >
+            {{ item.label }}
+          </div>
+        </p-chip
+        >
+      </ng-template>
+    </div>
+  </gzoom-label>
+</div>
+<br />
+<form [formGroup]="form">
+  <gzoom-label-input-text-area
+    *ngIf="this.comments"
+    [style]="'width: ' + 100 + '%'"
+    [minWidth]="'240px'"
+    label="Comment"
+    [required]="false"
+    maxLength="2000"
+    controlName="comments"
+  />
+  <p-messages key="error-dialog"></p-messages>
+  <div class="d-flex flex-row-reverse pt-3" style="gap: 5px">
+    <gzoom-button
+      icon="pi pi-save"
+      label="{{ 'Add and save' | i18n }}"
+      [disabled]="!(selectedPurpose.length > 0)"
+      (onClick)="addAndSave()"
+    />
+    <gzoom-button-outlined
+      label="{{ 'Reset selection' | i18n }}"
+      [disabled]="!(selectedPurpose.length > 0)"
+      (onClick)="resetSelection()"
+    />
+  </div>
+</form>

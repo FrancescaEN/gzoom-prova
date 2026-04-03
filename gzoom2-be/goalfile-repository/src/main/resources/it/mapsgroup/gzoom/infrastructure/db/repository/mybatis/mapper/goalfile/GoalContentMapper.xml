@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="it.mapsgroup.gzoom.infrastructure.db.repository.mybatis.mapper.goalfile.GoalContentMapper">
+    <resultMap id="fileExtensionDto" type="it.mapsgroup.gzoom.infrastructure.content.dto.FileExtensionDto">
+        <result column="MIME_TYPE_ID" property="mimeTypeId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="workEffortContentDetailDto" type="it.mapsgroup.gzoom.infrastructure.goalfile.dto.WorkEffortContentDetailDto">
+        <result column="WORK_EFFORT_CONTENT_TYPE_ID" property="workEffortContentTypeId" jdbcType="VARCHAR"/>
+        <result column="WORK_EFFORT_FROM_DATE" property="fromDate" jdbcType="TIMESTAMP"/>
+        <result column="WORK_EFFORT_THRU_DATE" property="thruDate" jdbcType="TIMESTAMP"/>
+
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION_LANG" property="descriptionLang" jdbcType="VARCHAR"/>
+        <result column="CONTENT_ID" property="contentId" jdbcType="VARCHAR"/>
+        <result column="CONTENT_TYPE_ID" property="contentTypeId" jdbcType="VARCHAR"/>
+        <result column="CONTENT_NAME" property="contentName" jdbcType="VARCHAR"/>
+
+        <result column="DATA_RESOURCE_ID" property="dataResourceId" jdbcType="VARCHAR"/>
+        <result column="DATA_RESOURCE_OBJECT_INFO" property="objectInfo" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="selectMimeTypeIdByFileExtensionId" resultMap="fileExtensionDto">
+        SELECT MIME_TYPE_ID
+        FROM FILE_EXTENSION
+        WHERE LOWER(FILE_EXTENSION_ID) = LOWER(#{fileExtensionId, mode=IN, jdbcType=VARCHAR});
+    </select>
+
+    <select id="selectWorkEffortContentDetailListFromWorkEffortId" resultMap="workEffortContentDetailDto">
+        SELECT
+        WEC.WORK_EFFORT_CONTENT_TYPE_ID,
+        WEC.FROM_DATE as WORK_EFFORT_FROM_DATE,
+        WEC.THRU_DATE as WORK_EFFORT_THRU_DATE,
+        C.DESCRIPTION,
+        C.DESCRIPTION_LANG,
+        C.CONTENT_ID,
+        C.CONTENT_TYPE_ID,
+        C.CONTENT_NAME,
+        DR.DATA_RESOURCE_ID,
+        DR.OBJECT_INFO as DATA_RESOURCE_OBJECT_INFO
+        FROM
+        WORK_EFFORT_CONTENT WEC
+        INNER JOIN CONTENT C
+        ON C.CONTENT_ID = WEC.CONTENT_ID
+        INNER JOIN CONTENT_TYPE CT
+        ON CT.CONTENT_TYPE_ID = C.CONTENT_TYPE_ID
+        INNER JOIN DATA_RESOURCE DR
+        ON DR.DATA_RESOURCE_ID = C.DATA_RESOURCE_ID
+        WHERE
+            WEC.WORK_EFFORT_ID = #{workEffortId, mode=IN, jdbcType=VARCHAR}
+            <if test='(fromDate != null)'>
+                AND WEC.FROM_DATE <![CDATA[<=]]> #{fromDate, jdbcType=TIMESTAMP}
+            </if>
+            <if test='(thruDate != null)'>
+                AND (WEC.THRU_DATE IS NULL OR WEC.THRU_DATE <![CDATA[>=]]> #{thruDate, jdbcType=TIMESTAMP})
+            </if>
+    </select>
+</mapper>

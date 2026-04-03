@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <ctx:annotation-config/>
+    <ctx:component-scan base-package="it.memelabs.smartnebula.lmm.security"/>
+
+    <bean id="applicationContextProvider"
+          class="it.memelabs.smartnebula.spring.boot.config.ApplicationContextProvider"/>
+
+    <!-- =================================================================== -->
+    <!-- Custom permission evaluator                                         -->
+    <!-- =================================================================== -->
+
+
+<!--
+    <bean class="it.memelabs.smartnebula.lmm.security.evaluator.AttachmentPermissionEvaluator"
+          id="attachmentPermissionEvaluator"/>
+
+    <bean class="it.memelabs.smartnebula.lmm.security.evaluator.CommentPermissionEvaluator"
+          id="commentPermissionEvaluator"/>
+
+
+    <bean class="it.memelabs.smartnebula.lmm.security.evaluator.LmmPermissionEvaluator" id="lmmPermissionEvaluator"/>
+
+-->
+
+    <bean id="expressionHandler"
+          class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+        <!--<property name="permissionEvaluator" ref="lmmPermissionEvaluator"/>-->
+    </bean>
+
+
+    <bean id="http403ForbiddenEntryPoint"
+          class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
+
+</beans>
