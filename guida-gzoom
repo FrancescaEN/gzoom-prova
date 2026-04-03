@@ -64,6 +64,15 @@ psql -h localhost -U postgres -d gzoom_maps -c "
 INSERT INTO user_login (user_login_id, current_password, is_system, enabled, has_logged_out, require_password_change, party_id)
 VALUES ('developer', '{SHA}d033e22ae348aeb5660fc2140aec35850c4da997', 'N', 'Y', 'N', 'N', 'ADMINPARTY');
 "
+
+aggiungi anche i permessi:
+# Assegnazione gruppo FULLADMIN all'utente developer
+psql -h localhost -U postgres -d gzoom_maps -c "
+INSERT INTO user_login_security_group (user_login_id, group_id, from_date, last_updated_stamp, last_updated_tx_stamp, created_stamp, created_tx_stamp)
+VALUES ('developer', 'FULLADMIN', NOW(), NOW(), NOW(), NOW(), NOW());
+"
+
+
 testa
 curl -s -X POST http://localhost:8080/gzoom/control/main \
   -d "USERNAME=developer&PASSWORD=admin" | grep -i "logout\|error\|password" | head -3
