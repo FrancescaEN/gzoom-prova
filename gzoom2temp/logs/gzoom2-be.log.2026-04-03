@@ -1,0 +1,887 @@
+ERROR 2026-04-06 21:31:23.205 i.m.g.s.JwtService:validateImpl [http-nio-8081-exec-5] - Invalid authentication token: {}
+org.jose4j.jwt.consumer.InvalidJwtException: JWT (claims->{"iss":"lmm","aud":"end-user","exp":1775219400,"jti":"7nY24iZOBiwVZsIWyFg_UQ","iat":1775215800,"sub":"developer","firstName":"Admin","lastName":"User","externalLoginKey":"EL836972879693","permissions":1,"id":"developer","username":"developer"}) rejected due to invalid claims or other invalid content. Additional details: [[1] The JWT is no longer valid - the evaluation time NumericDate{1775503883 -> Apr 6, 2026, 9:31:23 PM CEST} is on or after the Expiration Time (exp=NumericDate{1775219400 -> Apr 3, 2026, 2:30:00 PM CEST}) claim value (even when providing 30 seconds of leeway to account for clock skew).]
+	at org.jose4j.jwt.consumer.JwtConsumer.validate(JwtConsumer.java:459)
+	at org.jose4j.jwt.consumer.JwtConsumer.processContext(JwtConsumer.java:304)
+	at org.jose4j.jwt.consumer.JwtConsumer.process(JwtConsumer.java:426)
+	at org.jose4j.jwt.consumer.JwtConsumer.processToClaims(JwtConsumer.java:171)
+	at it.mapsgroup.gzoom.security.JwtService.validateImpl(JwtService.java:144)
+	at it.mapsgroup.gzoom.security.JwtService.validate(JwtService.java:122)
+	at it.mapsgroup.gzoom.security.JwtTokenAuthenticationProvider.authenticate(JwtTokenAuthenticationProvider.java:80)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
+	at it.mapsgroup.gzoom.security.JwtTokenFilter.doFilter(JwtTokenFilter.java:80)
+	at it.mapsgroup.gzoom.DelegateRequestMatchingFilter.doFilter(DelegateRequestMatchingFilter.java:31)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtChangePasswordFilter.doFilter(JwtChangePasswordFilter.java:248)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtLogoutFilter.doFilter(JwtLogoutFilter.java:127)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+ERROR 2026-04-06 21:31:23.209 i.m.g.s.JwtTokenAuthenticationProvider:authenticate [http-nio-8081-exec-5] - Authentication failed: Invalid authentication token
+ERROR 2026-04-06 21:31:23.205 i.m.g.s.c.AuthController:getLoginMethod [http-nio-8081-exec-3] - no oneLoginSSOEnabledPropertyName and keycloakLoginEnabledPropertyName configuration found
+ERROR 2026-04-06 21:31:23.607 i.m.g.s.c.AuthController:getLoginMethod [http-nio-8081-exec-9] - no oneLoginSSOEnabledPropertyName and keycloakLoginEnabledPropertyName configuration found
+INFO  2026-04-06 21:31:23.642 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-8] - getPartyNote
+INFO  2026-04-06 21:31:23.652 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-8] - size = 0
+INFO  2026-04-06 21:31:23.720 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-5] - getPartyNote
+INFO  2026-04-06 21:31:23.723 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-5] - size = 0
+INFO  2026-04-06 21:31:23.739 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-3] - getPartyNote
+INFO  2026-04-06 21:31:23.741 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-3] - size = 0
+INFO  2026-04-06 21:31:23.819 i.m.g.s.NodeService:stream [http-nio-8081-exec-10] - stream default imagePath: /lmm/images/gzoom_logo_login.jpg
+INFO  2026-04-06 21:31:23.820 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-10] - getPartyContent
+INFO  2026-04-06 21:31:23.830 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-10] - size = 0
+INFO  2026-04-06 21:31:23.874 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-9] - find userPreference by id
+INFO  2026-04-06 21:31:23.876 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-9] - UserPreference = true
+INFO  2026-04-06 21:31:23.905 i.m.g.m.d.NoteDataDao:getNoteDataByPrefValue [http-nio-8081-exec-1] - find note data by prefValue
+INFO  2026-04-06 21:31:23.911 i.m.g.m.d.NoteDataDao:getNoteDataByPrefValue [http-nio-8081-exec-1] - size = null
+INFO  2026-04-06 21:31:31.068 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - getUserLogin
+INFO  2026-04-06 21:31:31.073 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - size 1
+INFO  2026-04-06 21:31:31.089 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-2] - getUserLogin
+INFO  2026-04-06 21:31:31.092 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-2] - size 1
+INFO  2026-04-06 21:31:31.175 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-2] - find userPreference by id
+INFO  2026-04-06 21:31:31.177 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-2] - UserPreference = true
+INFO  2026-04-06 21:31:31.177 i.m.g.s.JwtLoginFilter:successfulAuthentication [http-nio-8081-exec-2] - Successfully authenticated user: developer
+INFO  2026-04-06 21:31:31.341 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - getUserLogin
+INFO  2026-04-06 21:31:31.347 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - size 1
+DEBUG 2026-04-06 21:31:31.350 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-8] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.353 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - getUserLogin
+INFO  2026-04-06 21:31:31.354 i.m.g.m.d.UserCtxPermissionViewDao:selectByUserLoginId [http-nio-8081-exec-8] - get UserCtxPermissionView by userLoginId
+INFO  2026-04-06 21:31:31.357 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-3] - getUserLogin
+INFO  2026-04-06 21:31:31.366 i.m.g.m.d.UserCtxPermissionViewDao:selectByUserLoginId [http-nio-8081-exec-8] - size = 4
+INFO  2026-04-06 21:31:31.372 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-7] - getPartyNote
+INFO  2026-04-06 21:31:31.372 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-3] - size 1
+INFO  2026-04-06 21:31:31.370 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - getUserLogin
+DEBUG 2026-04-06 21:31:31.375 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-3] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.377 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - size 1
+DEBUG 2026-04-06 21:31:31.378 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-5] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.378 i.m.g.m.d.SecurityPermissionDao:getPermission [http-nio-8081-exec-3] - getPermission
+INFO  2026-04-06 21:31:31.380 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - size 1
+INFO  2026-04-06 21:31:31.380 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - getUserLogin
+DEBUG 2026-04-06 21:31:31.385 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-4] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.386 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-7] - size = 0
+INFO  2026-04-06 21:31:31.389 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-4] - find userPreference by id
+INFO  2026-04-06 21:31:31.389 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - size 1
+INFO  2026-04-06 21:31:31.391 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-4] - UserPreference = false
+INFO  2026-04-06 21:31:31.392 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-4] - find userPreference by id
+INFO  2026-04-06 21:31:31.393 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - getUserLogin
+INFO  2026-04-06 21:31:31.394 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-4] - UserPreference = false
+INFO  2026-04-06 21:31:31.398 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - size 1
+INFO  2026-04-06 21:31:31.407 i.m.g.m.d.SecurityPermissionDao:getPermission [http-nio-8081-exec-3] - size = 107
+INFO  2026-04-06 21:31:31.411 i.m.g.s.MenuService:getMenu [http-nio-8081-exec-3] - mappa2 {TYPESATTACHMENTSOBJECTIVESCTXWE=[ADMIN], REPORTPRINTCTXOR=[ADMIN], UOMTYPE=[ADMIN], REPORTPRINTCTXPA=[ADMIN], ANALYSISCTXBS=[ADMIN], SECURITYGROUPSCTXBA=[ADMIN], ANALYSISTYPECTXEP=[ADMIN], QUERYCONFIGCTXBSU=[ADMIN], APPROVALPATHSCTXBA=[ADMIN], REPORTPRINTCTXGD=[ADMIN], CONSULTINGLOGCTXBA=[ADMIN], QUERYCONFIGCTXGDU=[ADMIN], NOTESOBJECTIVESCTXWE=[ADMIN], WORKEFFORTCTXWE=[ADMIN], QUERYCONFIGCTXBSE=[ADMIN], QUERYCONFIGURATIONCTXWE=[ADMIN], ECONOMICINDICATORSCTXAC=[ADMIN], ANALYSISTYPECTXWE=[ADMIN], ANALYSISCTXRE=[ADMIN], QUERYCONFIGCTXEPU=[ADMIN], QUERYCONFIGCTXGDE=[ADMIN], SUBSYSTEMTYPESCTXBA=[ADMIN], PURPOSECTXAC=[ADMIN], ANALYSISCTXDI=[ADMIN], RELATIONSHIPSOBJECTIVESCTXWE=[ADMIN], EXTRAACCOUNTINGUNITTYPESCTXAC=[ADMIN], ANALYSISTYPECTXOR=[ADMIN], FINANCIALINDICATORSCTXAC=[ADMIN], QUERYCONFIGCTXPAE=[ADMIN], QUERYCONFIGCTXREE=[ADMIN], SUBJECTSOBJECTIVESCTXWE=[ADMIN], QUERYCONFIGCTXCGU=[ADMIN], REPORTPRINTCTXEP=[ADMIN], QUERYCONFIGCTXDIU=[ADMIN], QUERYCONFIGCTXPYU=[ADMIN], QUERYCONFIGCTXCOU=[ADMIN], EXTRACTQUERYCONFIGURATIONCTXWE=[ADMIN], CUSTOM=[ADMIN], QUERYCONFIGCTXACE=[ADMIN], ANALYSISCTXTR=[ADMIN], RESERVEDINDICATORMOVEMENTSCTXAC=[ADMIN], QUERYCONFIGCTXCGE=[ADMIN], QUERYCONFIGCTXDIE=[ADMIN], ANALYSISTYPECTXGD=[ADMIN], QUERYCONFIGCTXPYE=[ADMIN], ANALYSISTYPECTXPR=[ADMIN], QUERYCONFIGCTXCOE=[ADMIN], REPORTPRINTCTXDI=[ADMIN], FINANCIALACCOUNTINGUNITTYPESCTXAC=[ADMIN], ANALYSISCTXCO=[ADMIN], MEASURESOBJECTIVESCTXWE=[ADMIN], ANALYSISTYPECTXPA=[ADMIN], REPORTPRINTCTXTR=[ADMIN], TYPOLOGIESROLESSUBJECTSCTXPY=[ADMIN], SCHEDULERCTXBA=[ADMIN], ANALYSISCTXCG=[ADMIN], OBJECTIVECODESCTXWE=[ADMIN], QUERYCONFIGCTXCAU=[ADMIN], CALCULATIONFORMULASCTXAC=[ADMIN], REPORTPRINTCTXCG=[ADMIN], FINANCIALINDICATORMOVEMENTSCTXAC=[ADMIN], REPORTPRINTCTXCO=[ADMIN], ECONOMICSPOSITIONSCTXPY=[ADMIN], TYPESRELATIONSHIPSBETWEENSUBJECTSCTXPY=[ADMIN], QUERYCONFIGCTXTRU=[ADMIN], ANALYSISCTXEP=[ADMIN], PERIODSCTXAC=[ADMIN], QUERYCONFIGCTXPRU=[ADMIN], REPORTPRINTCTXBS=[ADMIN], ECONPATRACCOUNTINGUNITTYPESCTXAC=[ADMIN], ECONOMICINDICATORMOVEMENTSCTXAC=[ADMIN], REPORTPRINTCTXRE=[ADMIN], QUERYCONFIGCTXTRE=[ADMIN], ANALYSISTYPECTXRE=[ADMIN], QUERYCONFIGCTXPAU=[ADMIN], QUERYCONFIGCTXPRE=[ADMIN], QUERYCONFIGCTXREU=[ADMIN], QUERYCONFIGCTXEPE=[ADMIN], RANGESOFVALUESCTXAC=[ADMIN], QUERYCONFIG=[ADMIN], TIMESHEETCTXPR=[ADMIN], ANALYSISTYPECTXCG=[ADMIN], TIMESHEET=[ADMIN], TYPOLOGYRELATIONSHIPSOBJECTIVESCTXWE=[ADMIN], ANALYSISTYPECTXCO=[ADMIN], ANALYSISTYPECTXBS=[ADMIN], QUERYCONFIGCTXBAE=[ADMIN], SUBSYSTEMCTXBA=[ADMIN], REQUESTFROMINTERESTEDPARTIESCTXGD=[ADMIN], ANALYSISCTXPR=[ADMIN], DETECTIONTYPECTXAC=[ADMIN], INDICATORSCTXAC=[ADMIN], INDICATORMOVEMENTSCTXAC=[ADMIN], ANALYSISTYPECTXDI=[ADMIN], REPORTPRINTCTXPR=[ADMIN], QUERYCONFIGCTXORU=[ADMIN], TIMESHEETCTXOR=[ADMIN], ANALYSISCTXPA=[ADMIN], ATTACHMENTSOBJECTIVESCTXWE=[ADMIN], UOM=[ADMIN], INTERFACCIAMENTODATI=[ADMIN], TIPOLOGIEPERIODICTXAC=[ADMIN], QUERYCONFIGCTXORE=[ADMIN], RESERVEDINDICATORSCTXAC=[ADMIN], NATUREUNITCONTEXTRCTXAC=[ADMIN], ANALYSISTYPECTXTR=[ADMIN], ANALYSISCTXOR=[ADMIN]}
+INFO  2026-04-06 21:31:31.412 i.m.g.m.d.ContentAndAttributesDao:getValidMenu [http-nio-8081-exec-3] - getValidMenu
+INFO  2026-04-06 21:31:31.475 i.m.g.m.d.ContentAndAttributesDao:getValidMenu [http-nio-8081-exec-3] - size = 102
+INFO  2026-04-06 21:31:31.476 i.m.g.m.d.ContentAndAttributesDao:getFolderMenu [http-nio-8081-exec-3] - getFolderMenu
+INFO  2026-04-06 21:31:31.518 i.m.g.m.d.ContentAndAttributesDao:getFolderMenu [http-nio-8081-exec-3] - size = 66
+INFO  2026-04-06 21:31:31.566 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - getUserLogin
+INFO  2026-04-06 21:31:31.570 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - size 1
+DEBUG 2026-04-06 21:31:31.571 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-6] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.613 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - getUserLogin
+INFO  2026-04-06 21:31:31.621 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - size 1
+DEBUG 2026-04-06 21:31:31.622 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-8] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.623 i.m.g.m.d.UserLoginSecurityGroupDao:getDefaultPortalPage [http-nio-8081-exec-8] - getDefaultPortalPage
+INFO  2026-04-06 21:31:31.624 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - getUserLogin
+INFO  2026-04-06 21:31:31.627 i.m.g.m.d.UserLoginSecurityGroupDao:getDefaultPortalPage [http-nio-8081-exec-8] - size 0
+INFO  2026-04-06 21:31:31.628 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - getUserLogin
+INFO  2026-04-06 21:31:31.633 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - size 1
+DEBUG 2026-04-06 21:31:31.637 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-4] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.642 i.m.g.s.NodeService:stream [http-nio-8081-exec-5] - stream default imagePath: /lmm/images/gzoom_logo.jpg
+INFO  2026-04-06 21:31:31.643 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-5] - getPartyContent
+INFO  2026-04-06 21:31:31.646 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - size 1
+DEBUG 2026-04-06 21:31:31.647 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-7] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.653 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-5] - size = 0
+INFO  2026-04-06 21:31:31.823 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - getUserLogin
+INFO  2026-04-06 21:31:31.832 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - size 1
+DEBUG 2026-04-06 21:31:31.834 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-9] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.837 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-9] - find userPreference by id
+INFO  2026-04-06 21:31:31.842 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-9] - UserPreference = true
+INFO  2026-04-06 21:31:31.844 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-9] - find userPreference by id
+INFO  2026-04-06 21:31:31.847 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-1] - getUserLogin
+INFO  2026-04-06 21:31:31.847 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-9] - UserPreference = false
+INFO  2026-04-06 21:31:31.851 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-1] - size 1
+DEBUG 2026-04-06 21:31:31.852 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-1] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.858 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - getUserLogin
+INFO  2026-04-06 21:31:31.861 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - size 1
+DEBUG 2026-04-06 21:31:31.864 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-6] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.869 i.m.g.m.d.UserLoginValidPartyRoleDao:getUserLoginValidPartyRoleList [http-nio-8081-exec-6] - getUserLoginValidPartyRoleList
+INFO  2026-04-06 21:31:31.870 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-2] - getUserLogin
+INFO  2026-04-06 21:31:31.873 i.m.g.m.d.UserLoginValidPartyRoleDao:getUserLoginValidPartyRoleList [http-nio-8081-exec-6] - size 0
+INFO  2026-04-06 21:31:31.875 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-2] - size 1
+DEBUG 2026-04-06 21:31:31.876 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-2] - Token valid for user: developer
+INFO  2026-04-06 21:31:31.877 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-2] - getUserLogin
+INFO  2026-04-06 21:31:31.881 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-2] - size 1
+INFO  2026-04-06 21:31:31.910 i.m.g.u.Manifests:getProductInfo [http-nio-8081-exec-4] - getProductInfo2.5.0rc1
+ERROR 2026-04-06 21:31:31.911 i.m.g.u.Manifests:initProductDate [http-nio-8081-exec-4] - Invalid product date format in MANIFEST.MF
+INFO  2026-04-06 21:31:31.917 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - getUserLogin
+INFO  2026-04-06 21:31:31.920 i.m.g.u.Manifests:getProductInfo [http-nio-8081-exec-4] - getProductInfoMon Apr 06 21:31:31 CEST 2026
+INFO  2026-04-06 21:31:31.928 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - size 1
+DEBUG 2026-04-06 21:31:31.930 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-7] - Token valid for user: developer
+INFO  2026-04-06 21:38:58.728 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - getUserLogin
+INFO  2026-04-06 21:38:58.731 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - size 1
+DEBUG 2026-04-06 21:38:58.731 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-9] - Token valid for user: developer
+ERROR 2026-04-06 21:38:58.732 i.m.g.s.c.AuthController:getLoginMethod [http-nio-8081-exec-1] - no oneLoginSSOEnabledPropertyName and keycloakLoginEnabledPropertyName configuration found
+INFO  2026-04-06 21:38:58.733 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - getUserLogin
+INFO  2026-04-06 21:38:58.735 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - size 1
+INFO  2026-04-06 21:38:58.737 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - getUserLogin
+INFO  2026-04-06 21:38:58.745 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - size 1
+INFO  2026-04-06 21:38:59.259 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - getUserLogin
+INFO  2026-04-06 21:38:59.261 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - size 1
+DEBUG 2026-04-06 21:38:59.261 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-8] - Token valid for user: developer
+INFO  2026-04-06 21:38:59.263 i.m.g.m.d.UserCtxPermissionViewDao:selectByUserLoginId [http-nio-8081-exec-8] - get UserCtxPermissionView by userLoginId
+INFO  2026-04-06 21:38:59.269 i.m.g.m.d.UserCtxPermissionViewDao:selectByUserLoginId [http-nio-8081-exec-8] - size = 4
+INFO  2026-04-06 21:38:59.301 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - getUserLogin
+INFO  2026-04-06 21:38:59.308 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-10] - getUserLogin
+INFO  2026-04-06 21:38:59.310 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - size 1
+DEBUG 2026-04-06 21:38:59.312 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-5] - Token valid for user: developer
+INFO  2026-04-06 21:38:59.314 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - getUserLogin
+INFO  2026-04-06 21:38:59.314 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-10] - size 1
+DEBUG 2026-04-06 21:38:59.316 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-10] - Token valid for user: developer
+INFO  2026-04-06 21:38:59.317 i.m.g.m.d.SecurityPermissionDao:getPermission [http-nio-8081-exec-10] - getPermission
+INFO  2026-04-06 21:38:59.317 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - size 1
+INFO  2026-04-06 21:38:59.318 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - getUserLogin
+INFO  2026-04-06 21:38:59.322 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-5] - size 1
+INFO  2026-04-06 21:38:59.322 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - getUserLogin
+INFO  2026-04-06 21:38:59.323 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-4] - getPartyNote
+INFO  2026-04-06 21:38:59.328 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - size 1
+INFO  2026-04-06 21:38:59.330 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-4] - size = 0
+DEBUG 2026-04-06 21:38:59.332 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-7] - Token valid for user: developer
+INFO  2026-04-06 21:38:59.336 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-7] - find userPreference by id
+INFO  2026-04-06 21:38:59.338 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-7] - UserPreference = false
+INFO  2026-04-06 21:38:59.339 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-7] - find userPreference by id
+INFO  2026-04-06 21:38:59.340 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-7] - UserPreference = false
+INFO  2026-04-06 21:38:59.346 i.m.g.m.d.SecurityPermissionDao:getPermission [http-nio-8081-exec-10] - size = 107
+INFO  2026-04-06 21:38:59.358 i.m.g.s.MenuService:getMenu [http-nio-8081-exec-10] - mappa2 {TYPESATTACHMENTSOBJECTIVESCTXWE=[ADMIN], REPORTPRINTCTXOR=[ADMIN], UOMTYPE=[ADMIN], REPORTPRINTCTXPA=[ADMIN], ANALYSISCTXBS=[ADMIN], SECURITYGROUPSCTXBA=[ADMIN], ANALYSISTYPECTXEP=[ADMIN], QUERYCONFIGCTXBSU=[ADMIN], APPROVALPATHSCTXBA=[ADMIN], REPORTPRINTCTXGD=[ADMIN], CONSULTINGLOGCTXBA=[ADMIN], QUERYCONFIGCTXGDU=[ADMIN], NOTESOBJECTIVESCTXWE=[ADMIN], WORKEFFORTCTXWE=[ADMIN], QUERYCONFIGCTXBSE=[ADMIN], QUERYCONFIGURATIONCTXWE=[ADMIN], ECONOMICINDICATORSCTXAC=[ADMIN], ANALYSISTYPECTXWE=[ADMIN], ANALYSISCTXRE=[ADMIN], QUERYCONFIGCTXEPU=[ADMIN], QUERYCONFIGCTXGDE=[ADMIN], SUBSYSTEMTYPESCTXBA=[ADMIN], PURPOSECTXAC=[ADMIN], ANALYSISCTXDI=[ADMIN], RELATIONSHIPSOBJECTIVESCTXWE=[ADMIN], EXTRAACCOUNTINGUNITTYPESCTXAC=[ADMIN], ANALYSISTYPECTXOR=[ADMIN], FINANCIALINDICATORSCTXAC=[ADMIN], QUERYCONFIGCTXPAE=[ADMIN], QUERYCONFIGCTXREE=[ADMIN], SUBJECTSOBJECTIVESCTXWE=[ADMIN], QUERYCONFIGCTXCGU=[ADMIN], REPORTPRINTCTXEP=[ADMIN], QUERYCONFIGCTXDIU=[ADMIN], QUERYCONFIGCTXPYU=[ADMIN], QUERYCONFIGCTXCOU=[ADMIN], EXTRACTQUERYCONFIGURATIONCTXWE=[ADMIN], CUSTOM=[ADMIN], QUERYCONFIGCTXACE=[ADMIN], ANALYSISCTXTR=[ADMIN], RESERVEDINDICATORMOVEMENTSCTXAC=[ADMIN], QUERYCONFIGCTXCGE=[ADMIN], QUERYCONFIGCTXDIE=[ADMIN], ANALYSISTYPECTXGD=[ADMIN], QUERYCONFIGCTXPYE=[ADMIN], ANALYSISTYPECTXPR=[ADMIN], QUERYCONFIGCTXCOE=[ADMIN], REPORTPRINTCTXDI=[ADMIN], FINANCIALACCOUNTINGUNITTYPESCTXAC=[ADMIN], ANALYSISCTXCO=[ADMIN], MEASURESOBJECTIVESCTXWE=[ADMIN], ANALYSISTYPECTXPA=[ADMIN], REPORTPRINTCTXTR=[ADMIN], TYPOLOGIESROLESSUBJECTSCTXPY=[ADMIN], SCHEDULERCTXBA=[ADMIN], ANALYSISCTXCG=[ADMIN], OBJECTIVECODESCTXWE=[ADMIN], QUERYCONFIGCTXCAU=[ADMIN], CALCULATIONFORMULASCTXAC=[ADMIN], REPORTPRINTCTXCG=[ADMIN], FINANCIALINDICATORMOVEMENTSCTXAC=[ADMIN], REPORTPRINTCTXCO=[ADMIN], ECONOMICSPOSITIONSCTXPY=[ADMIN], TYPESRELATIONSHIPSBETWEENSUBJECTSCTXPY=[ADMIN], QUERYCONFIGCTXTRU=[ADMIN], ANALYSISCTXEP=[ADMIN], PERIODSCTXAC=[ADMIN], QUERYCONFIGCTXPRU=[ADMIN], REPORTPRINTCTXBS=[ADMIN], ECONPATRACCOUNTINGUNITTYPESCTXAC=[ADMIN], ECONOMICINDICATORMOVEMENTSCTXAC=[ADMIN], REPORTPRINTCTXRE=[ADMIN], QUERYCONFIGCTXTRE=[ADMIN], ANALYSISTYPECTXRE=[ADMIN], QUERYCONFIGCTXPAU=[ADMIN], QUERYCONFIGCTXPRE=[ADMIN], QUERYCONFIGCTXREU=[ADMIN], QUERYCONFIGCTXEPE=[ADMIN], RANGESOFVALUESCTXAC=[ADMIN], QUERYCONFIG=[ADMIN], TIMESHEETCTXPR=[ADMIN], ANALYSISTYPECTXCG=[ADMIN], TIMESHEET=[ADMIN], TYPOLOGYRELATIONSHIPSOBJECTIVESCTXWE=[ADMIN], ANALYSISTYPECTXCO=[ADMIN], ANALYSISTYPECTXBS=[ADMIN], QUERYCONFIGCTXBAE=[ADMIN], SUBSYSTEMCTXBA=[ADMIN], REQUESTFROMINTERESTEDPARTIESCTXGD=[ADMIN], ANALYSISCTXPR=[ADMIN], DETECTIONTYPECTXAC=[ADMIN], INDICATORSCTXAC=[ADMIN], INDICATORMOVEMENTSCTXAC=[ADMIN], ANALYSISTYPECTXDI=[ADMIN], REPORTPRINTCTXPR=[ADMIN], QUERYCONFIGCTXORU=[ADMIN], TIMESHEETCTXOR=[ADMIN], ANALYSISCTXPA=[ADMIN], ATTACHMENTSOBJECTIVESCTXWE=[ADMIN], UOM=[ADMIN], INTERFACCIAMENTODATI=[ADMIN], TIPOLOGIEPERIODICTXAC=[ADMIN], QUERYCONFIGCTXORE=[ADMIN], RESERVEDINDICATORSCTXAC=[ADMIN], NATUREUNITCONTEXTRCTXAC=[ADMIN], ANALYSISTYPECTXTR=[ADMIN], ANALYSISCTXOR=[ADMIN]}
+INFO  2026-04-06 21:38:59.359 i.m.g.m.d.ContentAndAttributesDao:getValidMenu [http-nio-8081-exec-10] - getValidMenu
+INFO  2026-04-06 21:38:59.470 i.m.g.m.d.ContentAndAttributesDao:getValidMenu [http-nio-8081-exec-10] - size = 102
+INFO  2026-04-06 21:38:59.471 i.m.g.m.d.ContentAndAttributesDao:getFolderMenu [http-nio-8081-exec-10] - getFolderMenu
+INFO  2026-04-06 21:38:59.519 i.m.g.m.d.ContentAndAttributesDao:getFolderMenu [http-nio-8081-exec-10] - size = 66
+INFO  2026-04-06 21:38:59.576 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - getUserLogin
+INFO  2026-04-06 21:38:59.578 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - size 1
+DEBUG 2026-04-06 21:38:59.578 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-6] - Token valid for user: developer
+INFO  2026-04-06 21:38:59.643 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - getUserLogin
+INFO  2026-04-06 21:38:59.643 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - getUserLogin
+INFO  2026-04-06 21:38:59.646 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - getUserLogin
+INFO  2026-04-06 21:38:59.650 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - size 1
+INFO  2026-04-06 21:38:59.650 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - size 1
+DEBUG 2026-04-06 21:38:59.650 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-7] - Token valid for user: developer
+DEBUG 2026-04-06 21:38:59.651 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-8] - Token valid for user: developer
+INFO  2026-04-06 21:38:59.652 i.m.g.m.d.UserLoginSecurityGroupDao:getDefaultPortalPage [http-nio-8081-exec-8] - getDefaultPortalPage
+INFO  2026-04-06 21:38:59.655 i.m.g.m.d.UserLoginSecurityGroupDao:getDefaultPortalPage [http-nio-8081-exec-8] - size 0
+INFO  2026-04-06 21:38:59.664 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - size 1
+DEBUG 2026-04-06 21:38:59.665 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-4] - Token valid for user: developer
+INFO  2026-04-06 21:38:59.766 i.m.g.s.NodeService:stream [http-nio-8081-exec-5] - stream default imagePath: /lmm/images/gzoom_logo.jpg
+INFO  2026-04-06 21:38:59.767 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-5] - getPartyContent
+INFO  2026-04-06 21:38:59.772 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-5] - size = 0
+INFO  2026-04-06 21:39:00.014 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-1] - getUserLogin
+INFO  2026-04-06 21:39:00.018 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-1] - size 1
+DEBUG 2026-04-06 21:39:00.021 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-1] - Token valid for user: developer
+INFO  2026-04-06 21:39:00.024 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-1] - find userPreference by id
+INFO  2026-04-06 21:39:00.026 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-3] - getUserLogin
+INFO  2026-04-06 21:39:00.028 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-1] - UserPreference = true
+INFO  2026-04-06 21:39:00.030 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-1] - find userPreference by id
+INFO  2026-04-06 21:39:00.033 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-3] - size 1
+DEBUG 2026-04-06 21:39:00.037 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-3] - Token valid for user: developer
+INFO  2026-04-06 21:39:00.040 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - getUserLogin
+INFO  2026-04-06 21:39:00.042 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-2] - getUserLogin
+INFO  2026-04-06 21:39:00.042 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-1] - UserPreference = false
+INFO  2026-04-06 21:39:00.046 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - size 1
+DEBUG 2026-04-06 21:39:00.047 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-7] - Token valid for user: developer
+INFO  2026-04-06 21:39:00.048 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - getUserLogin
+INFO  2026-04-06 21:39:00.049 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-2] - size 1
+DEBUG 2026-04-06 21:39:00.054 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-2] - Token valid for user: developer
+INFO  2026-04-06 21:39:00.054 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - size 1
+INFO  2026-04-06 21:39:00.059 i.m.g.m.d.UserLoginValidPartyRoleDao:getUserLoginValidPartyRoleList [http-nio-8081-exec-2] - getUserLoginValidPartyRoleList
+INFO  2026-04-06 21:39:00.062 i.m.g.m.d.UserLoginValidPartyRoleDao:getUserLoginValidPartyRoleList [http-nio-8081-exec-2] - size 0
+INFO  2026-04-06 21:39:00.084 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - getUserLogin
+INFO  2026-04-06 21:39:00.092 i.m.g.u.Manifests:getProductInfo [http-nio-8081-exec-8] - getProductInfo2.5.0rc1
+ERROR 2026-04-06 21:39:00.097 i.m.g.u.Manifests:initProductDate [http-nio-8081-exec-8] - Invalid product date format in MANIFEST.MF
+INFO  2026-04-06 21:39:00.097 i.m.g.u.Manifests:getProductInfo [http-nio-8081-exec-8] - getProductInfoMon Apr 06 21:39:00 CEST 2026
+INFO  2026-04-06 21:39:00.110 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - size 1
+DEBUG 2026-04-06 21:39:00.113 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-4] - Token valid for user: developer
+INFO  2026-04-06 21:45:27.890 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-3] - getUserLogin
+INFO  2026-04-06 21:45:27.896 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-3] - size 1
+INFO  2026-04-06 21:45:28.019 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-3] - find userPreference by id
+INFO  2026-04-06 21:45:28.020 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-3] - UserPreference = true
+INFO  2026-04-06 21:45:28.021 i.m.g.s.JwtLoginFilter:successfulAuthentication [http-nio-8081-exec-3] - Successfully authenticated user: developer
+INFO  2026-04-06 21:45:28.040 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-10] - getUserLogin
+INFO  2026-04-06 21:45:28.042 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-10] - size 1
+DEBUG 2026-04-06 21:45:28.042 i.m.g.s.JwtTokenFilter:doFilter [http-nio-8081-exec-10] - Token valid for user: developer
+INFO  2026-04-06 21:45:28.043 i.m.g.m.d.SecurityPermissionDao:getPermission [http-nio-8081-exec-10] - getPermission
+INFO  2026-04-06 21:45:28.052 i.m.g.m.d.SecurityPermissionDao:getPermission [http-nio-8081-exec-10] - size = 107
+INFO  2026-04-06 21:45:28.054 i.m.g.s.MenuService:getMenu [http-nio-8081-exec-10] - mappa2 {TYPESATTACHMENTSOBJECTIVESCTXWE=[ADMIN], REPORTPRINTCTXOR=[ADMIN], UOMTYPE=[ADMIN], REPORTPRINTCTXPA=[ADMIN], ANALYSISCTXBS=[ADMIN], SECURITYGROUPSCTXBA=[ADMIN], ANALYSISTYPECTXEP=[ADMIN], QUERYCONFIGCTXBSU=[ADMIN], APPROVALPATHSCTXBA=[ADMIN], REPORTPRINTCTXGD=[ADMIN], CONSULTINGLOGCTXBA=[ADMIN], QUERYCONFIGCTXGDU=[ADMIN], NOTESOBJECTIVESCTXWE=[ADMIN], WORKEFFORTCTXWE=[ADMIN], QUERYCONFIGCTXBSE=[ADMIN], QUERYCONFIGURATIONCTXWE=[ADMIN], ECONOMICINDICATORSCTXAC=[ADMIN], ANALYSISTYPECTXWE=[ADMIN], ANALYSISCTXRE=[ADMIN], QUERYCONFIGCTXEPU=[ADMIN], QUERYCONFIGCTXGDE=[ADMIN], SUBSYSTEMTYPESCTXBA=[ADMIN], PURPOSECTXAC=[ADMIN], ANALYSISCTXDI=[ADMIN], RELATIONSHIPSOBJECTIVESCTXWE=[ADMIN], EXTRAACCOUNTINGUNITTYPESCTXAC=[ADMIN], ANALYSISTYPECTXOR=[ADMIN], FINANCIALINDICATORSCTXAC=[ADMIN], QUERYCONFIGCTXPAE=[ADMIN], QUERYCONFIGCTXREE=[ADMIN], SUBJECTSOBJECTIVESCTXWE=[ADMIN], QUERYCONFIGCTXCGU=[ADMIN], REPORTPRINTCTXEP=[ADMIN], QUERYCONFIGCTXDIU=[ADMIN], QUERYCONFIGCTXPYU=[ADMIN], QUERYCONFIGCTXCOU=[ADMIN], EXTRACTQUERYCONFIGURATIONCTXWE=[ADMIN], CUSTOM=[ADMIN], QUERYCONFIGCTXACE=[ADMIN], ANALYSISCTXTR=[ADMIN], RESERVEDINDICATORMOVEMENTSCTXAC=[ADMIN], QUERYCONFIGCTXCGE=[ADMIN], QUERYCONFIGCTXDIE=[ADMIN], ANALYSISTYPECTXGD=[ADMIN], QUERYCONFIGCTXPYE=[ADMIN], ANALYSISTYPECTXPR=[ADMIN], QUERYCONFIGCTXCOE=[ADMIN], REPORTPRINTCTXDI=[ADMIN], FINANCIALACCOUNTINGUNITTYPESCTXAC=[ADMIN], ANALYSISCTXCO=[ADMIN], MEASURESOBJECTIVESCTXWE=[ADMIN], ANALYSISTYPECTXPA=[ADMIN], REPORTPRINTCTXTR=[ADMIN], TYPOLOGIESROLESSUBJECTSCTXPY=[ADMIN], SCHEDULERCTXBA=[ADMIN], ANALYSISCTXCG=[ADMIN], OBJECTIVECODESCTXWE=[ADMIN], QUERYCONFIGCTXCAU=[ADMIN], CALCULATIONFORMULASCTXAC=[ADMIN], REPORTPRINTCTXCG=[ADMIN], FINANCIALINDICATORMOVEMENTSCTXAC=[ADMIN], REPORTPRINTCTXCO=[ADMIN], ECONOMICSPOSITIONSCTXPY=[ADMIN], TYPESRELATIONSHIPSBETWEENSUBJECTSCTXPY=[ADMIN], QUERYCONFIGCTXTRU=[ADMIN], ANALYSISCTXEP=[ADMIN], PERIODSCTXAC=[ADMIN], QUERYCONFIGCTXPRU=[ADMIN], REPORTPRINTCTXBS=[ADMIN], ECONPATRACCOUNTINGUNITTYPESCTXAC=[ADMIN], ECONOMICINDICATORMOVEMENTSCTXAC=[ADMIN], REPORTPRINTCTXRE=[ADMIN], QUERYCONFIGCTXTRE=[ADMIN], ANALYSISTYPECTXRE=[ADMIN], QUERYCONFIGCTXPAU=[ADMIN], QUERYCONFIGCTXPRE=[ADMIN], QUERYCONFIGCTXREU=[ADMIN], QUERYCONFIGCTXEPE=[ADMIN], RANGESOFVALUESCTXAC=[ADMIN], QUERYCONFIG=[ADMIN], TIMESHEETCTXPR=[ADMIN], ANALYSISTYPECTXCG=[ADMIN], TIMESHEET=[ADMIN], TYPOLOGYRELATIONSHIPSOBJECTIVESCTXWE=[ADMIN], ANALYSISTYPECTXCO=[ADMIN], ANALYSISTYPECTXBS=[ADMIN], QUERYCONFIGCTXBAE=[ADMIN], SUBSYSTEMCTXBA=[ADMIN], REQUESTFROMINTERESTEDPARTIESCTXGD=[ADMIN], ANALYSISCTXPR=[ADMIN], DETECTIONTYPECTXAC=[ADMIN], INDICATORSCTXAC=[ADMIN], INDICATORMOVEMENTSCTXAC=[ADMIN], ANALYSISTYPECTXDI=[ADMIN], REPORTPRINTCTXPR=[ADMIN], QUERYCONFIGCTXORU=[ADMIN], TIMESHEETCTXOR=[ADMIN], ANALYSISCTXPA=[ADMIN], ATTACHMENTSOBJECTIVESCTXWE=[ADMIN], UOM=[ADMIN], INTERFACCIAMENTODATI=[ADMIN], TIPOLOGIEPERIODICTXAC=[ADMIN], QUERYCONFIGCTXORE=[ADMIN], RESERVEDINDICATORSCTXAC=[ADMIN], NATUREUNITCONTEXTRCTXAC=[ADMIN], ANALYSISTYPECTXTR=[ADMIN], ANALYSISCTXOR=[ADMIN]}
+INFO  2026-04-06 21:45:28.055 i.m.g.m.d.ContentAndAttributesDao:getValidMenu [http-nio-8081-exec-10] - getValidMenu
+INFO  2026-04-06 21:45:28.100 i.m.g.m.d.ContentAndAttributesDao:getValidMenu [http-nio-8081-exec-10] - size = 102
+INFO  2026-04-06 21:45:28.101 i.m.g.m.d.ContentAndAttributesDao:getFolderMenu [http-nio-8081-exec-10] - getFolderMenu
+INFO  2026-04-06 21:45:28.125 i.m.g.m.d.ContentAndAttributesDao:getFolderMenu [http-nio-8081-exec-10] - size = 66
+WARN  2026-04-06 21:48:01.436 o.s.w.s.DispatcherServlet:noHandlerFound [http-nio-8081-exec-2] - No mapping for GET /rest/profile/i18n/it_IT
+WARN  2026-04-06 21:48:01.438 o.s.w.s.m.s.DefaultHandlerExceptionResolver:handleNoHandlerFoundException [http-nio-8081-exec-2] - No endpoint GET /rest/profile/i18n/it_IT.
+ERROR 2026-04-06 23:26:04.036 i.m.g.s.JwtService:validateImpl [http-nio-8081-exec-5] - Invalid authentication token: {}
+org.jose4j.jwt.consumer.InvalidJwtException: JWT (claims->{"iss":"lmm","aud":"end-user","exp":1775507491,"jti":"tmSwaDMIzjWNk_7RVKzMZg","iat":1775503891,"sub":"developer","firstName":"Admin","lastName":"User","externalLoginKey":"EL555519600109","permissions":1,"id":"developer","username":"developer"}) rejected due to invalid claims or other invalid content. Additional details: [[1] The JWT is no longer valid - the evaluation time NumericDate{1775510764 -> Apr 6, 2026, 11:26:04 PM CEST} is on or after the Expiration Time (exp=NumericDate{1775507491 -> Apr 6, 2026, 10:31:31 PM CEST}) claim value (even when providing 30 seconds of leeway to account for clock skew).]
+	at org.jose4j.jwt.consumer.JwtConsumer.validate(JwtConsumer.java:459)
+	at org.jose4j.jwt.consumer.JwtConsumer.processContext(JwtConsumer.java:304)
+	at org.jose4j.jwt.consumer.JwtConsumer.process(JwtConsumer.java:426)
+	at org.jose4j.jwt.consumer.JwtConsumer.processToClaims(JwtConsumer.java:171)
+	at it.mapsgroup.gzoom.security.JwtService.validateImpl(JwtService.java:144)
+	at it.mapsgroup.gzoom.security.JwtService.validate(JwtService.java:122)
+	at it.mapsgroup.gzoom.security.JwtTokenAuthenticationProvider.authenticate(JwtTokenAuthenticationProvider.java:80)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
+	at it.mapsgroup.gzoom.security.JwtTokenFilter.doFilter(JwtTokenFilter.java:80)
+	at it.mapsgroup.gzoom.DelegateRequestMatchingFilter.doFilter(DelegateRequestMatchingFilter.java:31)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtChangePasswordFilter.doFilter(JwtChangePasswordFilter.java:248)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtLogoutFilter.doFilter(JwtLogoutFilter.java:127)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+ERROR 2026-04-06 23:26:04.041 i.m.g.s.JwtTokenAuthenticationProvider:authenticate [http-nio-8081-exec-5] - Authentication failed: Invalid authentication token
+ERROR 2026-04-06 23:26:04.046 i.m.g.s.c.AuthController:getLoginMethod [http-nio-8081-exec-8] - no oneLoginSSOEnabledPropertyName and keycloakLoginEnabledPropertyName configuration found
+ERROR 2026-04-06 23:26:04.812 i.m.g.s.c.AuthController:getLoginMethod [http-nio-8081-exec-10] - no oneLoginSSOEnabledPropertyName and keycloakLoginEnabledPropertyName configuration found
+INFO  2026-04-06 23:26:05.101 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-2] - getPartyNote
+INFO  2026-04-06 23:26:05.108 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-2] - size = 0
+INFO  2026-04-06 23:26:05.290 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-5] - getPartyNote
+INFO  2026-04-06 23:26:05.293 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-5] - size = 0
+INFO  2026-04-06 23:26:05.360 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-8] - getPartyNote
+INFO  2026-04-06 23:26:05.370 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-8] - size = 0
+INFO  2026-04-06 23:26:05.555 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-10] - find userPreference by id
+INFO  2026-04-06 23:26:05.565 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-10] - UserPreference = true
+INFO  2026-04-06 23:26:05.571 i.m.g.s.NodeService:stream [http-nio-8081-exec-3] - stream default imagePath: /lmm/images/gzoom_logo_login.jpg
+INFO  2026-04-06 23:26:05.572 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-3] - getPartyContent
+INFO  2026-04-06 23:26:05.588 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-3] - size = 0
+INFO  2026-04-06 23:26:05.644 i.m.g.m.d.NoteDataDao:getNoteDataByPrefValue [http-nio-8081-exec-1] - find note data by prefValue
+INFO  2026-04-06 23:26:05.649 i.m.g.m.d.NoteDataDao:getNoteDataByPrefValue [http-nio-8081-exec-1] - size = null
+INFO  2026-04-06 23:28:45.305 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - getUserLogin
+INFO  2026-04-06 23:28:45.318 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-7] - size 1
+INFO  2026-04-06 23:28:45.390 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - getUserLogin
+INFO  2026-04-06 23:28:45.398 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-9] - size 1
+ERROR 2026-04-06 23:28:45.405 i.m.g.o.c.OfBizClient:execute [http-nio-8081-exec-9] - OfBiz client failed when calling method 'gzSimpleLogin' due to: I/O error while communicating with HTTP server: Connection refused code 0
+ERROR 2026-04-06 23:28:45.406 i.m.g.s.JwtOfBizLoginAuthenticationProvider:authenticate [http-nio-8081-exec-9] - Db-based authentication failed due to internal server error
+it.mapsgroup.gzoom.ofbiz.client.OfBizClientException: org.apache.xmlrpc.XmlRpcException: I/O error while communicating with HTTP server: Connection refused
+	at it.mapsgroup.gzoom.ofbiz.client.OfBizClient.execute(OfBizClient.java:163)
+	at it.mapsgroup.gzoom.ofbiz.client.impl.AuthenticationOfBizClientImpl.login(AuthenticationOfBizClientImpl.java:42)
+	at it.mapsgroup.gzoom.ofbiz.service.LoginServiceOfBiz.login(LoginServiceOfBiz.java:19)
+	at it.mapsgroup.gzoom.security.JwtOfBizLoginAuthenticationProvider.authenticate(JwtOfBizLoginAuthenticationProvider.java:69)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
+	at it.mapsgroup.gzoom.security.JwtLoginFilter.attemptAuthentication(JwtLoginFilter.java:55)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:239)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:229)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.DelegateRequestMatchingFilter.doFilter(DelegateRequestMatchingFilter.java:29)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtChangePasswordFilter.doFilter(JwtChangePasswordFilter.java:248)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtLogoutFilter.doFilter(JwtLogoutFilter.java:127)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.apache.xmlrpc.XmlRpcException: I/O error while communicating with HTTP server: Connection refused
+	at org.apache.xmlrpc.client.XmlRpcCommonsTransport.writeRequest(XmlRpcCommonsTransport.java:244)
+	at org.apache.xmlrpc.client.XmlRpcStreamTransport.sendRequest(XmlRpcStreamTransport.java:151)
+	at org.apache.xmlrpc.client.XmlRpcHttpTransport.sendRequest(XmlRpcHttpTransport.java:143)
+	at org.apache.xmlrpc.client.XmlRpcClientWorker.execute(XmlRpcClientWorker.java:56)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:167)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:137)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:126)
+	at it.mapsgroup.gzoom.ofbiz.client.OfBizClient.execute(OfBizClient.java:159)
+	... 82 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.connect0(Native Method)
+	at java.base/sun.nio.ch.Net.connect(Net.java:601)
+	at java.base/sun.nio.ch.Net.connect(Net.java:590)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at java.base/java.net.Socket.connect(Socket.java:686)
+	at java.base/java.net.Socket.<init>(Socket.java:555)
+	at java.base/java.net.Socket.<init>(Socket.java:398)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:80)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:122)
+	at org.apache.commons.httpclient.HttpConnection.open(HttpConnection.java:707)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeWithRetry(HttpMethodDirector.java:387)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeMethod(HttpMethodDirector.java:171)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:397)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:323)
+	at org.apache.xmlrpc.client.XmlRpcCommonsTransport.writeRequest(XmlRpcCommonsTransport.java:227)
+	... 89 common frames omitted
+ERROR 2026-04-06 23:28:45.411 o.s.s.w.a.AbstractAuthenticationProcessingFilter:doFilter [http-nio-8081-exec-9] - An internal error occurred while trying to authenticate the user.
+org.springframework.security.authentication.InternalAuthenticationServiceException: Invalid username or password
+	at it.mapsgroup.gzoom.security.JwtOfBizLoginAuthenticationProvider.authenticate(JwtOfBizLoginAuthenticationProvider.java:83)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
+	at it.mapsgroup.gzoom.security.JwtLoginFilter.attemptAuthentication(JwtLoginFilter.java:55)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:239)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:229)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.DelegateRequestMatchingFilter.doFilter(DelegateRequestMatchingFilter.java:29)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtChangePasswordFilter.doFilter(JwtChangePasswordFilter.java:248)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtLogoutFilter.doFilter(JwtLogoutFilter.java:127)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: it.mapsgroup.gzoom.ofbiz.client.OfBizClientException: org.apache.xmlrpc.XmlRpcException: I/O error while communicating with HTTP server: Connection refused
+	at it.mapsgroup.gzoom.ofbiz.client.OfBizClient.execute(OfBizClient.java:163)
+	at it.mapsgroup.gzoom.ofbiz.client.impl.AuthenticationOfBizClientImpl.login(AuthenticationOfBizClientImpl.java:42)
+	at it.mapsgroup.gzoom.ofbiz.service.LoginServiceOfBiz.login(LoginServiceOfBiz.java:19)
+	at it.mapsgroup.gzoom.security.JwtOfBizLoginAuthenticationProvider.authenticate(JwtOfBizLoginAuthenticationProvider.java:69)
+	... 79 common frames omitted
+Caused by: org.apache.xmlrpc.XmlRpcException: I/O error while communicating with HTTP server: Connection refused
+	at org.apache.xmlrpc.client.XmlRpcCommonsTransport.writeRequest(XmlRpcCommonsTransport.java:244)
+	at org.apache.xmlrpc.client.XmlRpcStreamTransport.sendRequest(XmlRpcStreamTransport.java:151)
+	at org.apache.xmlrpc.client.XmlRpcHttpTransport.sendRequest(XmlRpcHttpTransport.java:143)
+	at org.apache.xmlrpc.client.XmlRpcClientWorker.execute(XmlRpcClientWorker.java:56)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:167)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:137)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:126)
+	at it.mapsgroup.gzoom.ofbiz.client.OfBizClient.execute(OfBizClient.java:159)
+	... 82 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.connect0(Native Method)
+	at java.base/sun.nio.ch.Net.connect(Net.java:601)
+	at java.base/sun.nio.ch.Net.connect(Net.java:590)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at java.base/java.net.Socket.connect(Socket.java:686)
+	at java.base/java.net.Socket.<init>(Socket.java:555)
+	at java.base/java.net.Socket.<init>(Socket.java:398)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:80)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:122)
+	at org.apache.commons.httpclient.HttpConnection.open(HttpConnection.java:707)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeWithRetry(HttpMethodDirector.java:387)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeMethod(HttpMethodDirector.java:171)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:397)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:323)
+	at org.apache.xmlrpc.client.XmlRpcCommonsTransport.writeRequest(XmlRpcCommonsTransport.java:227)
+	... 89 common frames omitted
+ERROR 2026-04-06 23:28:53.569 i.m.g.s.c.AuthController:getLoginMethod [http-nio-8081-exec-5] - no oneLoginSSOEnabledPropertyName and keycloakLoginEnabledPropertyName configuration found
+INFO  2026-04-06 23:28:54.468 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-10] - getPartyNote
+INFO  2026-04-06 23:28:54.471 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-10] - size = 0
+INFO  2026-04-06 23:28:54.532 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-3] - getPartyNote
+INFO  2026-04-06 23:28:54.534 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-3] - size = 0
+INFO  2026-04-06 23:28:54.758 i.m.g.s.NodeService:stream [http-nio-8081-exec-9] - stream default imagePath: /lmm/images/gzoom_logo_login.jpg
+INFO  2026-04-06 23:28:54.759 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-9] - getPartyContent
+INFO  2026-04-06 23:28:54.765 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-2] - find userPreference by id
+INFO  2026-04-06 23:28:54.769 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-9] - size = 0
+INFO  2026-04-06 23:28:54.771 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-2] - UserPreference = true
+INFO  2026-04-06 23:28:54.885 i.m.g.m.d.NoteDataDao:getNoteDataByPrefValue [http-nio-8081-exec-5] - find note data by prefValue
+INFO  2026-04-06 23:28:54.887 i.m.g.m.d.NoteDataDao:getNoteDataByPrefValue [http-nio-8081-exec-5] - size = null
+INFO  2026-04-06 23:29:01.065 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - getUserLogin
+INFO  2026-04-06 23:29:01.072 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-6] - size 1
+INFO  2026-04-06 23:29:01.108 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - getUserLogin
+INFO  2026-04-06 23:29:01.121 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-8] - size 1
+ERROR 2026-04-06 23:29:01.127 i.m.g.o.c.OfBizClient:execute [http-nio-8081-exec-8] - OfBiz client failed when calling method 'gzSimpleLogin' due to: I/O error while communicating with HTTP server: Connection refused code 0
+ERROR 2026-04-06 23:29:01.131 i.m.g.s.JwtOfBizLoginAuthenticationProvider:authenticate [http-nio-8081-exec-8] - Db-based authentication failed due to internal server error
+it.mapsgroup.gzoom.ofbiz.client.OfBizClientException: org.apache.xmlrpc.XmlRpcException: I/O error while communicating with HTTP server: Connection refused
+	at it.mapsgroup.gzoom.ofbiz.client.OfBizClient.execute(OfBizClient.java:163)
+	at it.mapsgroup.gzoom.ofbiz.client.impl.AuthenticationOfBizClientImpl.login(AuthenticationOfBizClientImpl.java:42)
+	at it.mapsgroup.gzoom.ofbiz.service.LoginServiceOfBiz.login(LoginServiceOfBiz.java:19)
+	at it.mapsgroup.gzoom.security.JwtOfBizLoginAuthenticationProvider.authenticate(JwtOfBizLoginAuthenticationProvider.java:69)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
+	at it.mapsgroup.gzoom.security.JwtLoginFilter.attemptAuthentication(JwtLoginFilter.java:55)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:239)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:229)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.DelegateRequestMatchingFilter.doFilter(DelegateRequestMatchingFilter.java:29)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtChangePasswordFilter.doFilter(JwtChangePasswordFilter.java:248)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtLogoutFilter.doFilter(JwtLogoutFilter.java:127)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.apache.xmlrpc.XmlRpcException: I/O error while communicating with HTTP server: Connection refused
+	at org.apache.xmlrpc.client.XmlRpcCommonsTransport.writeRequest(XmlRpcCommonsTransport.java:244)
+	at org.apache.xmlrpc.client.XmlRpcStreamTransport.sendRequest(XmlRpcStreamTransport.java:151)
+	at org.apache.xmlrpc.client.XmlRpcHttpTransport.sendRequest(XmlRpcHttpTransport.java:143)
+	at org.apache.xmlrpc.client.XmlRpcClientWorker.execute(XmlRpcClientWorker.java:56)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:167)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:137)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:126)
+	at it.mapsgroup.gzoom.ofbiz.client.OfBizClient.execute(OfBizClient.java:159)
+	... 82 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.connect0(Native Method)
+	at java.base/sun.nio.ch.Net.connect(Net.java:601)
+	at java.base/sun.nio.ch.Net.connect(Net.java:590)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at java.base/java.net.Socket.connect(Socket.java:686)
+	at java.base/java.net.Socket.<init>(Socket.java:555)
+	at java.base/java.net.Socket.<init>(Socket.java:398)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:80)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:122)
+	at org.apache.commons.httpclient.HttpConnection.open(HttpConnection.java:707)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeWithRetry(HttpMethodDirector.java:387)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeMethod(HttpMethodDirector.java:171)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:397)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:323)
+	at org.apache.xmlrpc.client.XmlRpcCommonsTransport.writeRequest(XmlRpcCommonsTransport.java:227)
+	... 89 common frames omitted
+ERROR 2026-04-06 23:29:01.133 o.s.s.w.a.AbstractAuthenticationProcessingFilter:doFilter [http-nio-8081-exec-8] - An internal error occurred while trying to authenticate the user.
+org.springframework.security.authentication.InternalAuthenticationServiceException: Invalid username or password
+	at it.mapsgroup.gzoom.security.JwtOfBizLoginAuthenticationProvider.authenticate(JwtOfBizLoginAuthenticationProvider.java:83)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
+	at it.mapsgroup.gzoom.security.JwtLoginFilter.attemptAuthentication(JwtLoginFilter.java:55)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:239)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:229)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.DelegateRequestMatchingFilter.doFilter(DelegateRequestMatchingFilter.java:29)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtChangePasswordFilter.doFilter(JwtChangePasswordFilter.java:248)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at it.mapsgroup.gzoom.security.JwtLogoutFilter.doFilter(JwtLogoutFilter.java:127)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: it.mapsgroup.gzoom.ofbiz.client.OfBizClientException: org.apache.xmlrpc.XmlRpcException: I/O error while communicating with HTTP server: Connection refused
+	at it.mapsgroup.gzoom.ofbiz.client.OfBizClient.execute(OfBizClient.java:163)
+	at it.mapsgroup.gzoom.ofbiz.client.impl.AuthenticationOfBizClientImpl.login(AuthenticationOfBizClientImpl.java:42)
+	at it.mapsgroup.gzoom.ofbiz.service.LoginServiceOfBiz.login(LoginServiceOfBiz.java:19)
+	at it.mapsgroup.gzoom.security.JwtOfBizLoginAuthenticationProvider.authenticate(JwtOfBizLoginAuthenticationProvider.java:69)
+	... 79 common frames omitted
+Caused by: org.apache.xmlrpc.XmlRpcException: I/O error while communicating with HTTP server: Connection refused
+	at org.apache.xmlrpc.client.XmlRpcCommonsTransport.writeRequest(XmlRpcCommonsTransport.java:244)
+	at org.apache.xmlrpc.client.XmlRpcStreamTransport.sendRequest(XmlRpcStreamTransport.java:151)
+	at org.apache.xmlrpc.client.XmlRpcHttpTransport.sendRequest(XmlRpcHttpTransport.java:143)
+	at org.apache.xmlrpc.client.XmlRpcClientWorker.execute(XmlRpcClientWorker.java:56)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:167)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:137)
+	at org.apache.xmlrpc.client.XmlRpcClient.execute(XmlRpcClient.java:126)
+	at it.mapsgroup.gzoom.ofbiz.client.OfBizClient.execute(OfBizClient.java:159)
+	... 82 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.connect0(Native Method)
+	at java.base/sun.nio.ch.Net.connect(Net.java:601)
+	at java.base/sun.nio.ch.Net.connect(Net.java:590)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at java.base/java.net.Socket.connect(Socket.java:686)
+	at java.base/java.net.Socket.<init>(Socket.java:555)
+	at java.base/java.net.Socket.<init>(Socket.java:398)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:80)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:122)
+	at org.apache.commons.httpclient.HttpConnection.open(HttpConnection.java:707)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeWithRetry(HttpMethodDirector.java:387)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeMethod(HttpMethodDirector.java:171)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:397)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:323)
+	at org.apache.xmlrpc.client.XmlRpcCommonsTransport.writeRequest(XmlRpcCommonsTransport.java:227)
+	... 89 common frames omitted
+INFO  2026-04-06 23:29:13.515 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - getUserLogin
+INFO  2026-04-06 23:29:13.521 i.m.g.m.d.UserLoginDao:getUserLogin [http-nio-8081-exec-4] - size 1
+ERROR 2026-04-06 23:30:54.947 i.m.g.s.c.AuthController:getLoginMethod [http-nio-8081-exec-3] - no oneLoginSSOEnabledPropertyName and keycloakLoginEnabledPropertyName configuration found
+INFO  2026-04-06 23:30:56.095 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-2] - getPartyNote
+INFO  2026-04-06 23:30:56.148 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-2] - size = 0
+INFO  2026-04-06 23:30:56.215 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-5] - getPartyNote
+INFO  2026-04-06 23:30:56.220 i.m.g.m.d.PartyNoteDao:getPartyNote [http-nio-8081-exec-5] - size = 0
+INFO  2026-04-06 23:30:56.455 i.m.g.s.NodeService:stream [http-nio-8081-exec-4] - stream default imagePath: /lmm/images/gzoom_logo_login.jpg
+INFO  2026-04-06 23:30:56.456 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-4] - getPartyContent
+INFO  2026-04-06 23:30:56.458 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-3] - find userPreference by id
+INFO  2026-04-06 23:30:56.462 i.m.g.m.d.UserPreferenceDaoMB:getUserPreference [http-nio-8081-exec-3] - UserPreference = true
+INFO  2026-04-06 23:30:56.470 i.m.g.m.d.PartyContentDao:getPartyContent [http-nio-8081-exec-4] - size = 0
+INFO  2026-04-06 23:30:56.574 i.m.g.m.d.NoteDataDao:getNoteDataByPrefValue [http-nio-8081-exec-10] - find note data by prefValue
+INFO  2026-04-06 23:30:56.578 i.m.g.m.d.NoteDataDao:getNoteDataByPrefValue [http-nio-8081-exec-10] - size = null
+INFO  2026-04-06 23:41:09.924 o.q.c.QuartzScheduler:standby [SpringApplicationShutdownHook] - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+INFO  2026-04-06 23:41:09.928 o.s.b.w.e.t.GracefulShutdown:shutDownGracefully [SpringApplicationShutdownHook] - Commencing graceful shutdown. Waiting for active requests to complete
+INFO  2026-04-06 23:41:09.933 o.s.b.w.e.t.GracefulShutdown:doShutdown [tomcat-shutdown] - Graceful shutdown complete
+INFO  2026-04-06 23:41:09.934 o.s.b.w.e.t.GracefulShutdown:shutDownGracefully [SpringApplicationShutdownHook] - Commencing graceful shutdown. Waiting for active requests to complete
+INFO  2026-04-06 23:41:09.940 o.s.b.w.e.t.GracefulShutdown:doShutdown [tomcat-shutdown] - Graceful shutdown complete
+INFO  2026-04-06 23:41:09.981 o.q.c.QuartzScheduler:shutdown [SpringApplicationShutdownHook] - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+INFO  2026-04-06 23:41:09.981 o.q.c.QuartzScheduler:standby [SpringApplicationShutdownHook] - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+INFO  2026-04-06 23:41:09.981 o.q.c.QuartzScheduler:shutdown [SpringApplicationShutdownHook] - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+INFO  2026-04-06 23:41:09.991 o.s.s.q.SchedulerFactoryBean:destroy [SpringApplicationShutdownHook] - Shutting down Quartz Scheduler
+INFO  2026-04-06 23:41:10.083 c.z.h.HikariDataSource:close [SpringApplicationShutdownHook] - HikariPool-1 - Shutdown initiated...
+INFO  2026-04-06 23:41:10.142 c.z.h.HikariDataSource:close [SpringApplicationShutdownHook] - HikariPool-1 - Shutdown completed.
